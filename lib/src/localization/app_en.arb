@@ -1,0 +1,32 @@
+{
+  "appTitle": "AssetWise",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "bottomBarHome": "Home",
+  "@bottomBarHome": {
+    "description": "Label for icon Bottom App Bar"
+  },
+  "bottomBarService": "บริการ",
+  "@bottomBarService": {
+    "description": "Label for icon Bottom App Bar"
+  },
+  "bottomBarChat": "แชท",
+  "@bottomBarChat": {
+    "description": "Label for icon Bottom App Bar"
+  },
+  "bottomBarMenu": "เมนู",
+  "@bottomBarMenu": {
+    "description": "Label for icon Bottom App Bar"
+  },
+  "bottomBarProfile": "โปรไฟล์",
+  "@bottomBarProfile": {
+    "description": "Label for icon Bottom App Bar"
+  },
+  "sectionFavourite": "เมนูโปรด",
+  "@sectionFavourite": {
+    "description": "The title of the favourite section"
+  },
+  "sectionFavouriteMore": "เมนูทั้งหมด",
+  "sectionRecommended": "โครงการแนะนำ"
+}
