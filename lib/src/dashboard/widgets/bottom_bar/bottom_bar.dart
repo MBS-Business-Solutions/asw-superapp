@@ -1,5 +1,6 @@
 import 'package:asset_wise_super_app/src/consts/colors_const.dart';
 import 'package:asset_wise_super_app/src/settings/settings_view.dart';
+import 'package:asset_wise_super_app/src/theme_extensions/bottom_bar_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -16,6 +17,7 @@ class BottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bottomBarTheme = Theme.of(context).extension<BottomBarTheme>();
     return Stack(
       children: [
         Positioned(
@@ -24,9 +26,9 @@ class BottomBar extends StatelessWidget {
           right: 0,
           child: Container(
             decoration: BoxDecoration(
-              color: mDarkBackgroundBottomBar,
+              color: bottomBarTheme?.backgroundColor ?? mDarkBackgroundBottomBar,
               borderRadius: BorderRadius.circular(90.0),
-              border: Border.all(color: Colors.white24),
+              border: Border.all(color: bottomBarTheme?.borderColor ?? Colors.white24),
               boxShadow: const [
                 BoxShadow(
                   color: Colors.black12,
@@ -54,13 +56,13 @@ class BottomBar extends StatelessWidget {
                   onTap: () {},
                   child: Column(
                     children: [
-                      const Icon(
-                        Icons.home_outlined,
-                        color: Colors.white,
+                      Icon(
+                        Icons.home,
+                        color: bottomBarTheme?.staticTextColor ?? Colors.white,
                       ),
                       Text(
                         AppLocalizations.of(context)!.bottomBarHome,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: bottomBarTheme?.staticTextColor ?? Colors.white),
                       ),
                     ],
                   ),
@@ -72,13 +74,13 @@ class BottomBar extends StatelessWidget {
                   onTap: () {},
                   child: Column(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.support_agent_outlined,
-                        color: Colors.white,
+                        color: bottomBarTheme?.staticTextColor ?? Colors.white,
                       ),
                       Text(
                         AppLocalizations.of(context)!.bottomBarService,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: bottomBarTheme?.staticTextColor ?? Colors.white),
                       ),
                     ],
                   ),
@@ -99,14 +101,15 @@ class BottomBar extends StatelessWidget {
                         Container(
                           width: 56,
                           height: 56,
-                          decoration: const BoxDecoration(
-                            color: mPrimaryMatColor,
+                          decoration: BoxDecoration(
+                            color: bottomBarTheme?.selectedTextColor ?? mPrimaryMatColor,
                             shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              colors: [mGoldenGradientStart, mGoldenGradientEnd],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
+                            gradient: bottomBarTheme?.highlightGradient ??
+                                LinearGradient(
+                                  colors: [mGoldenGradientStart, mGoldenGradientEnd],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.white24,
@@ -134,13 +137,13 @@ class BottomBar extends StatelessWidget {
                   onTap: () {},
                   child: Column(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.info_outline,
-                        color: Colors.white,
+                        color: bottomBarTheme?.staticTextColor ?? Colors.white,
                       ),
                       Text(
                         AppLocalizations.of(context)!.bottomBarMenu,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: bottomBarTheme?.staticTextColor ?? Colors.white),
                       ),
                     ],
                   ),
@@ -152,13 +155,13 @@ class BottomBar extends StatelessWidget {
                   onTap: () {},
                   child: Column(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.person_outline_sharp,
-                        color: Colors.white,
+                        color: bottomBarTheme?.staticTextColor ?? Colors.white,
                       ),
                       Text(
                         AppLocalizations.of(context)!.bottomBarProfile,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: bottomBarTheme?.staticTextColor ?? Colors.white),
                       ),
                     ],
                   ),

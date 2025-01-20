@@ -98,30 +98,30 @@ class _DashboardViewState extends State<DashboardView> {
                   ),
                 ),
               ),
-              SliverToBoxAdapter(
+              const SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 16.0),
+                  padding: EdgeInsets.only(left: 24.0, right: 24.0, bottom: 16.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       HotMenuWidget(
-                        icon: SvgPicture.asset('assets/icons/PriceCheckSharp.svg'),
+                        iconAsset: 'assets/icons/PriceCheckSharp.svg',
                         titleText: 'ชำระค่างวด',
                       ),
                       HotMenuWidget(
-                        icon: SvgPicture.asset('assets/icons/Campaign.svg'),
+                        iconAsset: 'assets/icons/Campaign.svg',
                         titleText: 'โปรโมชั่น',
                       ),
                       HotMenuWidget(
-                        icon: SvgPicture.asset('assets/icons/hot_deal.svg'),
+                        iconAsset: 'assets/icons/hot_deal.svg',
                         titleText: 'Hot Deal',
                       ),
                       HotMenuWidget(
-                        icon: SvgPicture.asset('assets/icons/news.svg'),
+                        iconAsset: 'assets/icons/news.svg',
                         titleText: 'ข่าวสาร',
                       ),
                       HotMenuWidget(
-                        icon: SvgPicture.asset('assets/icons/questionaire.svg'),
+                        iconAsset: 'assets/icons/questionaire.svg',
                         titleText: 'สอบถาม',
                       ),
                     ],
@@ -142,7 +142,7 @@ class _DashboardViewState extends State<DashboardView> {
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Text(
                     'เรามุ่งมั่นที่จะออกแบบที่อยู่อาศัย เพื่อความสุขของคนอยู่ โดยคำนึงถึง ไลฟ์สไตล์ และการใช้ชีวิตของแต่ละคนที่แตกต่างกัน',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white60),
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
               ),
