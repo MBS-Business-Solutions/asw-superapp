@@ -1,9 +1,10 @@
+import 'package:asset_wise_super_app/src/0_consts/foundation_const.dart';
 import 'package:asset_wise_super_app/src/dashboard/widgets/bottom_bar/bottom_bar.dart';
 import 'package:asset_wise_super_app/src/dashboard/widgets/suggest_assets/suggest_asset.dart';
 import 'package:asset_wise_super_app/src/settings/settings_controller.dart';
-import 'package:asset_wise_super_app/src/widgets/hot_menu.dart';
+import 'package:asset_wise_super_app/src/0_widgets/assetwise_bg.dart';
+import 'package:asset_wise_super_app/src/0_widgets/hot_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DashboardView extends StatefulWidget {
@@ -19,17 +20,9 @@ class _DashboardViewState extends State<DashboardView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(Theme.of(context).brightness == Brightness.light ? 'assets/images/AS_Light_BG.png' : 'assets/images/AS_Dark_BG.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          const AssetWiseBG(),
           CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
@@ -37,7 +30,7 @@ class _DashboardViewState extends State<DashboardView> {
               ),
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
                   child: Row(
                     children: [
                       Expanded(
@@ -165,5 +158,7 @@ class _DashboardViewState extends State<DashboardView> {
     );
   }
 }
+
+
 
 //EdgeInsets.only(top: MediaQuery.of(context).padding.top + 16.0, left: 23.0, right: 23.0, bottom: 0),

@@ -18,6 +18,17 @@ const MaterialColor mPrimaryMatColor = MaterialColor(
 
 const Color mDarkBackgroundColor = Color(0XFF333333);
 const Color mDarkBackgroundBottomBar = Color(0xE5262626);
+const Color mDarkBottomBarTextColor = Color(0xFFDEDEDE);
+const Color mDarkBodyTextColor = Color(0xFFFFFFFF);
+const Color mDarkDisplayTextColor = Color(0xFFBABABA);
+const Color mDarkBackgroundTextField = Color(0xFF2E2E2E);
+
+const Color mLightBackgroundColor = Color(0XFF333333);
+const Color mLightBackgroundBottomBar = Color(0xF0FFFFFF);
+const Color mLightBottomBarTextColor = Color(0xFFBABABA);
+const Color mLightBodyTextColor = Color(0xFF444444);
+const Color mLightDisplayTextColor = Color(0xFFBABABA);
+const Color mLightBackgroundTextField = Color(0xFFE0E0E0);
 
 const Color mGoldenGradientStart = Color(0xFFA48346);
 const Color mGoldenGradientEnd = Color(0xFFEBCE98);

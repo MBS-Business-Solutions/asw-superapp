@@ -1,6 +1,6 @@
-import 'package:asset_wise_super_app/src/consts/colors_const.dart';
-import 'package:asset_wise_super_app/src/theme_extensions/bottom_bar_theme.dart';
-import 'package:asset_wise_super_app/src/theme_extensions/hotmenu_theme.dart';
+import 'package:asset_wise_super_app/src/0_consts/colors_const.dart';
+import 'package:asset_wise_super_app/src/0_theme_extensions/bottom_bar_theme.dart';
+import 'package:asset_wise_super_app/src/0_theme_extensions/hotmenu_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -46,38 +46,38 @@ final TextTheme mTextTheme = TextTheme(
     height: 1.6,
   ),
   //-------------------------------------
-  displayLarge: GoogleFonts.notoSansThai(
-    fontSize: 34,
-    fontWeight: FontWeight.w400,
-  ),
-  displayMedium: GoogleFonts.notoSansThai(
-    fontSize: 28,
-    fontWeight: FontWeight.w400,
-  ),
-  displaySmall: GoogleFonts.notoSansThai(
-    fontSize: 22,
-    fontWeight: FontWeight.w400,
-  ),
-  //-------------------------------------
   headlineLarge: GoogleFonts.notoSansThai(
-    fontSize: 20,
+    fontSize: 32,
     fontWeight: FontWeight.w600,
   ),
   headlineMedium: GoogleFonts.notoSansThai(
-    fontSize: 18,
+    fontSize: 28,
     fontWeight: FontWeight.w600,
   ),
   headlineSmall: GoogleFonts.notoSansThai(
-    fontSize: 16,
+    fontSize: 24,
     fontWeight: FontWeight.w600,
+  ),
+  //-------------------------------------
+  displayLarge: GoogleFonts.notoSansThai(
+    fontSize: 57,
+    fontWeight: FontWeight.w600,
+  ),
+  displayMedium: GoogleFonts.notoSansThai(
+    fontSize: 45,
+    fontWeight: FontWeight.w600,
+  ),
+  displaySmall: GoogleFonts.notoSansThai(
+    fontSize: 36,
+    fontWeight: FontWeight.w400,
   ),
 );
 
 final ThemeData mLightTheme = ThemeData(
   brightness: Brightness.light,
   textTheme: mTextTheme.apply(
-    bodyColor: Color(0xFF444444),
-    displayColor: Color(0xFFBABABA),
+    bodyColor: mLightBodyTextColor,
+    displayColor: mLightDisplayTextColor,
   ),
   colorScheme: ColorScheme.fromSwatch(
     brightness: Brightness.light,
@@ -93,9 +93,9 @@ final ThemeData mLightTheme = ThemeData(
   ),
   extensions: const [
     BottomBarTheme(
-      backgroundColor: Color(0xF0FFFFFF),
+      backgroundColor: mLightBackgroundBottomBar,
       borderColor: Colors.white24,
-      staticTextColor: Color(0xFFBABABA),
+      staticTextColor: mLightBottomBarTextColor,
       selectedTextColor: mPrimaryMatColor,
       highlightGradient: LinearGradient(
         colors: [
@@ -130,8 +130,8 @@ final ThemeData mLightTheme = ThemeData(
 final ThemeData mDarkTheme = ThemeData(
   brightness: Brightness.dark,
   textTheme: mTextTheme.apply(
-    bodyColor: Color(0xFFFFFFFF),
-    displayColor: Color(0xFFBABABA),
+    bodyColor: mDarkBodyTextColor,
+    displayColor: mDarkDisplayTextColor,
   ),
   colorScheme: ColorScheme.fromSwatch(
     brightness: Brightness.dark,
@@ -154,7 +154,7 @@ final ThemeData mDarkTheme = ThemeData(
     BottomBarTheme(
       backgroundColor: mDarkBackgroundBottomBar,
       borderColor: Colors.white24,
-      staticTextColor: Color(0xFFDEDEDE),
+      staticTextColor: mDarkBottomBarTextColor,
       selectedTextColor: mPrimaryMatColor,
       highlightGradient: LinearGradient(
         colors: [

@@ -1,4 +1,9 @@
-import 'package:asset_wise_super_app/src/consts/themes_const.dart';
+import 'package:asset_wise_super_app/src/0_consts/themes_const.dart';
+import 'package:asset_wise_super_app/src/0_test/test_route.dart';
+import 'package:asset_wise_super_app/src/0_test/ui_showcase_screen.dart';
+import 'package:asset_wise_super_app/src/register/otp_view.dart';
+import 'package:asset_wise_super_app/src/register/register_view.dart';
+import 'package:asset_wise_super_app/src/register/user_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -79,9 +84,20 @@ class MyApp extends StatelessWidget {
                     return SettingsView(controller: settingsController);
                   case DashboardView.routeName:
                     return DashboardView(controller: settingsController);
+                  case RegisterView.routeName:
+                    return const RegisterView();
+                  case OtpView.routeName:
+                    return OtpView(refCode: routeSettings.arguments as String?);
+                  case RegisterUserDetailView.routeName:
+                    return RegisterUserDetailView();
+                  case 'showcase':
+                    return UIShowcaseScreen(
+                      onSwitchToDarkMode: () => settingsController.updateThemeMode(ThemeMode.dark),
+                      onSwitchToLightMode: () => settingsController.updateThemeMode(ThemeMode.light),
+                    );
                   default:
-                    return DashboardView(controller: settingsController);
-                  // return TestView();
+                    // return DashboardView(controller: settingsController);
+                    return TestRoute();
                 }
               },
             );

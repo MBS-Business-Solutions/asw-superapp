@@ -1,3 +1,4 @@
+import 'package:asset_wise_super_app/src/0_widgets/aw_textfield.dart';
 import 'package:flutter/material.dart';
 
 class UIShowcaseScreen extends StatelessWidget {
@@ -50,11 +51,17 @@ class UIShowcaseScreen extends StatelessWidget {
                 hintText: 'TextField',
               ),
             ),
+            SizedBox(
+              height: 16,
+            ),
             TextField(
               decoration: InputDecoration(
                 label: Text('Hint text'),
                 hintText: 'Hint text',
               ),
+            ),
+            SizedBox(
+              height: 16,
             ),
             TextField(
               controller: TextEditingController(text: 'Lorem ipsum'),
@@ -64,6 +71,10 @@ class UIShowcaseScreen extends StatelessWidget {
                 hintText: 'TextField',
               ),
             ),
+            SizedBox(
+              height: 50,
+            ),
+            AwTextField(label: 'เบอร์มือถือ'),
           ],
         ),
       )
