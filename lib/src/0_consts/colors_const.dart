@@ -32,3 +32,4 @@ const Color mLightBackgroundTextField = Color(0xFFE0E0E0);
 
 const Color mGoldenGradientStart = Color(0xFFA48346);
 const Color mGoldenGradientEnd = Color(0xFFEBCE98);
+const Color mBrightPrimaryColor = Color(0xFFDAB269);

@@ -1,6 +1,8 @@
 import 'package:asset_wise_super_app/src/0_consts/themes_const.dart';
 import 'package:asset_wise_super_app/src/0_test/test_route.dart';
 import 'package:asset_wise_super_app/src/0_test/ui_showcase_screen.dart';
+import 'package:asset_wise_super_app/src/pin/set_pin_view.dart';
+import 'package:asset_wise_super_app/src/register/consents_view.dart';
 import 'package:asset_wise_super_app/src/register/otp_view.dart';
 import 'package:asset_wise_super_app/src/register/register_view.dart';
 import 'package:asset_wise_super_app/src/register/user_detail_view.dart';
@@ -80,6 +82,11 @@ class MyApp extends StatelessWidget {
               settings: routeSettings,
               builder: (BuildContext context) {
                 switch (routeSettings.name) {
+                  case UIShowcaseScreen.routeName:
+                    return UIShowcaseScreen(
+                      onSwitchToDarkMode: () => settingsController.updateThemeMode(ThemeMode.dark),
+                      onSwitchToLightMode: () => settingsController.updateThemeMode(ThemeMode.light),
+                    );
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
                   case DashboardView.routeName:
@@ -90,11 +97,10 @@ class MyApp extends StatelessWidget {
                     return OtpView(refCode: routeSettings.arguments as String?);
                   case RegisterUserDetailView.routeName:
                     return RegisterUserDetailView();
-                  case 'showcase':
-                    return UIShowcaseScreen(
-                      onSwitchToDarkMode: () => settingsController.updateThemeMode(ThemeMode.dark),
-                      onSwitchToLightMode: () => settingsController.updateThemeMode(ThemeMode.light),
-                    );
+                  case SetPinView.routeName:
+                    return SetPinView();
+                  case ConsentsView.routeName:
+                    return ConsentsView();
                   default:
                     // return DashboardView(controller: settingsController);
                     return TestRoute();

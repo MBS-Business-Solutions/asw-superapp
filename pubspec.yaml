@@ -10,12 +10,16 @@ environment:
   sdk: ^3.5.1
 
 dependencies:
+  carousel_slider: ^5.0.0
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.17
+  flutter_widget_from_html: ^0.15.3
   google_fonts: ^6.2.1
+  provider: ^6.1.2
+  shared_preferences: ^2.3.5
 
 dev_dependencies:
   flutter_test:

@@ -43,14 +43,14 @@ class _OtpViewState extends State<OtpView> {
                         ),
                         Text(
                           'กรอก OTP',
-                          style: Theme.of(context).textTheme.headlineSmall,
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
                         SizedBox(
                           height: 4,
                         ),
                         Text(
                           'ระบุตัวเลข 6 หลักที่ถูกส่งไปยังอีเมล\nsample@gmail.com',
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          style: Theme.of(context).textTheme.bodyMedium,
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(

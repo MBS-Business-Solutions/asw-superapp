@@ -49,14 +49,14 @@ class _RegisterViewState extends State<RegisterView> {
                         ),
                         Text(
                           _emailForm ? 'กรอก E-mail' : 'กรอกเบอร์มือถือ',
-                          style: Theme.of(context).textTheme.headlineSmall,
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
                         SizedBox(
                           height: 4,
                         ),
                         Text(
                           _emailForm ? 'ระบุ E-mail ของท่าน เพื่อทำการสมัครสมาชิก' : 'ระบุเบอร์มือถือของท่าน เพื่อทำการสมัครสมาชิก',
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         SizedBox(
                           height: 4,

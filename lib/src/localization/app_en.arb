@@ -1,8 +1,10 @@
 {
+  "@@locale": "en",
   "appTitle": "AssetWise",
   "@appTitle": {
     "description": "The title of the application"
   },
+
   "bottomBarHome": "Home",
   "@bottomBarHome": {
     "description": "Label for icon Bottom App Bar"
@@ -23,10 +25,19 @@
   "@bottomBarProfile": {
     "description": "Label for icon Bottom App Bar"
   },
+  
+  "registerMobile": "กรอกเบอร์มือถือ",
+  "registerMobileHint": "ระบุเบอร์มือถือของท่าน เพื่อทำการสมัครสมาชิก",
+  "registerEMail": "กรอก E-Mail",
+  "registerEMailHint": "ระบุ E-mail ของท่าน เพื่อทำการสมัครสมาชิก",
+
   "sectionFavourite": "เมนูโปรด",
   "@sectionFavourite": {
     "description": "The title of the favourite section"
   },
   "sectionFavouriteMore": "เมนูทั้งหมด",
-  "sectionRecommended": "โครงการแนะนำ"
+  "sectionRecommended": "โครงการแนะนำ",
+
+  "eReadyToMoveIn": "พร้อมอยู่",
+  "eNewProject": "โครงการใหม่"
 }

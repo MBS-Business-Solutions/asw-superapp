@@ -1,8 +1,10 @@
 import 'package:asset_wise_super_app/src/0_widgets/aw_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class UIShowcaseScreen extends StatelessWidget {
-  UIShowcaseScreen({super.key, required this.onSwitchToDarkMode, required this.onSwitchToLightMode, this.widgets});
+  const UIShowcaseScreen({super.key, required this.onSwitchToDarkMode, required this.onSwitchToLightMode, this.widgets});
+  static const String routeName = '/ui-showcase';
   final Function onSwitchToDarkMode;
   final Function onSwitchToLightMode;
   final List<Widget>? widgets;
@@ -27,10 +29,29 @@ class UIShowcaseScreen extends StatelessWidget {
         ),
         body: ListView(
           children: [
+            ListTile(
+              title: Text('Text showcases'),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => TextShowCases(),
+                ));
+              },
+              trailing: Icon(Icons.arrow_forward_ios),
+            ),
             ..._textfieldShowcase(context),
             ..._buttonsShowcase(context),
             ..._iconButtonShowcase(context),
             ...widgets ?? [],
+            SizedBox(
+              width: double.infinity,
+              child: HtmlWidget('''<h2>คุณมีสิทธิในการ:</h2>
+<ul>
+<li>เข้าถึงและขอสำเนาข้อมูลส่วนบุคคลของคุณ</li>
+<li>ขอแก้ไขข้อมูลส่วนบุคคลที่ไม่ถูกต้อง</li>
+<li>ขอให้ลบข้อมูลส่วนบุคคลของคุณ เมื่อไม่มีความจำเป็นในการเก็บรักษาข้อมูลอีกต่อไป</li>
+<li>ขอให้จำกัดการประมวลผลข้อมูลส่วนบุคคลของคุณ</li>
+<li>เพิกถอนความยินยอมในการประมวลผลข้อมูลส่วนบุคคลของคุณได้ทุกเมื่อ</li></ul>'''),
+            )
           ],
         ),
       ),
@@ -225,6 +246,127 @@ class UIShowcaseScreen extends StatelessWidget {
       child: Text(
         text,
         style: Theme.of(context).textTheme.titleLarge,
+      ),
+    );
+  }
+}
+
+class TextShowCases extends StatelessWidget {
+  const TextShowCases({super.key});
+  final String shortText = 'ABC ทั้งที่ 12';
+  final String longText = '''ASW คว้าเรตติ้ง “AA” หุ้นยั่งยืน SET ESG Ratings ปี 2567 พร้อม CGR 5 ดาว ระดับ “ดีเลิศ” 3 ปีซ้อน ตอกย้ำองค์กรยั่งยืนตามหลักบรรษัทภิบาล''';
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('displayLarge', style: Theme.of(context).textTheme.titleLarge),
+          ),
+          ListTile(
+            title: Text(shortText, style: Theme.of(context).textTheme.displayLarge),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('displayMedium', style: Theme.of(context).textTheme.titleLarge),
+          ),
+          ListTile(
+            title: Text(shortText, style: Theme.of(context).textTheme.displayMedium),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('displaySmall', style: Theme.of(context).textTheme.titleLarge),
+          ),
+          ListTile(
+            title: Text(shortText, style: Theme.of(context).textTheme.displaySmall),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('headlineLarge', style: Theme.of(context).textTheme.titleLarge),
+          ),
+          ListTile(
+            title: Text(shortText, style: Theme.of(context).textTheme.headlineLarge),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('headlineMedium', style: Theme.of(context).textTheme.titleLarge),
+          ),
+          ListTile(
+            title: Text(shortText, style: Theme.of(context).textTheme.headlineMedium),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('headlineSmall', style: Theme.of(context).textTheme.titleLarge),
+          ),
+          ListTile(
+            title: Text(shortText, style: Theme.of(context).textTheme.headlineSmall),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('titleLarge', style: Theme.of(context).textTheme.titleLarge),
+          ),
+          ListTile(
+            title: Text(shortText, style: Theme.of(context).textTheme.titleLarge),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('titleMedium', style: Theme.of(context).textTheme.titleLarge),
+          ),
+          ListTile(
+            title: Text(shortText, style: Theme.of(context).textTheme.titleMedium),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('titleSmall', style: Theme.of(context).textTheme.titleLarge),
+          ),
+          ListTile(
+            title: Text(shortText, style: Theme.of(context).textTheme.titleSmall),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('bodyLarge', style: Theme.of(context).textTheme.titleLarge),
+          ),
+          ListTile(
+            title: Text(longText, style: Theme.of(context).textTheme.bodyLarge),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('bodyMedium', style: Theme.of(context).textTheme.titleLarge),
+          ),
+          ListTile(
+            title: Text(longText, style: Theme.of(context).textTheme.bodyMedium),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('bodySmall', style: Theme.of(context).textTheme.titleLarge),
+          ),
+          ListTile(
+            title: Text(longText, style: Theme.of(context).textTheme.bodySmall),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('labelLarge', style: Theme.of(context).textTheme.titleLarge),
+          ),
+          ListTile(
+            title: Text(shortText, style: Theme.of(context).textTheme.labelLarge),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('labelMedium', style: Theme.of(context).textTheme.titleLarge),
+          ),
+          ListTile(
+            title: Text(shortText, style: Theme.of(context).textTheme.labelMedium),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('labelSmall', style: Theme.of(context).textTheme.titleLarge),
+          ),
+          ListTile(
+            title: Text(shortText, style: Theme.of(context).textTheme.labelSmall),
+          ),
+        ],
       ),
     );
   }

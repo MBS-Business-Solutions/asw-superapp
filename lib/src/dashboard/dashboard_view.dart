@@ -1,9 +1,11 @@
 import 'package:asset_wise_super_app/src/0_consts/foundation_const.dart';
+import 'package:asset_wise_super_app/src/0_widgets/aw_carousel.dart';
 import 'package:asset_wise_super_app/src/dashboard/widgets/bottom_bar/bottom_bar.dart';
 import 'package:asset_wise_super_app/src/dashboard/widgets/suggest_assets/suggest_asset.dart';
 import 'package:asset_wise_super_app/src/settings/settings_controller.dart';
 import 'package:asset_wise_super_app/src/0_widgets/assetwise_bg.dart';
 import 'package:asset_wise_super_app/src/0_widgets/hot_menu.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -17,6 +19,8 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> {
+  int _current = 0;
+  final CarouselSliderController _controller = CarouselSliderController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,16 +56,21 @@ class _DashboardViewState extends State<DashboardView> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.0),
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/sample.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    width: double.infinity,
-                    height: 192,
+                  child: AWCarousel(
+                    children: [
+                      for (var i = 0; i < 5; i++)
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4.0),
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/sample.jpg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          width: double.infinity,
+                          height: 192,
+                        )
+                    ],
                   ),
                 ),
               ),
