@@ -1,0 +1,18 @@
+# https://developer.android.com/develop/ui/views/launch/splash-screen
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/images/AS_Light_BG.png
+  branding: assets/images/assetwise_logo_splash.png
+  color_dark: "#000000"
+  image_dark: assets/images/AS_Dark_BG.png
+  branding_dark: assets/images/assetwise_logo_splash.png
+  fullscreen: true
+
+  android_12:
+    color: "#FFFFFF"
+    image: assets/images/assetwise_logo_splash.png
+    icon_background_color: "#000000"
+    image_dark: assets/images/assetwise_logo_splash.png
+    icon_background_color_dark: "#000000"
+
+  web: false

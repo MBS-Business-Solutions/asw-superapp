@@ -1,20 +1,20 @@
-import 'package:asset_wise_super_app/src/0_consts/themes_const.dart';
+import 'package:asset_wise_super_app/src/consts/themes_const.dart';
 import 'package:asset_wise_super_app/src/0_test/test_route.dart';
 import 'package:asset_wise_super_app/src/0_test/ui_showcase_screen.dart';
-import 'package:asset_wise_super_app/src/pin/set_pin_view.dart';
-import 'package:asset_wise_super_app/src/register/consents_view.dart';
-import 'package:asset_wise_super_app/src/register/otp_view.dart';
-import 'package:asset_wise_super_app/src/register/register_view.dart';
-import 'package:asset_wise_super_app/src/register/user_detail_view.dart';
+import 'package:asset_wise_super_app/src/features/pin/set_pin_view.dart';
+import 'package:asset_wise_super_app/src/features/register/consents_view.dart';
+import 'package:asset_wise_super_app/src/features/register/otp_view.dart';
+import 'package:asset_wise_super_app/src/features/register/register_view.dart';
+import 'package:asset_wise_super_app/src/features/register/user_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'settings/settings_controller.dart';
-import 'settings/settings_view.dart';
+import 'features/settings/settings_controller.dart';
+import 'features/settings/settings_view.dart';
 
-import 'dashboard/dashboard_view.dart';
+import 'features/dashboard/dashboard_view.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
