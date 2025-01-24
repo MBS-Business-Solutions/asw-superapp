@@ -30,6 +30,14 @@ class TestRoute extends StatelessWidget {
               title: const Text('Consents'),
               onTap: () => Navigator.pushNamed(context, '/consents'),
             ),
+            ListTile(
+              title: const Text('Contracts'),
+              onTap: () => Navigator.pushNamed(context, '/contracts'),
+            ),
+            ListTile(
+              title: const Text('Contract Detail'),
+              onTap: () => Navigator.pushNamed(context, '/contract-detail'),
+            ),
           ],
         ));
   }

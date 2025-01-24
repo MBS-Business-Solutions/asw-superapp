@@ -43,8 +43,6 @@ class _CampaignPopState extends State<CampaignPop> {
                 child: GestureDetector(
                   onTap: () {
                     print('Campaign Clicked');
-
-                    close();
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.8,

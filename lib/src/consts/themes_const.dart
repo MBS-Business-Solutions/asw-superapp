@@ -83,6 +83,7 @@ final ThemeData mLightTheme = ThemeData(
   colorScheme: ColorScheme.fromSwatch(
     brightness: Brightness.light,
     primarySwatch: mPrimaryMatColor,
+    cardColor: mLightCardBackgroundColor,
   ),
   filledButtonTheme: FilledButtonThemeData(
     style: FilledButton.styleFrom(
@@ -147,6 +148,7 @@ final ThemeData mDarkTheme = ThemeData(
   colorScheme: ColorScheme.fromSwatch(
     brightness: Brightness.dark,
     primarySwatch: mPrimaryMatColor,
+    cardColor: mDarkCardBackgroundColor,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(

@@ -1,6 +1,9 @@
 import 'package:asset_wise_super_app/src/consts/themes_const.dart';
 import 'package:asset_wise_super_app/src/0_test/test_route.dart';
 import 'package:asset_wise_super_app/src/0_test/ui_showcase_screen.dart';
+import 'package:asset_wise_super_app/src/features/contract/contract_detail_view.dart';
+import 'package:asset_wise_super_app/src/features/contract/contracts_view.dart';
+import 'package:asset_wise_super_app/src/features/contract/down_history_view.dart';
 import 'package:asset_wise_super_app/src/features/pin/set_pin_view.dart';
 import 'package:asset_wise_super_app/src/features/register/consents_view.dart';
 import 'package:asset_wise_super_app/src/features/register/otp_view.dart';
@@ -101,6 +104,12 @@ class MyApp extends StatelessWidget {
                     return SetPinView();
                   case ConsentsView.routeName:
                     return ConsentsView();
+                  case ContractsView.routeName:
+                    return ContractsView();
+                  case ContractDetailView.routeName:
+                    return ContractDetailView();
+                  case DownHistoryView.routeName:
+                    return DownHistoryView();
                   default:
                     // return DashboardView(controller: settingsController);
                     return TestRoute();

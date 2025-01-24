@@ -2,13 +2,19 @@ import 'package:asset_wise_super_app/src/widgets/aw_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
-class UIShowcaseScreen extends StatelessWidget {
+class UIShowcaseScreen extends StatefulWidget {
   const UIShowcaseScreen({super.key, required this.onSwitchToDarkMode, required this.onSwitchToLightMode, this.widgets});
   static const String routeName = '/ui-showcase';
   final Function onSwitchToDarkMode;
   final Function onSwitchToLightMode;
   final List<Widget>? widgets;
 
+  @override
+  State<UIShowcaseScreen> createState() => _UIShowcaseScreenState();
+}
+
+class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
+  bool value = false;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -19,11 +25,11 @@ class UIShowcaseScreen extends StatelessWidget {
           actions: [
             IconButton(
               icon: const Icon(Icons.dark_mode),
-              onPressed: () => onSwitchToDarkMode(),
+              onPressed: () => widget.onSwitchToDarkMode(),
             ),
             IconButton(
               icon: const Icon(Icons.light_mode),
-              onPressed: () => onSwitchToLightMode(),
+              onPressed: () => widget.onSwitchToLightMode(),
             ),
           ],
         ),
@@ -38,10 +44,11 @@ class UIShowcaseScreen extends StatelessWidget {
               },
               trailing: Icon(Icons.arrow_forward_ios),
             ),
+            SwitchListTile.adaptive(value: value, onChanged: (v) => setState(() => value = v), title: Text('Switch')),
             ..._textfieldShowcase(context),
             ..._buttonsShowcase(context),
             ..._iconButtonShowcase(context),
-            ...widgets ?? [],
+            ...widget.widgets ?? [],
             SizedBox(
               width: double.infinity,
               child: HtmlWidget('''<h2>คุณมีสิทธิในการ:</h2>

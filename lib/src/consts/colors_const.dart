@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const MaterialColor mPrimaryMatColor = MaterialColor(
   0xFFA48346,
   <int, Color>{
-    50: Color(0x1AA48346),
+    50: Color(0xA48346),
     100: Color(0x33A48346),
     200: Color(0x4DA48346),
     300: Color(0x66A48346),
@@ -22,13 +22,15 @@ const Color mDarkBottomBarTextColor = Color(0xFFDEDEDE);
 const Color mDarkBodyTextColor = Color(0xFFFFFFFF);
 const Color mDarkDisplayTextColor = Color(0xFFBABABA);
 const Color mDarkBackgroundTextField = Color(0xFF2E2E2E);
+const Color mDarkCardBackgroundColor = Color(0xFF2E2E2E);
 
-const Color mLightBackgroundColor = Color(0xFFBABABA);
+const Color mLightBackgroundColor = Color(0xFFF5F5F5);
 const Color mLightBackgroundBottomBar = Color(0xF0FFFFFF);
 const Color mLightBottomBarTextColor = Color(0xFFBABABA);
 const Color mLightBodyTextColor = Color(0xFF444444);
 const Color mLightDisplayTextColor = Color(0xFFBABABA);
 const Color mLightBackgroundTextField = Color(0xFFE0E0E0);
+const Color mLightCardBackgroundColor = Color(0xFFD5D5D5);
 
 const Color mGoldenGradientStart = Color(0xFFA48346);
 const Color mGoldenGradientEnd = Color(0xFFEBCE98);
