@@ -1,7 +1,8 @@
-import 'package:asset_wise_super_app/src/consts/foundation_const.dart';
-import 'package:asset_wise_super_app/src/widgets/assetwise_bg.dart';
-import 'package:asset_wise_super_app/src/widgets/aw_textfield.dart';
-import 'package:asset_wise_super_app/src/features/register/otp_view.dart';
+import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/widgets/assetwise_bg.dart';
+import 'package:AssetWise/src/widgets/assetwise_logo.dart';
+import 'package:AssetWise/src/widgets/aw_textfield.dart';
+import 'package:AssetWise/src/features/register/otp_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,9 +18,9 @@ class _RegisterViewState extends State<RegisterView> {
   bool _isMember = false;
   bool _emailForm = false;
 
-  TextEditingController _mobileController = TextEditingController();
-  TextEditingController _idCardController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
+  final TextEditingController _mobileController = TextEditingController();
+  final TextEditingController _idCardController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -38,14 +39,11 @@ class _RegisterViewState extends State<RegisterView> {
                     padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
                     child: Column(
                       children: [
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                        Image.asset(
-                          'assets/images/assetwise_logo_horz.png',
-                          width: MediaQuery.of(context).size.width * 0.6,
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(
-                          height: 16,
+                        Padding(
+                          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 32, bottom: 32),
+                          child: AssetWiseLogo(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                          ),
                         ),
                         Text(
                           _emailForm ? 'กรอก E-mail' : 'กรอกเบอร์มือถือ',

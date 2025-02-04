@@ -1,9 +1,9 @@
-import 'package:asset_wise_super_app/src/features/dashboard/profile_view.dart';
-import 'package:asset_wise_super_app/src/features/dashboard/widgets/campaign/campaign_pop.dart';
-import 'package:asset_wise_super_app/src/features/dashboard/widgets/bottom_bar/bottom_bar.dart';
-import 'package:asset_wise_super_app/src/features/dashboard/widgets/main/main_view.dart';
-import 'package:asset_wise_super_app/src/features/settings/settings_controller.dart';
-import 'package:asset_wise_super_app/src/widgets/assetwise_bg.dart';
+import 'package:AssetWise/src/features/dashboard/profile_view.dart';
+import 'package:AssetWise/src/features/dashboard/widgets/campaign/campaign_pop.dart';
+import 'package:AssetWise/src/features/dashboard/widgets/bottom_bar/bottom_bar.dart';
+import 'package:AssetWise/src/features/dashboard/widgets/main/main_view.dart';
+import 'package:AssetWise/src/features/settings/settings_controller.dart';
+import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
 
 class DashboardView extends StatefulWidget {

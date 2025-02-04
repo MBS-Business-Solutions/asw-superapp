@@ -1,5 +1,6 @@
-import 'package:asset_wise_super_app/src/widgets/aw_textfield.dart';
+import 'package:AssetWise/src/widgets/aw_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class UIShowcaseScreen extends StatefulWidget {
@@ -35,6 +36,12 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
         ),
         body: ListView(
           children: [
+            SvgPicture.asset(
+              height: 300,
+              'assets/images/ASW_Logo_Rac_dark-bg.svg',
+              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+              alignment: Alignment.centerLeft,
+            ),
             ListTile(
               title: Text('Text showcases'),
               onTap: () {

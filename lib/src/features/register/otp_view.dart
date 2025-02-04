@@ -1,7 +1,8 @@
-import 'package:asset_wise_super_app/src/consts/foundation_const.dart';
-import 'package:asset_wise_super_app/src/widgets/assetwise_bg.dart';
-import 'package:asset_wise_super_app/src/widgets/otp_input.dart';
-import 'package:asset_wise_super_app/src/features/register/user_detail_view.dart';
+import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/widgets/assetwise_bg.dart';
+import 'package:AssetWise/src/widgets/assetwise_logo.dart';
+import 'package:AssetWise/src/widgets/otp_input.dart';
+import 'package:AssetWise/src/features/register/user_detail_view.dart';
 import 'package:flutter/material.dart';
 
 class OtpView extends StatefulWidget {
@@ -32,14 +33,11 @@ class _OtpViewState extends State<OtpView> {
                     padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
                     child: Column(
                       children: [
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                        Image.asset(
-                          'assets/images/assetwise_logo_horz.png',
-                          width: MediaQuery.of(context).size.width * 0.6,
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(
-                          height: 16,
+                        Padding(
+                          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 32, bottom: 32),
+                          child: AssetWiseLogo(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                          ),
                         ),
                         Text(
                           'กรอก OTP',

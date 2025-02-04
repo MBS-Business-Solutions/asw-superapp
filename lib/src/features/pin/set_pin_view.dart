@@ -1,6 +1,7 @@
-import 'package:asset_wise_super_app/src/consts/colors_const.dart';
-import 'package:asset_wise_super_app/src/widgets/assetwise_bg.dart';
-import 'package:asset_wise_super_app/src/widgets/numpad.dart';
+import 'package:AssetWise/src/consts/colors_const.dart';
+import 'package:AssetWise/src/widgets/assetwise_bg.dart';
+import 'package:AssetWise/src/widgets/assetwise_logo.dart';
+import 'package:AssetWise/src/widgets/numpad.dart';
 import 'package:flutter/material.dart';
 
 class SetPinView extends StatefulWidget {
@@ -26,12 +27,8 @@ class _SetPinViewState extends State<SetPinView> {
           child: Column(
             children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-              Image.asset(
-                'assets/images/assetwise_logo_horz.png',
-                width: MediaQuery.of(context).size.width * 0.6,
-                fit: BoxFit.cover,
-              ),
-              SizedBox(
+              const SizedBox(height: 80, child: AssetWiseLogo()),
+              const SizedBox(
                 height: 16,
               ),
               Text(

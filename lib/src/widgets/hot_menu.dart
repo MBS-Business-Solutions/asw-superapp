@@ -1,5 +1,5 @@
-import 'package:asset_wise_super_app/src/consts/colors_const.dart';
-import 'package:asset_wise_super_app/src/theme_extensions/hotmenu_theme.dart';
+import 'package:AssetWise/src/consts/colors_const.dart';
+import 'package:AssetWise/src/theme_extensions/hotmenu_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

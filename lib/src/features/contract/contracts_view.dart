@@ -1,5 +1,5 @@
-import 'package:asset_wise_super_app/src/features/contract/contract_detail_view.dart';
-import 'package:asset_wise_super_app/src/features/contract/widgets/history_list_tile.dart';
+import 'package:AssetWise/src/features/contract/contract_detail_view.dart';
+import 'package:AssetWise/src/features/contract/widgets/history_list_tile.dart';
 import 'package:flutter/material.dart';
 
 class ContractsView extends StatelessWidget {

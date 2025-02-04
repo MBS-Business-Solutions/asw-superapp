@@ -1,4 +1,4 @@
-import 'package:asset_wise_super_app/src/features/dashboard/widgets/suggest_assets/widgets/suggest_item.dart';
+import 'package:AssetWise/src/features/dashboard/widgets/suggest_assets/widgets/suggest_item.dart';
 import 'package:flutter/material.dart';
 
 class SuggestAssets extends StatefulWidget {

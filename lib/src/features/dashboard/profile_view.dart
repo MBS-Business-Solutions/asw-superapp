@@ -1,4 +1,4 @@
-import 'package:asset_wise_super_app/src/features/settings/settings_controller.dart';
+import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

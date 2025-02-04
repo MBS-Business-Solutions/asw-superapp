@@ -2,8 +2,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class AWCarousel extends StatefulWidget {
-  const AWCarousel({super.key, required this.children});
+  const AWCarousel({super.key, required this.children, this.autoPlay, this.autoPlayInterval});
   final List<Widget> children;
+  final bool? autoPlay;
+  final Duration? autoPlayInterval;
   @override
   State<AWCarousel> createState() => _AWCarouselState();
 }
@@ -18,6 +20,9 @@ class _AWCarouselState extends State<AWCarousel> {
         CarouselSlider(
           carouselController: _controller,
           options: CarouselOptions(
+            aspectRatio: 16 / 9,
+            autoPlay: widget.autoPlay ?? true,
+            autoPlayInterval: widget.autoPlayInterval ?? const Duration(seconds: 4),
             viewportFraction: 1.0,
             onPageChanged: (index, reason) {
               setState(() {

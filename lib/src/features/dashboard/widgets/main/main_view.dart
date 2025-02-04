@@ -1,8 +1,10 @@
+import 'package:AssetWise/src/services/aw_content_service.dart';
+import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:flutter/material.dart';
-import 'package:asset_wise_super_app/src/consts/foundation_const.dart';
-import 'package:asset_wise_super_app/src/widgets/aw_carousel.dart';
-import 'package:asset_wise_super_app/src/features/dashboard/widgets/suggest_assets/suggest_asset.dart';
-import 'package:asset_wise_super_app/src/widgets/hot_menu.dart';
+import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/widgets/aw_carousel.dart';
+import 'package:AssetWise/src/features/dashboard/widgets/suggest_assets/suggest_asset.dart';
+import 'package:AssetWise/src/widgets/hot_menu.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DashboardMainView extends StatelessWidget {
@@ -18,38 +20,47 @@ class DashboardMainView extends StatelessWidget {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Image.asset(
-                    'assets/images/assetwise_logo_horz.png',
-                    alignment: Alignment.centerLeft,
+            child: SizedBox(
+              height: 48,
+              child: Row(
+                children: [
+                  const AssetWiseLogo(
+                    width: 129,
                   ),
-                ),
-                _buildActionButtons()
-              ],
+                  const Spacer(),
+                  _buildActionButtons()
+                ],
+              ),
             ),
           ),
         ),
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: AWCarousel(
-              children: [
-                for (var i = 0; i < 5; i++)
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4.0),
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/sample.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    width: double.infinity,
-                    height: 192,
-                  )
-              ],
-            ),
+            child: FutureBuilder(
+                future: AWContentService.fetchBanners(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return SizedBox();
+                  }
+                  final list = snapshot.data as List<String>;
+                  return AWCarousel(
+                    autoPlay: true,
+                    autoPlayInterval: const Duration(seconds: 4),
+                    children: [
+                      for (var image in list)
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4.0),
+                            image: DecorationImage(
+                              image: NetworkImage(image),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        )
+                    ],
+                  );
+                }),
           ),
         ),
         SliverToBoxAdapter(
@@ -96,7 +107,7 @@ class DashboardMainView extends StatelessWidget {
   }
 
   Widget _buildFavouriteMenus(BuildContext context) {
-    return SizedBox();
+    // return SizedBox();
     return Column(
       children: [
         Row(

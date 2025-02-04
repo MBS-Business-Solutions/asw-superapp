@@ -1,6 +1,6 @@
-import 'package:asset_wise_super_app/src/consts/foundation_const.dart';
-import 'package:asset_wise_super_app/src/widgets/assetwise_bg.dart';
-import 'package:asset_wise_super_app/src/widgets/aw_textformfield.dart';
+import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/widgets/assetwise_bg.dart';
+import 'package:AssetWise/src/widgets/aw_textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

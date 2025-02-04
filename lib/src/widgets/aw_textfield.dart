@@ -1,4 +1,4 @@
-import 'package:asset_wise_super_app/src/consts/colors_const.dart';
+import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

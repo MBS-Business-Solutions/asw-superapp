@@ -1,14 +1,16 @@
-import 'package:asset_wise_super_app/src/consts/themes_const.dart';
-import 'package:asset_wise_super_app/src/0_test/test_route.dart';
-import 'package:asset_wise_super_app/src/0_test/ui_showcase_screen.dart';
-import 'package:asset_wise_super_app/src/features/contract/contract_detail_view.dart';
-import 'package:asset_wise_super_app/src/features/contract/contracts_view.dart';
-import 'package:asset_wise_super_app/src/features/contract/down_history_view.dart';
-import 'package:asset_wise_super_app/src/features/pin/set_pin_view.dart';
-import 'package:asset_wise_super_app/src/features/register/consents_view.dart';
-import 'package:asset_wise_super_app/src/features/register/otp_view.dart';
-import 'package:asset_wise_super_app/src/features/register/register_view.dart';
-import 'package:asset_wise_super_app/src/features/register/user_detail_view.dart';
+import 'package:AssetWise/main.dart';
+import 'package:AssetWise/src/consts/themes_const.dart';
+import 'package:AssetWise/src/0_test/test_route.dart';
+import 'package:AssetWise/src/0_test/ui_showcase_screen.dart';
+import 'package:AssetWise/src/features/contract/contract_detail_view.dart';
+import 'package:AssetWise/src/features/contract/contracts_view.dart';
+import 'package:AssetWise/src/features/contract/down_history_view.dart';
+import 'package:AssetWise/src/features/pin/set_pin_view.dart';
+import 'package:AssetWise/src/features/register/consents_view.dart';
+import 'package:AssetWise/src/features/register/otp_view.dart';
+import 'package:AssetWise/src/features/register/register_view.dart';
+import 'package:AssetWise/src/features/register/user_detail_view.dart';
+import 'package:AssetWise/src/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -39,6 +41,9 @@ class MyApp extends StatelessWidget {
     //
     // The ListenableBuilder Widget listens to the SettingsController for changes.
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
+
+    // Initialize Firebase Messaging and request permission
+    FirebaseMessagingService().initialize();
     return ListenableBuilder(
       listenable: settingsController,
       builder: (BuildContext context, Widget? child) {
@@ -48,6 +53,7 @@ class MyApp extends StatelessWidget {
           // returns to the app after it has been killed while running in the
           // background.
           restorationScopeId: 'app',
+          navigatorKey: navigatorKey,
 
           // Provide the generated AppLocalizations to the MaterialApp. This
           // allows descendant Widgets to display the correct translations

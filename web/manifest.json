@@ -1,6 +1,6 @@
 {
-    "name": "asset_wise_super_app",
-    "short_name": "asset_wise_super_app",
+    "name": "AssetWise",
+    "short_name": "AssetWise",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

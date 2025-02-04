@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:AssetWise/src/services/aw_content_service.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class CampaignPop extends StatefulWidget {
@@ -10,9 +12,11 @@ class CampaignPop extends StatefulWidget {
 }
 
 class _CampaignPopState extends State<CampaignPop> {
+  final CarouselSliderController _controller = CarouselSliderController();
   bool _isShow = false;
   bool _markHide = false;
   List<String> campaigns = [];
+  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -22,6 +26,7 @@ class _CampaignPopState extends State<CampaignPop> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     return IgnorePointer(
       ignoring: !_isShow,
       child: GestureDetector(
@@ -39,37 +44,51 @@ class _CampaignPopState extends State<CampaignPop> {
                 ),
               ),
               // Foreground Widget
-              Center(
-                child: GestureDetector(
-                  onTap: () {
-                    print('Campaign Clicked');
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Stack(
-                      children: [
-                        SizedBox(
-                          height: double.infinity,
-                          child: Image.asset(
-                            'assets/images/sample.jpg',
-                            fit: BoxFit.cover,
+              if (campaigns.isNotEmpty)
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      print('Campaign Clicked');
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Stack(
+                        children: [
+                          CarouselSlider.builder(
+                            carouselController: _controller,
+                            options: CarouselOptions(
+                              height: height,
+                              viewportFraction: 1.0,
+                              enlargeCenterPage: false,
+                              onPageChanged: (index, reason) {
+                                setState(() {
+                                  _currentIndex = index;
+                                });
+                              },
+                            ),
+                            itemBuilder: (context, index, realIndex) {
+                              return Image.network(
+                                campaigns[index],
+                                fit: BoxFit.cover,
+                              );
+                            },
+                            itemCount: campaigns.length,
                           ),
-                        ),
-                        Positioned(
-                          right: 8,
-                          top: 8,
-                          child: IconButton(onPressed: () => close(), icon: Icon(Icons.close)),
-                        ),
-                      ],
+                          Positioned(
+                            right: 8,
+                            top: 8,
+                            child: IconButton(onPressed: () => close(), icon: Icon(Icons.close)),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
@@ -80,8 +99,7 @@ class _CampaignPopState extends State<CampaignPop> {
   Future<void> getCampaigns() async {
     if (mounted) {
       if (_markHide) return;
-      await Future.delayed(const Duration(seconds: 1));
-      campaigns = ['Campaign 1', 'Campaign 2', 'Campaign 3'];
+      campaigns = await AWContentService.fetchCampaigns();
       setState(() {
         if (campaigns.isNotEmpty) {
           _isShow = true;
