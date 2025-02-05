@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:AssetWise/src/services/aw_content_service.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CampaignPop extends StatefulWidget {
   const CampaignPop({super.key});
@@ -16,7 +17,6 @@ class _CampaignPopState extends State<CampaignPop> {
   bool _isShow = false;
   bool _markHide = false;
   List<String> campaigns = [];
-  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -65,11 +65,6 @@ class _CampaignPopState extends State<CampaignPop> {
                               height: height,
                               viewportFraction: 1.0,
                               enlargeCenterPage: false,
-                              onPageChanged: (index, reason) {
-                                setState(() {
-                                  _currentIndex = index;
-                                });
-                              },
                             ),
                             itemBuilder: (context, index, realIndex) {
                               return Image.network(
@@ -97,15 +92,22 @@ class _CampaignPopState extends State<CampaignPop> {
   }
 
   Future<void> getCampaigns() async {
+    // แสดงโปรโมชั่นทุกวัน 1 ครั้ง
     if (mounted) {
       if (_markHide) return;
-      campaigns = await AWContentService.fetchCampaigns();
-      setState(() {
-        if (campaigns.isNotEmpty) {
-          _isShow = true;
-          _markHide = false;
-        }
-      });
+      final shared = await SharedPreferences.getInstance();
+      final nextShow = shared.getInt('CAMPAIGN_POP_NEXT_SHOW') ?? 0;
+      if (nextShow < DateTime.now().millisecondsSinceEpoch) {
+        final nextShow = DateUtils.dateOnly(DateTime.now()).add(const Duration(days: 1)).millisecondsSinceEpoch;
+        shared.setInt('CAMPAIGN_POP_NEXT_SHOW', nextShow);
+        campaigns = await AWContentService.fetchCampaigns();
+        setState(() {
+          if (campaigns.isNotEmpty) {
+            _isShow = true;
+            _markHide = false;
+          }
+        });
+      }
     }
   }
 

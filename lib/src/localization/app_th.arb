@@ -1,11 +1,44 @@
 {
+  "@@locale": "th",
   "appTitle": "AssetWise",
   "@appTitle": {
     "description": "The title of the application"
   },
+
   "bottomBarHome": "หน้าหลัก",
+  "@bottomBarHome": {
+    "description": "Label for icon Bottom App Bar"
+  },
   "bottomBarService": "บริการ",
+  "@bottomBarService": {
+    "description": "Label for icon Bottom App Bar"
+  },
   "bottomBarChat": "แชท",
+  "@bottomBarChat": {
+    "description": "Label for icon Bottom App Bar"
+  },
   "bottomBarMenu": "เมนู",
-  "bottomBarProfile": "โปรไฟล์"
+  "@bottomBarMenu": {
+    "description": "Label for icon Bottom App Bar"
+  },
+  "bottomBarProfile": "โปรไฟล์",
+  "@bottomBarProfile": {
+    "description": "Label for icon Bottom App Bar"
+  },
+  
+  "registerMobile": "กรอกเบอร์มือถือ",
+  "registerMobileHint": "ระบุเบอร์มือถือของท่าน เพื่อทำการสมัครสมาชิก",
+  "registerEMail": "กรอก E-Mail",
+  "registerEMailHint": "ระบุ E-mail ของท่าน เพื่อทำการสมัครสมาชิก",
+
+  "sectionFavourite": "เมนูโปรด",
+  "@sectionFavourite": {
+    "description": "The title of the favourite section"
+  },
+  "sectionFavouriteMore": "เมนูทั้งหมด",
+  "sectionRecommended": "โครงการแนะนำ",
+  "sectionRecommendedDetail": "เรามุ่งมั่นที่จะออกแบบที่อยู่อาศัย เพื่อความสุขของคนอยู่ โดยคำนึงถึงไลฟ์สไตล์ และการใช้ชีวิตของแต่ละคนที่แตกต่างกัน ให้คุณได้ใช้ชีวิตในแบบที่คุณต้องการ",
+  
+  "eReadyToMoveIn": "พร้อมอยู่",
+  "eNewProject": "โครงการใหม่"
 }

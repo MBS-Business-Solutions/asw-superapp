@@ -1,3 +1,4 @@
+import 'package:AssetWise/src/features/dashboard/widgets/change_languange_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -63,7 +64,7 @@ class _ProfileViewState extends State<ProfileView> {
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Text(
                   'ข้อมูลของฉัน',
-                  style: Theme.of(context).textTheme.labelLarge,
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
               ),
               ListTile(
@@ -72,14 +73,12 @@ class _ProfileViewState extends State<ProfileView> {
                 trailing: Icon(Icons.chevron_right),
                 onTap: () {},
               ),
-              const Divider(),
               ListTile(
                 title: Text('อีเมล'),
                 subtitle: Text('sample@gmail.com'),
                 trailing: Icon(Icons.chevron_right),
                 onTap: () {},
               ),
-              const Divider(),
             ],
           ),
         ),
@@ -93,7 +92,7 @@ class _ProfileViewState extends State<ProfileView> {
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Text(
                   'บ้านของฉัน',
-                  style: Theme.of(context).textTheme.labelLarge,
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
               ),
               ListTile(
@@ -114,13 +113,15 @@ class _ProfileViewState extends State<ProfileView> {
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Text(
                   'ภาษา',
-                  style: Theme.of(context).textTheme.labelLarge,
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
               ),
               ListTile(
                 title: Text('เปลี่ยนภาษา'),
                 trailing: Icon(Icons.chevron_right),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).pushNamed(ChangeLanguangeView.routeName);
+                },
               ),
             ],
           ),
@@ -135,7 +136,7 @@ class _ProfileViewState extends State<ProfileView> {
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Text(
                   'ตั้งค่าบัญชี',
-                  style: Theme.of(context).textTheme.labelLarge,
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
               ),
               ListTile(
@@ -145,6 +146,11 @@ class _ProfileViewState extends State<ProfileView> {
               ),
               ListTile(
                 title: Text('รหัส PIN'),
+                trailing: Icon(Icons.chevron_right),
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text('ปิดใช้งานหรือลบบัญชี'),
                 trailing: Icon(Icons.chevron_right),
                 onTap: () {},
               ),
@@ -163,13 +169,30 @@ class _ProfileViewState extends State<ProfileView> {
         const SizedBox(height: 8),
         Container(
           color: Theme.of(context).scaffoldBackgroundColor,
-          child: ListTile(
-            title: Text('ออกจากระบบ'),
-            trailing: Icon(
-              Icons.logout,
-              color: Colors.red,
-            ),
-            onTap: () {},
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                child: Text(
+                  'การเข้าสู่ระบบ',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+              ),
+              ListTile(
+                title: Text('ออกจากแอปพลิเคชัน Assetwise'),
+                trailing: Icon(Icons.chevron_right),
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text('ออกจากระบบ'),
+                trailing: Icon(
+                  Icons.logout,
+                  color: Colors.red,
+                ),
+                onTap: () {},
+              ),
+            ],
           ),
         ),
         SizedBox(

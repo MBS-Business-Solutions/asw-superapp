@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AssetWiseLogo extends StatelessWidget {
+  final bool isWideLogo;
   final double? width;
   final double? height;
   final Color? color;
@@ -11,6 +12,7 @@ class AssetWiseLogo extends StatelessWidget {
     this.width,
     this.height,
     this.color,
+    this.isWideLogo = true,
   });
 
   @override
@@ -18,7 +20,7 @@ class AssetWiseLogo extends StatelessWidget {
     return SvgPicture.asset(
       width: width,
       height: height,
-      'assets/images/1200x129_navy.svg',
+      isWideLogo ? 'assets/images/1200x129_navy.svg' : 'assets/images/1200x1200_navy.svg',
       colorFilter: ColorFilter.mode(
         color ?? (Theme.of(context).brightness == Brightness.dark ? mDarkBodyTextColor : mLightBodyTextColor),
         BlendMode.srcIn,

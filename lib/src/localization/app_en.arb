@@ -9,19 +9,19 @@
   "@bottomBarHome": {
     "description": "Label for icon Bottom App Bar"
   },
-  "bottomBarService": "บริการ",
+  "bottomBarService": "Services",
   "@bottomBarService": {
     "description": "Label for icon Bottom App Bar"
   },
-  "bottomBarChat": "แชท",
+  "bottomBarChat": "Chat",
   "@bottomBarChat": {
     "description": "Label for icon Bottom App Bar"
   },
-  "bottomBarMenu": "เมนู",
+  "bottomBarMenu": "Menu",
   "@bottomBarMenu": {
     "description": "Label for icon Bottom App Bar"
   },
-  "bottomBarProfile": "โปรไฟล์",
+  "bottomBarProfile": "Profile",
   "@bottomBarProfile": {
     "description": "Label for icon Bottom App Bar"
   },
@@ -36,8 +36,8 @@
     "description": "The title of the favourite section"
   },
   "sectionFavouriteMore": "เมนูทั้งหมด",
-  "sectionRecommended": "โครงการแนะนำ",
-
+  "sectionRecommended": "Recommended projects",
+  "sectionRecommendedDetail": "We are committed to designing homes. For the happiness of the people Taking into account lifestyle and the lifestyle of each person is different Allowing you to live your life the way you want.",
   "eReadyToMoveIn": "พร้อมอยู่",
   "eNewProject": "โครงการใหม่"
 }

@@ -1,7 +1,8 @@
+import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/dashboard/profile_view.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/campaign/campaign_pop.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/bottom_bar/bottom_bar.dart';
-import 'package:AssetWise/src/features/dashboard/widgets/main/main_view.dart';
+import 'package:AssetWise/src/features/dashboard/widgets/main/dashboard_main_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class _DashboardViewState extends State<DashboardView> {
           Positioned(
             left: 0,
             right: 0,
-            bottom: MediaQuery.of(context).padding.bottom,
+            bottom: MediaQuery.of(context).padding.bottom + mDefaultPadding,
             child: SizedBox(
               height: 130,
               child: BottomBar(

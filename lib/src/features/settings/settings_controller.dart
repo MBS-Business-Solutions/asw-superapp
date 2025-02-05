@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'settings_service.dart';
 
@@ -20,12 +21,21 @@ class SettingsController with ChangeNotifier {
   // Allow Widgets to read the user's preferred ThemeMode.
   ThemeMode get themeMode => _themeMode;
 
+  late Locale _locale;
+
+  Locale get locale => _locale;
+
   /// Load the user's settings from the SettingsService. It may load from a
   /// local database or the internet. The controller only knows it can load the
   /// settings from the service.
   Future<void> loadSettings() async {
     _themeMode = await _settingsService.themeMode();
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, // ทำให้โปร่งใส
+      statusBarIconBrightness: _themeMode == ThemeMode.dark ? Brightness.light : Brightness.dark, // เปลี่ยนสีไอคอน
+    ));
 
+    _locale = await _settingsService.locale();
     // Important! Inform listeners a change has occurred.
     notifyListeners();
   }
@@ -40,11 +50,21 @@ class SettingsController with ChangeNotifier {
     // Otherwise, store the new ThemeMode in memory
     _themeMode = newThemeMode;
 
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, // ทำให้โปร่งใส
+      statusBarIconBrightness: _themeMode == ThemeMode.dark ? Brightness.light : Brightness.dark, // เปลี่ยนสีไอคอน
+    ));
     // Important! Inform listeners a change has occurred.
     notifyListeners();
 
     // Persist the changes to a local database or the internet using the
     // SettingService.
     await _settingsService.updateThemeMode(newThemeMode);
+  }
+
+  Future<void> updateLocale(Locale newLocale) async {
+    _locale = newLocale;
+    await _settingsService.updateLocale(newLocale);
+    notifyListeners();
   }
 }

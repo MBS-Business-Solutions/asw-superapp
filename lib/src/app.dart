@@ -5,12 +5,14 @@ import 'package:AssetWise/src/0_test/ui_showcase_screen.dart';
 import 'package:AssetWise/src/features/contract/contract_detail_view.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/features/contract/down_history_view.dart';
+import 'package:AssetWise/src/features/dashboard/widgets/change_languange_view.dart';
 import 'package:AssetWise/src/features/pin/set_pin_view.dart';
 import 'package:AssetWise/src/features/register/consents_view.dart';
 import 'package:AssetWise/src/features/register/otp_view.dart';
 import 'package:AssetWise/src/features/register/register_view.dart';
 import 'package:AssetWise/src/features/register/user_detail_view.dart';
 import 'package:AssetWise/src/services/firebase_service.dart';
+import 'package:AssetWise/src/splash/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -68,7 +70,7 @@ class MyApp extends StatelessWidget {
             Locale('en', ''), // English, no country code
             Locale('th', ''), // Thai, no country code
           ],
-          locale: const Locale('th', ''), // Set default locale to Thai
+          locale: settingsController.locale, // Set default locale to Thai
 
           // Use AppLocalizations to configure the correct application title
           // depending on the user's locale.
@@ -116,9 +118,11 @@ class MyApp extends StatelessWidget {
                     return ContractDetailView();
                   case DownHistoryView.routeName:
                     return DownHistoryView();
+                  case ChangeLanguangeView.routeName:
+                    return ChangeLanguangeView();
                   default:
                     // return DashboardView(controller: settingsController);
-                    return TestRoute();
+                    return SplashView();
                 }
               },
             );

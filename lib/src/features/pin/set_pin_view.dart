@@ -26,10 +26,11 @@ class _SetPinViewState extends State<SetPinView> {
           top: 0,
           child: Column(
             children: [
-              SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-              const SizedBox(height: 80, child: AssetWiseLogo()),
-              const SizedBox(
-                height: 16,
+              Padding(
+                padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 64, bottom: 32),
+                child: AssetWiseLogo(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                ),
               ),
               Text(
                 'ตั้งรหัส PIN จำนวน 6 หลัก',

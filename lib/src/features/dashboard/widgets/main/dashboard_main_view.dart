@@ -1,4 +1,4 @@
-import 'package:AssetWise/src/services/aw_content_service.dart';
+import 'package:AssetWise/src/providers/dashboard_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
@@ -6,12 +6,14 @@ import 'package:AssetWise/src/widgets/aw_carousel.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/suggest_assets/suggest_asset.dart';
 import 'package:AssetWise/src/widgets/hot_menu.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class DashboardMainView extends StatelessWidget {
   const DashboardMainView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final dashboardProvider = context.read<DashboardProvider>();
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
@@ -36,42 +38,33 @@ class DashboardMainView extends StatelessWidget {
         ),
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: FutureBuilder(
-                future: AWContentService.fetchBanners(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return SizedBox();
-                  }
-                  final list = snapshot.data as List<String>;
-                  return AWCarousel(
-                    autoPlay: true,
-                    autoPlayInterval: const Duration(seconds: 4),
-                    children: [
-                      for (var image in list)
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4.0),
-                            image: DecorationImage(
-                              image: NetworkImage(image),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        )
-                    ],
-                  );
-                }),
-          ),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: AWCarousel(
+                autoPlay: true,
+                autoPlayInterval: const Duration(seconds: 4),
+                children: [
+                  for (var image in dashboardProvider.banners)
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4.0),
+                        image: DecorationImage(
+                          image: NetworkImage(image),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    )
+                ],
+              )),
         ),
+        // SliverToBoxAdapter(
+        //   child: Padding(
+        //     padding: EdgeInsets.only(left: 24.0, right: 24.0, bottom: 16.0),
+        //     child: _buildFavouriteMenus(context),
+        //   ),
+        // ),
         SliverToBoxAdapter(
           child: Padding(
-            padding: EdgeInsets.only(left: 24.0, right: 24.0, bottom: 16.0),
-            child: _buildFavouriteMenus(context),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: mDefaultPadding),
             child: Text(
               AppLocalizations.of(context)!.sectionRecommended,
               style: Theme.of(context).textTheme.titleLarge,
@@ -82,15 +75,17 @@ class DashboardMainView extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Text(
-              'เรามุ่งมั่นที่จะออกแบบที่อยู่อาศัย เพื่อความสุขของคนอยู่ โดยคำนึงถึง ไลฟ์สไตล์ และการใช้ชีวิตของแต่ละคนที่แตกต่างกัน',
+              AppLocalizations.of(context)!.sectionRecommendedDetail,
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
         ),
-        SuggestAssets(),
+        SuggestAssets(
+          projects: dashboardProvider.suggestProjects,
+        ),
         SliverToBoxAdapter(
           child: SizedBox(
-            height: MediaQuery.of(context).padding.bottom + 72,
+            height: MediaQuery.of(context).padding.bottom + 84 + mDefaultPadding,
           ),
         )
       ],

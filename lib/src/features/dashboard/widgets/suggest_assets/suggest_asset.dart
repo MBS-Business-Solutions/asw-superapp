@@ -1,14 +1,11 @@
 import 'package:AssetWise/src/features/dashboard/widgets/suggest_assets/widgets/suggest_item.dart';
+import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:flutter/material.dart';
 
-class SuggestAssets extends StatefulWidget {
-  const SuggestAssets({super.key});
+class SuggestAssets extends StatelessWidget {
+  const SuggestAssets({super.key, required this.projects});
+  final List<Project> projects;
 
-  @override
-  State<SuggestAssets> createState() => _SuggestAssetsState();
-}
-
-class _SuggestAssetsState extends State<SuggestAssets> {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
@@ -21,9 +18,9 @@ class _SuggestAssetsState extends State<SuggestAssets> {
           childAspectRatio: 0.7,
         ),
         itemBuilder: (context, index) {
-          return const SuggestItem();
+          return SuggestItem(project: projects[index]);
         },
-        itemCount: 15,
+        itemCount: projects.length,
       ),
     );
   }
