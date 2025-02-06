@@ -1,1 +1,1 @@
-const BASE_URL = 'https://super-app-api.aswservice.com';
+const BASE_URL = 'https://super-app-dev.azurewebsites.net/';

@@ -5,37 +5,49 @@ import 'dart:convert';
 
 class AWContentService {
   // สำหรับแสดงผลเป็น Pop-up ก่อนใช้งานหน้า Dashboard
-  static Future<List<String>> fetchCampaigns() async {
-    final response = await http.get(Uri.parse('$BASE_URL/home/news'));
+  static Future<List<ImageContent>> fetchCampaigns() async {
+    final response = await http.get(Uri.parse('$BASE_URL/home/campaigns'));
 
-    if (response.statusCode == 200) {
-      Map data = json.decode(response.body);
-      return data['images'].cast<String>();
-    } else {
-      throw Exception('Failed to load campaigns');
+    try {
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        return data.map((json) => ImageContent.fromJson(json)).toList();
+      } else {
+        return [];
+      }
+    } catch (e) {
+      return [];
     }
   }
 
   // สำหรับแสดงผลบนหน้า DashboardMainView
-  static Future<List<String>> fetchBanners() async {
-    final response = await http.get(Uri.parse('$BASE_URL/home/clubs'));
+  static Future<List<ImageContent>> fetchBanners() async {
+    final response = await http.get(Uri.parse('$BASE_URL/home/banners'));
 
-    if (response.statusCode == 200) {
-      Map data = json.decode(response.body);
-      return data['images'].cast<String>();
-    } else {
-      throw Exception('Failed to load campaigns');
+    try {
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        return data.map((json) => ImageContent.fromJson(json)).toList();
+      } else {
+        return [];
+      }
+    } catch (e) {
+      return [];
     }
   }
 
   static Future<List<Project>> fetchProjects() async {
     final response = await http.get(Uri.parse('$BASE_URL/home/projects'));
 
-    if (response.statusCode == 200) {
-      List<dynamic> data = json.decode(response.body);
-      return data.map((json) => Project.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to load projects');
+    try {
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        return data.map((json) => Project.fromJson(json)).toList();
+      } else {
+        return [];
+      }
+    } catch (e) {
+      return [];
     }
   }
 }

@@ -2,8 +2,8 @@ import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/services/aw_content_service.dart';
 
 class DashboardProvider {
-  List<String> _banners = [];
-  List<String> get banners => _banners;
+  List<ImageContent> _banners = [];
+  List<ImageContent> get banners => _banners;
   List<Project> _suggestProjects = [];
   List<Project> get suggestProjects => _suggestProjects;
 

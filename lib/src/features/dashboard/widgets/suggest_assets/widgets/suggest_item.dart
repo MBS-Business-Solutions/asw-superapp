@@ -38,7 +38,7 @@ class SuggestItem extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  project.status == 'active' ? 'โครงการพร้อมอยู่' : 'โครงการใหม่',
+                  project.status,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],

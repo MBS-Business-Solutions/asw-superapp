@@ -20,7 +20,7 @@ class _AWCarouselState extends State<AWCarousel> {
         CarouselSlider(
           carouselController: _controller,
           options: CarouselOptions(
-            aspectRatio: 16 / 9,
+            aspectRatio: 1,
             autoPlay: widget.autoPlay ?? true,
             autoPlayInterval: widget.autoPlayInterval ?? const Duration(seconds: 4),
             viewportFraction: 1.0,

@@ -43,12 +43,12 @@ class DashboardMainView extends StatelessWidget {
                 autoPlay: true,
                 autoPlayInterval: const Duration(seconds: 4),
                 children: [
-                  for (var image in dashboardProvider.banners)
+                  for (var imageContent in dashboardProvider.banners)
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4.0),
                         image: DecorationImage(
-                          image: NetworkImage(image),
+                          image: NetworkImage(imageContent.image),
                           fit: BoxFit.cover,
                         ),
                       ),

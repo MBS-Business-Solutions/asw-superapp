@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/services/aw_content_service.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class _CampaignPopState extends State<CampaignPop> {
   final CarouselSliderController _controller = CarouselSliderController();
   bool _isShow = false;
   bool _markHide = false;
-  List<String> campaigns = [];
+  List<ImageContent> campaigns = [];
 
   @override
   void initState() {
@@ -68,7 +69,7 @@ class _CampaignPopState extends State<CampaignPop> {
                             ),
                             itemBuilder: (context, index, realIndex) {
                               return Image.network(
-                                campaigns[index],
+                                campaigns[index].image,
                                 fit: BoxFit.cover,
                               );
                             },
