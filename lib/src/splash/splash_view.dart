@@ -1,5 +1,6 @@
 import 'package:AssetWise/src/features/dashboard/dashboard_view.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
+import 'package:AssetWise/src/services/aw_content_service.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,20 +19,34 @@ class SplashView extends StatelessWidget {
     });
 
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/splash.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Center(
-          child: AssetWiseLogo(
-            width: MediaQuery.of(context).size.width * 0.6,
-            isWideLogo: false,
-          ),
-        ),
-      ),
+      body: FutureBuilder(
+          future: AWContentService.fetchLandingBackgroundURL(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+              return const Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
+            }
+
+            return Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(snapshot.data!),
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.25),
+                    BlendMode.darken,
+                  ),
+                ),
+              ),
+              child: Center(
+                child: AssetWiseLogo(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  isWideLogo: false,
+                ),
+              ),
+            );
+          }),
     );
   }
 }

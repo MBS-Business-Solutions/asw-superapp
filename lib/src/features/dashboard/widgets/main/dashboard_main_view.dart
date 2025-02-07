@@ -1,3 +1,4 @@
+import 'package:AssetWise/src/features/dashboard/widgets/home_action_button/home_action_button.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:flutter/material.dart';
@@ -20,19 +21,16 @@ class DashboardMainView extends StatelessWidget {
           child: SizedBox(height: MediaQuery.of(context).padding.top + 16.0),
         ),
         SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
-            child: SizedBox(
-              height: 48,
-              child: Row(
-                children: [
-                  const AssetWiseLogo(
-                    width: 129,
-                  ),
-                  const Spacer(),
-                  _buildActionButtons()
-                ],
-              ),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mDefaultPadding / 4),
+            child: const Row(
+              children: [
+                AssetWiseLogo(
+                  width: 158,
+                ),
+                Spacer(),
+                HomeActionButtons()
+              ],
             ),
           ),
         ),
@@ -88,15 +86,6 @@ class DashboardMainView extends StatelessWidget {
             height: MediaQuery.of(context).padding.bottom + 84 + mDefaultPadding,
           ),
         )
-      ],
-    );
-  }
-
-  Row _buildActionButtons() {
-    return Row(
-      children: [
-        IconButton(onPressed: () {}, icon: Badge.count(count: 8, child: Icon(Icons.notifications_none))),
-        IconButton(onPressed: () {}, icon: Icon(Icons.gite_sharp)),
       ],
     );
   }

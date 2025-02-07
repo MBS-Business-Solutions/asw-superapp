@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
+import 'package:AssetWise/src/services/firebase_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +34,7 @@ void main() async {
     ChangeNotifierProvider(create: (context) => settingsController),
     ChangeNotifierProvider(create: (context) => UserProvider()),
     Provider(create: (context) => DashboardProvider()),
+    Provider(create: (context) => FirebaseMessagingService()),
   ], child: MyApp(settingsController: settingsController)));
 }
 

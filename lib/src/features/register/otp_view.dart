@@ -20,6 +20,10 @@ class _OtpViewState extends State<OtpView> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+        ),
         body: Stack(
           children: [
             const AssetWiseBG(),
@@ -34,7 +38,7 @@ class _OtpViewState extends State<OtpView> {
                     child: Column(
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 32, bottom: 32),
+                          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, bottom: 32),
                           child: AssetWiseLogo(
                             width: MediaQuery.of(context).size.width * 0.5,
                           ),

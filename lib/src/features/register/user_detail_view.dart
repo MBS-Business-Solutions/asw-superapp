@@ -13,6 +13,10 @@ class RegisterUserDetailView extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+        ),
         body: Stack(
           children: [
             const AssetWiseBG(),

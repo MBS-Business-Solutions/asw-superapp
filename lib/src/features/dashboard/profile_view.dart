@@ -2,6 +2,7 @@ import 'package:AssetWise/src/features/dashboard/widgets/change_languange_view.d
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:io';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -182,7 +183,9 @@ class _ProfileViewState extends State<ProfileView> {
               ListTile(
                 title: Text('ออกจากแอปพลิเคชัน Assetwise'),
                 trailing: Icon(Icons.chevron_right),
-                onTap: () {},
+                onTap: () {
+                  exit(0);
+                },
               ),
               ListTile(
                 title: Text('ออกจากระบบ'),

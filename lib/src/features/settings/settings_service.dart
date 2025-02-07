@@ -26,6 +26,6 @@ class SettingsService {
 
   Future<Locale> locale() async {
     final shared = await SharedPreferences.getInstance();
-    return Locale(shared.getString('APP_LOCALE') ?? 'en');
+    return Locale(shared.getString('APP_LOCALE') ?? 'th');
   }
 }

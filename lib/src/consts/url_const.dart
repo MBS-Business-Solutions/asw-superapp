@@ -1,1 +1,1 @@
-const BASE_URL = 'https://super-app-dev.azurewebsites.net/';
+const BASE_URL = 'https://superapp-api.azurewebsites.net';

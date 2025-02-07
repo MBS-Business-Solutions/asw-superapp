@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 
 import 'features/settings/settings_controller.dart';
 import 'features/settings/settings_view.dart';
@@ -45,7 +46,8 @@ class MyApp extends StatelessWidget {
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
 
     // Initialize Firebase Messaging and request permission
-    FirebaseMessagingService().initialize();
+    context.read<FirebaseMessagingService>().initialize();
+
     return ListenableBuilder(
       listenable: settingsController,
       builder: (BuildContext context, Widget? child) {
