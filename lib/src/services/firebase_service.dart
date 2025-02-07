@@ -20,11 +20,16 @@ class FirebaseMessagingService {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
-    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
       print('User granted provisional permission');
     } else {
       print('User declined or has not yet granted permission');
     }
+
+    // Get APNS token
+    String? apnsToken = await _messaging.getAPNSToken();
+    print('APNS Token: $apnsToken');
 
     // Get token
     String? token = await _messaging.getToken();

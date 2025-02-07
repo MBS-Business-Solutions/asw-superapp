@@ -3,7 +3,11 @@ name: "AssetWise"
 # Prevent accidental publishing to pub.dev.
 publish_to: 'none'
 
-version: 1.0.0+1
+#iOS
+version: 1.48.0+1
+
+#Android
+#version: 1.0.0+1
 
 environment:
   sdk: ^3.5.1
