@@ -29,7 +29,8 @@ class _ConsentsViewState extends State<ConsentsView> {
             ),
             ExpansionTile(
                 initiallyExpanded: true,
-                childrenPadding: const EdgeInsets.only(left: 24, right: 24, top: 0, bottom: 16),
+                childrenPadding: const EdgeInsets.only(
+                    left: 24, right: 24, top: 0, bottom: 16),
                 collapsedBackgroundColor: Colors.black,
                 backgroundColor: Colors.black,
                 leading: Checkbox.adaptive(
@@ -51,7 +52,8 @@ class _ConsentsViewState extends State<ConsentsView> {
                 ]),
             ExpansionTile(
                 initiallyExpanded: true,
-                childrenPadding: const EdgeInsets.only(left: 24, right: 24, top: 0, bottom: 16),
+                childrenPadding: const EdgeInsets.only(
+                    left: 24, right: 24, top: 0, bottom: 16),
                 leading: Checkbox.adaptive(
                   value: consentOptionals[1],
                   onChanged: (value) {
@@ -68,7 +70,8 @@ class _ConsentsViewState extends State<ConsentsView> {
                 ]),
             ExpansionTile(
                 initiallyExpanded: true,
-                childrenPadding: const EdgeInsets.only(left: 24, right: 24, top: 0, bottom: 16),
+                childrenPadding: const EdgeInsets.only(
+                    left: 24, right: 24, top: 0, bottom: 16),
                 leading: Checkbox.adaptive(
                   value: consentOptionals[2],
                   onChanged: (value) {
