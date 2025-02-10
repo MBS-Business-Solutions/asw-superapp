@@ -1,6 +1,6 @@
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class ConsentsView extends StatefulWidget {
   const ConsentsView({super.key});
@@ -21,10 +21,11 @@ class _ConsentsViewState extends State<ConsentsView> {
         child: SafeArea(
             child: ListView(
           children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
-              child: HtmlWidget(
-                '<h1>Consents</h1><p>Consents are important for us to provide you with the best service possible. Please review and accept the following consents:</p><ul><li>Consent 1</li><li>Consent 2</li><li>Consent 3</li></ul>',
+              child: Html(
+                data:
+                    '<h1>Consents</h1><p>Consents are important for us to provide you with the best service possible. Please review and accept the following consents:</p><ul><li>Consent 1</li><li>Consent 2</li><li>Consent 3</li></ul>',
               ),
             ),
             ExpansionTile(
@@ -45,8 +46,9 @@ class _ConsentsViewState extends State<ConsentsView> {
                 children: [
                   Container(
                     color: Colors.red,
-                    child: HtmlWidget(
-                      '<h1>Consents</h1><p>Consents are important for us to provide you with the best service possible. Please review and accept the following consents:</p><ul><li>Consent 1</li><li>Consent 2</li><li>Consent 3</li></ul>',
+                    child: Html(
+                      data:
+                          '<h1>Consents</h1><p>Consents are important for us to provide you with the best service possible. Please review and accept the following consents:</p><ul><li>Consent 1</li><li>Consent 2</li><li>Consent 3</li></ul>',
                     ),
                   ),
                 ]),
@@ -63,9 +65,10 @@ class _ConsentsViewState extends State<ConsentsView> {
                   },
                 ),
                 title: const Text('Consent B'),
-                children: const [
-                  HtmlWidget(
-                    '<h1>Consents</h1><p>Consents are important for us to provide you with the best service possible. Please review and accept the following consents:</p><ul><li>Consent 1</li><li>Consent 2</li><li>Consent 3</li></ul>',
+                children: [
+                  Html(
+                    data:
+                        '<h1>Consents</h1><p>Consents are important for us to provide you with the best service possible. Please review and accept the following consents:</p><ul><li>Consent 1</li><li>Consent 2</li><li>Consent 3</li></ul>',
                   ),
                 ]),
             ExpansionTile(
@@ -81,9 +84,10 @@ class _ConsentsViewState extends State<ConsentsView> {
                   },
                 ),
                 title: const Text('Consent C'),
-                children: const [
-                  HtmlWidget(
-                    '<h1>Consents</h1><p>Consents are important for us to provide you with the best service possible. Please review and accept the following consents:</p><ul><li>Consent 1</li><li>Consent 2</li><li>Consent 3</li></ul>',
+                children: [
+                  Html(
+                    data:
+                        '<h1>Consents</h1><p>Consents are important for us to provide you with the best service possible. Please review and accept the following consents:</p><ul><li>Consent 1</li><li>Consent 2</li><li>Consent 3</li></ul>',
                   ),
                 ]),
           ],

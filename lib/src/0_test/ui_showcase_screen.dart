@@ -1,7 +1,7 @@
 import 'package:AssetWise/src/widgets/aw_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
-// import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class UIShowcaseScreen extends StatefulWidget {
   const UIShowcaseScreen(
@@ -64,16 +64,16 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
             ..._buttonsShowcase(context),
             ..._iconButtonShowcase(context),
             ...widget.widgets ?? [],
-//             SizedBox(
-//               width: double.infinity,
-//               child: HtmlWidget('''<h2>คุณมีสิทธิในการ:</h2>
-// <ul>
-// <li>เข้าถึงและขอสำเนาข้อมูลส่วนบุคคลของคุณ</li>
-// <li>ขอแก้ไขข้อมูลส่วนบุคคลที่ไม่ถูกต้อง</li>
-// <li>ขอให้ลบข้อมูลส่วนบุคคลของคุณ เมื่อไม่มีความจำเป็นในการเก็บรักษาข้อมูลอีกต่อไป</li>
-// <li>ขอให้จำกัดการประมวลผลข้อมูลส่วนบุคคลของคุณ</li>
-// <li>เพิกถอนความยินยอมในการประมวลผลข้อมูลส่วนบุคคลของคุณได้ทุกเมื่อ</li></ul>'''),
-//             )
+            SizedBox(
+              width: double.infinity,
+              child: Html(data: '''<h2>คุณมีสิทธิในการ:</h2>
+<ul>
+<li>เข้าถึงและขอสำเนาข้อมูลส่วนบุคคลของคุณ</li>
+<li>ขอแก้ไขข้อมูลส่วนบุคคลที่ไม่ถูกต้อง</li>
+<li>ขอให้ลบข้อมูลส่วนบุคคลของคุณ เมื่อไม่มีความจำเป็นในการเก็บรักษาข้อมูลอีกต่อไป</li>
+<li>ขอให้จำกัดการประมวลผลข้อมูลส่วนบุคคลของคุณ</li>
+<li>เพิกถอนความยินยอมในการประมวลผลข้อมูลส่วนบุคคลของคุณได้ทุกเมื่อ</li></ul>'''),
+            )
           ],
         ),
       ),
