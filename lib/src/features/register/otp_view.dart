@@ -1,20 +1,69 @@
+import 'dart:async';
+
+import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/models/aw_content_model.dart';
+import 'package:AssetWise/src/providers/register_provider.dart';
+import 'package:AssetWise/src/services/aw_register_service.dart';
+import 'package:AssetWise/src/utils/string_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:AssetWise/src/widgets/otp_input.dart';
 import 'package:AssetWise/src/features/register/user_detail_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class OtpView extends StatefulWidget {
-  const OtpView({super.key, this.refCode});
+  const OtpView({super.key});
   static const String routeName = '/otp';
-  final String? refCode;
 
   @override
   State<OtpView> createState() => _OtpViewState();
 }
 
 class _OtpViewState extends State<OtpView> {
+  final otpController = TextEditingController();
+  OTPRef? refCode;
+  late Timer _timer;
+  int _start = 60;
+  bool _isButtonDisabled = true;
+  bool _invalidOTP = false;
+
+  @override
+  void initState() {
+    super.initState();
+    refCode = context.read<RegisterProvider>().otpRef;
+    startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void startTimer() {
+    if (kDebugMode) {
+      print(refCode!.transId);
+    }
+    _isButtonDisabled = true;
+    _start = 10;
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_start <= 1) {
+        setState(() {
+          _isButtonDisabled = false;
+        });
+        _timer.cancel();
+      } else {
+        setState(() {
+          _start--;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -44,37 +93,44 @@ class _OtpViewState extends State<OtpView> {
                           ),
                         ),
                         Text(
-                          'กรอก OTP',
+                          AppLocalizations.of(context)!.otpTitle,
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         SizedBox(
                           height: 4,
                         ),
                         Text(
-                          'ระบุตัวเลข 6 หลักที่ถูกส่งไปยังอีเมล\nsample@gmail.com',
+                          AppLocalizations.of(context)!.otpInstruction(refCode!.isMobile ? 'mobile' : 'email', StringUtil.phoneFormatter(refCode!.sendTo), refCode!.refCode),
                           style: Theme.of(context).textTheme.bodyMedium,
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(
                           height: 4,
                         ),
-                        Text(
-                          'Ref Code: ${widget.refCode}',
-                          style: Theme.of(context).textTheme.bodySmall,
-                          textAlign: TextAlign.center,
-                        ),
                         SizedBox(
                           height: 4,
                         ),
                         TextButton.icon(
-                          onPressed: () {},
-                          label: Text('ส่งรหัสยืนยันอีกครั้ง'),
+                          onPressed: _isButtonDisabled ? null : () => _onResendOtp(),
+                          label: Text(
+                            _isButtonDisabled ? AppLocalizations.of(context)!.otpRequestCountdown(_start) : AppLocalizations.of(context)!.otpRequestAgain,
+                          ),
                           icon: Icon(Icons.refresh),
                         ),
                         SizedBox(
                           height: 8,
                         ),
-                        OtpInput(),
+                        OtpInput(
+                          controller: otpController,
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        if (_invalidOTP)
+                          Text(
+                            'หมายเลข OTP ไม่ถูกต้อง',
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: mRedColor),
+                          ),
                         SizedBox(
                           height: 24,
                         ),
@@ -82,10 +138,8 @@ class _OtpViewState extends State<OtpView> {
                             width: double.infinity,
                             height: 56,
                             child: FilledButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, RegisterUserDetailView.routeName);
-                              },
-                              child: Text('ถัดไป'),
+                              onPressed: () => _verifyOTP(),
+                              child: Text(AppLocalizations.of(context)!.actionButtonNext),
                             )),
                       ],
                     ),
@@ -97,5 +151,35 @@ class _OtpViewState extends State<OtpView> {
         ),
       ),
     );
+  }
+
+  Future<void> _onResendOtp() async {
+    refCode = await AwRegisterService.sendOTPResident(
+      isByMobile: refCode!.isMobile,
+      idCard4: refCode!.idCard,
+      phoneEmail: refCode!.sendTo,
+    );
+    if (mounted) context.read<RegisterProvider>().otpRef = refCode;
+    if (refCode != null) {
+      setState(() {
+        _isButtonDisabled = true;
+        _start = 60;
+      });
+      startTimer();
+    }
+  }
+
+  Future<void> _verifyOTP() async {
+    final response = await AwRegisterService.verifyOTPResident(transId: refCode!.transId, otp: otpController.text);
+    if (mounted) {
+      context.read<RegisterProvider>().verifyOTPResponse = response;
+      if (response != null) {
+        Navigator.pushNamed(context, RegisterUserDetailView.routeName);
+      } else {
+        setState(() {
+          _invalidOTP = true;
+        });
+      }
+    }
   }
 }

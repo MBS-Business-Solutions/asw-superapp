@@ -4,7 +4,7 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-
+  "actionButtonNext": "ถัดไป",
   "bottomBarHome": "หน้าหลัก",
   "@bottomBarHome": {
     "description": "Label for icon Bottom App Bar"
@@ -25,7 +25,6 @@
   "@bottomBarProfile": {
     "description": "Label for icon Bottom App Bar"
   },
-  
   "registerMobileLabel": "เบอร์มือถือ",
   "registerMobile": "กรอกเบอร์มือถือ",
   "registerMobileHint": "ระบุเบอร์มือถือของท่าน เพื่อทำการสมัครสมาชิก",
@@ -37,7 +36,46 @@
   "registerIsResident": "เป็นลูกบ้าน",
   "registerNext": "ถัดไป",
   "registerInvalidResident": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน",
-
+  "otpTitle": "กรอก OTP",
+  "otpRequestAgain": "ขอรหัสอีกครั้ง",
+  "otpRequestCountdown": "ขอรหัสอีกครั้งใน {time, plural, =0{} =1{1 วินาที} other{{time} วินาที}}",
+  "@otpRequestCountdown": {
+    "description": "Message indicating the countdown time to request the OTP code again",
+    "placeholders": {
+      "time": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "otpInstruction": "ระบุตัวเลข 6 หลักที่ถูกส่งไปยัง{sendtoType, select, email {อีเมล\n{sendto}} other {เบอร์มือถือของคุณ\n{sendto}}} รหัสอ้างอิง : {refCode}",
+  "@otpInstruction": {
+    "description": "ข้อความยืนยันรหัส OTP โดยเลือกตามประเภทการส่ง (อีเมลหรือเบอร์โทรศัพท์)",
+    "placeholders": {
+      "sendtoType": {
+        "type": "String",
+        "example": "email"
+      },
+      "sendto": {
+        "type": "String",
+        "example": "user@example.com"
+      },
+      "refCode": {
+        "type": "String",
+        "example": "ABC123"
+      }
+    }
+  },
+  "userDetailTitle": "ระบุ - ชื่อนามสกุล",
+  "userDetailInstruction": "ระบุรายละเอียดของคุณสำหรับการเข้าใช้บริการ",
+  "userDetailFirstName": "ชื่อ",
+  "userDetailLastName": "นามสกุล",
+  "userDetailMobile": "เบอร์โทร",
+  "userDetailEmail": "อีเมล",
+  "userDetailCitizenId": "เลขบัตรประจำตัวประชาชน / Passport No.",
+  "changeLanguageTitle": "เปลี่ยนภาษา",
+  "changeLanguageCurrentLang": "ภาษาที่ใช้ปัจจุบัน",
+  "changeLanguageLanguage": "ภาษา",
   "sectionFavourite": "เมนูโปรด",
   "@sectionFavourite": {
     "description": "The title of the favourite section"
@@ -45,7 +83,6 @@
   "sectionFavouriteMore": "เมนูทั้งหมด",
   "sectionRecommended": "โครงการแนะนำ",
   "sectionRecommendedDetail": "เรามุ่งมั่นที่จะออกแบบที่อยู่อาศัย เพื่อความสุขของคนอยู่ โดยคำนึงถึงไลฟ์สไตล์ และการใช้ชีวิตของแต่ละคนที่แตกต่างกัน ให้คุณได้ใช้ชีวิตในแบบที่คุณต้องการ",
-  
   "eReadyToMoveIn": "พร้อมอยู่",
   "eNewProject": "โครงการใหม่"
 }

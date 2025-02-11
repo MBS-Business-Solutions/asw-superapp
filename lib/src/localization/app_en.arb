@@ -4,7 +4,7 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-
+  "actionButtonNext": "Next",
   "bottomBarHome": "Home",
   "@bottomBarHome": {
     "description": "Label for icon Bottom App Bar"
@@ -25,7 +25,6 @@
   "@bottomBarProfile": {
     "description": "Label for icon Bottom App Bar"
   },
-  
   "registerMobileLabel": "Mobile Number",
   "registerMobile": "Enter your mobile number",
   "registerMobileHint": "Provide your mobile number to register as a member",
@@ -37,7 +36,46 @@
   "registerIsResident": "Existing customer",
   "registerNext": "Next",
   "registerInvalidResident": "Please enter your ID card number to match your registered mobile number.",
-
+  "otpTitle": "Enter OTP",
+  "otpRequestAgain": "Request code again.",
+  "otpRequestCountdown": "Request code again in {time, plural, =0{} =1{1 second} other{{time} seconds}}",
+  "@otpRequestCountdown": {
+    "description": "Message indicating the countdown time to request the OTP code again",
+    "placeholders": {
+      "time": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "otpInstruction": "Enter the 6 digits sent to your {sendtoType, select, email {email\n{sendto}} other {mobile number\n{sendto}}} REF : {refCode}",
+  "@otpInstruction": {
+    "description": "OTP confirmation message by selecting the type of sending (email or mobile number)",
+    "placeholders": {
+      "sendtoType": {
+        "type": "String",
+        "example": "email"
+      },
+      "sendto": {
+        "type": "String",
+        "example": "user@example.com"
+      },
+      "refCode": {
+        "type": "String",
+        "example": "ABC123"
+      }
+    }
+  },
+  "userDetailTitle": "Enter Name - Surname",
+  "userDetailInstruction": "Provide your details to access the service",
+  "userDetailFirstName": "First Name",
+  "userDetailLastName": "Last Name",
+  "userDetailMobile": "Mobile",
+  "userDetailEmail": "Email",
+  "userDetailCitizenId": "National ID / Passport No.",
+  "changeLanguageTitle": "Change Language",
+  "changeLanguageCurrentLang": "Current Language",
+  "changeLanguageLanguage": "Language",
   "sectionFavourite": "เมนูโปรด",
   "@sectionFavourite": {
     "description": "The title of the favourite section"

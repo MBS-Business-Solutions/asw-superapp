@@ -1,4 +1,6 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/register/otp_view.dart';
+import 'package:AssetWise/src/providers/register_provider.dart';
 import 'package:AssetWise/src/services/aw_register_service.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
@@ -7,6 +9,7 @@ import 'package:AssetWise/src/widgets/aw_textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -28,6 +31,10 @@ class _RegisterViewState extends State<RegisterView> {
   final TextEditingController _emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    //TODO: Remove this line
+    _mobileController.text = '0994926691';
+    _idCardController.text = '1234';
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -42,6 +49,7 @@ class _RegisterViewState extends State<RegisterView> {
               left: 0,
               right: 0,
               top: 0,
+              bottom: 0,
               child: SingleChildScrollView(
                 child: SafeArea(
                   child: Padding(
@@ -142,8 +150,11 @@ class _RegisterViewState extends State<RegisterView> {
                                     : () {
                                         _processToOTPForm();
                                       },
-                                child: Text(AppLocalizations.of(context)!.registerNext),
+                                child: _isLoading ? const CircularProgressIndicator() : Text(AppLocalizations.of(context)!.registerNext),
                               )),
+                          SizedBox(
+                            height: MediaQuery.of(context).viewInsets.bottom,
+                          )
                         ],
                       ),
                     ),
@@ -207,6 +218,7 @@ class _RegisterViewState extends State<RegisterView> {
     FocusScope.of(context).unfocus();
     setState(() {
       _isLoading = true;
+      showError = false;
     });
     _formKey.currentState!.validate();
     if (_emailForm) {
@@ -224,15 +236,31 @@ class _RegisterViewState extends State<RegisterView> {
           setState(() {
             showError = true;
           });
+        } else {
+          final sendTo = _emailForm ? _emailController.text : _mobileController.text;
+          final ref = await AwRegisterService.sendOTPResident(
+            isByMobile: !_emailForm,
+            idCard4: _idCardController.text,
+            phoneEmail: sendTo,
+          );
+          if (ref != null && mounted) {
+            final registerProvider = context.read<RegisterProvider>();
+            registerProvider.idCard4 = _idCardController.text;
+            registerProvider.mobileEmail = sendTo;
+            registerProvider.isResident = _isResident;
+            registerProvider.isLoginWithEmail = _emailForm;
+            registerProvider.otpRef = ref;
+            Navigator.of(context).pushNamed(OtpView.routeName, arguments: ref);
+          } else {
+            // Show error message
+            setState(() {
+              showError = true;
+            });
+          }
         }
-
-        // Navigator.of(context).pushNamed('/otp', arguments: {
-        //   'phone': _mobileController.text,
-        //   'idCard4': _idCardController.text,
-        // });
-        // ส่ง OTP ไปที่เบอร์มือถือ
       } else {
         // Non-resident login
+        // not in this phase
       }
     }
     setState(() {

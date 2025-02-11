@@ -35,3 +35,5 @@ const Color mLightCardBackgroundColor = Color(0xFFD5D5D5);
 const Color mGoldenGradientStart = Color(0xFFA48346);
 const Color mGoldenGradientEnd = Color(0xFFEBCE98);
 const Color mBrightPrimaryColor = Color(0xFFDAB269);
+
+const Color mRedColor = Color(0xFFF2846D);

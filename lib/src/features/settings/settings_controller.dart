@@ -25,6 +25,9 @@ class SettingsController with ChangeNotifier {
 
   Locale get locale => _locale;
 
+  late SupportedLocales _selectedLocale;
+  SupportedLocales get supportedLocales => _selectedLocale;
+
   /// Load the user's settings from the SettingsService. It may load from a
   /// local database or the internet. The controller only knows it can load the
   /// settings from the service.
@@ -36,6 +39,7 @@ class SettingsController with ChangeNotifier {
     ));
 
     _locale = await _settingsService.locale();
+    _selectedLocale = SupportedLocales.values.firstWhere((element) => element.locale == _locale.languageCode);
     // Important! Inform listeners a change has occurred.
     notifyListeners();
   }
@@ -62,9 +66,20 @@ class SettingsController with ChangeNotifier {
     await _settingsService.updateThemeMode(newThemeMode);
   }
 
-  Future<void> updateLocale(Locale newLocale) async {
-    _locale = newLocale;
-    await _settingsService.updateLocale(newLocale);
+  Future<void> updateLocale(SupportedLocales newLocale) async {
+    _selectedLocale = newLocale;
+    _locale = Locale(_selectedLocale.locale);
+    await _settingsService.updateLocale(_locale);
     notifyListeners();
   }
+}
+
+enum SupportedLocales {
+  en('en', 'English(US)'),
+  th('th', 'ไทย(ไทย)');
+
+  final String locale;
+  final String language;
+
+  const SupportedLocales(this.locale, this.language);
 }

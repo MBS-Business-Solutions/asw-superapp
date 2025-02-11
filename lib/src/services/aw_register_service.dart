@@ -1,4 +1,5 @@
 import 'package:AssetWise/src/consts/url_const.dart';
+import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -16,50 +17,63 @@ class AwRegisterService {
       }),
     );
 
-    try {
-      if (response.statusCode >= 200 && response.statusCode < 300) {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      try {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
-        String status = jsonResponse['status'];
-        if (status == 'success') {
-          return jsonResponse['data']['is_resident'];
-        } else {
-          return false;
-        }
-      } else {
+        return jsonResponse['status'] == 'success' && jsonResponse['data']['is_resident'];
+      } catch (e) {
         return false;
       }
-    } catch (e) {
+    } else {
       return false;
     }
   }
 
-  static Future<bool> sendOTP({bool isByMobile = true, String? idCard4, required String phoneEmail}) async {
+  static Future<OTPRef?> sendOTPResident({bool isByMobile = true, required String idCard4, required String phoneEmail}) async {
     final response = await http.post(
-      Uri.parse('$BASE_URL/mobile/register/otp'),
+      Uri.parse('$BASE_URL/mobile/register/request-resident-otp'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
         "type": isByMobile ? "phone" : "email",
-        if (idCard4 != null) "id_card4": idCard4,
+        "id_card4": idCard4,
         if (isByMobile) "phone": phoneEmail else "email": phoneEmail,
       }),
     );
 
-    try {
-      if (response.statusCode >= 200 && response.statusCode < 300) {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      try {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
-        String status = jsonResponse['status'];
-        if (status == 'success') {
-          return jsonResponse['data']['is_resident'];
-        } else {
-          return false;
+        if (jsonResponse['status'] == 'success') {
+          return OTPRef.fromJson(jsonResponse['data'], sendTo: phoneEmail, isMobile: isByMobile, idCard: idCard4);
         }
-      } else {
-        return false;
+      } catch (e) {
+        return null;
       }
-    } catch (e) {
-      return false;
     }
+    return null;
+  }
+
+  static Future<VerifyOTPResponse?> verifyOTPResident({required String transId, required String otp}) async {
+    final response = await http.post(
+      Uri.parse('$BASE_URL/mobile/register/verify-resident-otp'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{"trans_id": transId, "otp": otp}),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        if (jsonResponse['status'] == 'success') {
+          return VerifyOTPResponse.fromJson(jsonResponse['data']);
+        }
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
   }
 }

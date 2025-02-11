@@ -32,6 +32,7 @@ class _OtpInputState extends State<OtpInput> {
         children: [
           Offstage(
             child: TextField(
+              controller: widget.controller,
               focusNode: _focusNode,
               keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],

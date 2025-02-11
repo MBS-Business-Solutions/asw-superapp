@@ -1,8 +1,11 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/providers/register_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/aw_textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class RegisterUserDetailView extends StatelessWidget {
   const RegisterUserDetailView({super.key});
@@ -10,6 +13,10 @@ class RegisterUserDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final verifyOTPResponse = context.read<RegisterProvider>().verifyOTPResponse;
+    final isEditable = verifyOTPResponse == null;
+    final isLoginWithEmail = context.read<RegisterProvider>().isLoginWithEmail ?? false;
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -33,40 +40,48 @@ class RegisterUserDetailView extends StatelessWidget {
                       children: [
                         SizedBox(height: MediaQuery.of(context).padding.top + 16.0),
                         Text(
-                          'ระบุชื่อ - นามสกุล',
+                          AppLocalizations.of(context)!.userDetailTitle,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         SizedBox(
                           height: 4,
                         ),
                         Text(
-                          'ระบุรายละเอียดของคุณสำหรับการเข้าใช้บริการ',
+                          AppLocalizations.of(context)!.userDetailInstruction,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: AwTextFormField(
-                            label: 'ชื่อ*',
+                            initialValue: 'xxxxxxxxx',
+                            isEditable: isEditable,
+                            label: AppLocalizations.of(context)!.userDetailFirstName,
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: AwTextFormField(
-                            label: 'นามสกุล*',
+                            initialValue: 'xxxxxxxxx',
+                            isEditable: isEditable,
+                            label: AppLocalizations.of(context)!.userDetailLastName,
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: AwTextFormField(
-                            label: 'เบอร์โทร',
-                            keyboardType: TextInputType.phone,
+                            initialValue: isLoginWithEmail ? verifyOTPResponse?.phone : verifyOTPResponse?.email,
+                            isEditable: isEditable,
+                            label: isLoginWithEmail ? AppLocalizations.of(context)!.userDetailMobile : AppLocalizations.of(context)!.userDetailEmail,
+                            keyboardType: isLoginWithEmail ? TextInputType.phone : TextInputType.emailAddress,
                             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: AwTextFormField(
-                            label: 'เลขบัตรประจำตัวประชาชน / Passport No.',
+                            initialValue: verifyOTPResponse?.idCard,
+                            isEditable: isEditable,
+                            label: AppLocalizations.of(context)!.userDetailCitizenId,
                           ),
                         ),
                         SizedBox(
@@ -77,8 +92,11 @@ class RegisterUserDetailView extends StatelessWidget {
                             height: 56,
                             child: FilledButton(
                               onPressed: () {},
-                              child: Text('ถัดไป'),
+                              child: Text(AppLocalizations.of(context)!.actionButtonNext),
                             )),
+                        SizedBox(
+                          height: MediaQuery.of(context).viewInsets.bottom,
+                        ),
                       ],
                     ),
                   ),

@@ -11,6 +11,8 @@ class AwTextFormField extends StatelessWidget {
     this.validator,
     this.inputFormatters,
     this.maxLength,
+    this.initialValue,
+    this.isEditable = true,
   });
   final String? label;
   final TextEditingController? controller;
@@ -19,6 +21,8 @@ class AwTextFormField extends StatelessWidget {
   final FormFieldValidator<String>? validator;
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLength;
+  final bool isEditable;
+  final String? initialValue;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +40,8 @@ class AwTextFormField extends StatelessWidget {
             style: Theme.of(context).textTheme.labelMedium,
           ),
           TextFormField(
+            initialValue: initialValue,
+            enabled: isEditable,
             controller: controller,
             decoration: const InputDecoration(
               isDense: true,

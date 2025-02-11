@@ -11,6 +11,7 @@ import 'package:AssetWise/src/features/register/consents_view.dart';
 import 'package:AssetWise/src/features/register/otp_view.dart';
 import 'package:AssetWise/src/features/register/register_view.dart';
 import 'package:AssetWise/src/features/register/user_detail_view.dart';
+import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/services/firebase_service.dart';
 import 'package:AssetWise/src/splash/splash_view.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +108,7 @@ class MyApp extends StatelessWidget {
                   case RegisterView.routeName:
                     return const RegisterView();
                   case OtpView.routeName:
-                    return OtpView(refCode: routeSettings.arguments as String?);
+                    return OtpView();
                   case RegisterUserDetailView.routeName:
                     return RegisterUserDetailView();
                   case SetPinView.routeName:

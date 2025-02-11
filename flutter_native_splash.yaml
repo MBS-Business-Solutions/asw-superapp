@@ -8,9 +8,9 @@ flutter_native_splash:
   
   android_12:
     color: "#FFFFFF"
-    image: assets/images/assetwise_logo_splash.png
-    icon_background_color: "#000000"
-    image_dark: assets/images/assetwise_logo_splash.png
+    image: assets/icons/ic_launcher_google_play.png
+    icon_background_color: "#FFFFFF"
+    image_dark: assets/icons/ic_launcher_google_play.png
     icon_background_color_dark: "#000000"
 
   web: false
