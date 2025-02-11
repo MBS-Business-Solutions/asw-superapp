@@ -93,13 +93,13 @@ class _CampaignPopState extends State<CampaignPop> {
   }
 
   Future<void> getCampaigns() async {
-    // แสดงโปรโมชั่นทุกวัน 1 ครั้ง
+    // แสดงโปรโมชั่นทุกชั่วโมง 1 ครั้ง
     if (mounted) {
       if (_markHide) return;
       final shared = await SharedPreferences.getInstance();
       final nextShow = shared.getInt('CAMPAIGN_POP_NEXT_SHOW') ?? 0;
       if (nextShow < DateTime.now().millisecondsSinceEpoch) {
-        final nextShow = DateUtils.dateOnly(DateTime.now()).add(const Duration(days: 1)).millisecondsSinceEpoch;
+        final nextShow = DateUtils.dateOnly(DateTime.now()).add(const Duration(hours: 1)).millisecondsSinceEpoch;
         shared.setInt('CAMPAIGN_POP_NEXT_SHOW', nextShow);
         campaigns = await AWContentService.fetchCampaigns();
         setState(() {

@@ -66,4 +66,24 @@ class AWContentService {
       return [];
     }
   }
+
+  static Future<Consent?> fetchConsent(String token) async {
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/consent'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    try {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        return Consent.fromJson(jsonResponse['data']);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 }

@@ -1,5 +1,7 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/register/consents_view.dart';
 import 'package:AssetWise/src/providers/register_provider.dart';
+import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/aw_textformfield.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +93,7 @@ class RegisterUserDetailView extends StatelessWidget {
                             width: double.infinity,
                             height: 56,
                             child: FilledButton(
-                              onPressed: () {},
+                              onPressed: () => _openConsentPage(context),
                               child: Text(AppLocalizations.of(context)!.actionButtonNext),
                             )),
                         SizedBox(
@@ -107,5 +109,15 @@ class RegisterUserDetailView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _openConsentPage(BuildContext context) async {
+    Navigator.of(context).pushNamed(ConsentsView.routeName);
+    // if (context.read<RegisterProvider>().verifyOTPResponse != null) {
+    //   final userId = context.read<RegisterProvider>().verifyOTPResponse!.id;
+    //   if (await context.read<UserProvider>().login(userId) && context.mounted) {
+    //     Navigator.of(context).pushNamed(ConsentsView.routeName);
+    //   }
+    // }
   }
 }

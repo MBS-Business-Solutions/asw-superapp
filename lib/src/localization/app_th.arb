@@ -73,6 +73,12 @@
   "userDetailMobile": "เบอร์โทร",
   "userDetailEmail": "อีเมล",
   "userDetailCitizenId": "เลขบัตรประจำตัวประชาชน / Passport No.",
+
+  "consentAgree": "ยินยอม",
+  "consentDisagree": "ไม่ยินยอม",
+  "consentAgreeNext": "ยินยอม",
+  "consentAgreeAll": "ยินยอมทั้งหมด",
+
   "changeLanguageTitle": "เปลี่ยนภาษา",
   "changeLanguageCurrentLang": "ภาษาที่ใช้ปัจจุบัน",
   "changeLanguageLanguage": "ภาษา",

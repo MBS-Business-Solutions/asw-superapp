@@ -65,3 +65,105 @@ class VerifyOTPResponse {
     return VerifyOTPResponse(id: json['id'], phone: json['phone'], email: json['email'], idCard: json['id_card']);
   }
 }
+
+class Consent {
+  final String id;
+  final String version;
+  final String content;
+  final List<ConsentItem> items;
+
+  Consent({required this.id, required this.version, required this.content, required this.items});
+
+  factory Consent.fromJson(Map<String, dynamic> json) {
+    var itemsList = json['items'] as List;
+    List<ConsentItem> items = itemsList.map((i) => ConsentItem.fromJson(i)).toList();
+
+    return Consent(
+      id: json['id'],
+      version: json['version'],
+      content: json['content'],
+      items: items,
+    );
+  }
+}
+
+class ConsentItem {
+  final String id;
+  final String title;
+  final String content;
+  final bool isRequired;
+
+  ConsentItem({required this.id, required this.title, required this.content, required this.isRequired});
+
+  factory ConsentItem.fromJson(Map<String, dynamic> json) {
+    return ConsentItem(
+      id: json['id'],
+      title: json['title'],
+      content: json['content'],
+      isRequired: json['is_required'],
+    );
+  }
+}
+
+class UserToken {
+  final String token;
+  final UserInformation userInformation;
+
+  UserToken({required this.token, required this.userInformation});
+
+  factory UserToken.fromJson(Map<String, dynamic> json) {
+    return UserToken(token: json['token'], userInformation: json['data']);
+  }
+}
+
+class UserInformation {
+  final String firstName;
+  final String lastName;
+  final String phone;
+  final String email;
+  final List<Unit> units;
+
+  UserInformation({
+    required this.firstName,
+    required this.lastName,
+    required this.phone,
+    required this.email,
+    required this.units,
+  });
+
+  factory UserInformation.fromJson(Map<String, dynamic> json) {
+    var unitsList = json['units'] as List;
+    List<Unit> units = unitsList.map((i) => Unit.fromJson(i)).toList();
+
+    return UserInformation(
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      phone: json['phone'],
+      email: json['email'],
+      units: units,
+    );
+  }
+}
+
+class Unit {
+  final String contractId;
+  final String projectCode;
+  final String unitNumber;
+  final String houseNumber;
+
+  Unit({
+    required this.contractId,
+    required this.projectCode,
+    required this.unitNumber,
+    required this.houseNumber,
+  });
+
+  factory Unit.fromJson(Map<String, dynamic> json) {
+    return Unit(
+      contractId: json['contract_id'],
+      projectCode: json['project_code'],
+      unitNumber: json['unit_number'],
+      houseNumber: json['house_number'],
+    );
+  }
+}

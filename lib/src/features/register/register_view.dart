@@ -32,7 +32,7 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     //TODO: Remove this line
-    _mobileController.text = '0994926691';
+    _mobileController.text = '0922577794';
     _idCardController.text = '1234';
 
     return GestureDetector(

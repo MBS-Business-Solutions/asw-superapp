@@ -73,6 +73,12 @@
   "userDetailMobile": "Mobile",
   "userDetailEmail": "Email",
   "userDetailCitizenId": "National ID / Passport No.",
+
+  "consentAgree": "Accept",
+  "consentDisagree": "Don't accept",
+  "consentAgreeNext": "**ยินยอม**",
+  "consentAgreeAll": "**ยินยอมทั้งหมด**",
+
   "changeLanguageTitle": "Change Language",
   "changeLanguageCurrentLang": "Current Language",
   "changeLanguageLanguage": "Language",
