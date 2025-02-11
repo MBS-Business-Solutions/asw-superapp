@@ -6,6 +6,7 @@ import 'package:AssetWise/src/widgets/aw_textfield.dart';
 import 'package:AssetWise/src/widgets/aw_textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -19,6 +20,7 @@ class _RegisterViewState extends State<RegisterView> {
   bool _isResident = false;
   bool _emailForm = false;
   bool showError = false;
+  bool _isLoading = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _mobileController = TextEditingController();
@@ -55,14 +57,14 @@ class _RegisterViewState extends State<RegisterView> {
                             ),
                           ),
                           Text(
-                            _emailForm ? 'กรอก E-mail' : 'กรอกเบอร์มือถือ',
+                            _emailForm ? AppLocalizations.of(context)!.registerEMail : AppLocalizations.of(context)!.registerMobile,
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                           SizedBox(
                             height: 4,
                           ),
                           Text(
-                            _emailForm ? 'ระบุ E-mail ของท่าน เพื่อทำการสมัครสมาชิก' : 'ระบุเบอร์มือถือของท่าน เพื่อทำการสมัครสมาชิก',
+                            _emailForm ? AppLocalizations.of(context)!.registerEMailHint : AppLocalizations.of(context)!.registerMobileHint,
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           SizedBox(
@@ -87,7 +89,7 @@ class _RegisterViewState extends State<RegisterView> {
                                   },
                                 ),
                                 Text(
-                                  'เป็นลูกบ้าน',
+                                  AppLocalizations.of(context)!.registerIsResident,
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ],
@@ -101,7 +103,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 _emailForm = value;
                               });
                             },
-                            title: Text('เข้าสู่ระบบผ่าน E-mail'),
+                            title: Text(AppLocalizations.of(context)!.registerLoginByEmail),
                           ),
                           SizedBox(
                             height: 16,
@@ -123,7 +125,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 ),
                                 Expanded(
                                     child: Text(
-                                  'กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน',
+                                  AppLocalizations.of(context)!.registerInvalidResident,
                                   style: Theme.of(context).textTheme.labelMedium,
                                 ))
                               ],
@@ -135,10 +137,12 @@ class _RegisterViewState extends State<RegisterView> {
                               width: double.infinity,
                               height: 56,
                               child: FilledButton(
-                                onPressed: () {
-                                  _processToOTPForm();
-                                },
-                                child: Text('ถัดไป'),
+                                onPressed: _isLoading
+                                    ? null
+                                    : () {
+                                        _processToOTPForm();
+                                      },
+                                child: Text(AppLocalizations.of(context)!.registerNext),
                               )),
                         ],
                       ),
@@ -157,21 +161,23 @@ class _RegisterViewState extends State<RegisterView> {
     return Column(children: [
       AwTextFormField(
         controller: _mobileController,
-        label: 'เบอร์มือถือ',
+        label: AppLocalizations.of(context)!.registerMobileLabel,
         keyboardType: TextInputType.phone,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         maxLength: 10,
       ),
-      SizedBox(
-        height: 24,
-      ),
-      AwTextFormField(
-        controller: _idCardController,
-        label: 'เลขบัตรประชาชน 4 ตัวหลัง',
-        keyboardType: const TextInputType.numberWithOptions(decimal: false, signed: false),
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        maxLength: 4,
-      ),
+      if (_isResident) ...[
+        SizedBox(
+          height: 24,
+        ),
+        AwTextFormField(
+          controller: _idCardController,
+          label: AppLocalizations.of(context)!.registerLast4Digits,
+          keyboardType: const TextInputType.numberWithOptions(decimal: false, signed: false),
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          maxLength: 4,
+        ),
+      ]
     ]);
   }
 
@@ -179,14 +185,29 @@ class _RegisterViewState extends State<RegisterView> {
     return Column(children: [
       AwTextField(
         controller: _emailController,
-        label: 'E-mail',
+        label: AppLocalizations.of(context)!.registerEMailLabel,
         keyboardType: TextInputType.emailAddress,
       ),
+      if (_isResident) ...[
+        SizedBox(
+          height: 24,
+        ),
+        AwTextFormField(
+          controller: _idCardController,
+          label: AppLocalizations.of(context)!.registerLast4Digits,
+          keyboardType: const TextInputType.numberWithOptions(decimal: false, signed: false),
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          maxLength: 4,
+        ),
+      ]
     ]);
   }
 
   Future<void> _processToOTPForm() async {
     FocusScope.of(context).unfocus();
+    setState(() {
+      _isLoading = true;
+    });
     _formKey.currentState!.validate();
     if (_emailForm) {
       // ส่ง OTP ไปที่ E-mail
@@ -203,13 +224,19 @@ class _RegisterViewState extends State<RegisterView> {
           setState(() {
             showError = true;
           });
-
-          return;
         }
+
+        // Navigator.of(context).pushNamed('/otp', arguments: {
+        //   'phone': _mobileController.text,
+        //   'idCard4': _idCardController.text,
+        // });
         // ส่ง OTP ไปที่เบอร์มือถือ
       } else {
         // Non-resident login
       }
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

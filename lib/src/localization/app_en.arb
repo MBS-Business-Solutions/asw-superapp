@@ -26,10 +26,17 @@
     "description": "Label for icon Bottom App Bar"
   },
   
-  "registerMobile": "กรอกเบอร์มือถือ",
-  "registerMobileHint": "ระบุเบอร์มือถือของท่าน เพื่อทำการสมัครสมาชิก",
-  "registerEMail": "กรอก E-Mail",
-  "registerEMailHint": "ระบุ E-mail ของท่าน เพื่อทำการสมัครสมาชิก",
+  "registerMobileLabel": "Mobile Number",
+  "registerMobile": "Enter your mobile number",
+  "registerMobileHint": "Provide your mobile number to register as a member",
+  "registerEMailLabel": "Email",
+  "registerEMail": "Enter Email",
+  "registerEMailHint": "Please enter your email address to register",
+  "registerLoginByEmail": "Log in with Email",
+  "registerLast4Digits": "Last 4 digits of ID card",
+  "registerIsResident": "Existing customer",
+  "registerNext": "Next",
+  "registerInvalidResident": "Please enter your ID card number to match your registered mobile number.",
 
   "sectionFavourite": "เมนูโปรด",
   "@sectionFavourite": {

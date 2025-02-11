@@ -26,10 +26,17 @@
     "description": "Label for icon Bottom App Bar"
   },
   
+  "registerMobileLabel": "เบอร์มือถือ",
   "registerMobile": "กรอกเบอร์มือถือ",
   "registerMobileHint": "ระบุเบอร์มือถือของท่าน เพื่อทำการสมัครสมาชิก",
+  "registerEMailLabel": "Email",
   "registerEMail": "กรอก E-Mail",
   "registerEMailHint": "ระบุ E-mail ของท่าน เพื่อทำการสมัครสมาชิก",
+  "registerLoginByEmail": "เข้าสู่ระบบผ่าน E-mail",
+  "registerLast4Digits": "เลขบัตรประชาชน 4 ตัวหลัง",
+  "registerIsResident": "เป็นลูกบ้าน",
+  "registerNext": "ถัดไป",
+  "registerInvalidResident": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน",
 
   "sectionFavourite": "เมนูโปรด",
   "@sectionFavourite": {
