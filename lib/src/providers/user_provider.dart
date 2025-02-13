@@ -11,8 +11,8 @@ class UserProvider with ChangeNotifier {
 
   UserProvider({String? token, bool? isMember}) {
     _token = token;
-    _token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2YTg3NDhhOC03ODM5LTQ1ZTgtYjNiNy1mYjljMjkyNGI1NDciLCJlbWFpbCI6ImhkZXYxQG1ic2Jpei5jby50aCIsImlhdCI6MTczOTE3NzA2OCwiZXhwIjoxNzQxNzY5MDY4fQ.40sglfJA_eQpzBEQ3mL-ycKa_7LFsPeIfbakCKmhzfs';
+    // _token =
+    //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2YTg3NDhhOC03ODM5LTQ1ZTgtYjNiNy1mYjljMjkyNGI1NDciLCJlbWFpbCI6ImhkZXYxQG1ic2Jpei5jby50aCIsImlhdCI6MTczOTE3NzA2OCwiZXhwIjoxNzQxNzY5MDY4fQ.40sglfJA_eQpzBEQ3mL-ycKa_7LFsPeIfbakCKmhzfs';
   }
 
   Future<bool> login(String userId) async {

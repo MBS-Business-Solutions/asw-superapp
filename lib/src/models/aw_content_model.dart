@@ -23,14 +23,14 @@ class ImageContent {
 }
 
 class OTPRef {
-  final bool isMobile;
+  final bool isLoginWithEmail;
   final String idCard;
   final String sendTo;
   final String transId;
   final String refCode;
 
   OTPRef({
-    required this.isMobile,
+    required this.isLoginWithEmail,
     required this.idCard,
     required this.transId,
     required this.refCode,
@@ -41,13 +41,13 @@ class OTPRef {
     Map<String, dynamic> json, {
     required String idCard,
     required String sendTo,
-    required bool isMobile,
+    required bool isLoginWithEmail,
   }) {
     return OTPRef(
       transId: json['trans_id'],
       refCode: json['ref_code'],
       sendTo: sendTo,
-      isMobile: isMobile,
+      isLoginWithEmail: isLoginWithEmail,
       idCard: idCard,
     );
   }

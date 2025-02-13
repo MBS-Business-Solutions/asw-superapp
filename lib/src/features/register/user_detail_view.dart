@@ -112,12 +112,12 @@ class RegisterUserDetailView extends StatelessWidget {
   }
 
   Future<void> _openConsentPage(BuildContext context) async {
-    Navigator.of(context).pushNamed(ConsentsView.routeName);
-    // if (context.read<RegisterProvider>().verifyOTPResponse != null) {
-    //   final userId = context.read<RegisterProvider>().verifyOTPResponse!.id;
-    //   if (await context.read<UserProvider>().login(userId) && context.mounted) {
-    //     Navigator.of(context).pushNamed(ConsentsView.routeName);
-    //   }
-    // }
+    // Navigator.of(context).pushNamed(ConsentsView.routeName);
+    if (context.read<RegisterProvider>().verifyOTPResponse != null) {
+      final userId = context.read<RegisterProvider>().verifyOTPResponse!.id;
+      if (await context.read<UserProvider>().login(userId) && context.mounted) {
+        Navigator.of(context).pushNamed(ConsentsView.routeName);
+      }
+    }
   }
 }

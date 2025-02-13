@@ -238,24 +238,20 @@ class _RegisterViewState extends State<RegisterView> {
           });
         } else {
           final sendTo = _emailForm ? _emailController.text : _mobileController.text;
-          final ref = await AwRegisterService.sendOTPResident(
-            isByMobile: !_emailForm,
-            idCard4: _idCardController.text,
-            phoneEmail: sendTo,
-          );
-          if (ref != null && mounted) {
-            final registerProvider = context.read<RegisterProvider>();
-            registerProvider.idCard4 = _idCardController.text;
-            registerProvider.mobileEmail = sendTo;
-            registerProvider.isResident = _isResident;
-            registerProvider.isLoginWithEmail = _emailForm;
-            registerProvider.otpRef = ref;
-            Navigator.of(context).pushNamed(OtpView.routeName, arguments: ref);
-          } else {
-            // Show error message
-            setState(() {
-              showError = true;
-            });
+          if (mounted) {
+            final ref = await context.read<RegisterProvider>().requestOTPResident(
+                  idCard4: _idCardController.text,
+                  phoneEmail: sendTo,
+                  isLoginWithEmail: _emailForm,
+                );
+            if (ref != null && mounted) {
+              Navigator.of(context).pushNamed(OtpView.routeName, arguments: ref);
+            } else {
+              // Show error message
+              setState(() {
+                showError = true;
+              });
+            }
           }
         }
       } else {

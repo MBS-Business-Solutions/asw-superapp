@@ -100,7 +100,7 @@ class _OtpViewState extends State<OtpView> {
                           height: 4,
                         ),
                         Text(
-                          AppLocalizations.of(context)!.otpInstruction(refCode!.isMobile ? 'mobile' : 'email', StringUtil.phoneFormatter(refCode!.sendTo), refCode!.refCode),
+                          AppLocalizations.of(context)!.otpInstruction(refCode!.isLoginWithEmail ? 'email' : 'mobile', StringUtil.phoneFormatter(refCode!.sendTo), refCode!.refCode),
                           style: Theme.of(context).textTheme.bodyMedium,
                           textAlign: TextAlign.center,
                         ),
@@ -154,14 +154,11 @@ class _OtpViewState extends State<OtpView> {
   }
 
   Future<void> _onResendOtp() async {
-    refCode = await AwRegisterService.sendOTPResident(
-      isByMobile: refCode!.isMobile,
-      idCard4: refCode!.idCard,
-      phoneEmail: refCode!.sendTo,
-    );
-    if (mounted) context.read<RegisterProvider>().otpRef = refCode;
+    refCode = await context.read<RegisterProvider>().requestOTPResident();
     if (refCode != null) {
       setState(() {
+        otpController.text = '';
+        _invalidOTP = false;
         _isButtonDisabled = true;
         _start = 60;
       });
@@ -170,9 +167,8 @@ class _OtpViewState extends State<OtpView> {
   }
 
   Future<void> _verifyOTP() async {
-    final response = await AwRegisterService.verifyOTPResident(transId: refCode!.transId, otp: otpController.text);
+    final response = await context.read<RegisterProvider>().verifyOTPResident(otpController.text);
     if (mounted) {
-      context.read<RegisterProvider>().verifyOTPResponse = response;
       if (response != null) {
         Navigator.pushNamed(context, RegisterUserDetailView.routeName);
       } else {
