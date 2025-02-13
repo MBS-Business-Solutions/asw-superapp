@@ -79,6 +79,13 @@
   "consentAgreeNext": "**ยินยอม**",
   "consentAgreeAll": "**ยินยอมทั้งหมด**",
 
+  "setPinSetPin": "Set a {digits}-digit PIN",
+  "setPinConfirm": "Enter the PIN code again.",
+  "setPinInstruction": "Please enter a {digits}-digit PIN to set up your password",
+  "setPinSkipInstruction" :"You can skip this step.\nHowever, the system will require you to verify your identity with an OTP every time you log in",
+  "setPinSkip": "Skip",
+  "setPinError": "**รหัส PIN ไม่ตรงกัน กรุณาตั้งรหัสอีกครั้ง**",
+
   "changeLanguageTitle": "Change Language",
   "changeLanguageCurrentLang": "Current Language",
   "changeLanguageLanguage": "Language",

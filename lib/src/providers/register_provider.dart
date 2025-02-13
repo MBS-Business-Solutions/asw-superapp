@@ -6,9 +6,13 @@ class RegisterProvider {
   late UserProvider _userProvider;
 
   late bool _isResident;
-  late bool _isLoginWithEmail;
+  get isResident => _isResident;
+  bool _isLoginWithEmail = false;
+  get isLoginWithEmail => _isLoginWithEmail;
   late String _phoneEmail;
+  get phoneEmail => _phoneEmail;
   late String _idCard4;
+  get idCard4 => _idCard4;
   OTPRef? _otpRef;
   OTPRef? get otpRef => _otpRef;
   VerifyOTPResponse? _verifyOTPResponse;

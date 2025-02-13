@@ -112,7 +112,7 @@ class UserToken {
   UserToken({required this.token, required this.userInformation});
 
   factory UserToken.fromJson(Map<String, dynamic> json) {
-    return UserToken(token: json['token'], userInformation: json['data']);
+    return UserToken(token: json['token'], userInformation: UserInformation.fromJson(json['data']));
   }
 }
 

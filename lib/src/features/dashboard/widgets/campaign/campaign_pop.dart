@@ -99,7 +99,7 @@ class _CampaignPopState extends State<CampaignPop> {
       final shared = await SharedPreferences.getInstance();
       final nextShow = shared.getInt('CAMPAIGN_POP_NEXT_SHOW') ?? 0;
       if (nextShow < DateTime.now().millisecondsSinceEpoch) {
-        final nextShow = DateUtils.dateOnly(DateTime.now()).add(const Duration(hours: 1)).millisecondsSinceEpoch;
+        final nextShow = DateTime.now().add(const Duration(hours: 1)).millisecondsSinceEpoch;
         shared.setInt('CAMPAIGN_POP_NEXT_SHOW', nextShow);
         campaigns = await AWContentService.fetchCampaigns();
         setState(() {

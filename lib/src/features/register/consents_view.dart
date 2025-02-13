@@ -1,4 +1,5 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
+import 'package:AssetWise/src/features/pin/set_pin_view.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/services/aw_content_service.dart';
@@ -19,6 +20,7 @@ class _ConsentsViewState extends State<ConsentsView> {
   List<bool> consentOptionals = [false, false, false];
   final Map<String, bool> _userConsents = {};
   late Future<Consent?> _futureConsentData;
+  bool _canSubmit = false;
 
   @override
   void initState() {
@@ -49,15 +51,21 @@ class _ConsentsViewState extends State<ConsentsView> {
                       data: consent.content,
                     ),
                   ),
-                  for (final consent in consent.items) ..._buildConsentSection(consent),
+                  for (final consentItem in consent.items) ..._buildConsentSection(consent, consentItem),
                   Container(
                     padding: EdgeInsets.all(16),
                     width: double.infinity,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        OutlinedButton(onPressed: () {}, child: Text(AppLocalizations.of(context)!.consentAgreeNext)),
-                        FilledButton(onPressed: () {}, child: Text(AppLocalizations.of(context)!.consentAgreeAll)),
+                        OutlinedButton(
+                          onPressed: _canSubmit ? () => _submitConsents(consent) : null,
+                          child: Text(AppLocalizations.of(context)!.consentAgreeNext),
+                        ),
+                        FilledButton(
+                          onPressed: () => _acceptAllConsents(consent),
+                          child: Text(AppLocalizations.of(context)!.consentAgreeAll),
+                        ),
                       ],
                     ),
                   )
@@ -68,7 +76,7 @@ class _ConsentsViewState extends State<ConsentsView> {
     ]));
   }
 
-  List<Widget> _buildConsentSection(ConsentItem consent) {
+  List<Widget> _buildConsentSection(Consent consent, ConsentItem consentItem) {
     final brightness = Theme.of(context).brightness;
     return [
       ExpansionTile(
@@ -76,10 +84,10 @@ class _ConsentsViewState extends State<ConsentsView> {
         collapsedBackgroundColor: brightness == Brightness.dark ? mDarkBackgroundBottomBar : mLightBackgroundBottomBar,
         backgroundColor: brightness == Brightness.dark ? mDarkBackgroundBottomBar : mLightBackgroundBottomBar,
         childrenPadding: const EdgeInsets.only(left: 24, right: 24, top: 0, bottom: 16),
-        title: Text(consent.title),
+        title: Text(consentItem.title),
         children: [
           Html(
-            data: consent.content,
+            data: consentItem.content,
           ),
         ],
       ),
@@ -92,18 +100,17 @@ class _ConsentsViewState extends State<ConsentsView> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    _userConsents[consent.id] = true;
+                    _userConsents[consentItem.id] = true;
                   });
                 },
                 child: Row(
                   children: [
                     Radio<bool>.adaptive(
                       value: true,
-                      groupValue: _userConsents[consent.id],
+                      groupValue: _userConsents[consentItem.id],
                       onChanged: (bool? value) {
-                        setState(() {
-                          _userConsents[consent.id] = value!;
-                        });
+                        _userConsents[consentItem.id] = value!;
+                        _validateForm(consent);
                       },
                     ),
                     Text(
@@ -116,18 +123,17 @@ class _ConsentsViewState extends State<ConsentsView> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    _userConsents[consent.id] = false;
+                    _userConsents[consentItem.id] = false;
                   });
                 },
                 child: Row(
                   children: [
                     Radio<bool>.adaptive(
                       value: false,
-                      groupValue: _userConsents[consent.id],
+                      groupValue: _userConsents[consentItem.id],
                       onChanged: (bool? value) {
-                        setState(() {
-                          _userConsents[consent.id] = value!;
-                        });
+                        _userConsents[consentItem.id] = value!;
+                        _validateForm(consent);
                       },
                     ),
                     Text(
@@ -143,5 +149,34 @@ class _ConsentsViewState extends State<ConsentsView> {
       ),
       const SizedBox(height: 6),
     ];
+  }
+
+  void _validateForm(Consent? consent) {
+    if (consent == null) return;
+    if (_userConsents.length != consent.items.length) {
+      setState(() {
+        _canSubmit = false;
+      });
+    } else {
+      setState(() {
+        _canSubmit = consent.items.every((item) => (item.isRequired && (_userConsents[item.id] == true)) || !item.isRequired);
+      });
+    }
+  }
+
+  void _acceptAllConsents(Consent? consent) {
+    if (consent == null) return;
+    _userConsents.clear();
+    for (final item in consent.items) {
+      _userConsents[item.id] = true;
+    }
+    _validateForm(consent);
+  }
+
+  void _submitConsents(Consent consent) async {
+    final result = await context.read<UserProvider>().submitConsents(consent.id, _userConsents);
+    if (result && mounted) {
+      Navigator.of(context).pushReplacementNamed(SetPinView.routeName);
+    }
   }
 }

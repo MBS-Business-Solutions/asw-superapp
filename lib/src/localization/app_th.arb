@@ -79,6 +79,13 @@
   "consentAgreeNext": "ยินยอม",
   "consentAgreeAll": "ยินยอมทั้งหมด",
 
+  "setPinSetPin": "ตั้งรหัส PIN จำนวน {digits} หลัก",
+  "setPinConfirm": "ใส่รหัส PIN อีกครั้ง",
+  "setPinInstruction": "ระบุ PIN จำนวน {digits} หลักเพื่อใช้ในการเข้าสู่ระบบครั้งต่อไป",
+  "setPinSkipInstruction" :"คุณสามารถข้ามขั้นตอนนี้ได้\nโดยระบบจะขอ OTP เพื่อยืนยันตัวตนทุกครั้งที่เข้าสู่ระบบในอนาคต",
+  "setPinSkip": "ข้าม",
+  "setPinError": "รหัส PIN ไม่ตรงกัน กรุณาตั้งรหัสอีกครั้ง",
+
   "changeLanguageTitle": "เปลี่ยนภาษา",
   "changeLanguageCurrentLang": "ภาษาที่ใช้ปัจจุบัน",
   "changeLanguageLanguage": "ภาษา",

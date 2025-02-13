@@ -170,7 +170,7 @@ class _OtpViewState extends State<OtpView> {
     final response = await context.read<RegisterProvider>().verifyOTPResident(otpController.text);
     if (mounted) {
       if (response != null) {
-        Navigator.pushNamed(context, RegisterUserDetailView.routeName);
+        Navigator.pushReplacementNamed(context, RegisterUserDetailView.routeName);
       } else {
         setState(() {
           _invalidOTP = true;
