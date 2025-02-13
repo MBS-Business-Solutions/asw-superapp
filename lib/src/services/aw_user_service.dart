@@ -1,6 +1,5 @@
 import 'package:AssetWise/src/consts/url_const.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
-import 'package:AssetWise/src/services/aw_register_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -12,6 +11,34 @@ class AwUserService {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{"customer_id": userId}),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        if (jsonResponse['status'] == 'success') {
+          return UserToken.fromJson(jsonResponse['data']);
+        }
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  }
+
+  Future<UserToken?> loginNewUser({required String type, required String phone, required String email, required String firstName, required String lastName}) async {
+    final response = await http.post(
+      Uri.parse('$BASE_URL/mobile/register/person'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        "type": type,
+        "phone": phone,
+        "email": email,
+        "first_name": firstName,
+        "last_name": lastName,
+      }),
     );
 
     if (response.statusCode >= 200 && response.statusCode < 300) {

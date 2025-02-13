@@ -31,6 +31,19 @@ class UserProvider with ChangeNotifier {
     return false;
   }
 
+  Future<bool> loginNewUser({required String type, required String phone, required String email, required String firstName, required String lastName}) async {
+    final tokenResponse = await AwUserService().loginNewUser(type: type, phone: phone, email: email, firstName: firstName, lastName: lastName);
+    if (tokenResponse != null) {
+      _token = tokenResponse.token;
+      _userInformation = tokenResponse.userInformation;
+
+      await storage.write(key: 'SESSION_TOKEN', value: _token);
+      notifyListeners();
+      return true;
+    }
+    return false;
+  }
+
   Future<void> initApp() async {
     _token = await storage.read(key: 'SESSION_TOKEN');
     notifyListeners();

@@ -1,5 +1,6 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/register/otp_view.dart';
+import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/register_provider.dart';
 import 'package:AssetWise/src/services/aw_register_service.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
@@ -22,7 +23,7 @@ class RegisterView extends StatefulWidget {
 class _RegisterViewState extends State<RegisterView> {
   bool _isResident = false;
   bool _emailForm = false;
-  bool showError = false;
+  String? _showError;
   bool _isLoading = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -31,10 +32,6 @@ class _RegisterViewState extends State<RegisterView> {
   final TextEditingController _emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    //TODO: Remove this line
-    _mobileController.text = '0922577794';
-    _idCardController.text = '1234';
-
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -108,6 +105,7 @@ class _RegisterViewState extends State<RegisterView> {
                             value: _emailForm,
                             onChanged: (value) {
                               setState(() {
+                                FocusScope.of(context).unfocus();
                                 _emailForm = value;
                               });
                             },
@@ -120,7 +118,7 @@ class _RegisterViewState extends State<RegisterView> {
                           SizedBox(
                             height: 8,
                           ),
-                          if (showError)
+                          if (_showError != null)
                             Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
@@ -133,7 +131,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 ),
                                 Expanded(
                                     child: Text(
-                                  AppLocalizations.of(context)!.registerInvalidResident,
+                                  _showError!,
                                   style: Theme.of(context).textTheme.labelMedium,
                                 ))
                               ],
@@ -176,6 +174,7 @@ class _RegisterViewState extends State<RegisterView> {
         keyboardType: TextInputType.phone,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         maxLength: 10,
+        validator: (value) => value?.length != 10 ? AppLocalizations.of(context)!.registerInvalidData : null,
       ),
       if (_isResident) ...[
         SizedBox(
@@ -186,6 +185,7 @@ class _RegisterViewState extends State<RegisterView> {
           label: AppLocalizations.of(context)!.registerLast4Digits,
           keyboardType: const TextInputType.numberWithOptions(decimal: false, signed: false),
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          validator: (value) => value?.length != 4 ? AppLocalizations.of(context)!.registerInvalidData : null,
           maxLength: 4,
         ),
       ]
@@ -194,10 +194,11 @@ class _RegisterViewState extends State<RegisterView> {
 
   Widget _buildEmailForm() {
     return Column(children: [
-      AwTextField(
+      AwTextFormField(
         controller: _emailController,
         label: AppLocalizations.of(context)!.registerEMailLabel,
         keyboardType: TextInputType.emailAddress,
+        validator: (value) => !value!.contains('@') ? AppLocalizations.of(context)!.registerInvalidData : null,
       ),
       if (_isResident) ...[
         SizedBox(
@@ -209,6 +210,7 @@ class _RegisterViewState extends State<RegisterView> {
           keyboardType: const TextInputType.numberWithOptions(decimal: false, signed: false),
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           maxLength: 4,
+          validator: (value) => value?.length != 4 ? AppLocalizations.of(context)!.registerInvalidData : null,
         ),
       ]
     ]);
@@ -218,12 +220,17 @@ class _RegisterViewState extends State<RegisterView> {
     FocusScope.of(context).unfocus();
     setState(() {
       _isLoading = true;
-      showError = false;
+      _showError = null;
     });
-    _formKey.currentState!.validate();
-    if (_emailForm) {
-      // ส่ง OTP ไปที่ E-mail
-    } else {
+    try {
+      if (!_formKey.currentState!.validate()) {
+        setState(() {
+          _showError = null;
+          _isLoading = false;
+        });
+        return;
+      }
+      final sendTo = _emailForm ? _emailController.text : _mobileController.text;
       if (_isResident) {
         // Validate customer
         bool isValidResident = await AwRegisterService.customerCheck(
@@ -234,33 +241,40 @@ class _RegisterViewState extends State<RegisterView> {
         if (!isValidResident) {
           // Show error message
           setState(() {
-            showError = true;
+            _showError = AppLocalizations.of(context)!.registerInvalidResident;
           });
+        }
+        final ref = await context.read<RegisterProvider>().requestOTPResident(
+              idCard4: _idCardController.text,
+              phoneEmail: sendTo,
+              isLoginWithEmail: _emailForm,
+            );
+        if (ref != null && mounted) {
+          Navigator.of(context).pushNamed(OtpView.routeName);
         } else {
-          final sendTo = _emailForm ? _emailController.text : _mobileController.text;
-          if (mounted) {
-            final ref = await context.read<RegisterProvider>().requestOTPResident(
-                  idCard4: _idCardController.text,
-                  phoneEmail: sendTo,
-                  isLoginWithEmail: _emailForm,
-                );
-            if (ref != null && mounted) {
-              Navigator.of(context).pushNamed(OtpView.routeName, arguments: ref);
-            } else {
-              // Show error message
-              setState(() {
-                showError = true;
-              });
-            }
-          }
+          // Show error message
+          setState(() {
+            _showError = AppLocalizations.of(context)!.registerError;
+          });
         }
       } else {
-        // Non-resident login
-        // not in this phase
+        final ref = await context.read<RegisterProvider>().requestOTPNonResident(
+              phoneEmail: sendTo,
+              isLoginWithEmail: _emailForm,
+            );
+        if (ref != null && mounted) {
+          Navigator.of(context).pushNamed(OtpView.routeName);
+        } else {
+          // Show error message
+          setState(() {
+            _showError = AppLocalizations.of(context)!.registerError;
+          });
+        }
       }
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 }

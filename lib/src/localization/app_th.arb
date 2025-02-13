@@ -5,6 +5,7 @@
     "description": "The title of the application"
   },
   "actionButtonNext": "ถัดไป",
+  "errorFieldRequired": "กรุณากรอกข้อมูล",
   "bottomBarHome": "หน้าหลัก",
   "@bottomBarHome": {
     "description": "Label for icon Bottom App Bar"
@@ -35,7 +36,9 @@
   "registerLast4Digits": "เลขบัตรประชาชน 4 ตัวหลัง",
   "registerIsResident": "เป็นลูกบ้าน",
   "registerNext": "ถัดไป",
+  "registerInvalidData": "กรุณากรอกข้อมูลให้ครบถ้วน",
   "registerInvalidResident": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน",
+  "registerError": "ไม่สามารถทำงานได้ กรุณาลองใหม่อีกครั้ง",
   "otpTitle": "กรอก OTP",
   "otpRequestAgain": "ขอรหัสอีกครั้ง",
   "otpRequestCountdown": "ขอรหัสอีกครั้งใน {time, plural, =0{} =1{1 วินาที} other{{time} วินาที}}",
@@ -73,6 +76,10 @@
   "userDetailMobile": "เบอร์โทร",
   "userDetailEmail": "อีเมล",
   "userDetailCitizenId": "เลขบัตรประจำตัวประชาชน / Passport No.",
+  "userDetailInvalidFirstName": "กรุณากรอกชื่อให้ถูกต้อง โดยไม่ใช้อักขระพิเศษ",
+  "userDetailInvalidLastName": "กรุณากรอกนามสกุลให้ถูกต้อง โดยไม่ใช้อักขระพิเศษ",
+  "userDetailInvalidEmail": "กรุณากรอกรูปแบบ E-mail ให้ถูกต้อง",
+  "userDetailInvalidPhone": "กรุณากรอกเบอร์มือถือให้ครบ 10 หลัก",
 
   "consentAgree": "ยินยอม",
   "consentDisagree": "ไม่ยินยอม",
@@ -80,8 +87,26 @@
   "consentAgreeAll": "ยินยอมทั้งหมด",
 
   "setPinSetPin": "ตั้งรหัส PIN จำนวน {digits} หลัก",
+  "@setPinSetPin": {
+    "description": "Message to set a PIN with a specified number of digits",
+    "placeholders": {
+      "digits": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
   "setPinConfirm": "ใส่รหัส PIN อีกครั้ง",
   "setPinInstruction": "ระบุ PIN จำนวน {digits} หลักเพื่อใช้ในการเข้าสู่ระบบครั้งต่อไป",
+  "@setPinInstruction": {
+    "description": "Message to set a PIN with a specified number of digits",
+    "placeholders": {
+      "digits": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
   "setPinSkipInstruction" :"คุณสามารถข้ามขั้นตอนนี้ได้\nโดยระบบจะขอ OTP เพื่อยืนยันตัวตนทุกครั้งที่เข้าสู่ระบบในอนาคต",
   "setPinSkip": "ข้าม",
   "setPinError": "รหัส PIN ไม่ตรงกัน กรุณาตั้งรหัสอีกครั้ง",

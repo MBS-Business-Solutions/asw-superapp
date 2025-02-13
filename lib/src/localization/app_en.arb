@@ -5,6 +5,7 @@
     "description": "The title of the application"
   },
   "actionButtonNext": "Next",
+  "errorFieldRequired": "This field is required.",
   "bottomBarHome": "Home",
   "@bottomBarHome": {
     "description": "Label for icon Bottom App Bar"
@@ -35,7 +36,9 @@
   "registerLast4Digits": "Last 4 digits of ID card",
   "registerIsResident": "Existing customer",
   "registerNext": "Next",
+  "registerInvalidData": "Please check your input.",
   "registerInvalidResident": "Please enter your ID card number to match your registered mobile number.",
+  "registerError": "Unable to process. Please try again.",
   "otpTitle": "Enter OTP",
   "otpRequestAgain": "Request code again.",
   "otpRequestCountdown": "Request code again in {time, plural, =0{} =1{1 second} other{{time} seconds}}",
@@ -73,18 +76,40 @@
   "userDetailMobile": "Mobile",
   "userDetailEmail": "Email",
   "userDetailCitizenId": "National ID / Passport No.",
+  "userDetailInvalidFirstName": "**กรุณากรอกชื่อให้ถูกต้อง โดยไม่ใช้อักขระพิเศษ**",
+  "userDetailInvalidLastName": "**กรุณากรอกนามสกุลให้ถูกต้อง โดยไม่ใช้อักขระพิเศษ**",
+  "userDetailInvalidEmail": "**กรุณากรอกรูปแบบ E-mail ให้ถูกต้อง**",
+  "userDetailInvalidPhone": "**กรุณากรอกเบอร์มือถือให้ครบ 10 หลัก**",
 
   "consentAgree": "Accept",
   "consentDisagree": "Don't accept",
-  "consentAgreeNext": "**ยินยอม**",
-  "consentAgreeAll": "**ยินยอมทั้งหมด**",
+  "consentAgreeNext": "Consent",
+  "consentAgreeAll": "Consent to all",
 
   "setPinSetPin": "Set a {digits}-digit PIN",
+  "@setPinSetPin": {
+    "description": "Message to set a PIN with a specified number of digits",
+    "placeholders": {
+      "digits": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
   "setPinConfirm": "Enter the PIN code again.",
   "setPinInstruction": "Please enter a {digits}-digit PIN to set up your password",
+  "@setPinInstruction": {
+    "description": "Message to set a PIN with a specified number of digits",
+    "placeholders": {
+      "digits": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
   "setPinSkipInstruction" :"You can skip this step.\nHowever, the system will require you to verify your identity with an OTP every time you log in",
   "setPinSkip": "Skip",
-  "setPinError": "**รหัส PIN ไม่ตรงกัน กรุณาตั้งรหัสอีกครั้ง**",
+  "setPinError": "PIN codes do not match. Please set your PIN again.",
 
   "changeLanguageTitle": "Change Language",
   "changeLanguageCurrentLang": "Current Language",

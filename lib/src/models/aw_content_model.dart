@@ -24,14 +24,14 @@ class ImageContent {
 
 class OTPRef {
   final bool isLoginWithEmail;
-  final String idCard;
+  final String? idCard;
   final String sendTo;
   final String transId;
   final String refCode;
 
   OTPRef({
     required this.isLoginWithEmail,
-    required this.idCard,
+    this.idCard,
     required this.transId,
     required this.refCode,
     required this.sendTo,
@@ -39,7 +39,7 @@ class OTPRef {
 
   factory OTPRef.fromJson(
     Map<String, dynamic> json, {
-    required String idCard,
+    String? idCard,
     required String sendTo,
     required bool isLoginWithEmail,
   }) {
@@ -54,15 +54,17 @@ class OTPRef {
 }
 
 class VerifyOTPResponse {
-  final String id;
-  final String phone;
-  final String email;
-  final String idCard;
+  final String? id;
+  final String? firstName;
+  final String? lastName;
+  final String? phone;
+  final String? email;
+  final String? idCard;
 
-  VerifyOTPResponse({required this.id, required this.phone, required this.email, required this.idCard});
+  VerifyOTPResponse({this.id, this.phone, this.firstName, this.lastName, this.email, this.idCard});
 
   factory VerifyOTPResponse.fromJson(Map<String, dynamic> json) {
-    return VerifyOTPResponse(id: json['id'], phone: json['phone'], email: json['email'], idCard: json['id_card']);
+    return VerifyOTPResponse(id: json['id'], phone: json['phone'], firstName: json['first_name'], lastName: json['last_name'], email: json['email'], idCard: json['id_card']);
   }
 }
 
@@ -121,19 +123,19 @@ class UserInformation {
   final String lastName;
   final String phone;
   final String email;
-  final List<Unit> units;
+  final List<Unit>? units;
 
   UserInformation({
     required this.firstName,
     required this.lastName,
     required this.phone,
     required this.email,
-    required this.units,
+    this.units,
   });
 
   factory UserInformation.fromJson(Map<String, dynamic> json) {
-    var unitsList = json['units'] as List;
-    List<Unit> units = unitsList.map((i) => Unit.fromJson(i)).toList();
+    var unitsList = json['units'] as List?;
+    List<Unit>? units = unitsList?.map((i) => Unit.fromJson(i)).toList();
 
     return UserInformation(
       firstName: json['first_name'],

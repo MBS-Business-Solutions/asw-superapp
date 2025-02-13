@@ -24,7 +24,7 @@ class HomeActionButtons extends StatelessWidget {
           children: [
             IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed(SetPinView.routeName);
+                  Navigator.of(context).pushNamed(RegisterView.routeName);
                 },
                 icon: Badge.count(count: 8, child: Icon(Icons.notifications_none))),
             IconButton(onPressed: () {}, icon: Icon(Icons.gite_sharp)),

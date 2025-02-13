@@ -43,9 +43,10 @@ class AwTextFormField extends StatelessWidget {
             initialValue: initialValue,
             enabled: isEditable,
             controller: controller,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               isDense: true,
               border: InputBorder.none,
+              errorStyle: Theme.of(context).textTheme.bodySmall!.copyWith(color: mRedColor),
             ),
             keyboardAppearance: Theme.of(context).brightness,
             keyboardType: keyboardType,

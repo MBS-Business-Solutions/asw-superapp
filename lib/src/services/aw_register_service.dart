@@ -76,4 +76,51 @@ class AwRegisterService {
     }
     return null;
   }
+
+  static Future<OTPRef?> sendOTPNonResident({bool isLoginWithEmail = false, required String phoneEmail}) async {
+    final response = await http.post(
+      Uri.parse('$BASE_URL/mobile/register/request-person-otp'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        "type": isLoginWithEmail ? 'email' : 'phone',
+        if (isLoginWithEmail) "email": phoneEmail else "phone": phoneEmail,
+      }),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        if (jsonResponse['status'] == 'success') {
+          return OTPRef.fromJson(jsonResponse['data'], sendTo: phoneEmail, isLoginWithEmail: isLoginWithEmail);
+        }
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  }
+
+  static Future<VerifyOTPResponse?> verifyOTPNonResident({required String transId, required String otp}) async {
+    final response = await http.post(
+      Uri.parse('$BASE_URL/mobile/register/verify-person-otp'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{"trans_id": transId, "otp": otp}),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        if (jsonResponse['status'] == 'success') {
+          return VerifyOTPResponse.fromJson(jsonResponse['data']);
+        }
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  }
 }

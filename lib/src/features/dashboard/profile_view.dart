@@ -1,5 +1,6 @@
 import 'package:AssetWise/src/features/dashboard/widgets/change_languange_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
+import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
@@ -18,6 +19,7 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     _isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final userProvider = context.read<UserProvider>();
     return ListView(
       children: [
         Container(
@@ -70,7 +72,7 @@ class _ProfileViewState extends State<ProfileView> {
               ),
               ListTile(
                 title: Text('เบอร์มือถือ'),
-                subtitle: Text('081-234-5678'),
+                subtitle: Text(userProvider.userInformation?.phone ?? '-'),
                 trailing: Icon(Icons.chevron_right),
                 onTap: () {},
               ),

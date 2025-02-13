@@ -4,7 +4,6 @@ import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/register_provider.dart';
-import 'package:AssetWise/src/services/aw_register_service.dart';
 import 'package:AssetWise/src/utils/string_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
@@ -100,7 +99,11 @@ class _OtpViewState extends State<OtpView> {
                           height: 4,
                         ),
                         Text(
-                          AppLocalizations.of(context)!.otpInstruction(refCode!.isLoginWithEmail ? 'email' : 'mobile', StringUtil.phoneFormatter(refCode!.sendTo), refCode!.refCode),
+                          AppLocalizations.of(context)!.otpInstruction(
+                            refCode!.isLoginWithEmail ? 'email' : 'mobile',
+                            refCode!.isLoginWithEmail ? refCode!.sendTo : StringUtil.phoneFormatter(refCode!.sendTo),
+                            refCode!.refCode,
+                          ),
                           style: Theme.of(context).textTheme.bodyMedium,
                           textAlign: TextAlign.center,
                         ),
@@ -128,7 +131,7 @@ class _OtpViewState extends State<OtpView> {
                         ),
                         if (_invalidOTP)
                           Text(
-                            'หมายเลข OTP ไม่ถูกต้อง',
+                            '**หมายเลข OTP ไม่ถูกต้อง**',
                             style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: mRedColor),
                           ),
                         SizedBox(
@@ -167,7 +170,13 @@ class _OtpViewState extends State<OtpView> {
   }
 
   Future<void> _verifyOTP() async {
-    final response = await context.read<RegisterProvider>().verifyOTPResident(otpController.text);
+    final registerProvider = context.read<RegisterProvider>();
+    VerifyOTPResponse? response;
+    if (registerProvider.isResident) {
+      response = await registerProvider.verifyOTPResident(otpController.text);
+    } else {
+      response = await registerProvider.verifyOTPNonResident(otpController.text);
+    }
     if (mounted) {
       if (response != null) {
         Navigator.pushReplacementNamed(context, RegisterUserDetailView.routeName);

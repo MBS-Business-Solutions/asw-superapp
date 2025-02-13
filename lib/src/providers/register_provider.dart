@@ -5,14 +5,14 @@ import 'package:AssetWise/src/services/aw_register_service.dart';
 class RegisterProvider {
   late UserProvider _userProvider;
 
-  late bool _isResident;
-  get isResident => _isResident;
+  bool _isResident = false;
+  bool get isResident => _isResident;
   bool _isLoginWithEmail = false;
-  get isLoginWithEmail => _isLoginWithEmail;
-  late String _phoneEmail;
-  get phoneEmail => _phoneEmail;
-  late String _idCard4;
-  get idCard4 => _idCard4;
+  bool get isLoginWithEmail => _isLoginWithEmail;
+  String _phoneEmail = '';
+  String get phoneEmail => _phoneEmail;
+  String _idCard4 = '';
+  String get idCard4 => _idCard4;
   OTPRef? _otpRef;
   OTPRef? get otpRef => _otpRef;
   VerifyOTPResponse? _verifyOTPResponse;
@@ -35,6 +35,22 @@ class RegisterProvider {
   Future<VerifyOTPResponse?> verifyOTPResident(String otp) async {
     if (otpRef != null) {
       _verifyOTPResponse = await AwRegisterService.verifyOTPResident(transId: otpRef!.transId, otp: otp);
+    }
+    return verifyOTPResponse;
+  }
+
+  Future<OTPRef?> requestOTPNonResident({bool isLoginWithEmail = false, String? phoneEmail}) async {
+    _isResident = false;
+    _phoneEmail = phoneEmail ?? _phoneEmail;
+    _isLoginWithEmail = isLoginWithEmail;
+
+    _otpRef = await AwRegisterService.sendOTPNonResident(isLoginWithEmail: _isLoginWithEmail, phoneEmail: _phoneEmail);
+    return otpRef;
+  }
+
+  Future<VerifyOTPResponse?> verifyOTPNonResident(String otp) async {
+    if (otpRef != null) {
+      _verifyOTPResponse = await AwRegisterService.verifyOTPNonResident(transId: otpRef!.transId, otp: otp);
     }
     return verifyOTPResponse;
   }
