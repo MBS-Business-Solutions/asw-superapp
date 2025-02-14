@@ -6,6 +6,19 @@
   },
   "actionButtonNext": "ถัดไป",
   "errorFieldRequired": "กรุณากรอกข้อมูล",
+  "priceFormat": "{price}",
+  "@priceFormat": {
+    "description": "The format of the price",
+    "placeholders": {
+      "price": {
+        "type": "int",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 2
+        }
+      }
+    }
+  },
   "bottomBarHome": "หน้าหลัก",
   "@bottomBarHome": {
     "description": "Label for icon Bottom App Bar"
@@ -114,13 +127,70 @@
   "changeLanguageTitle": "เปลี่ยนภาษา",
   "changeLanguageCurrentLang": "ภาษาที่ใช้ปัจจุบัน",
   "changeLanguageLanguage": "ภาษา",
-  "sectionFavourite": "เมนูโปรด",
-  "@sectionFavourite": {
+
+  "dashboardMainSectionFavourite": "เมนูโปรด",
+  "@dashboardMainSectionFavourite": {
     "description": "The title of the favourite section"
   },
-  "sectionFavouriteMore": "เมนูทั้งหมด",
-  "sectionRecommended": "โครงการแนะนำ",
-  "sectionRecommendedDetail": "เรามุ่งมั่นที่จะออกแบบที่อยู่อาศัย เพื่อความสุขของคนอยู่ โดยคำนึงถึงไลฟ์สไตล์ และการใช้ชีวิตของแต่ละคนที่แตกต่างกัน ให้คุณได้ใช้ชีวิตในแบบที่คุณต้องการ",
-  "eReadyToMoveIn": "พร้อมอยู่",
-  "eNewProject": "โครงการใหม่"
+  "dashboardMainSectionFavouriteMore": "เมนูทั้งหมด",
+  "dashboardMainSectionRecommended": "โครงการแนะนำ",
+  "dashboardMainSectionRecommendedDetail": "เรามุ่งมั่นที่จะออกแบบที่อยู่อาศัย เพื่อความสุขของคนอยู่ โดยคำนึงถึงไลฟ์สไตล์ และการใช้ชีวิตของแต่ละคนที่แตกต่างกัน ให้คุณได้ใช้ชีวิตในแบบที่คุณต้องการ",
+
+  "profileNameFormat": "{firstName} {lastName}",
+  "@profileNameFormat": {
+    "description": "The format of the full name",
+    "placeholders": {
+      "firstName": {
+        "type": "String",
+        "example": "John"
+      },
+      "lastName": {
+        "type": "String",
+        "example": "Doe"
+      }
+    }
+  },
+  "profileDarkMode": "โหมดสีเข้ม",
+  "profileMyInfo": "ข้อมูลของฉัน",
+  "profilePhoneNumber": "เบอร์มือถือ",
+  "profileEmail": "อีเมล",
+  "profileMyAsset":"บ้านของฉัน",
+  "profileMyAssetSum":"{count} หลัง",
+  "@profileMyAssetSum": {
+    "description": "Message indicating the number of assets",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "profileLanguage": "ภาษา",
+  "profileChangeLanguage": "เปลี่ยนภาษา",
+  "profileSettings": "ตั้งค่าบัญชี",
+  "profilePersonalInfo": "จัดการข้อมูลส่วนตัว",
+  "profilePin": "รหัส PIN",
+  "profileDeleteAccount": "ปิดใช้งานหรือลบบัญชี",
+  "profileAbout": "เกี่ยวกับ Assetwise",
+  "profileAuthen": "การเข้าสู่ระบบ",
+  "profileExit": "ออกจากแอปพลิเคชัน Assetwise",
+  "profileLogout": "ออกจากระบบ",
+
+  "contractDetailTitle": "รายละเอียดสัญญา",
+  "contractDetailContractDate": "วันที่สัญญา",
+  "contractDetailSigningDate": "วันที่ลงนาม",
+  "contractDetailEstimatedTransferDate": "วันที่ประมาณการโอน",
+  "contractDetailContractValueTitle": "มูลค่าสัญญา",
+  "contractDetailBookingAmount": "จอง",
+  "contractDetailContractAmount": "สัญญา",
+  "contractDetailDownAmount": "ดาวน์",
+  "contractDetailDownAmountDetails": "รายละเอียด",
+  "contractDetailTransferAmount": "โอน",
+  "contractDetailPaymentTitle": "รายละเอียดการชำระเงิน",
+  "contractDetailPaymentAmount": "ยอดชำระเงิน",
+  "contractDetailRemainDownAmount": "คงเหลือ เงินดาวน์",
+  "contractDetailRemainHousePayment": "คงเหลือค่าบ้านทั้งหมด",
+  "contractDetailFreebiesTitle": "รายการของแถมและส่วนลด",
+  "contractDetailDownloadDoc": "ดาวน์โหลดเอกสารสัญญา"
+
 }

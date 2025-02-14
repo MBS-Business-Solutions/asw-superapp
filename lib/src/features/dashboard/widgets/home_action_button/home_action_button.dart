@@ -1,5 +1,4 @@
-import 'package:AssetWise/src/features/pin/set_pin_view.dart';
-import 'package:AssetWise/src/features/register/consents_view.dart';
+import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/features/register/register_view.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +26,11 @@ class HomeActionButtons extends StatelessWidget {
                   Navigator.of(context).pushNamed(RegisterView.routeName);
                 },
                 icon: Badge.count(count: 8, child: Icon(Icons.notifications_none))),
-            IconButton(onPressed: () {}, icon: Icon(Icons.gite_sharp)),
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(ContractsView.routeName);
+                },
+                icon: Icon(Icons.gite_sharp)),
           ],
         );
       },

@@ -1,6 +1,5 @@
 import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/consts/themes_const.dart';
-import 'package:AssetWise/src/0_test/test_route.dart';
 import 'package:AssetWise/src/0_test/ui_showcase_screen.dart';
 import 'package:AssetWise/src/features/contract/contract_detail_view.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
@@ -11,7 +10,6 @@ import 'package:AssetWise/src/features/register/consents_view.dart';
 import 'package:AssetWise/src/features/register/otp_view.dart';
 import 'package:AssetWise/src/features/register/register_view.dart';
 import 'package:AssetWise/src/features/register/user_detail_view.dart';
-import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/services/firebase_service.dart';
 import 'package:AssetWise/src/splash/splash_view.dart';
 import 'package:flutter/material.dart';
@@ -117,8 +115,6 @@ class MyApp extends StatelessWidget {
                     return ConsentsView();
                   case ContractsView.routeName:
                     return ContractsView();
-                  case ContractDetailView.routeName:
-                    return ContractDetailView();
                   case DownHistoryView.routeName:
                     return DownHistoryView();
                   case ChangeLanguangeView.routeName:

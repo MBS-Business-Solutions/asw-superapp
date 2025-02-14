@@ -26,10 +26,10 @@ class ChangeLanguangeView extends StatelessWidget {
           for (final supportedLocale in SupportedLocales.values)
             ListTile(
               title: Text(AppLocalizations.of(context)!.changeLanguageLanguage),
-              subtitle: Text(supportedLocale.language),
-              onTap: () {
-                context.read<SettingsController>().updateLocale(supportedLocale);
-                Navigator.pop(context);
+              subtitle: Text(supportedLocale.languageName),
+              onTap: () async {
+                await context.read<SettingsController>().updateLocale(supportedLocale);
+                if (context.mounted) Navigator.pop(context);
               },
               trailing: selectedLocale == supportedLocale ? const Icon(Icons.language) : null,
             ),

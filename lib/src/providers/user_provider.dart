@@ -64,4 +64,8 @@ class UserProvider with ChangeNotifier {
     final savedPin = await storage.read(key: 'PIN');
     return savedPin == pin;
   }
+
+  Future<void> setPreferedLanguage(String language) async {
+    await AwUserService.setPreferedLanguage(_token!, language);
+  }
 }

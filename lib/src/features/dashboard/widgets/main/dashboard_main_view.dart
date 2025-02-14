@@ -64,7 +64,7 @@ class DashboardMainView extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: mDefaultPadding),
             child: Text(
-              AppLocalizations.of(context)!.sectionRecommended,
+              AppLocalizations.of(context)!.dashboardMainSectionRecommended,
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
@@ -73,7 +73,7 @@ class DashboardMainView extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Text(
-              AppLocalizations.of(context)!.sectionRecommendedDetail,
+              AppLocalizations.of(context)!.dashboardMainSectionRecommendedDetail,
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
@@ -98,7 +98,7 @@ class DashboardMainView extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                AppLocalizations.of(context)!.sectionFavourite,
+                AppLocalizations.of(context)!.dashboardMainSectionFavourite,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -106,7 +106,7 @@ class DashboardMainView extends StatelessWidget {
               onTap: () {},
               child: Row(
                 children: [
-                  Text(AppLocalizations.of(context)!.sectionFavouriteMore),
+                  Text(AppLocalizations.of(context)!.dashboardMainSectionFavouriteMore),
                   Icon(
                     Icons.chevron_right,
                   ),

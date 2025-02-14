@@ -1,5 +1,6 @@
 import 'package:AssetWise/src/consts/url_const.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -22,11 +23,11 @@ class AwRegisterService {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         return jsonResponse['status'] == 'success' && jsonResponse['data']['is_resident'];
       } catch (e) {
-        return false;
+        if (kDebugMode) print(e);
       }
-    } else {
-      return false;
     }
+    if (kDebugMode) print(response);
+    return false;
   }
 
   static Future<OTPRef?> sendOTPResident({bool isLoginWithEmail = false, required String idCard4, required String phoneEmail}) async {
@@ -49,9 +50,10 @@ class AwRegisterService {
           return OTPRef.fromJson(jsonResponse['data'], sendTo: phoneEmail, isLoginWithEmail: isLoginWithEmail, idCard: idCard4);
         }
       } catch (e) {
-        return null;
+        if (kDebugMode) print(e);
       }
     }
+    if (kDebugMode) print(response);
     return null;
   }
 
@@ -71,9 +73,10 @@ class AwRegisterService {
           return VerifyOTPResponse.fromJson(jsonResponse['data']);
         }
       } catch (e) {
-        return null;
+        if (kDebugMode) print(e);
       }
     }
+    if (kDebugMode) print(response);
     return null;
   }
 
@@ -96,9 +99,10 @@ class AwRegisterService {
           return OTPRef.fromJson(jsonResponse['data'], sendTo: phoneEmail, isLoginWithEmail: isLoginWithEmail);
         }
       } catch (e) {
-        return null;
+        if (kDebugMode) print(e);
       }
     }
+    if (kDebugMode) print(response);
     return null;
   }
 
@@ -118,9 +122,10 @@ class AwRegisterService {
           return VerifyOTPResponse.fromJson(jsonResponse['data']);
         }
       } catch (e) {
-        return null;
+        if (kDebugMode) print(e);
       }
     }
+    if (kDebugMode) print(response);
     return null;
   }
 }

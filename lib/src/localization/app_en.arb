@@ -6,6 +6,19 @@
   },
   "actionButtonNext": "Next",
   "errorFieldRequired": "This field is required.",
+  "priceFormat": "{price}",
+  "@priceFormat": {
+    "description": "The format of the price",
+    "placeholders": {
+      "price": {
+        "type": "int",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 2
+        }
+      }
+    }
+  },
   "bottomBarHome": "Home",
   "@bottomBarHome": {
     "description": "Label for icon Bottom App Bar"
@@ -114,13 +127,69 @@
   "changeLanguageTitle": "Change Language",
   "changeLanguageCurrentLang": "Current Language",
   "changeLanguageLanguage": "Language",
-  "sectionFavourite": "เมนูโปรด",
-  "@sectionFavourite": {
+
+  "dashboardMainSectionFavourite": "เมนูโปรด",
+  "@dashboardMainSectionFavourite": {
     "description": "The title of the favourite section"
   },
-  "sectionFavouriteMore": "เมนูทั้งหมด",
-  "sectionRecommended": "Recommended projects",
-  "sectionRecommendedDetail": "We are committed to designing homes. For the happiness of the people Taking into account lifestyle and the lifestyle of each person is different Allowing you to live your life the way you want.",
-  "eReadyToMoveIn": "พร้อมอยู่",
-  "eNewProject": "โครงการใหม่"
+  "dashboardMainSectionFavouriteMore": "เมนูทั้งหมด",
+  "dashboardMainSectionRecommended": "Recommended projects",
+  "dashboardMainSectionRecommendedDetail": "We are committed to designing homes. For the happiness of the people Taking into account lifestyle and the lifestyle of each person is different Allowing you to live your life the way you want.",
+
+  "profileNameFormat": "{lastName} {firstName}",
+  "@profileNameFormat": {
+    "description": "The format of the full name",
+    "placeholders": {
+      "firstName": {
+        "type": "String",
+        "example": "John"
+      },
+      "lastName": {
+        "type": "String",
+        "example": "Doe"
+      }
+    }
+  },
+  "profileDarkMode": "Dark Mode",
+  "profileMyInfo": "My Information",
+  "profilePhoneNumber": "Phone Number",
+  "profileEmail": "Email",
+  "profileMyAsset":"**บ้านของฉัน**",
+  "profileMyAssetSum":"**{count} {count, plural, =1{unit} other{units}}**",
+  "@profileMyAssetSum": {
+    "description": "Message indicating the number of assets",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "profileLanguage": "Language",
+  "profileChangeLanguage": "Change Language",
+  "profileSettings": "Account Settings",
+  "profilePersonalInfo": "Manage Personal Information",
+  "profilePin": "PIN Code",
+  "profileDeleteAccount": "**ปิดใช้งานหรือลบบัญชี**",
+  "profileAbout": "About Assetwise",
+  "profileAuthen": "**การยืนยันตัวตน**",
+  "profileExit": "**ออกจากแอปพลิเคชัน Assetwise**",
+  "profileLogout": "Log Out",
+
+  "contractDetailTitle": "Contract Details",
+  "contractDetailContractDate": "Contract Date",
+  "contractDetailSigningDate": "Contract Date",
+  "contractDetailEstimatedTransferDate": "Estimated Transfer Date",
+  "contractDetailContractValueTitle": "Contract Value",
+  "contractDetailBookingAmount": "Booking",
+  "contractDetailContractAmount": "Contract",
+  "contractDetailDownAmount": "Down payment",
+  "contractDetailDownAmountDetails": "details",
+  "contractDetailTransferAmount": "Transfer",
+  "contractDetailPaymentTitle": "Payment Details",
+  "contractDetailPaymentAmount": "Payment Amount",
+  "contractDetailRemainDownAmount": "Remaining Down Payment",
+  "contractDetailRemainHousePayment": "Total Remaining House Payment",
+  "contractDetailFreebiesTitle": "Freebies and Discounts List",
+  "contractDetailDownloadDoc": "Download Contract Documents"
 }

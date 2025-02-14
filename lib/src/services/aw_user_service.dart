@@ -1,5 +1,6 @@
 import 'package:AssetWise/src/consts/url_const.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -20,9 +21,10 @@ class AwUserService {
           return UserToken.fromJson(jsonResponse['data']);
         }
       } catch (e) {
-        return null;
+        if (kDebugMode) print(e);
       }
     }
+    if (kDebugMode) print(response);
     return null;
   }
 
@@ -48,9 +50,10 @@ class AwUserService {
           return UserToken.fromJson(jsonResponse['data']);
         }
       } catch (e) {
-        return null;
+        if (kDebugMode) print(e);
       }
     }
+    if (kDebugMode) print(response);
     return null;
   }
 
@@ -77,10 +80,34 @@ class AwUserService {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         return jsonResponse['status'] == 'success';
       } catch (e) {
-        return false;
+        if (kDebugMode) print(e);
       }
-    } else {
-      return false;
     }
+    if (kDebugMode) print(response);
+    return false;
+  }
+
+  static Future<bool> setPreferedLanguage(String token, String language) async {
+    final response = await http.post(
+      Uri.parse('$BASE_URL/mobile/setting/language'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, String>{"language": language}),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        if (jsonResponse['status'] == 'success') {
+          return true;
+        }
+      } catch (e) {
+        if (kDebugMode) print(e);
+      }
+    }
+    if (kDebugMode) print(response);
+    return false;
   }
 }

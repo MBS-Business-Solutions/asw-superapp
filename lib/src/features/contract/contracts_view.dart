@@ -1,10 +1,34 @@
+import 'package:AssetWise/main.dart';
+import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/features/contract/contract_detail_view.dart';
 import 'package:AssetWise/src/features/contract/widgets/history_list_tile.dart';
+import 'package:AssetWise/src/features/settings/settings_controller.dart';
+import 'package:AssetWise/src/models/aw_content_model.dart';
+import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ContractsView extends StatelessWidget {
+class ContractsView extends StatefulWidget {
   const ContractsView({super.key});
   static const String routeName = '/contracts';
+
+  @override
+  State<ContractsView> createState() => _ContractsViewState();
+}
+
+class _ContractsViewState extends State<ContractsView> {
+  String? _selectedContract;
+  int _selectedIndex = 0;
+  int _selectedYear = DateTime.now().year;
+  late SupportedLocales _selectedLocale;
+
+  late Future<List<Contract>> _futureContracts;
+  @override
+  void initState() {
+    _futureContracts = context.read<ContractProvider>().fetchContracts();
+    _selectedLocale = context.read<SettingsController>().supportedLocales;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,52 +39,83 @@ class ContractsView extends StatelessWidget {
           top: 0,
           left: 0,
           right: 0,
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.35,
-            padding: const EdgeInsets.only(bottom: 32),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              image: AssetImage('assets/images/sample.jpg'),
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.darken),
-            )),
-            child: Row(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.chevron_left),
-                  onPressed: () => Navigator.pop(context),
-                ),
-                Expanded(
-                  child: Column(
+          child: FutureBuilder(
+              future: _futureContracts,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const LinearProgressIndicator();
+                }
+                final _contracts = snapshot.data!;
+                if (_contracts.isEmpty) {
+                  return Center(child: Text('No contract found'));
+                }
+                if (_selectedContract == null) _selectedContract = snapshot.data!.first.contractId;
+                return Container(
+                  height: MediaQuery.of(context).size.height * 0.35,
+                  padding: const EdgeInsets.only(bottom: 32),
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                    image: NetworkImage(_contracts[_selectedIndex].imageUrl),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.darken),
+                  )),
+                  child: Row(
                     children: [
-                      Expanded(child: SizedBox()),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('12/34', style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Colors.white)),
-                          Text('Esta Rangsit Klong 2', style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white)),
-                        ],
+                      IconButton(
+                        icon: Icon(Icons.chevron_left),
+                        onPressed: _selectedIndex > 0
+                            ? () {
+                                setState(() {
+                                  _selectedIndex--;
+                                  _selectedContract = _contracts[_selectedIndex].contractId;
+                                });
+                              }
+                            : null,
                       ),
                       Expanded(
-                          child: Center(
-                              child: OutlinedButton.icon(
-                        onPressed: () => Navigator.pushNamed(context, ContractDetailView.routeName),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.white,
+                        child: Column(
+                          children: [
+                            Expanded(child: SizedBox()),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(_contracts[_selectedIndex].unitNumber, style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Colors.white)),
+                                Text(_contracts[_selectedIndex].projectName, style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white)),
+                              ],
+                            ),
+                            Expanded(
+                                child: Center(
+                                    child: OutlinedButton.icon(
+                              onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ContractDetailView(
+                                            contractId: _selectedContract!,
+                                          ))),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: Colors.white,
+                              ),
+                              icon: Icon(Icons.dock_sharp),
+                              label: Text('รายละเอียดสัญญา'),
+                            ))),
+                          ],
                         ),
-                        icon: Icon(Icons.dock_sharp),
-                        label: Text('รายละเอียดสัญญา'),
-                      ))),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.chevron_right),
+                        onPressed: _selectedIndex < _contracts.length - 1
+                            ? () {
+                                setState(() {
+                                  _selectedIndex++;
+                                  _selectedContract = _contracts[_selectedIndex].contractId;
+                                });
+                              }
+                            : null,
+                      ),
                     ],
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.chevron_right),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-          ),
+                );
+              }),
         ),
         Align(
           alignment: Alignment.bottomCenter,
@@ -109,8 +164,8 @@ class ContractsView extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('ยอดที่ต้องชำระ', style: Theme.of(context).textTheme.titleMedium),
-                              Text('15,460.00 บาท', style: Theme.of(context).textTheme.titleMedium),
+                              Text('ยอดที่ต้องชำระ', style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mBrightPrimaryColor)),
+                              Text('15,460.00 บาท', style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mBrightPrimaryColor)),
                             ],
                           ),
                           SizedBox(height: 8),
@@ -139,7 +194,14 @@ class ContractsView extends StatelessWidget {
                           ),
                           FilledButton(onPressed: () {}, child: Text('ชำระเงิน')),
                           TextButton(
-                              onPressed: () => Navigator.pushNamed(context, ContractDetailView.routeName), child: Text('ดูรายละเอียด'), style: TextButton.styleFrom(foregroundColor: Colors.white)),
+                              onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ContractDetailView(
+                                            contractId: _selectedContract!,
+                                          ))),
+                              child: Text('ดูรายละเอียด'),
+                              style: TextButton.styleFrom(foregroundColor: Colors.white)),
                         ],
                       ),
                     ),
@@ -157,19 +219,23 @@ class ContractsView extends StatelessWidget {
                               borderRadius: BorderRadius.all(Radius.circular(32)),
                               border: Border.all(color: Color(0xFF585858)),
                             ),
-                            child: DropdownButton<String>(
+                            child: DropdownButton<int>(
                               isDense: true,
                               icon: Icon(Icons.keyboard_arrow_down),
                               style: Theme.of(context).textTheme.labelMedium,
                               underline: SizedBox(),
-                              value: '2567',
-                              items: <String>['2567', '2566', '2565'].map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
+                              value: _selectedYear,
+                              items: _selectableYears().map<DropdownMenuItem<int>>((int value) {
+                                return DropdownMenuItem<int>(
                                   value: value,
-                                  child: Text(value),
+                                  child: Text(_selectedLocale == SupportedLocales.th ? '${value + 543}' : '$value'),
                                 );
                               }).toList(),
-                              onChanged: (String? newValue) {},
+                              onChanged: (int? newValue) {
+                                setState(() {
+                                  _selectedYear = newValue!;
+                                });
+                              },
                             ),
                           )
                         ],
@@ -189,8 +255,21 @@ class ContractsView extends StatelessWidget {
                   }))
                 ],
               )),
-        )
+        ),
+        Positioned(
+          top: MediaQuery.of(context).padding.top,
+          left: 0,
+          child: IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
       ],
     ));
+  }
+
+  List<int> _selectableYears() {
+    final _currentYear = DateTime.now().year;
+    return List.generate(3, (index) => _currentYear - index);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
 import 'package:AssetWise/src/providers/register_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
@@ -29,12 +30,20 @@ void main() async {
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) => settingsController),
-    ChangeNotifierProvider(create: (context) => UserProvider()),
-    Provider(create: (context) => DashboardProvider()),
     Provider(create: (context) => FirebaseMessagingService()),
+    Provider(create: (context) => DashboardProvider()),
+    ChangeNotifierProvider(create: (context) => UserProvider()),
+    ChangeNotifierProxyProvider<UserProvider, SettingsController>(
+      create: (context) => settingsController,
+      update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
+    ),
     ProxyProvider<UserProvider, RegisterProvider>(
-      update: (context, userProvider, previous) => RegisterProvider(userProvider),
+      create: (context) => RegisterProvider(),
+      update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
+    ),
+    ProxyProvider<UserProvider, ContractProvider>(
+      create: (context) => ContractProvider(),
+      update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
     ),
   ], child: MyApp(settingsController: settingsController)));
 }

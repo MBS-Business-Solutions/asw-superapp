@@ -18,8 +18,9 @@ class RegisterProvider {
   VerifyOTPResponse? _verifyOTPResponse;
   VerifyOTPResponse? get verifyOTPResponse => _verifyOTPResponse;
 
-  RegisterProvider(UserProvider userProvider) {
+  RegisterProvider updateUserProvider(UserProvider userProvider) {
     _userProvider = userProvider;
+    return this;
   }
 
   Future<OTPRef?> requestOTPResident({bool isLoginWithEmail = false, String? idCard4, String? phoneEmail}) async {

@@ -1,9 +1,13 @@
+import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/change_languange_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
+import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
+import 'package:AssetWise/src/utils/string_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -18,6 +22,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
+    final userInformation = context.read<UserProvider>().userInformation;
     _isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final userProvider = context.read<UserProvider>();
     return ListView(
@@ -39,7 +44,13 @@ class _ProfileViewState extends State<ProfileView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('John Doe', style: Theme.of(context).textTheme.headlineSmall),
+                  Text(
+                    AppLocalizations.of(context)!.profileNameFormat(
+                      StringUtil.capitalize(userInformation?.firstName),
+                      StringUtil.capitalize(userInformation?.lastName),
+                    ),
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
                   Text('ID: 1234567890', style: Theme.of(context).textTheme.labelLarge),
                 ],
               ))
@@ -54,7 +65,7 @@ class _ProfileViewState extends State<ProfileView> {
             onChanged: (value) {
               context.read<SettingsController>().updateThemeMode(value ? ThemeMode.dark : ThemeMode.light);
             },
-            title: Text('โหมดสีเข้ม'),
+            title: Text(AppLocalizations.of(context)!.profileDarkMode),
           ),
         ),
         const SizedBox(height: 8),
@@ -66,18 +77,18 @@ class _ProfileViewState extends State<ProfileView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Text(
-                  'ข้อมูลของฉัน',
+                  AppLocalizations.of(context)!.profileMyInfo,
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
               ),
               ListTile(
-                title: Text('เบอร์มือถือ'),
+                title: Text(AppLocalizations.of(context)!.profilePhoneNumber),
                 subtitle: Text(userProvider.userInformation?.phone ?? '-'),
                 trailing: Icon(Icons.chevron_right),
                 onTap: () {},
               ),
               ListTile(
-                title: Text('อีเมล'),
+                title: Text(AppLocalizations.of(context)!.profileEmail),
                 subtitle: Text('sample@gmail.com'),
                 trailing: Icon(Icons.chevron_right),
                 onTap: () {},
@@ -94,12 +105,12 @@ class _ProfileViewState extends State<ProfileView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Text(
-                  'บ้านของฉัน',
+                  AppLocalizations.of(context)!.profileMyAsset,
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
               ),
               ListTile(
-                title: Text('3 หลัง'),
+                title: Text(AppLocalizations.of(context)!.profileMyAssetSum(1)),
                 trailing: Icon(Icons.chevron_right),
                 onTap: () {},
               ),
@@ -115,12 +126,12 @@ class _ProfileViewState extends State<ProfileView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Text(
-                  'ภาษา',
+                  AppLocalizations.of(context)!.profileLanguage,
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
               ),
               ListTile(
-                title: Text('เปลี่ยนภาษา'),
+                title: Text(AppLocalizations.of(context)!.profileChangeLanguage),
                 trailing: Icon(Icons.chevron_right),
                 onTap: () {
                   Navigator.of(context).pushNamed(ChangeLanguangeView.routeName);
@@ -138,22 +149,22 @@ class _ProfileViewState extends State<ProfileView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Text(
-                  'ตั้งค่าบัญชี',
+                  AppLocalizations.of(context)!.profileSettings,
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
               ),
               ListTile(
-                title: Text('จัดการข้อมูลส่วนตัว'),
+                title: Text(AppLocalizations.of(context)!.profilePersonalInfo),
                 trailing: Icon(Icons.chevron_right),
                 onTap: () {},
               ),
               ListTile(
-                title: Text('รหัส PIN'),
+                title: Text(AppLocalizations.of(context)!.profilePin),
                 trailing: Icon(Icons.chevron_right),
                 onTap: () {},
               ),
               ListTile(
-                title: Text('ปิดใช้งานหรือลบบัญชี'),
+                title: Text(AppLocalizations.of(context)!.profileDeleteAccount),
                 trailing: Icon(Icons.chevron_right),
                 onTap: () {},
               ),
@@ -164,7 +175,7 @@ class _ProfileViewState extends State<ProfileView> {
         Container(
           color: Theme.of(context).scaffoldBackgroundColor,
           child: ListTile(
-            title: Text('เกี่ยวกับ Assetwise'),
+            title: Text(AppLocalizations.of(context)!.profileAbout),
             trailing: Icon(Icons.chevron_right),
             onTap: () {},
           ),
@@ -178,22 +189,22 @@ class _ProfileViewState extends State<ProfileView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Text(
-                  'การเข้าสู่ระบบ',
+                  AppLocalizations.of(context)!.profileAuthen,
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
               ),
               ListTile(
-                title: Text('ออกจากแอปพลิเคชัน Assetwise'),
+                title: Text(AppLocalizations.of(context)!.profileExit),
                 trailing: Icon(Icons.chevron_right),
                 onTap: () {
                   exit(0);
                 },
               ),
               ListTile(
-                title: Text('ออกจากระบบ'),
+                title: Text(AppLocalizations.of(context)!.profileLogout),
                 trailing: Icon(
                   Icons.logout,
-                  color: Colors.red,
+                  color: mRedColor,
                 ),
                 onTap: () {},
               ),

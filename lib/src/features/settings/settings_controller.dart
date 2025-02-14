@@ -1,3 +1,4 @@
+import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,6 +14,7 @@ class SettingsController with ChangeNotifier {
 
   // Make SettingsService a private variable so it is not used directly.
   final SettingsService _settingsService;
+  UserProvider? _userProvider;
 
   // Make ThemeMode a private variable so it is not updated directly without
   // also persisting the changes with the SettingsService.
@@ -27,6 +29,11 @@ class SettingsController with ChangeNotifier {
 
   late SupportedLocales _selectedLocale;
   SupportedLocales get supportedLocales => _selectedLocale;
+
+  SettingsController updateUserProvider(UserProvider userProvider) {
+    _userProvider = userProvider;
+    return this;
+  }
 
   /// Load the user's settings from the SettingsService. It may load from a
   /// local database or the internet. The controller only knows it can load the
@@ -70,6 +77,7 @@ class SettingsController with ChangeNotifier {
     _selectedLocale = newLocale;
     _locale = Locale(_selectedLocale.locale);
     await _settingsService.updateLocale(_locale);
+    await _userProvider!.setPreferedLanguage(_selectedLocale.locale.toUpperCase());
     notifyListeners();
   }
 }
@@ -79,7 +87,7 @@ enum SupportedLocales {
   th('th', 'ไทย(ไทย)');
 
   final String locale;
-  final String language;
+  final String languageName;
 
-  const SupportedLocales(this.locale, this.language);
+  const SupportedLocales(this.locale, this.languageName);
 }

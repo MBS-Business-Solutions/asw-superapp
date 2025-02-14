@@ -169,3 +169,111 @@ class Unit {
     );
   }
 }
+
+class Contract {
+  final String id;
+  final String contractId;
+  final String projectCode;
+  final String projectName;
+  final String unitNumber;
+  final bool isDefault;
+  final String imageUrl;
+
+  Contract({
+    required this.id,
+    required this.contractId,
+    required this.projectCode,
+    required this.projectName,
+    required this.unitNumber,
+    required this.isDefault,
+    required this.imageUrl,
+  });
+
+  factory Contract.fromJson(Map<String, dynamic> json) {
+    return Contract(
+      id: json['id'],
+      contractId: json['contract_id'],
+      projectCode: json['project_code'],
+      projectName: json['project_name'],
+      unitNumber: json['unit_number'],
+      isDefault: json['is_default'],
+      imageUrl: json['image_url'],
+    );
+  }
+}
+
+class ContractDetail {
+  final DateTime date;
+  final DateTime signDate;
+  final DateTime transferDate;
+  final int sellingPrice;
+  final int cashDiscount;
+  final int netPrice;
+  final int bookAmount;
+  final int contractAmount;
+  final int downAmount;
+  final int transferAmount;
+  final int paymentAmount;
+  final int remainDownAmount;
+  final int remainAmount;
+
+  ContractDetail({
+    required this.date,
+    required this.signDate,
+    required this.transferDate,
+    required this.sellingPrice,
+    required this.cashDiscount,
+    required this.netPrice,
+    required this.bookAmount,
+    required this.contractAmount,
+    required this.downAmount,
+    required this.transferAmount,
+    required this.paymentAmount,
+    required this.remainDownAmount,
+    required this.remainAmount,
+  });
+
+  factory ContractDetail.fromJson(Map<String, dynamic> json) {
+    return ContractDetail(
+      date: DateTime.parse(json['date']),
+      signDate: DateTime.parse(json['sign_date']),
+      transferDate: DateTime.parse(json['transfer_date']),
+      sellingPrice: json['selling_price'],
+      cashDiscount: json['cash_discount'],
+      netPrice: json['net_price'],
+      bookAmount: json['book_amount'],
+      contractAmount: json['contract_amount'],
+      downAmount: json['down_amount'],
+      transferAmount: json['transfer_amount'],
+      paymentAmount: json['payment_amount'],
+      remainDownAmount: json['remain_down_amount'],
+      remainAmount: json['remain_amount'],
+    );
+  }
+}
+
+class PaymentDetail {
+  final DateTime date;
+  final int amount;
+  final String type;
+  final String status;
+  final String receiptNumber;
+
+  PaymentDetail({
+    required this.date,
+    required this.amount,
+    required this.type,
+    required this.status,
+    required this.receiptNumber,
+  });
+
+  factory PaymentDetail.fromJson(Map<String, dynamic> json) {
+    return PaymentDetail(
+      date: DateTime.parse(json['date']),
+      amount: json['amount'],
+      type: json['type'],
+      status: json['status'],
+      receiptNumber: json['receipt_number'],
+    );
+  }
+}
