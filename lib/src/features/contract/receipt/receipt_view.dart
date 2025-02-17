@@ -1,0 +1,143 @@
+import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/providers/contract_provider.dart';
+import 'package:AssetWise/src/utils/date_formatter_util.dart';
+import 'package:AssetWise/src/widgets/assetwise_bg.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+
+class ReceiptView extends StatefulWidget {
+  const ReceiptView({super.key, required this.contractNumber, required this.receiptNumber});
+  static const String routeName = '/view-receipt';
+  final String contractNumber;
+  final String receiptNumber;
+  @override
+  State<ReceiptView> createState() => _ReceiptViewState();
+}
+
+class _ReceiptViewState extends State<ReceiptView> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title: const Text('รายละเอียดใบเสร็จ'),
+          centerTitle: true,
+        ),
+        body: FutureBuilder(
+            future: context.read<ContractProvider>().getReceiptDetail(widget.contractNumber, widget.receiptNumber),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              final receiptDetail = snapshot.data;
+              if (receiptDetail == null) {
+                return Center(child: Text(AppLocalizations.of(context)!.errorNoData));
+              }
+              return Stack(
+                children: [
+                  const AssetWiseBG(),
+                  Center(
+                    child: SvgPicture.asset(
+                      'assets/images/ASW_Logo_Rac_dark-bg.svg',
+                      width: MediaQuery.of(context).size.width,
+                      colorFilter: const ColorFilter.mode(Colors.white12, BlendMode.srcIn),
+                    ),
+                  ),
+                  SafeArea(
+                      child: Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        child: Center(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SvgPicture.asset(
+                              'assets/images/payment_success.svg',
+                            ),
+                            const SizedBox(height: mDefaultPadding),
+                            Text(AppLocalizations.of(context)!.receiptViewSuccess, style: Theme.of(context).textTheme.titleLarge),
+                            const SizedBox(height: mMediumPadding),
+                            Text(AppLocalizations.of(context)!.priceFormatBaht(receiptDetail.amount), style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white)),
+                            const SizedBox(height: mMediumPadding),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.receipt_long_sharp, size: 18),
+                                Text(widget.receiptNumber, style: Theme.of(context).textTheme.bodyMedium),
+                              ],
+                            ),
+                          ],
+                        )),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(child: Text(AppLocalizations.of(context)!.receiptViewPaymentType)),
+                                Text(receiptDetail.paymentType),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: Text(AppLocalizations.of(context)!.receiptViewDate)),
+                                Text('${DateFormatterUtil.format(context, receiptDetail.date)} ${DateFormatterUtil.formatTime(context, receiptDetail.date)}'),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: Text(AppLocalizations.of(context)!.receiptViewRef1)),
+                                Text(receiptDetail.ref1),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: Text(AppLocalizations.of(context)!.receiptViewRef2)),
+                                Text(receiptDetail.ref2),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: mDefaultPadding * 2,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: Text(AppLocalizations.of(context)!.receiptViewRemark)),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(child: Text(AppLocalizations.of(context)!.receiptViewDue)),
+                                Text(DateFormatterUtil.format(context, receiptDetail.dueDate)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Spacer(),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+                        child: FilledButton(
+                            onPressed: () {},
+                            child: Text(
+                              AppLocalizations.of(context)!.receiptViewViewReceipt,
+                            )),
+                      ),
+                      const SizedBox(height: mDefaultPadding),
+                    ],
+                  )),
+                ],
+              );
+            }),
+      ),
+    );
+  }
+}

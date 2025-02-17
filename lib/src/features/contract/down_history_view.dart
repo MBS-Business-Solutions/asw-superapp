@@ -1,5 +1,4 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
-import 'package:AssetWise/src/features/contract/widgets/history_list_tile.dart';
 import 'package:flutter/material.dart';
 
 class DownHistoryView extends StatelessWidget {
@@ -20,11 +19,12 @@ class DownHistoryView extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: ListView.builder(itemBuilder: (context, index) {
-          return HistoryListTile(
-            title: 'งวดที่ ${index + 1}',
-            date: '25 ธ.ค. 2567',
-            amount: '10,460.00 บาท',
-          );
+          return const ListTile();
+          // return HistoryListTile(
+          //   title: 'งวดที่ ${index + 1}',
+          //   date: '25 ธ.ค. 2567',
+          //   amount: '10,460.00 บาท',
+          // );
         }),
       ),
     );

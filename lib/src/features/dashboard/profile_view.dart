@@ -1,7 +1,6 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/change_languange_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
-import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/utils/string_util.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +34,8 @@ class _ProfileViewState extends State<ProfileView> {
             children: [
               CircleAvatar(
                 radius: 32,
-                child: Icon(Icons.person),
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                child: const Icon(Icons.person),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -84,13 +83,13 @@ class _ProfileViewState extends State<ProfileView> {
               ListTile(
                 title: Text(AppLocalizations.of(context)!.profilePhoneNumber),
                 subtitle: Text(userProvider.userInformation?.phone ?? '-'),
-                trailing: Icon(Icons.chevron_right),
+                trailing: const Icon(Icons.chevron_right),
                 onTap: () {},
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.profileEmail),
-                subtitle: Text('sample@gmail.com'),
-                trailing: Icon(Icons.chevron_right),
+                subtitle: const Text('sample@gmail.com'),
+                trailing: const Icon(Icons.chevron_right),
                 onTap: () {},
               ),
             ],
@@ -111,7 +110,7 @@ class _ProfileViewState extends State<ProfileView> {
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.profileMyAssetSum(1)),
-                trailing: Icon(Icons.chevron_right),
+                trailing: const Icon(Icons.chevron_right),
                 onTap: () {},
               ),
             ],
@@ -132,7 +131,7 @@ class _ProfileViewState extends State<ProfileView> {
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.profileChangeLanguage),
-                trailing: Icon(Icons.chevron_right),
+                trailing: const Icon(Icons.chevron_right),
                 onTap: () {
                   Navigator.of(context).pushNamed(ChangeLanguangeView.routeName);
                 },
@@ -155,17 +154,17 @@ class _ProfileViewState extends State<ProfileView> {
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.profilePersonalInfo),
-                trailing: Icon(Icons.chevron_right),
+                trailing: const Icon(Icons.chevron_right),
                 onTap: () {},
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.profilePin),
-                trailing: Icon(Icons.chevron_right),
+                trailing: const Icon(Icons.chevron_right),
                 onTap: () {},
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.profileDeleteAccount),
-                trailing: Icon(Icons.chevron_right),
+                trailing: const Icon(Icons.chevron_right),
                 onTap: () {},
               ),
             ],
@@ -176,7 +175,7 @@ class _ProfileViewState extends State<ProfileView> {
           color: Theme.of(context).scaffoldBackgroundColor,
           child: ListTile(
             title: Text(AppLocalizations.of(context)!.profileAbout),
-            trailing: Icon(Icons.chevron_right),
+            trailing: const Icon(Icons.chevron_right),
             onTap: () {},
           ),
         ),
@@ -195,14 +194,14 @@ class _ProfileViewState extends State<ProfileView> {
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.profileExit),
-                trailing: Icon(Icons.chevron_right),
+                trailing: const Icon(Icons.chevron_right),
                 onTap: () {
                   exit(0);
                 },
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.profileLogout),
-                trailing: Icon(
+                trailing: const Icon(
                   Icons.logout,
                   color: mRedColor,
                 ),

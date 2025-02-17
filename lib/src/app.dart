@@ -1,9 +1,9 @@
 import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/consts/themes_const.dart';
 import 'package:AssetWise/src/0_test/ui_showcase_screen.dart';
-import 'package:AssetWise/src/features/contract/contract_detail_view.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/features/contract/down_history_view.dart';
+import 'package:AssetWise/src/features/contract/receipt/receipt_view.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/change_languange_view.dart';
 import 'package:AssetWise/src/features/pin/set_pin_view.dart';
 import 'package:AssetWise/src/features/register/consents_view.dart';
@@ -106,22 +106,27 @@ class MyApp extends StatelessWidget {
                   case RegisterView.routeName:
                     return const RegisterView();
                   case OtpView.routeName:
-                    return OtpView();
+                    return const OtpView();
                   case RegisterUserDetailView.routeName:
-                    return RegisterUserDetailView();
+                    return const RegisterUserDetailView();
                   case SetPinView.routeName:
-                    return SetPinView();
+                    return const SetPinView();
                   case ConsentsView.routeName:
-                    return ConsentsView();
+                    return const ConsentsView();
                   case ContractsView.routeName:
-                    return ContractsView();
+                    return const ContractsView();
                   case DownHistoryView.routeName:
-                    return DownHistoryView();
+                    return const DownHistoryView();
                   case ChangeLanguangeView.routeName:
-                    return ChangeLanguangeView();
+                    return const ChangeLanguangeView();
+                  case ReceiptView.routeName:
+                    return ReceiptView(
+                      contractNumber: (routeSettings.arguments as Map<String, dynamic>)['contractNumber'] as String,
+                      receiptNumber: (routeSettings.arguments as Map<String, dynamic>)['receiptNumber'] as String,
+                    );
                   default:
                     // return DashboardView(controller: settingsController);
-                    return SplashView();
+                    return const SplashView();
                 }
               },
             );

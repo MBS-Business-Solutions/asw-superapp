@@ -42,7 +42,7 @@ class FirebaseMessagingService {
       showDialog(
         context: navigatorKey.currentState!.context,
         builder: (context) => AlertDialog(
-          title: Text('New Notification'),
+          title: const Text('New Notification'),
           content: Text(message.notification?.body ?? 'No message body'),
           actions: [
             TextButton(
@@ -50,7 +50,7 @@ class FirebaseMessagingService {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushNamed(DashboardView.routeName);
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         ),

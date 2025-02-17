@@ -13,24 +13,25 @@ class HomeActionButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(
       builder: (context, userProvider, child) {
-        if (!(userProvider.isAuthenticated))
+        if (!(userProvider.isAuthenticated)) {
           return FilledButton(
               onPressed: () {
                 Navigator.of(context).pushNamed(RegisterView.routeName);
               },
-              child: Icon(Icons.login));
+              child: const Icon(Icons.login));
+        }
         return Row(
           children: [
             IconButton(
                 onPressed: () {
                   Navigator.of(context).pushNamed(RegisterView.routeName);
                 },
-                icon: Badge.count(count: 8, child: Icon(Icons.notifications_none))),
+                icon: Badge.count(count: 8, child: const Icon(Icons.notifications_none))),
             IconButton(
                 onPressed: () {
                   Navigator.of(context).pushNamed(ContractsView.routeName);
                 },
-                icon: Icon(Icons.gite_sharp)),
+                icon: const Icon(Icons.gite_sharp)),
           ],
         );
       },

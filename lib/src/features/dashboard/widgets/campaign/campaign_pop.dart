@@ -25,6 +25,12 @@ class _CampaignPopState extends State<CampaignPop> {
     super.initState();
   }
 
+  void preloadImages() {
+    for (final campaign in campaigns) {
+      precacheImage(Image.network(campaign.image).image, context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -78,7 +84,7 @@ class _CampaignPopState extends State<CampaignPop> {
                           Positioned(
                             right: 8,
                             top: 8,
-                            child: IconButton(onPressed: () => close(), icon: Icon(Icons.close)),
+                            child: IconButton(onPressed: () => close(), icon: const Icon(Icons.close)),
                           ),
                         ],
                       ),
@@ -102,12 +108,13 @@ class _CampaignPopState extends State<CampaignPop> {
         final nextShow = DateTime.now().add(const Duration(hours: 1)).millisecondsSinceEpoch;
         shared.setInt('CAMPAIGN_POP_NEXT_SHOW', nextShow);
         campaigns = await AWContentService.fetchCampaigns();
-        setState(() {
-          if (campaigns.isNotEmpty) {
+        if (campaigns.isNotEmpty) {
+          preloadImages();
+          setState(() {
             _isShow = true;
             _markHide = false;
-          }
-        });
+          });
+        }
       }
     }
   }

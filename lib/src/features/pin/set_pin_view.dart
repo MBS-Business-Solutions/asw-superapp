@@ -52,7 +52,7 @@ class _SetPinViewState extends State<SetPinView> {
                 _isConfirmState ? AppLocalizations.of(context)!.setPinConfirm : AppLocalizations.of(context)!.setPinSetPin(pinMaxLength),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 4,
               ),
               Text(
@@ -60,7 +60,7 @@ class _SetPinViewState extends State<SetPinView> {
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               Row(
@@ -76,18 +76,18 @@ class _SetPinViewState extends State<SetPinView> {
                       ),
                     ),
                     if (i < pinMaxLength - 1)
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
                   ]
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               Text(
                 _isInvalidPin ? AppLocalizations.of(context)!.setPinError : '',
-                style: TextStyle(color: mRedColor),
+                style: const TextStyle(color: mRedColor),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.48,
@@ -136,7 +136,7 @@ class _SetPinViewState extends State<SetPinView> {
             left: 0,
             right: 0,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: mDefaultPadding, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: mDefaultPadding, vertical: 8),
               child: SafeArea(
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -145,7 +145,7 @@ class _SetPinViewState extends State<SetPinView> {
                     AppLocalizations.of(context)!.setPinSkipInstruction,
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   FilledButton(onPressed: () => _processToHome(), child: Text(AppLocalizations.of(context)!.setPinSkip)),

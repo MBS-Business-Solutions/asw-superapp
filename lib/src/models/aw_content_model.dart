@@ -277,3 +277,58 @@ class PaymentDetail {
     );
   }
 }
+
+class OverdueDetail {
+  final int amount;
+  final String? creditNumber;
+  final DateTime? debitDate;
+  final DateTime dueDate;
+
+  OverdueDetail({
+    required this.amount,
+    this.creditNumber,
+    this.debitDate,
+    required this.dueDate,
+  });
+
+  factory OverdueDetail.fromJson(Map<String, dynamic> json) {
+    return OverdueDetail(
+      amount: json['amount'],
+      creditNumber: json['credit_number'],
+      debitDate: json['debit_date'] != null ? DateTime.parse(json['debit_date']) : null,
+      dueDate: DateTime.parse(json['due_date']),
+    );
+  }
+}
+
+class ReceiptDetail {
+  final int amount;
+  final DateTime date;
+  final String paymentType;
+  final String receiptNumber;
+  final String ref1;
+  final String ref2;
+  final DateTime dueDate;
+
+  ReceiptDetail({
+    required this.amount,
+    required this.date,
+    required this.paymentType,
+    required this.receiptNumber,
+    required this.ref1,
+    required this.ref2,
+    required this.dueDate,
+  });
+
+  factory ReceiptDetail.fromJson(Map<String, dynamic> json) {
+    return ReceiptDetail(
+      amount: json['amount'],
+      date: DateTime.parse(json['date']),
+      paymentType: json['payment_type'],
+      receiptNumber: json['receipt_number'],
+      ref1: json['ref1'],
+      ref2: json['ref2'],
+      dueDate: DateTime.parse(json['due_date']),
+    );
+  }
+}

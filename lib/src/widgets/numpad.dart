@@ -43,7 +43,7 @@ class NumPadWidget extends StatelessWidget {
         Expanded(
           child: Row(
             children: [
-              Expanded(child: SizedBox()),
+              const Expanded(child: SizedBox()),
               Expanded(child: _buildNumberButton('0', context)),
               Expanded(
                   child: _buildNoOutlineButton(Icon(
@@ -62,7 +62,7 @@ class NumPadWidget extends StatelessWidget {
     return OutlinedButton(
       onPressed: () => onPressed?.call(number),
       style: OutlinedButton.styleFrom(
-        shape: CircleBorder(),
+        shape: const CircleBorder(),
         side: BorderSide(width: 1.0, color: Theme.of(context).highlightColor),
         fixedSize: Size.fromRadius(_buttonSize),
         foregroundColor: Colors.white,
@@ -75,8 +75,8 @@ class NumPadWidget extends StatelessWidget {
     return OutlinedButton(
       onPressed: () => onDelete?.call(),
       style: OutlinedButton.styleFrom(
-        shape: CircleBorder(),
-        side: BorderSide(color: Colors.transparent),
+        shape: const CircleBorder(),
+        side: const BorderSide(color: Colors.transparent),
         fixedSize: Size.fromRadius(_buttonSize),
         foregroundColor: Colors.white,
       ),

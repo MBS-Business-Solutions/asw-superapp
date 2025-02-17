@@ -136,12 +136,12 @@ class _BottomBarState extends State<BottomBar> {
                             color: bottomBarTheme?.selectedTextColor ?? mPrimaryMatColor,
                             shape: BoxShape.circle,
                             gradient: bottomBarTheme?.highlightGradient ??
-                                LinearGradient(
+                                const LinearGradient(
                                   colors: [mGoldenGradientStart, mGoldenGradientEnd],
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                 ),
-                            boxShadow: [
+                            boxShadow: const [
                               BoxShadow(
                                 color: Colors.white24,
                                 spreadRadius: 0,

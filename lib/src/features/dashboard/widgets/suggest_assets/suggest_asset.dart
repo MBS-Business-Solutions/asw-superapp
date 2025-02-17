@@ -8,10 +8,13 @@ class SuggestAssets extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    for (final project in projects) {
+      precacheImage(NetworkImage(project.image), context);
+    }
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       sliver: SliverGrid.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,

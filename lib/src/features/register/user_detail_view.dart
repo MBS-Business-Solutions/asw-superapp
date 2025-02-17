@@ -72,7 +72,7 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
                             AppLocalizations.of(context)!.userDetailTitle,
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 4,
                           ),
                           Text(
@@ -150,7 +150,7 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
                                 label: AppLocalizations.of(context)!.userDetailCitizenId,
                               ),
                             ),
-                          SizedBox(
+                          const SizedBox(
                             height: 24,
                           ),
                           SizedBox(

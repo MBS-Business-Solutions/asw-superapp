@@ -11,7 +11,7 @@ class SuggestItem extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4.0),
-        border: Border.all(color: Theme.of(context).brightness == Brightness.dark ? Color(0xFF585858) : Color(0xFFE0E0E0)),
+        border: Border.all(color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFF585858) : const Color(0xFFE0E0E0)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

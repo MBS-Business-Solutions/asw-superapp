@@ -46,14 +46,14 @@ class _ConsentsViewState extends State<ConsentsView> {
                   child: ListView(
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Html(
                       data: consent.content,
                     ),
                   ),
                   for (final consentItem in consent.items) ..._buildConsentSection(consent, consentItem),
                   Container(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     width: double.infinity,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,

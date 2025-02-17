@@ -134,7 +134,7 @@ class AWContentService {
     return null;
   }
 
-  static Future<List<PaymentDetail>?> fetchPaymentsByYear(String token, String contractId, String year) async {
+  static Future<List<PaymentDetail>?> fetchPaymentsByYear(String token, String contractId, int year) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/payments?year=$year'),
       headers: {
@@ -147,6 +147,46 @@ class AWContentService {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         List<dynamic> data = jsonResponse['data'];
         return data.map((json) => PaymentDetail.fromJson(json)).toList();
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+    }
+    if (kDebugMode) print(response);
+    return null;
+  }
+
+  static Future<OverdueDetail?> fetchOverdueDetail(String token, String contractId) async {
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/contracts/$contractId/overdue'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        return OverdueDetail.fromJson(jsonResponse['data']);
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+    }
+    if (kDebugMode) print(response);
+    return null;
+  }
+
+  static Future<ReceiptDetail?> fetchReceiptDetail(String token, String contractId, String receiptNumber) async {
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/contracts/$contractId/payments/$receiptNumber'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        return ReceiptDetail.fromJson(jsonResponse['data']);
       }
     } catch (e) {
       if (kDebugMode) print(e);

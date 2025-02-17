@@ -95,7 +95,7 @@ class _OtpViewState extends State<OtpView> {
                           AppLocalizations.of(context)!.otpTitle,
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         Text(
@@ -107,10 +107,10 @@ class _OtpViewState extends State<OtpView> {
                           style: Theme.of(context).textTheme.bodyMedium,
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         TextButton.icon(
@@ -118,15 +118,15 @@ class _OtpViewState extends State<OtpView> {
                           label: Text(
                             _isButtonDisabled ? AppLocalizations.of(context)!.otpRequestCountdown(_start) : AppLocalizations.of(context)!.otpRequestAgain,
                           ),
-                          icon: Icon(Icons.refresh),
+                          icon: const Icon(Icons.refresh),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 8,
                         ),
                         OtpInput(
                           controller: otpController,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 8,
                         ),
                         if (_invalidOTP)
@@ -134,7 +134,7 @@ class _OtpViewState extends State<OtpView> {
                             '**หมายเลข OTP ไม่ถูกต้อง**',
                             style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: mRedColor),
                           ),
-                        SizedBox(
+                        const SizedBox(
                           height: 24,
                         ),
                         SizedBox(

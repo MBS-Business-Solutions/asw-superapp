@@ -15,6 +15,10 @@ class DashboardMainView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dashboardProvider = context.read<DashboardProvider>();
+    // preload images
+    for (final content in dashboardProvider.banners) {
+      precacheImage(NetworkImage(content.image), context);
+    }
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
@@ -22,7 +26,7 @@ class DashboardMainView extends StatelessWidget {
         ),
         SliverToBoxAdapter(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mDefaultPadding / 4),
+            padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mDefaultPadding / 4),
             child: const Row(
               children: [
                 AssetWiseLogo(
@@ -107,7 +111,7 @@ class DashboardMainView extends StatelessWidget {
               child: Row(
                 children: [
                   Text(AppLocalizations.of(context)!.dashboardMainSectionFavouriteMore),
-                  Icon(
+                  const Icon(
                     Icons.chevron_right,
                   ),
                 ],
@@ -115,8 +119,8 @@ class DashboardMainView extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 16.0),
-        Row(
+        const SizedBox(height: 16.0),
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             HotMenuWidget(

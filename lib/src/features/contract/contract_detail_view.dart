@@ -1,6 +1,5 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/features/contract/down_history_view.dart';
-import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/utils/date_formatter_util.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +29,6 @@ class ContractDetailView extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             }
             final contractDetail = snapshot.data!;
-            final currentLocale = context.read<SettingsController>().supportedLocales.locale;
             return Stack(
               children: [
                 SingleChildScrollView(
@@ -38,10 +36,9 @@ class ContractDetailView extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailContractDate, value: DateFormatterUtil.format(contractDetail.date, locale: currentLocale)),
-                        _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailSigningDate, value: DateFormatterUtil.format(contractDetail.signDate, locale: currentLocale)),
-                        _buildDetailText(context,
-                            label: AppLocalizations.of(context)!.contractDetailEstimatedTransferDate, value: DateFormatterUtil.format(contractDetail.transferDate, locale: currentLocale)),
+                        _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailContractDate, value: DateFormatterUtil.format(context, contractDetail.date)),
+                        _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailSigningDate, value: DateFormatterUtil.format(context, contractDetail.signDate)),
+                        _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailEstimatedTransferDate, value: DateFormatterUtil.format(context, contractDetail.transferDate)),
                         const Divider(
                           color: Colors.white10,
                           thickness: 4,
@@ -67,12 +64,12 @@ class ContractDetailView extends StatelessWidget {
                                 },
                                 child: Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.remove_red_eye,
                                       size: 16,
                                       color: mBrightPrimaryColor,
                                     ),
-                                    SizedBox(width: 4),
+                                    const SizedBox(width: 4),
                                     Text(AppLocalizations.of(context)!.contractDetailDownAmountDetails,
                                         style: Theme.of(context).textTheme.labelMedium!.copyWith(
                                               color: mBrightPrimaryColor,
@@ -97,9 +94,10 @@ class ContractDetailView extends StatelessWidget {
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
                         ),
-                        _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailPaymentAmount, value: AppLocalizations.of(context)!.priceFormat(555555)),
-                        _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailRemainDownAmount, value: AppLocalizations.of(context)!.priceFormat(555555)),
-                        _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailRemainHousePayment, value: AppLocalizations.of(context)!.priceFormat(555555)),
+                        _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailPaymentAmount, value: AppLocalizations.of(context)!.priceFormat(contractDetail.paymentAmount)),
+                        _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailRemainDownAmount, value: AppLocalizations.of(context)!.priceFormat(contractDetail.remainAmount)),
+                        _buildDetailText(context,
+                            label: AppLocalizations.of(context)!.contractDetailRemainHousePayment, value: AppLocalizations.of(context)!.priceFormat(contractDetail.remainDownAmount)),
                         const Divider(
                           color: Colors.white10,
                           thickness: 4,
@@ -154,7 +152,7 @@ class ContractDetailView extends StatelessWidget {
                             onPressed: () {},
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: [Text(AppLocalizations.of(context)!.contractDetailDownloadDoc), Icon(Icons.file_download_outlined)],
+                              children: [Text(AppLocalizations.of(context)!.contractDetailDownloadDoc), const Icon(Icons.file_download_outlined)],
                             ))),
                   ),
                 )

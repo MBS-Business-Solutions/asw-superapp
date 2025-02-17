@@ -48,18 +48,18 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
               alignment: Alignment.centerLeft,
             ),
             ListTile(
-              title: Text('Text showcases'),
+              title: const Text('Text showcases'),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => TextShowCases(),
+                  builder: (context) => const TextShowCases(),
                 ));
               },
-              trailing: Icon(Icons.arrow_forward_ios),
+              trailing: const Icon(Icons.arrow_forward_ios),
             ),
             SwitchListTile.adaptive(
                 value: value,
                 onChanged: (v) => setState(() => value = v),
-                title: Text('Switch')),
+                title: const Text('Switch')),
             ..._textfieldShowcase(context),
             ..._buttonsShowcase(context),
             ..._iconButtonShowcase(context),
@@ -89,35 +89,35 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
           children: [
             TextField(
               controller: TextEditingController(text: 'Lorem ipsum'),
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 label: Text('Text field'),
                 hintText: 'TextField',
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                 label: Text('Hint text'),
                 hintText: 'Hint text',
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             TextField(
               controller: TextEditingController(text: 'Lorem ipsum'),
               enabled: false,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 label: Text('Disabled'),
                 hintText: 'TextField',
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
-            AwTextField(label: 'เบอร์มือถือ'),
+            const AwTextField(label: 'เบอร์มือถือ'),
           ],
         ),
       )
@@ -131,8 +131,8 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ElevatedButton(onPressed: () {}, child: Text('ElevatedButton')),
-            ElevatedButton(onPressed: null, child: Text('Disabled')),
+            ElevatedButton(onPressed: () {}, child: const Text('ElevatedButton')),
+            const ElevatedButton(onPressed: null, child: Text('Disabled')),
           ],
         ),
       ),
@@ -141,10 +141,10 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            FilledButton(onPressed: () {}, child: Text('FilledButton')),
+            FilledButton(onPressed: () {}, child: const Text('FilledButton')),
             FilledButton.tonal(
-                onPressed: () {}, child: Text('FilledButton.tonal')),
-            FilledButton(onPressed: null, child: Text('Disabled')),
+                onPressed: () {}, child: const Text('FilledButton.tonal')),
+            const FilledButton(onPressed: null, child: Text('Disabled')),
           ],
         ),
       ),
@@ -153,8 +153,8 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            OutlinedButton(onPressed: () {}, child: Text('OutlinedButton')),
-            OutlinedButton(onPressed: null, child: Text('Disabled')),
+            OutlinedButton(onPressed: () {}, child: const Text('OutlinedButton')),
+            const OutlinedButton(onPressed: null, child: Text('Disabled')),
           ],
         ),
       ),
@@ -163,8 +163,8 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextButton(onPressed: () {}, child: Text('TextButton')),
-            TextButton(onPressed: null, child: Text('Disabled')),
+            TextButton(onPressed: () {}, child: const Text('TextButton')),
+            const TextButton(onPressed: null, child: Text('Disabled')),
           ],
         ),
       ),
@@ -184,12 +184,12 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
                     children: [
                       IconButton(
                           onPressed: () {},
-                          icon: Icon(Icons.add_a_photo_rounded)),
-                      Text('IconButton'),
+                          icon: const Icon(Icons.add_a_photo_rounded)),
+                      const Text('IconButton'),
                     ],
                   ),
                 ),
-                Expanded(
+                const Expanded(
                   child: Column(
                     children: [
                       IconButton(
@@ -208,12 +208,12 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
                     children: [
                       IconButton.filled(
                           onPressed: () {},
-                          icon: Icon(Icons.add_a_photo_rounded)),
-                      Text('IconButton.filled'),
+                          icon: const Icon(Icons.add_a_photo_rounded)),
+                      const Text('IconButton.filled'),
                     ],
                   ),
                 ),
-                Expanded(
+                const Expanded(
                   child: Column(
                     children: [
                       IconButton.filled(
@@ -232,12 +232,12 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
                     children: [
                       IconButton.filledTonal(
                           onPressed: () {},
-                          icon: Icon(Icons.add_a_photo_rounded)),
-                      Text('IconButton.filled'),
+                          icon: const Icon(Icons.add_a_photo_rounded)),
+                      const Text('IconButton.filled'),
                     ],
                   ),
                 ),
-                Expanded(
+                const Expanded(
                   child: Column(
                     children: [
                       IconButton.filledTonal(
@@ -256,12 +256,12 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
                     children: [
                       IconButton.outlined(
                           onPressed: () {},
-                          icon: Icon(Icons.add_a_photo_rounded)),
-                      Text('IconButton.filled'),
+                          icon: const Icon(Icons.add_a_photo_rounded)),
+                      const Text('IconButton.filled'),
                     ],
                   ),
                 ),
-                Expanded(
+                const Expanded(
                   child: Column(
                     children: [
                       IconButton.outlined(

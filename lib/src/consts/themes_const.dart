@@ -75,6 +75,12 @@ final TextTheme mTextTheme = TextTheme(
 
 final ThemeData mLightTheme = ThemeData(
   brightness: Brightness.light,
+  actionIconTheme: ActionIconThemeData(
+    backButtonIconBuilder: (context) => const Icon(
+      Icons.arrow_back_ios,
+      color: mPrimaryMatColor,
+    ),
+  ),
   scaffoldBackgroundColor: mLightBackgroundColor,
   textTheme: mTextTheme.apply(
     bodyColor: mLightBodyTextColor,
@@ -140,6 +146,11 @@ final ThemeData mLightTheme = ThemeData(
 
 final ThemeData mDarkTheme = ThemeData(
   brightness: Brightness.dark,
+  actionIconTheme: ActionIconThemeData(
+    backButtonIconBuilder: (context) => const Icon(
+      Icons.arrow_back_ios,
+    ),
+  ),
   scaffoldBackgroundColor: mDarkBackgroundColor,
   textTheme: mTextTheme.apply(
     bodyColor: mDarkBodyTextColor,

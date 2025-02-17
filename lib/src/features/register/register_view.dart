@@ -1,11 +1,9 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/register/otp_view.dart';
-import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/register_provider.dart';
 import 'package:AssetWise/src/services/aw_register_service.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
-import 'package:AssetWise/src/widgets/aw_textfield.dart';
 import 'package:AssetWise/src/widgets/aw_textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -65,14 +63,14 @@ class _RegisterViewState extends State<RegisterView> {
                             _emailForm ? AppLocalizations.of(context)!.registerEMail : AppLocalizations.of(context)!.registerMobile,
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 4,
                           ),
                           Text(
                             _emailForm ? AppLocalizations.of(context)!.registerEMailHint : AppLocalizations.of(context)!.registerMobileHint,
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 4,
                           ),
                           GestureDetector(
@@ -111,19 +109,19 @@ class _RegisterViewState extends State<RegisterView> {
                             },
                             title: Text(AppLocalizations.of(context)!.registerLoginByEmail),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 16,
                           ),
                           _emailForm ? _buildEmailForm() : _buildMobileForm(),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                           if (_showError != null)
                             Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 8),
                                   child: Icon(
                                     Icons.cancel_outlined,
                                     color: Colors.red,
@@ -136,7 +134,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 ))
                               ],
                             ),
-                          SizedBox(
+                          const SizedBox(
                             height: 24,
                           ),
                           SizedBox(
@@ -177,7 +175,7 @@ class _RegisterViewState extends State<RegisterView> {
         validator: (value) => value?.length != 10 ? AppLocalizations.of(context)!.registerInvalidData : null,
       ),
       if (_isResident) ...[
-        SizedBox(
+        const SizedBox(
           height: 24,
         ),
         AwTextFormField(
@@ -201,7 +199,7 @@ class _RegisterViewState extends State<RegisterView> {
         validator: (value) => !value!.contains('@') ? AppLocalizations.of(context)!.registerInvalidData : null,
       ),
       if (_isResident) ...[
-        SizedBox(
+        const SizedBox(
           height: 24,
         ),
         AwTextFormField(

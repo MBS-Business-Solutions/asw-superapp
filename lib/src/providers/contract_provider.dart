@@ -23,4 +23,23 @@ class ContractProvider {
     if (_userProvider == null) return null;
     return AWContentService.fetchContractDetail(_userProvider!.token!, contractId);
   }
+
+  Future<OverdueDetail?> fetchOverdueDetail(String contractId) async {
+    if (_userProvider == null) return null;
+    return AWContentService.fetchOverdueDetail(_userProvider!.token!, contractId);
+  }
+
+  Future<List<PaymentDetail>?> fetchPaymentsByYear(String contractId, int year) async {
+    if (_userProvider == null) return [];
+    // return AWContentService.fetchPaymentsByYear(_userProvider!.token!, contractId, year);
+    return [
+      PaymentDetail.fromJson({"date": "2024-11-29", "amount": 5000, "type": "Cash", "status": "รอยืนยันเงิน", "receipt_number": "RV-106C001-24110002"}),
+      PaymentDetail.fromJson({"date": "2024-11-29", "amount": 9999, "type": "QR PromptPay", "status": "ชำระแล้ว", "receipt_number": "RV-EQC019-19100156"}),
+    ];
+  }
+
+  Future<ReceiptDetail?> getReceiptDetail(String contractNumber, String receiptNumber) async {
+    if (_userProvider == null) return null;
+    return AWContentService.fetchReceiptDetail(_userProvider!.token!, contractNumber, receiptNumber);
+  }
 }

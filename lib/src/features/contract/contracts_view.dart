@@ -1,12 +1,13 @@
-import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/features/contract/contract_detail_view.dart';
+import 'package:AssetWise/src/features/contract/receipt/receipt_view.dart';
 import 'package:AssetWise/src/features/contract/widgets/history_list_tile.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ContractsView extends StatefulWidget {
   const ContractsView({super.key});
@@ -21,13 +22,35 @@ class _ContractsViewState extends State<ContractsView> {
   int _selectedIndex = 0;
   int _selectedYear = DateTime.now().year;
   late SupportedLocales _selectedLocale;
+  List<Contract>? _contracts;
 
-  late Future<List<Contract>> _futureContracts;
   @override
   void initState() {
-    _futureContracts = context.read<ContractProvider>().fetchContracts();
+    _initialLoad();
     _selectedLocale = context.read<SettingsController>().supportedLocales;
     super.initState();
+  }
+
+  void _initialLoad() async {
+    final contracts = await context.read<ContractProvider>().fetchContracts();
+    if (contracts.isNotEmpty) {
+      setState(() {
+        _contracts = contracts;
+        _selectedContract = contracts.first.contractId;
+        _selectedYear = DateTime.now().year;
+      });
+    }
+  }
+
+  List<int> _selectableYears() {
+    final currentYear = DateTime.now().year;
+    return List.generate(3, (index) => currentYear - index);
+  }
+
+  void _onContractSelected(String contractId) {
+    setState(() {
+      _selectedContract = contractId;
+    });
   }
 
   @override
@@ -39,35 +62,26 @@ class _ContractsViewState extends State<ContractsView> {
           top: 0,
           left: 0,
           right: 0,
-          child: FutureBuilder(
-              future: _futureContracts,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const LinearProgressIndicator();
-                }
-                final _contracts = snapshot.data!;
-                if (_contracts.isEmpty) {
-                  return Center(child: Text('No contract found'));
-                }
-                if (_selectedContract == null) _selectedContract = snapshot.data!.first.contractId;
-                return Container(
+          child: _contracts == null
+              ? const Center(child: SizedBox())
+              : Container(
                   height: MediaQuery.of(context).size.height * 0.35,
                   padding: const EdgeInsets.only(bottom: 32),
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                    image: NetworkImage(_contracts[_selectedIndex].imageUrl),
+                    image: NetworkImage(_contracts![_selectedIndex].imageUrl),
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.darken),
                   )),
                   child: Row(
                     children: [
                       IconButton(
-                        icon: Icon(Icons.chevron_left),
+                        icon: const Icon(Icons.chevron_left),
                         onPressed: _selectedIndex > 0
                             ? () {
                                 setState(() {
                                   _selectedIndex--;
-                                  _selectedContract = _contracts[_selectedIndex].contractId;
+                                  _onContractSelected(_contracts![_selectedIndex].contractId);
                                 });
                               }
                             : null,
@@ -75,12 +89,12 @@ class _ContractsViewState extends State<ContractsView> {
                       Expanded(
                         child: Column(
                           children: [
-                            Expanded(child: SizedBox()),
+                            const Expanded(child: SizedBox()),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(_contracts[_selectedIndex].unitNumber, style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Colors.white)),
-                                Text(_contracts[_selectedIndex].projectName, style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white)),
+                                Text(_contracts![_selectedIndex].unitNumber, style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Colors.white)),
+                                Text(_contracts![_selectedIndex].projectName, style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white)),
                               ],
                             ),
                             Expanded(
@@ -95,27 +109,26 @@ class _ContractsViewState extends State<ContractsView> {
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: Colors.white,
                               ),
-                              icon: Icon(Icons.dock_sharp),
-                              label: Text('รายละเอียดสัญญา'),
+                              icon: const Icon(Icons.dock_sharp),
+                              label: Text(AppLocalizations.of(context)!.contractsViewContract),
                             ))),
                           ],
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.chevron_right),
-                        onPressed: _selectedIndex < _contracts.length - 1
+                        icon: const Icon(Icons.chevron_right),
+                        onPressed: _selectedIndex < _contracts!.length - 1
                             ? () {
                                 setState(() {
                                   _selectedIndex++;
-                                  _selectedContract = _contracts[_selectedIndex].contractId;
+                                  _onContractSelected(_contracts![_selectedIndex].contractId);
                                 });
                               }
                             : null,
                       ),
                     ],
                   ),
-                );
-              }),
+                ),
         ),
         Align(
           alignment: Alignment.bottomCenter,
@@ -123,8 +136,8 @@ class _ContractsViewState extends State<ContractsView> {
               height: (MediaQuery.of(context).size.height * 0.65) + 32,
               decoration: BoxDecoration(
                 color: Theme.of(context).scaffoldBackgroundColor,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(32)),
-                boxShadow: [
+                borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(32)),
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.white10,
                     spreadRadius: 0,
@@ -136,94 +149,106 @@ class _ContractsViewState extends State<ContractsView> {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: CustomScrollView(
                 slivers: [
-                  SliverToBoxAdapter(
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 24),
-                      padding: const EdgeInsets.only(top: 20, left: 16, right: 16, bottom: 0),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        border: Border.all(color: Color(0xFF585858)),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(32),
-                          topRight: Radius.circular(32),
-                          bottomLeft: Radius.circular(12),
-                          bottomRight: Radius.circular(12),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.white.withOpacity(0.2),
-                            spreadRadius: 0,
-                            blurRadius: 5,
-                            offset: Offset(0, -1),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('ยอดที่ต้องชำระ', style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mBrightPrimaryColor)),
-                              Text('15,460.00 บาท', style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mBrightPrimaryColor)),
-                            ],
-                          ),
-                          SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('ชำระภายใน', style: Theme.of(context).textTheme.bodyMedium),
-                              Text('25 ธ.ค. 67', style: Theme.of(context).textTheme.bodyMedium),
-                            ],
-                          ),
-                          SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('ตัดผ่านบัญชี', style: Theme.of(context).textTheme.bodyMedium),
-                              Text('*1234', style: Theme.of(context).textTheme.bodyMedium),
-                            ],
-                          ),
-                          SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('วันที่ตัดบัญชี', style: Theme.of(context).textTheme.bodyMedium),
-                              Text('25 ธ.ค. 67', style: Theme.of(context).textTheme.bodyMedium),
-                            ],
-                          ),
-                          FilledButton(onPressed: () {}, child: Text('ชำระเงิน')),
-                          TextButton(
-                              onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ContractDetailView(
-                                            contractId: _selectedContract!,
-                                          ))),
-                              child: Text('ดูรายละเอียด'),
-                              style: TextButton.styleFrom(foregroundColor: Colors.white)),
-                        ],
-                      ),
-                    ),
-                  ),
+                  if (_selectedContract != null)
+                    FutureBuilder(
+                        future: context.read<ContractProvider>().fetchOverdueDetail(_selectedContract!),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const SliverFillRemaining(child: Center(child: CircularProgressIndicator.adaptive()));
+                          }
+                          final overdueDetail = snapshot.data;
+                          return SliverToBoxAdapter(
+                            child: overdueDetail == null
+                                ? const SizedBox()
+                                : Container(
+                                    margin: const EdgeInsets.only(top: 24),
+                                    padding: const EdgeInsets.only(top: 20, left: 16, right: 16, bottom: 0),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).scaffoldBackgroundColor,
+                                      border: Border.all(color: const Color(0xFF585858)),
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(32),
+                                        topRight: Radius.circular(32),
+                                        bottomLeft: Radius.circular(12),
+                                        bottomRight: Radius.circular(12),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.white.withOpacity(0.2),
+                                          spreadRadius: 0,
+                                          blurRadius: 5,
+                                          offset: const Offset(0, -1),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(AppLocalizations.of(context)!.overdueDetailAmountLabel, style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mBrightPrimaryColor)),
+                                            Text(AppLocalizations.of(context)!.priceFormatBaht(overdueDetail.amount),
+                                                style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mBrightPrimaryColor)),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(AppLocalizations.of(context)!.overdueDetailDueDateLabel, style: Theme.of(context).textTheme.bodyMedium),
+                                            Text('25 ธ.ค. 67', style: Theme.of(context).textTheme.bodyMedium),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(AppLocalizations.of(context)!.overdueDetailCreditNumberLabel, style: Theme.of(context).textTheme.bodyMedium),
+                                            Text('*1234', style: Theme.of(context).textTheme.bodyMedium),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(AppLocalizations.of(context)!.overdueDetailDeditDateLabel, style: Theme.of(context).textTheme.bodyMedium),
+                                            Text('25 ธ.ค. 67', style: Theme.of(context).textTheme.bodyMedium),
+                                          ],
+                                        ),
+                                        FilledButton(onPressed: () {}, child: Text(AppLocalizations.of(context)!.overdueDetailPayment)),
+                                        TextButton(
+                                            onPressed: () => Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) => ContractDetailView(
+                                                          contractId: _selectedContract!,
+                                                        ))),
+                                            style: TextButton.styleFrom(foregroundColor: Colors.white),
+                                            child: Text(AppLocalizations.of(context)!.overdueDetailViewDetail)),
+                                      ],
+                                    ),
+                                  ),
+                          );
+                        }),
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     sliver: SliverToBoxAdapter(
                       child: Row(
                         children: [
-                          Expanded(child: Text('ประวัติการชำระ', style: Theme.of(context).textTheme.titleMedium)),
+                          Expanded(child: Text(AppLocalizations.of(context)!.paymentHistoryTitle, style: Theme.of(context).textTheme.titleMedium)),
                           Container(
                             padding: const EdgeInsets.only(left: 16, right: 4, top: 4, bottom: 4),
                             decoration: BoxDecoration(
                               color: Theme.of(context).scaffoldBackgroundColor,
-                              borderRadius: BorderRadius.all(Radius.circular(32)),
-                              border: Border.all(color: Color(0xFF585858)),
+                              borderRadius: const BorderRadius.all(Radius.circular(32)),
+                              border: Border.all(color: const Color(0xFF585858)),
                             ),
                             child: DropdownButton<int>(
                               isDense: true,
-                              icon: Icon(Icons.keyboard_arrow_down),
+                              icon: const Icon(Icons.keyboard_arrow_down),
                               style: Theme.of(context).textTheme.labelMedium,
-                              underline: SizedBox(),
+                              underline: const SizedBox(),
                               value: _selectedYear,
                               items: _selectableYears().map<DropdownMenuItem<int>>((int value) {
                                 return DropdownMenuItem<int>(
@@ -242,17 +267,23 @@ class _ContractsViewState extends State<ContractsView> {
                       ),
                     ),
                   ),
-                  SliverList(delegate: SliverChildBuilderDelegate((context, index) {
-                    return HistoryListTile(
-                      title: '25 ธ.ค. 2567',
-                      date: '15.36 น.',
-                      amount: '15,460.00 บาท',
-                      trailing: Icon(
-                        Icons.receipt_long_sharp,
-                        color: Colors.white54,
-                      ),
-                    );
-                  }))
+                  if (_selectedContract != null)
+                    FutureBuilder(
+                        future: context.read<ContractProvider>().fetchPaymentsByYear(_selectedContract!, _selectedYear),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const SliverFillRemaining(child: Center(child: CircularProgressIndicator.adaptive()));
+                          }
+                          final payments = snapshot.data;
+                          return SliverList(
+                              delegate: SliverChildBuilderDelegate((context, index) {
+                            return HistoryListTile(
+                              paymentDetail: payments![index],
+                              selectedLocale: _selectedLocale,
+                              onTap: payments[index].status == 'รอยืนยันเงิน' ? null : () => _viewReceipt(payments[index].receiptNumber),
+                            );
+                          }, childCount: payments?.length));
+                        })
                 ],
               )),
         ),
@@ -260,7 +291,7 @@ class _ContractsViewState extends State<ContractsView> {
           top: MediaQuery.of(context).padding.top,
           left: 0,
           child: IconButton(
-            icon: Icon(Icons.close),
+            icon: const Icon(Icons.close),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -268,8 +299,10 @@ class _ContractsViewState extends State<ContractsView> {
     ));
   }
 
-  List<int> _selectableYears() {
-    final _currentYear = DateTime.now().year;
-    return List.generate(3, (index) => _currentYear - index);
+  void _viewReceipt(String receiptNumber) {
+    Navigator.pushNamed(context, ReceiptView.routeName, arguments: {
+      'contractNumber': _selectedContract,
+      'receiptNumber': receiptNumber,
+    });
   }
 }
