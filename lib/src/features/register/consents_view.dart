@@ -2,7 +2,7 @@ import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/features/pin/set_pin_view.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
-import 'package:AssetWise/src/services/aw_content_service.dart';
+import 'package:AssetWise/src/services/aw_register_service.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -24,7 +24,7 @@ class _ConsentsViewState extends State<ConsentsView> {
 
   @override
   void initState() {
-    _futureConsentData = AWContentService.fetchConsent(context.read<UserProvider>().token!);
+    _futureConsentData = AwRegisterService.fetchConsent(context.read<UserProvider>().token!);
     super.initState();
   }
 

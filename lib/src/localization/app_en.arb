@@ -21,7 +21,22 @@
     }
   },
 
-  "priceFormatBaht": "{amount} Baht",
+  "priceFormatDouble": "{price}",
+  "@priceFormatDouble": {
+    "description": "The format of the price",
+    "placeholders": {
+      "price": {
+        "type": "int",
+        "format": "currency",
+        "optionalParameters": {
+          "decimalDigits": 2,
+          "customPattern": "#,##0.00"
+        }
+      }
+    }
+  },
+
+  "priceFormatBaht": "{amount} baht",
   "@priceFormatBaht": {
     "description": "The format of the amount",
     "placeholders": {
@@ -197,7 +212,7 @@
   "overdueDetailAmountLabel": "Make Payment",
   "overdueDetailDueDateLabel": "Due Date",
   "overdueDetailCreditNumberLabel": "Deduct from Account",
-  "overdueDetailDeditDateLabel": "Deduction Date",
+  "overdueDetailDebitDateLabel": "Deduction Date",
   "overdueDetailPayment": "Pay",
   "overdueDetailViewDetail": "View Details",
 
@@ -220,12 +235,22 @@
   "contractDetailFreebiesTitle": "Freebies and Discounts List",
   "contractDetailDownloadDoc": "Download Contract Documents",
 
-  "receiptViewSuccess": "Payment successful",
-  "receiptViewPaymentType": "ช่องทางการชำระเงิน",
-  "receiptViewDate": "วันที่ทำรายการ",
-  "receiptViewRef1": "เลขที่รายการ",
-  "receiptViewRef2": "หมายเลขอ้างอิง",
-  "receiptViewRemark": "หมายเหตุ",
-  "receiptViewDue": "วันที่ครบกำหนดชำระ",
-  "receiptViewViewReceipt": "ดูใบเสร็จ"
+  "receiptViewTitle": "**รายละเอียดใบเสร็จ**",
+  "receiptViewSuccess": "**ทำรายการสำเร็จ**",
+  "receiptViewPaymentType": "**ช่องทางการชำระเงิน**",
+  "receiptViewDate": "**วันที่ทำรายการ**",
+  "receiptViewRef1": "**เลขที่รายการ**",
+  "receiptViewRef2": "**หมายเลขอ้างอิง**",
+  "receiptViewRemark": "**หมายเหตุ**",
+  "receiptViewDue": "**วันที่ครบกำหนดชำระ**",
+  "receiptViewViewReceipt": "**ดูใบเสร็จ**",
+
+  "receiptViewFileTitle": "**ใบเสร็จ**",
+  "receiptViewFileDownload": "**ดาวน์โหลดเอกสาร**",
+
+  "downHistoryViewTitle": "Down payment details",
+
+  "overduesViewTitle": "Amount Due",
+  "overduesViewSumLabel": "Amount Due",
+  "overduesViewMakePayment": "Payment"
 }

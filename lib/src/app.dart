@@ -3,7 +3,9 @@ import 'package:AssetWise/src/consts/themes_const.dart';
 import 'package:AssetWise/src/0_test/ui_showcase_screen.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/features/contract/down_history_view.dart';
-import 'package:AssetWise/src/features/contract/receipt/receipt_view.dart';
+import 'package:AssetWise/src/features/contract/overdues_view.dart';
+import 'package:AssetWise/src/features/contract/receipt_view.dart';
+import 'package:AssetWise/src/features/contract/receipt_view_file.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/change_languange_view.dart';
 import 'package:AssetWise/src/features/pin/set_pin_view.dart';
 import 'package:AssetWise/src/features/register/consents_view.dart';
@@ -116,7 +118,7 @@ class MyApp extends StatelessWidget {
                   case ContractsView.routeName:
                     return const ContractsView();
                   case DownHistoryView.routeName:
-                    return const DownHistoryView();
+                    return DownHistoryView(contractId: routeSettings.arguments as String);
                   case ChangeLanguangeView.routeName:
                     return const ChangeLanguangeView();
                   case ReceiptView.routeName:
@@ -124,6 +126,13 @@ class MyApp extends StatelessWidget {
                       contractNumber: (routeSettings.arguments as Map<String, dynamic>)['contractNumber'] as String,
                       receiptNumber: (routeSettings.arguments as Map<String, dynamic>)['receiptNumber'] as String,
                     );
+                  case ReceiptViewFile.routeName:
+                    return ReceiptViewFile(
+                      contractNumber: (routeSettings.arguments as Map<String, dynamic>)['contractNumber'] as String,
+                      receiptNumber: (routeSettings.arguments as Map<String, dynamic>)['receiptNumber'] as String,
+                    );
+                  case OverduesView.routeName:
+                    return OverduesView(contractId: routeSettings.arguments as String);
                   default:
                     // return DashboardView(controller: settingsController);
                     return const SplashView();

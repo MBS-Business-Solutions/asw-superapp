@@ -128,4 +128,24 @@ class AwRegisterService {
     if (kDebugMode) print(response);
     return null;
   }
+
+  static Future<Consent?> fetchConsent(String token) async {
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/consent'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        return Consent.fromJson(jsonResponse['data']);
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+    }
+    if (kDebugMode) print(response);
+    return null;
+  }
 }

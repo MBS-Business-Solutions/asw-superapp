@@ -1,4 +1,6 @@
+import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/contract/receipt_view_file.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/utils/date_formatter_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
@@ -25,7 +27,7 @@ class _ReceiptViewState extends State<ReceiptView> {
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: const Text('รายละเอียดใบเสร็จ'),
+          title: Text(AppLocalizations.of(context)!.receiptViewTitle),
           centerTitle: true,
         ),
         body: FutureBuilder(
@@ -62,7 +64,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                               'assets/images/payment_success.svg',
                             ),
                             const SizedBox(height: mDefaultPadding),
-                            Text(AppLocalizations.of(context)!.receiptViewSuccess, style: Theme.of(context).textTheme.titleLarge),
+                            Text(AppLocalizations.of(context)!.receiptViewSuccess, style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: mPaidColor)),
                             const SizedBox(height: mMediumPadding),
                             Text(AppLocalizations.of(context)!.priceFormatBaht(receiptDetail.amount), style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white)),
                             const SizedBox(height: mMediumPadding),
@@ -89,7 +91,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                             Row(
                               children: [
                                 Expanded(child: Text(AppLocalizations.of(context)!.receiptViewDate)),
-                                Text('${DateFormatterUtil.format(context, receiptDetail.date)} ${DateFormatterUtil.formatTime(context, receiptDetail.date)}'),
+                                Text('${DateFormatterUtil.formatShortDate(context, receiptDetail.date)} ${DateFormatterUtil.formatTime(context, receiptDetail.date)}'),
                               ],
                             ),
                             Row(
@@ -115,7 +117,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                             Row(
                               children: [
                                 Expanded(child: Text(AppLocalizations.of(context)!.receiptViewDue)),
-                                Text(DateFormatterUtil.format(context, receiptDetail.dueDate)),
+                                Text(DateFormatterUtil.formatShortDate(context, receiptDetail.dueDate)),
                               ],
                             ),
                           ],
@@ -126,7 +128,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
                         child: FilledButton(
-                            onPressed: () {},
+                            onPressed: () => Navigator.pushNamed(context, ReceiptViewFile.routeName, arguments: {'contractNumber': widget.contractNumber, 'receiptNumber': widget.receiptNumber}),
                             child: Text(
                               AppLocalizations.of(context)!.receiptViewViewReceipt,
                             )),

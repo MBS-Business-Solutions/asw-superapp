@@ -4,6 +4,7 @@ import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/utils/string_util.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,6 +19,20 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   bool _isDarkMode = false;
+  String _appVersion = '';
+
+  @override
+  void initState() {
+    _loadAppVersion();
+    super.initState();
+  }
+
+  void _loadAppVersion() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      _appVersion = '${packageInfo.version} build ${packageInfo.buildNumber}';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +65,7 @@ class _ProfileViewState extends State<ProfileView> {
                     ),
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
-                  Text('ID: 1234567890', style: Theme.of(context).textTheme.labelLarge),
+                  Text('V.$_appVersion', style: Theme.of(context).textTheme.labelLarge),
                 ],
               ))
             ],

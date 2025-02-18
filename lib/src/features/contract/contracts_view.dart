@@ -1,10 +1,12 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/features/contract/contract_detail_view.dart';
-import 'package:AssetWise/src/features/contract/receipt/receipt_view.dart';
+import 'package:AssetWise/src/features/contract/overdues_view.dart';
+import 'package:AssetWise/src/features/contract/receipt_view.dart';
 import 'package:AssetWise/src/features/contract/widgets/history_list_tile.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
-import 'package:AssetWise/src/models/aw_content_model.dart';
+import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
+import 'package:AssetWise/src/utils/date_formatter_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -187,9 +189,8 @@ class _ContractsViewState extends State<ContractsView> {
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(AppLocalizations.of(context)!.overdueDetailAmountLabel, style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mBrightPrimaryColor)),
-                                            Text(AppLocalizations.of(context)!.priceFormatBaht(overdueDetail.amount),
-                                                style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mBrightPrimaryColor)),
+                                            Text(AppLocalizations.of(context)!.overdueDetailAmountLabel, style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mUnPaidColor)),
+                                            Text(AppLocalizations.of(context)!.priceFormatBaht(overdueDetail.amount), style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mUnPaidColor)),
                                           ],
                                         ),
                                         const SizedBox(height: 8),
@@ -197,33 +198,30 @@ class _ContractsViewState extends State<ContractsView> {
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(AppLocalizations.of(context)!.overdueDetailDueDateLabel, style: Theme.of(context).textTheme.bodyMedium),
-                                            Text('25 ธ.ค. 67', style: Theme.of(context).textTheme.bodyMedium),
+                                            Text(DateFormatterUtil.formatShortDate(context, overdueDetail.dueDate), style: Theme.of(context).textTheme.bodyMedium),
                                           ],
                                         ),
-                                        const SizedBox(height: 8),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(AppLocalizations.of(context)!.overdueDetailCreditNumberLabel, style: Theme.of(context).textTheme.bodyMedium),
-                                            Text('*1234', style: Theme.of(context).textTheme.bodyMedium),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(AppLocalizations.of(context)!.overdueDetailDeditDateLabel, style: Theme.of(context).textTheme.bodyMedium),
-                                            Text('25 ธ.ค. 67', style: Theme.of(context).textTheme.bodyMedium),
-                                          ],
-                                        ),
+                                        if (overdueDetail.creditNumber?.isNotEmpty ?? false) ...[
+                                          const SizedBox(height: 8),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(AppLocalizations.of(context)!.overdueDetailCreditNumberLabel, style: Theme.of(context).textTheme.bodyMedium),
+                                              Text(overdueDetail.creditNumber ?? '-', style: Theme.of(context).textTheme.bodyMedium),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(AppLocalizations.of(context)!.overdueDetailDebitDateLabel, style: Theme.of(context).textTheme.bodyMedium),
+                                              Text(DateFormatterUtil.formatShortDate(context, overdueDetail.debitDate, '-'), style: Theme.of(context).textTheme.bodyMedium),
+                                            ],
+                                          ),
+                                        ],
                                         FilledButton(onPressed: () {}, child: Text(AppLocalizations.of(context)!.overdueDetailPayment)),
                                         TextButton(
-                                            onPressed: () => Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) => ContractDetailView(
-                                                          contractId: _selectedContract!,
-                                                        ))),
+                                            onPressed: () => Navigator.pushNamed(context, OverduesView.routeName, arguments: _selectedContract),
                                             style: TextButton.styleFrom(foregroundColor: Colors.white),
                                             child: Text(AppLocalizations.of(context)!.overdueDetailViewDetail)),
                                       ],
@@ -279,7 +277,6 @@ class _ContractsViewState extends State<ContractsView> {
                               delegate: SliverChildBuilderDelegate((context, index) {
                             return HistoryListTile(
                               paymentDetail: payments![index],
-                              selectedLocale: _selectedLocale,
                               onTap: payments[index].status == 'รอยืนยันเงิน' ? null : () => _viewReceipt(payments[index].receiptNumber),
                             );
                           }, childCount: payments?.length));

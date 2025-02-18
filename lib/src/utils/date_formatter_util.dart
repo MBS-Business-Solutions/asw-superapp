@@ -8,7 +8,8 @@ class DateFormatterUtil {
     return context.read<SettingsController>().supportedLocales.locale;
   }
 
-  static String format(BuildContext context, DateTime date) {
+  static String formatShortDate(BuildContext context, DateTime? date, [String nullValue = '']) {
+    if (date == null) return nullValue;
     final locale = _getAppLocale(context);
     int year = date.year;
     if (locale == 'th') {
