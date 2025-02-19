@@ -12,8 +12,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ContractsView extends StatefulWidget {
-  const ContractsView({super.key});
+  const ContractsView({super.key, this.openContractId});
   static const String routeName = '/contracts';
+  final String? openContractId;
 
   @override
   State<ContractsView> createState() => _ContractsViewState();
@@ -35,11 +36,17 @@ class _ContractsViewState extends State<ContractsView> {
 
   void _initialLoad() async {
     final contracts = await context.read<ContractProvider>().fetchContracts();
+
     if (contracts.isNotEmpty) {
       setState(() {
         _contracts = contracts;
-        _selectedContract = contracts.first.contractId;
         _selectedYear = DateTime.now().year;
+        _selectedContract = contracts
+            .firstWhere(
+              (element) => element.contractId == widget.openContractId,
+              orElse: () => contracts.first,
+            )
+            .contractId;
       });
     }
   }
@@ -66,69 +73,84 @@ class _ContractsViewState extends State<ContractsView> {
           right: 0,
           child: _contracts == null
               ? const Center(child: SizedBox())
-              : Container(
-                  height: MediaQuery.of(context).size.height * 0.35,
-                  padding: const EdgeInsets.only(bottom: 32),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                    image: NetworkImage(_contracts![_selectedIndex].imageUrl),
-                    fit: BoxFit.cover,
-                    colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.darken),
-                  )),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.chevron_left),
-                        onPressed: _selectedIndex > 0
-                            ? () {
-                                setState(() {
-                                  _selectedIndex--;
-                                  _onContractSelected(_contracts![_selectedIndex].contractId);
-                                });
-                              }
-                            : null,
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            const Expanded(child: SizedBox()),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(_contracts![_selectedIndex].unitNumber, style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Colors.white)),
-                                Text(_contracts![_selectedIndex].projectName, style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white)),
-                              ],
-                            ),
-                            Expanded(
-                                child: Center(
-                                    child: OutlinedButton.icon(
-                              onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ContractDetailView(
-                                            contractId: _selectedContract!,
-                                          ))),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: Colors.white,
-                              ),
-                              icon: const Icon(Icons.dock_sharp),
-                              label: Text(AppLocalizations.of(context)!.contractsViewContract),
-                            ))),
-                          ],
+              : GestureDetector(
+                  onHorizontalDragEnd: (details) {
+                    if (details.primaryVelocity! < 0 && _selectedIndex < _contracts!.length - 1) {
+                      setState(() {
+                        _selectedIndex++;
+                        _onContractSelected(_contracts![_selectedIndex].contractId);
+                      });
+                    } else if (details.primaryVelocity! > 0 && _selectedIndex > 0) {
+                      setState(() {
+                        _selectedIndex--;
+                        _onContractSelected(_contracts![_selectedIndex].contractId);
+                      });
+                    }
+                  },
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.35,
+                    padding: const EdgeInsets.only(bottom: 32),
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                      image: NetworkImage(_contracts![_selectedIndex].imageUrl),
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.darken),
+                    )),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.chevron_left),
+                          onPressed: _selectedIndex > 0
+                              ? () {
+                                  setState(() {
+                                    _selectedIndex--;
+                                    _onContractSelected(_contracts![_selectedIndex].contractId);
+                                  });
+                                }
+                              : null,
                         ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.chevron_right),
-                        onPressed: _selectedIndex < _contracts!.length - 1
-                            ? () {
-                                setState(() {
-                                  _selectedIndex++;
-                                  _onContractSelected(_contracts![_selectedIndex].contractId);
-                                });
-                              }
-                            : null,
-                      ),
-                    ],
+                        Expanded(
+                          child: Column(
+                            children: [
+                              const Expanded(child: SizedBox()),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(_contracts![_selectedIndex].unitNumber, style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Colors.white)),
+                                  Text(_contracts![_selectedIndex].projectName, style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white)),
+                                ],
+                              ),
+                              Expanded(
+                                  child: Center(
+                                      child: OutlinedButton.icon(
+                                onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ContractDetailView(
+                                              contractId: _selectedContract!,
+                                            ))),
+                                style: OutlinedButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                ),
+                                icon: const Icon(Icons.dock_sharp),
+                                label: Text(AppLocalizations.of(context)!.contractsViewContract),
+                              ))),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.chevron_right),
+                          onPressed: _selectedIndex < _contracts!.length - 1
+                              ? () {
+                                  setState(() {
+                                    _selectedIndex++;
+                                    _onContractSelected(_contracts![_selectedIndex].contractId);
+                                  });
+                                }
+                              : null,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
         ),

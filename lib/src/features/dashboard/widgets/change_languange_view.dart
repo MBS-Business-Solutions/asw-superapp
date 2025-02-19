@@ -9,7 +9,7 @@ class ChangeLanguangeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SupportedLocales selectedLocale = context.watch<SettingsController>().supportedLocales;
+    SupportedLocales selectedLocale = context.read<SettingsController>().supportedLocales;
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.changeLanguageTitle),
@@ -28,8 +28,10 @@ class ChangeLanguangeView extends StatelessWidget {
               title: Text(AppLocalizations.of(context)!.changeLanguageLanguage),
               subtitle: Text(supportedLocale.languageName),
               onTap: () async {
+                if (selectedLocale == supportedLocale) return;
+                selectedLocale = supportedLocale;
                 await context.read<SettingsController>().updateLocale(supportedLocale);
-                if (context.mounted) Navigator.pop(context);
+                // if (context.mounted) Navigator.pop(context);
               },
               trailing: selectedLocale == supportedLocale ? const Icon(Icons.language) : null,
             ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:AssetWise/src/consts/url_const.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:flutter/foundation.dart';
@@ -163,12 +165,21 @@ class AwContractService {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         List<dynamic> data = jsonResponse['data'];
-        return data.map((json) => DownPaymentTermDue.fromJson(json)).toList().reversed.toList();
+        return data.map((json) => DownPaymentTermDue.fromJson(json)).toList();
       }
     } catch (e) {
       if (kDebugMode) print(e);
     }
     if (kDebugMode) print(response);
     return [];
+  }
+
+  static String getViewReceiptURL(String contractId, String receiptNumber) {
+    final pdfUrl = getReceiptURL(contractId, receiptNumber);
+    return '${Platform.isAndroid ? 'https://docs.google.com/gview?embedded=true&url=' : ''}$pdfUrl';
+  }
+
+  static String getReceiptURL(String contractId, String receiptNumber) {
+    return '$BASE_URL/mobile/contracts/$contractId/payments/$receiptNumber/download';
   }
 }

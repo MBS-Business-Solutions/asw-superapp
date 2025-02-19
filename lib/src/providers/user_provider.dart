@@ -7,6 +7,7 @@ class UserProvider with ChangeNotifier {
   late final FlutterSecureStorage storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
   String? _token;
   String? get token => _token;
+  String testv = 'test';
   bool get isAuthenticated => _token != null;
   UserInformation? _userInformation;
   UserInformation? get userInformation => _userInformation;

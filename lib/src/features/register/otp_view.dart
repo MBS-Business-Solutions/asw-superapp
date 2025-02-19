@@ -157,7 +157,13 @@ class _OtpViewState extends State<OtpView> {
   }
 
   Future<void> _onResendOtp() async {
-    refCode = await context.read<RegisterProvider>().requestOTPResident();
+    final registerProvider = context.read<RegisterProvider>();
+    if (registerProvider.isResident) {
+      refCode = await registerProvider.requestOTPResident();
+    } else {
+      refCode = await registerProvider.requestOTPNonResident();
+    }
+
     if (refCode != null) {
       setState(() {
         otpController.text = '';

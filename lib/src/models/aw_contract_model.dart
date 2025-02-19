@@ -85,7 +85,7 @@ class ContractDetail {
 class PaymentDetail {
   final DateTime date;
   final int amount;
-  final String type;
+  final String? type;
   final String status;
   final String receiptNumber;
 

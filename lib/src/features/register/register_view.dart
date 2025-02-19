@@ -241,19 +241,20 @@ class _RegisterViewState extends State<RegisterView> {
           setState(() {
             _showError = AppLocalizations.of(context)!.registerInvalidResident;
           });
-        }
-        final ref = await context.read<RegisterProvider>().requestOTPResident(
-              idCard4: _idCardController.text,
-              phoneEmail: sendTo,
-              isLoginWithEmail: _emailForm,
-            );
-        if (ref != null && mounted) {
-          Navigator.of(context).pushNamed(OtpView.routeName);
         } else {
-          // Show error message
-          setState(() {
-            _showError = AppLocalizations.of(context)!.registerError;
-          });
+          final ref = await context.read<RegisterProvider>().requestOTPResident(
+                idCard4: _idCardController.text,
+                phoneEmail: sendTo,
+                isLoginWithEmail: _emailForm,
+              );
+          if (ref != null && mounted) {
+            Navigator.of(context).pushNamed(OtpView.routeName);
+          } else {
+            // Show error message
+            setState(() {
+              _showError = AppLocalizations.of(context)!.registerError;
+            });
+          }
         }
       } else {
         final ref = await context.read<RegisterProvider>().requestOTPNonResident(

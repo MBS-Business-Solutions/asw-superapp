@@ -1,5 +1,7 @@
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
+import 'package:AssetWise/src/features/notifications/notifications_view.dart';
 import 'package:AssetWise/src/features/register/register_view.dart';
+import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,11 +24,13 @@ class HomeActionButtons extends StatelessWidget {
         }
         return Row(
           children: [
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(RegisterView.routeName);
-                },
-                icon: Badge.count(count: 8, child: const Icon(Icons.notifications_none))),
+            Consumer<NotificationItemProvider>(
+              builder: (context, provider, child) => IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(NotificationsView.routeName);
+                  },
+                  icon: Badge.count(isLabelVisible: provider.unreadAllCount > 0, count: provider.unreadAllCount, child: const Icon(Icons.notifications_none))),
+            ),
             IconButton(
                 onPressed: () {
                   Navigator.of(context).pushNamed(ContractsView.routeName);

@@ -38,5 +38,8 @@ const Color mBrightPrimaryColor = Color(0xFFDAB269);
 
 const Color mPaidColor = Color(0xFF79D9D6);
 const Color mUnPaidColor = Color(0xFFEBCE98);
+const Color mGreyColor = Color(0xFF787878);
 
 const Color mRedColor = Color(0xFFF2846D);
+
+const Color mTileWarnColor = Color(0xFF431E16);

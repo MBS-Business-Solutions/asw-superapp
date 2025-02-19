@@ -193,8 +193,16 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
     } else {
       if (registerProvider.verifyOTPResponse != null) {
         final userId = registerProvider.verifyOTPResponse!.id!;
-        if (await context.read<UserProvider>().login(userId) && context.mounted) {
-          Navigator.of(context).pushReplacementNamed(ConsentsView.routeName);
+        if (await context.read<UserProvider>().login(userId)) {
+          if (context.mounted) {
+            Navigator.of(context).pushReplacementNamed(ConsentsView.routeName);
+          }
+        } else {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(AppLocalizations.of(context)!.errorNoData),
+            ));
+          }
         }
       }
     }

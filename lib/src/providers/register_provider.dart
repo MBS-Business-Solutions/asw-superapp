@@ -23,11 +23,11 @@ class RegisterProvider {
     return this;
   }
 
-  Future<OTPRef?> requestOTPResident({bool isLoginWithEmail = false, String? idCard4, String? phoneEmail}) async {
+  Future<OTPRef?> requestOTPResident({bool? isLoginWithEmail, String? idCard4, String? phoneEmail}) async {
     _isResident = true;
     _idCard4 = idCard4 ?? _idCard4;
     _phoneEmail = phoneEmail ?? _phoneEmail;
-    _isLoginWithEmail = isLoginWithEmail;
+    _isLoginWithEmail = isLoginWithEmail ?? _isLoginWithEmail;
 
     _otpRef = await AwRegisterService.sendOTPResident(isLoginWithEmail: _isLoginWithEmail, idCard4: _idCard4, phoneEmail: _phoneEmail);
     return otpRef;
@@ -40,10 +40,10 @@ class RegisterProvider {
     return verifyOTPResponse;
   }
 
-  Future<OTPRef?> requestOTPNonResident({bool isLoginWithEmail = false, String? phoneEmail}) async {
+  Future<OTPRef?> requestOTPNonResident({bool? isLoginWithEmail, String? phoneEmail}) async {
     _isResident = false;
     _phoneEmail = phoneEmail ?? _phoneEmail;
-    _isLoginWithEmail = isLoginWithEmail;
+    _isLoginWithEmail = isLoginWithEmail ?? _isLoginWithEmail;
 
     _otpRef = await AwRegisterService.sendOTPNonResident(isLoginWithEmail: _isLoginWithEmail, phoneEmail: _phoneEmail);
     return otpRef;

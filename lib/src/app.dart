@@ -7,6 +7,7 @@ import 'package:AssetWise/src/features/contract/overdues_view.dart';
 import 'package:AssetWise/src/features/contract/receipt_view.dart';
 import 'package:AssetWise/src/features/contract/receipt_view_file.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/change_languange_view.dart';
+import 'package:AssetWise/src/features/notifications/notifications_view.dart';
 import 'package:AssetWise/src/features/pin/set_pin_view.dart';
 import 'package:AssetWise/src/features/register/consents_view.dart';
 import 'package:AssetWise/src/features/register/otp_view.dart';
@@ -21,7 +22,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'features/settings/settings_controller.dart';
-import 'features/settings/settings_view.dart';
 
 import 'features/dashboard/dashboard_view.dart';
 
@@ -101,8 +101,6 @@ class MyApp extends StatelessWidget {
                       onSwitchToDarkMode: () => settingsController.updateThemeMode(ThemeMode.dark),
                       onSwitchToLightMode: () => settingsController.updateThemeMode(ThemeMode.light),
                     );
-                  case SettingsView.routeName:
-                    return SettingsView(controller: settingsController);
                   case DashboardView.routeName:
                     return DashboardView(controller: settingsController);
                   case RegisterView.routeName:
@@ -116,7 +114,9 @@ class MyApp extends StatelessWidget {
                   case ConsentsView.routeName:
                     return const ConsentsView();
                   case ContractsView.routeName:
-                    return const ContractsView();
+                    return ContractsView(
+                      openContractId: routeSettings.arguments as String?,
+                    );
                   case DownHistoryView.routeName:
                     return DownHistoryView(contractId: routeSettings.arguments as String);
                   case ChangeLanguangeView.routeName:
@@ -133,6 +133,8 @@ class MyApp extends StatelessWidget {
                     );
                   case OverduesView.routeName:
                     return OverduesView(contractId: routeSettings.arguments as String);
+                  case NotificationsView.routeName:
+                    return const NotificationsView();
                   default:
                     // return DashboardView(controller: settingsController);
                     return const SplashView();

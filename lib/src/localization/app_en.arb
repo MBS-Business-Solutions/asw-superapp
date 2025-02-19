@@ -5,6 +5,7 @@
     "description": "The title of the application"
   },
   "actionButtonNext": "Next",
+  "errorUnableToProcess": "***ไม่สามารถใช้งานได้ กรุณาลองใหม่อีกครั้ง***",
   "errorFieldRequired": "This field is required.",
   "errorNoData": "No data found.",
   "priceFormat": "{price}",
@@ -115,8 +116,8 @@
   },
   "userDetailTitle": "Enter Name - Surname",
   "userDetailInstruction": "Provide your details to access the service",
-  "userDetailFirstName": "First Name",
-  "userDetailLastName": "Last Name",
+  "userDetailFirstName": "First Name *",
+  "userDetailLastName": "Last Name *",
   "userDetailMobile": "Mobile",
   "userDetailEmail": "Email",
   "userDetailCitizenId": "National ID / Passport No.",

@@ -1,7 +1,9 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/down_history_view.dart';
+import 'package:AssetWise/src/features/contract/receipt_view_file.dart';
 import 'package:AssetWise/src/features/contract/widgets/down_term_due_tile.dart';
+import 'package:AssetWise/src/features/payments/thai_qr_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/utils/date_formatter_util.dart';
@@ -61,15 +63,12 @@ class _OverduesViewState extends State<OverduesView> {
         ),
         body: Stack(
           children: [
-            Positioned(
-              right: 0,
-              top: 0,
-              left: 0,
-              bottom: 0,
+            Positioned.fill(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
                 child: ListView.builder(
                   itemBuilder: (context, index) {
+                    if (downTermDues.isEmpty) return const SizedBox();
                     if (index == downTermDues.length) {
                       return ListTile(
                         contentPadding: EdgeInsets.zero,
@@ -121,7 +120,12 @@ class _OverduesViewState extends State<OverduesView> {
                 ),
                 child: SafeArea(
                   child: FilledButton(
-                    onPressed: _payAmount > 0 ? () {} : null,
+                    onPressed: _payAmount > 0
+                        ? () {
+                            // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            // }));
+                          }
+                        : null,
                     child: Text(AppLocalizations.of(context)!.overduesViewMakePayment),
                   ),
                 ),

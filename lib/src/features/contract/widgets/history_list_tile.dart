@@ -62,7 +62,7 @@ class HistoryListTile extends StatelessWidget {
             ),
             Row(
               children: [
-                Expanded(child: Text(paymentDetail.type)),
+                Expanded(child: Text(paymentDetail.type ?? '')),
                 if (!isWaiting)
                   Row(
                     children: [

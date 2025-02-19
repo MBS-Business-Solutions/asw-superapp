@@ -5,6 +5,7 @@
     "description": "The title of the application"
   },
   "actionButtonNext": "ถัดไป",
+  "errorUnableToProcess": "ไม่สามารถใช้งานได้ กรุณาลองใหม่อีกครั้ง",
   "errorFieldRequired": "กรุณากรอกข้อมูล",
   "errorNoData": "ไม่พบข้อมูล",
   "priceFormat": "{price}",
@@ -36,7 +37,7 @@
     }
   },
 
-  "priceFormatBaht": "{amount} Baht",
+  "priceFormatBaht": "{amount} บาท",
   "@priceFormatBaht": {
     "description": "The format of the amount",
     "placeholders": {
@@ -115,8 +116,8 @@
   },
   "userDetailTitle": "ระบุ - ชื่อนามสกุล",
   "userDetailInstruction": "ระบุรายละเอียดของคุณสำหรับการเข้าใช้บริการ",
-  "userDetailFirstName": "ชื่อ",
-  "userDetailLastName": "นามสกุล",
+  "userDetailFirstName": "ชื่อ *",
+  "userDetailLastName": "นามสกุล *",
   "userDetailMobile": "เบอร์โทร",
   "userDetailEmail": "อีเมล",
   "userDetailCitizenId": "เลขบัตรประจำตัวประชาชน / Passport No.",
