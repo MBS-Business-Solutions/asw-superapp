@@ -145,6 +145,10 @@ class UserInformation {
       units: units,
     );
   }
+
+  String toJson() {
+    return '{"first_name": "$firstName", "last_name": "$lastName", "phone": "$phone", "email": "$email"}';
+  }
 }
 
 class Unit {

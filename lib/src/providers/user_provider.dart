@@ -1,10 +1,12 @@
+import 'dart:convert';
+
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/services/aw_user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserProvider with ChangeNotifier {
-  late final FlutterSecureStorage storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
+  late final FlutterSecureStorage secureStorage = FlutterSecureStorage(aOptions: _getAndroidOptions());
   String? _token;
   String? get token => _token;
   String testv = 'test';
@@ -25,7 +27,8 @@ class UserProvider with ChangeNotifier {
       _token = tokenResponse.token;
       _userInformation = tokenResponse.userInformation;
 
-      await storage.write(key: 'SESSION_TOKEN', value: _token);
+      await secureStorage.write(key: 'SESSION_TOKEN', value: _token);
+      await secureStorage.write(key: 'USER_INFO', value: _userInformation!.toJson());
       notifyListeners();
       return true;
     }
@@ -38,7 +41,7 @@ class UserProvider with ChangeNotifier {
       _token = tokenResponse.token;
       _userInformation = tokenResponse.userInformation;
 
-      await storage.write(key: 'SESSION_TOKEN', value: _token);
+      await secureStorage.write(key: 'SESSION_TOKEN', value: _token);
       notifyListeners();
       return true;
     }
@@ -46,7 +49,11 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<void> initApp() async {
-    _token = await storage.read(key: 'SESSION_TOKEN');
+    _token = await secureStorage.read(key: 'SESSION_TOKEN');
+    final userJson = await secureStorage.read(key: 'USER_INFO');
+    if (userJson != null) {
+      _userInformation = UserInformation.fromJson(jsonDecode(userJson));
+    }
     notifyListeners();
 
     // send FCM Token to server
@@ -58,15 +65,22 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<void> setPin(String pin) async {
-    await storage.write(key: 'PIN', value: pin);
+    await secureStorage.write(key: 'PIN', value: pin);
   }
 
   Future<bool> validatePin(String pin) async {
-    final savedPin = await storage.read(key: 'PIN');
+    final savedPin = await secureStorage.read(key: 'PIN');
     return savedPin == pin;
   }
 
   Future<void> setPreferedLanguage(String language) async {
     await AwUserService.setPreferedLanguage(_token!, language);
+  }
+
+  Future<void> logout() async {
+    _token = null;
+    _userInformation = null;
+    await secureStorage.deleteAll();
+    notifyListeners();
   }
 }

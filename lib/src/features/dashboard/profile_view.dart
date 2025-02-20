@@ -220,7 +220,14 @@ class _ProfileViewState extends State<ProfileView> {
                   Icons.logout,
                   color: mRedColor,
                 ),
-                onTap: () {},
+                onTap: () async {
+                  context.read<UserProvider>().logout();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Logout success'),
+                    ),
+                  );
+                },
               ),
             ],
           ),
