@@ -1,20 +1,17 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
-import 'package:AssetWise/src/features/contract/down_history_view.dart';
-import 'package:AssetWise/src/features/contract/receipt_view_file.dart';
 import 'package:AssetWise/src/features/contract/widgets/down_term_due_tile.dart';
-import 'package:AssetWise/src/features/payments/thai_qr_view.dart';
+import 'package:AssetWise/src/features/payments/payment_channels_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
-import 'package:AssetWise/src/utils/date_formatter_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OverduesView extends StatefulWidget {
-  const OverduesView({super.key, required this.contractId});
+  const OverduesView({super.key, required this.contract});
   static const String routeName = '/overdues';
-  final String contractId;
+  final Contract contract;
 
   @override
   State<OverduesView> createState() => _OverduesViewState();
@@ -33,7 +30,7 @@ class _OverduesViewState extends State<OverduesView> {
   }
 
   void init() async {
-    final dues = await context.read<ContractProvider>().fetchDownPaymentTermDues(widget.contractId);
+    final dues = await context.read<ContractProvider>().fetchDownPaymentTermDues(widget.contract.contractId);
     if (dues == null) return;
     setState(() {
       downTermDues.addAll(dues);
@@ -112,9 +109,9 @@ class _OverduesViewState extends State<OverduesView> {
               left: 0,
               right: 0,
               child: Container(
-                padding: const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 8),
+                padding: const EdgeInsets.only(left: mScreenEdgeInsetValue, right: mScreenEdgeInsetValue, top: 16, bottom: 8),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Theme.of(context).brightness == Brightness.dark ? mDarkCardBackgroundColor : mLightCardBackgroundColor,
                   border: Border.all(color: Colors.white.withOpacity(0.2)),
                   borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
                 ),
@@ -122,6 +119,10 @@ class _OverduesViewState extends State<OverduesView> {
                   child: FilledButton(
                     onPressed: _payAmount > 0
                         ? () {
+                            Navigator.pushNamed(context, PaymentChannelsView.routeName, arguments: {
+                              'contract': widget.contract,
+                              'amount': _payAmount.toDouble(),
+                            });
                             // Navigator.push(context, MaterialPageRoute(builder: (context) {
                             // }));
                           }

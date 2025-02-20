@@ -8,6 +8,7 @@
   "errorUnableToProcess": "ไม่สามารถใช้งานได้ กรุณาลองใหม่อีกครั้ง",
   "errorFieldRequired": "กรุณากรอกข้อมูล",
   "errorNoData": "ไม่พบข้อมูล",
+  "bahtUnit": "บาท",
   "priceFormat": "{price}",
   "@priceFormat": {
     "description": "The format of the price",
@@ -253,5 +254,14 @@
 
   "overduesViewTitle": "ยอดที่ต้องชำระ",
   "overduesViewSumLabel": "ยอดที่ต้องชำระ",
-  "overduesViewMakePayment": "ชำระเงิน"
+  "overduesViewMakePayment": "ชำระเงิน",
+
+  "paymentChannelViewPaymentTitle": "ชำระเงิน",
+  "paymentChannelViewCreditChannel": "บัตรเครดิต/เดบิต",
+  "paymentChannelViewQRChannel": "QR Promptpay",
+  "paymentChannelViewTotalAmount": "ยอดที่ต้องชำระ",
+  "paymentChannelViewDue": "ชำระภายใน",
+  "paymentChannelViewPayment": "ชำระเงิน",
+
+  "qrViewTitle": "QR PromptPay"
 }

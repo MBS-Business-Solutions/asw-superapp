@@ -8,6 +8,7 @@
   "errorUnableToProcess": "***ไม่สามารถใช้งานได้ กรุณาลองใหม่อีกครั้ง***",
   "errorFieldRequired": "This field is required.",
   "errorNoData": "No data found.",
+  "bahtUnit": "baht",
   "priceFormat": "{price}",
   "@priceFormat": {
     "description": "The format of the price",
@@ -253,5 +254,16 @@
 
   "overduesViewTitle": "Amount Due",
   "overduesViewSumLabel": "Amount Due",
-  "overduesViewMakePayment": "Payment"
+  "overduesViewMakePayment": "Payment",
+
+  "paymentChannelViewPaymentTitle": "Payment",
+  "paymentChannelViewCreditChannel": "Credit/Debit Card",
+  "paymentChannelViewQRChannel": "QR Promptpay",
+  "paymentChannelViewTotalAmount": "Total Amount Due",
+  "paymentChannelViewDue": "Due Date",
+  "paymentChannelViewPayment": "Payment",
+
+  "qrViewTitle": "QR PromptPay"
+
+
 }

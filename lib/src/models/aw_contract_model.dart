@@ -1,6 +1,7 @@
 class Contract {
   final String id;
   final String contractId;
+  final String? contractNumber;
   final String projectCode;
   final String projectName;
   final String unitNumber;
@@ -10,6 +11,7 @@ class Contract {
   Contract({
     required this.id,
     required this.contractId,
+    required this.contractNumber,
     required this.projectCode,
     required this.projectName,
     required this.unitNumber,
@@ -21,6 +23,7 @@ class Contract {
     return Contract(
       id: json['id'],
       contractId: json['contract_id'],
+      contractNumber: json['contract_number'],
       projectCode: json['project_code'],
       projectName: json['project_name'],
       unitNumber: json['unit_number'],

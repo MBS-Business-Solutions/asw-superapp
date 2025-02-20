@@ -59,7 +59,7 @@ class _ReceiptViewFileState extends State<ReceiptViewFile> {
                     padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mDefaultPadding),
                     child: FilledButton(
                         onPressed: () {
-                          final url = 'https://superapp-api.azurewebsites.net/mobile/contracts/SO-EQC019-19040123/payments/RV-EQC019-19100156/download';
+                          const url = 'https://superapp-api.azurewebsites.net/mobile/contracts/SO-EQC019-19040123/payments/RV-EQC019-19100156/download';
                         },
                         child: Text(
                           AppLocalizations.of(context)!.receiptViewFileDownload,

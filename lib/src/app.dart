@@ -8,11 +8,14 @@ import 'package:AssetWise/src/features/contract/receipt_view.dart';
 import 'package:AssetWise/src/features/contract/receipt_view_file.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/change_languange_view.dart';
 import 'package:AssetWise/src/features/notifications/notifications_view.dart';
+import 'package:AssetWise/src/features/payments/payment_channels_view.dart';
+import 'package:AssetWise/src/features/payments/qr_view.dart';
 import 'package:AssetWise/src/features/pin/set_pin_view.dart';
 import 'package:AssetWise/src/features/register/consents_view.dart';
 import 'package:AssetWise/src/features/register/otp_view.dart';
 import 'package:AssetWise/src/features/register/register_view.dart';
 import 'package:AssetWise/src/features/register/user_detail_view.dart';
+import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/services/firebase_service.dart';
 import 'package:AssetWise/src/splash/splash_view.dart';
 import 'package:flutter/material.dart';
@@ -132,9 +135,20 @@ class MyApp extends StatelessWidget {
                       receiptNumber: (routeSettings.arguments as Map<String, dynamic>)['receiptNumber'] as String,
                     );
                   case OverduesView.routeName:
-                    return OverduesView(contractId: routeSettings.arguments as String);
+                    return OverduesView(contract: routeSettings.arguments as Contract);
                   case NotificationsView.routeName:
                     return const NotificationsView();
+                  case PaymentChannelsView.routeName:
+                    return PaymentChannelsView(
+                      contract: (routeSettings.arguments as Map<String, dynamic>)['contract'] as Contract,
+                      overdueDetail: (routeSettings.arguments as Map<String, dynamic>)['overdueDetail'] as OverdueDetail?,
+                      amount: (routeSettings.arguments as Map<String, dynamic>)['amount'] as double?,
+                    );
+                  case QRView.routeName:
+                    return QRView(
+                      contract: (routeSettings.arguments as Map<String, dynamic>)['contract'] as Contract,
+                      amount: (routeSettings.arguments as Map<String, dynamic>)['amount'] as double,
+                    );
                   default:
                     // return DashboardView(controller: settingsController);
                     return const SplashView();

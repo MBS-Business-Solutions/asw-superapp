@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 class AwContractService {
   static Future<List<Contract>> fetchContracts(String token) async {
     final response = await http.get(
@@ -181,5 +183,52 @@ class AwContractService {
 
   static String getReceiptURL(String contractId, String receiptNumber) {
     return '$BASE_URL/mobile/contracts/$contractId/payments/$receiptNumber/download';
+  }
+
+  static Future<String?> getQRPaymentCode(String token, {required String contractId, double amount = 0}) async {
+    final formatNumber = NumberFormat('####.00');
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/contracts/$contractId/qr-code?amount=${formatNumber.format(amount)}'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        return jsonResponse['data']['qr_code'];
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+    }
+    if (kDebugMode) print(response);
+    return null;
+  }
+
+  static Future<String?> getPaymentGatewayURL({required Contract contract, double amount = 0, String? detail, required String email}) async {
+    final formatNumber = NumberFormat('####.00');
+    final response = await http.post(
+      Uri.parse('$BASE_URL/payment/link'),
+      body: {
+        'payment_type': '9',
+        'contract_id': contract.contractId,
+        'contract_number': contract.contractNumber ?? '',
+        'total': formatNumber.format(amount),
+        'email': email,
+        'detail': detail ?? '',
+      },
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        return jsonResponse['data']['payment_url'];
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+    }
+    if (kDebugMode) print(response);
+    return null;
   }
 }

@@ -1,7 +1,5 @@
 import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/models/aw_notification_model.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 import 'package:isar/isar.dart';
 

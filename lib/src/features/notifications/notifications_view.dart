@@ -3,7 +3,6 @@ import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/models/aw_notification_model.dart';
 import 'package:AssetWise/src/providers/notification_item_provider.dart';
-import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/hot_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,14 +31,14 @@ class _NotificationsViewState extends State<NotificationsView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text('แจ้งเตือนทั้งหมด'),
+        title: const Text('แจ้งเตือนทั้งหมด'),
         actions: [
           Consumer<NotificationItemProvider>(
             builder: (context, provider, child) => TextButton(
                 onPressed: () => context.read<NotificationItemProvider>().markAllAsRead(),
                 child: Text(
                   'อ่านทั้งหมด${provider.unreadAllCount > 0 ? ' (${provider.unreadAllCount})' : ''}',
-                  style: TextStyle(color: mPaidColor),
+                  style: const TextStyle(color: mPaidColor),
                 )),
           ),
         ],
@@ -112,8 +111,8 @@ class NotificationItemTile extends StatelessWidget {
                 color: mRedColor,
                 borderRadius: BorderRadius.circular(4),
               ),
-              child: Icon(Icons.notifications)),
-          SizedBox(
+              child: const Icon(Icons.notifications)),
+          const SizedBox(
             width: mDefaultPadding,
           ),
           Expanded(

@@ -52,5 +52,9 @@
 		</array>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>Save QR Code as image</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Save QR Code as image</string>
 	</dict>
 </plist>

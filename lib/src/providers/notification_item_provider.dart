@@ -8,9 +8,9 @@ class NotificationItemProvider with ChangeNotifier {
   UserProvider? _userProvider;
   int _unreadAllCount = 2;
   int _unreadPaymentCount = 0;
-  int _unreadPromotionCount = 3;
-  int _unreadHotDealCount = 2;
-  int _unreadNewsCount = 1;
+  final int _unreadPromotionCount = 3;
+  final int _unreadHotDealCount = 2;
+  final int _unreadNewsCount = 1;
 
   int get unreadAllCount => _unreadAllCount;
   int get unreadPaymentCount => _unreadPaymentCount;
