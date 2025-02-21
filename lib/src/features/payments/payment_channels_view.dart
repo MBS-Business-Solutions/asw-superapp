@@ -156,6 +156,12 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
                                       _hideButton = false;
                                     });
                                   },
+                                  onSubmitted: (value) {
+                                    if (_amountController.text.isNotEmpty) _amountController.text = StringUtil.formatNumber(_amountController.text);
+                                    setState(() {
+                                      _hideButton = false;
+                                    });
+                                  },
                                   onTap: () {
                                     setState(() {
                                       _hideButton = true;

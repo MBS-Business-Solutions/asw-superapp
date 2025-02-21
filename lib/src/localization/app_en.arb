@@ -169,7 +169,7 @@
   "dashboardMainSectionRecommended": "Recommended projects",
   "dashboardMainSectionRecommendedDetail": "We are committed to designing homes. For the happiness of the people Taking into account lifestyle and the lifestyle of each person is different Allowing you to live your life the way you want.",
 
-  "profileNameFormat": "{lastName} {firstName}",
+  "profileNameFormat": "{firstName} {lastName}",
   "@profileNameFormat": {
     "description": "The format of the full name",
     "placeholders": {

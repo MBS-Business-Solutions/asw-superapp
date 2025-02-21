@@ -74,6 +74,7 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<void> setPreferedLanguage(String language) async {
+    if (token == null) return;
     await AwUserService.setPreferedLanguage(_token!, language);
   }
 

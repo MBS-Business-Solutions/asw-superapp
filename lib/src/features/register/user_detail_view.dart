@@ -134,7 +134,7 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
                                 keyboardType: TextInputType.emailAddress,
                                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                 validator: (value) {
-                                  if (value!.isEmpty || !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                                  if (value!.isNotEmpty && !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
                                     return AppLocalizations.of(context)!.userDetailInvalidEmail;
                                   }
                                   return null;
@@ -179,16 +179,21 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
   Future<void> _openConsentPage(BuildContext context) async {
     final registerProvider = context.read<RegisterProvider>();
     if (!registerProvider.isResident) {
-      if (_formKey.currentState!.validate() &&
-          await context.read<UserProvider>().loginNewUser(
-                type: registerProvider.isLoginWithEmail ? 'email' : 'phone',
-                firstName: firstNameController.text,
-                lastName: lastNameController.text,
-                phone: phoneController.text.isNotEmpty ? phoneController.text : registerProvider.phoneEmail,
-                email: emailController.text.isNotEmpty ? emailController.text : registerProvider.phoneEmail,
-              ) &&
-          context.mounted) {
-        Navigator.of(context).pushReplacementNamed(ConsentsView.routeName);
+      if (_formKey.currentState!.validate()) {
+        final loginResult = await context.read<UserProvider>().loginNewUser(
+              type: registerProvider.isLoginWithEmail ? 'email' : 'phone',
+              firstName: firstNameController.text,
+              lastName: lastNameController.text,
+              phone: phoneController.text,
+              email: emailController.text,
+            );
+        if (loginResult) {
+          Navigator.of(context).pushReplacementNamed(ConsentsView.routeName);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.errorUnableToProcess),
+          ));
+        }
       }
     } else {
       if (registerProvider.verifyOTPResponse != null) {

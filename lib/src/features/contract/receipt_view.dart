@@ -66,7 +66,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                             const SizedBox(height: mDefaultPadding),
                             Text(AppLocalizations.of(context)!.receiptViewSuccess, style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: mPaidColor)),
                             const SizedBox(height: mMediumPadding),
-                            Text(AppLocalizations.of(context)!.priceFormatBaht(receiptDetail.amount), style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white)),
+                            Text(AppLocalizations.of(context)!.priceFormatDouble(receiptDetail.amount), style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white)),
                             const SizedBox(height: mMediumPadding),
                             Row(
                               mainAxisSize: MainAxisSize.min,
@@ -91,7 +91,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                             Row(
                               children: [
                                 Expanded(child: Text(AppLocalizations.of(context)!.receiptViewDate)),
-                                Text('${DateFormatterUtil.formatShortDate(context, receiptDetail.date)} ${DateFormatterUtil.formatTime(context, receiptDetail.date)}'),
+                                Text(DateFormatterUtil.formatShortDate(context, receiptDetail.date)),
                               ],
                             ),
                             Row(

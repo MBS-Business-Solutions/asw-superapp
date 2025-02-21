@@ -13,11 +13,13 @@ class StringUtil {
   }
 
   static String formatNumber(String number) {
+    if (number.isEmpty) return '';
     final formatter = NumberFormat('#,###.00');
     return formatter.format(double.parse(number));
   }
 
   static String removeSymbol(String number) {
+    if (number.isEmpty) return '';
     return number.replaceAll(RegExp(r'[^0-9.]'), '');
   }
 }
