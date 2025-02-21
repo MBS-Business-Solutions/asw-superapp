@@ -66,7 +66,7 @@ class _DownPaymentTermDueTileState extends State<DownPaymentTermDueTile> {
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mBrightPrimaryColor),
               ),
               IgnorePointer(
-                child: Checkbox.adaptive(value: state, onChanged: (value) {}),
+                child: Checkbox(value: state, onChanged: (value) {}),
               ),
             ],
           ),

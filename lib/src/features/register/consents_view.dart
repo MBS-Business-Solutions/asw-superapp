@@ -108,7 +108,7 @@ class _ConsentsViewState extends State<ConsentsView> {
                 },
                 child: Row(
                   children: [
-                    Radio<bool>.adaptive(
+                    Radio<bool>(
                       value: true,
                       groupValue: _userConsents[consentItem.id],
                       onChanged: (bool? value) {
@@ -131,7 +131,7 @@ class _ConsentsViewState extends State<ConsentsView> {
                 },
                 child: Row(
                   children: [
-                    Radio<bool>.adaptive(
+                    Radio<bool>(
                       value: false,
                       groupValue: _userConsents[consentItem.id],
                       onChanged: (bool? value) {

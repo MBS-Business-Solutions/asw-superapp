@@ -82,7 +82,7 @@ class _RegisterViewState extends State<RegisterView> {
                             },
                             child: Row(
                               children: [
-                                Checkbox.adaptive(
+                                Checkbox(
                                   value: _isResident,
                                   onChanged: (value) {
                                     FocusScope.of(context).unfocus();
