@@ -61,4 +61,10 @@ class ContractProvider {
   Future<String?> getPaymentGatewayURL({required Contract contract, double amount = 0, String? detail, required String email}) async {
     return AwContractService.getPaymentGatewayURL(contract: contract, amount: amount, detail: detail, email: email);
   }
+
+  Future<String?> downloadContract(String contractId) async {
+    if (_userProvider == null) return null;
+    final url = AwContractService.getContractURL(contractId);
+    return AwContractService.downloadFile(_userProvider!.token!, url);
+  }
 }

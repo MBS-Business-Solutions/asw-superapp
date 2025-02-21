@@ -84,7 +84,10 @@ class _ConsentsViewState extends State<ConsentsView> {
         collapsedBackgroundColor: brightness == Brightness.dark ? mDarkBackgroundBottomBar : mLightBackgroundBottomBar,
         backgroundColor: brightness == Brightness.dark ? mDarkBackgroundBottomBar : mLightBackgroundBottomBar,
         childrenPadding: const EdgeInsets.only(left: 24, right: 24, top: 0, bottom: 16),
-        title: Text(consentItem.title),
+        title: Text(
+          consentItem.title,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
         children: [
           Html(
             data: consentItem.content,
@@ -171,6 +174,7 @@ class _ConsentsViewState extends State<ConsentsView> {
       _userConsents[item.id] = true;
     }
     _validateForm(consent);
+    _submitConsents(consent);
   }
 
   void _submitConsents(Consent consent) async {

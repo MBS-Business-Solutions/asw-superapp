@@ -10,12 +10,14 @@ class AwTextField extends StatelessWidget {
     this.keyboardType,
     this.inputFormatters,
     this.maxLength,
+    this.isError = false,
   });
   final String? label;
   final TextEditingController? controller;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLength;
+  final bool isError;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,7 @@ class AwTextField extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.dark ? mDarkBackgroundTextField : mLightBackgroundTextField,
         borderRadius: BorderRadius.circular(8),
+        border: isError ? Border.all(color: mRedColor) : null,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

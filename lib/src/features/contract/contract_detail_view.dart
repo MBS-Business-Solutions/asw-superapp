@@ -1,16 +1,33 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/down_history_view.dart';
+import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/utils/date_formatter_util.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:open_file/open_file.dart';
 
-class ContractDetailView extends StatelessWidget {
+class ContractDetailView extends StatefulWidget {
   const ContractDetailView({super.key, required this.contractId});
   static const String routeName = '/contract-detail';
   final String contractId;
+
+  @override
+  State<ContractDetailView> createState() => _ContractDetailViewState();
+}
+
+class _ContractDetailViewState extends State<ContractDetailView> {
+  bool _isLoadingContractFile = false;
+  late Future<ContractDetail?> _contractDetailFuture;
+
+  @override
+  void initState() {
+    _contractDetailFuture = context.read<ContractProvider>().fetchContractDetail(widget.contractId);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +41,7 @@ class ContractDetailView extends StatelessWidget {
         backgroundColor: Theme.of(context).brightness == Brightness.dark ? mDarkBackgroundColor : mLightBackgroundColor,
       ),
       body: FutureBuilder(
-          future: context.read<ContractProvider>().fetchContractDetail(contractId),
+          future: _contractDetailFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -58,6 +75,12 @@ class ContractDetailView extends StatelessWidget {
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
                           ),
+                          _buildDetailText(context,
+                              label: AppLocalizations.of(context)!.contractDetailBookingSellingPrice, value: AppLocalizations.of(context)!.priceFormat(contractDetail.sellingPrice)),
+                          _buildDetailText(context,
+                              label: AppLocalizations.of(context)!.contractDetailBookingDiscountPrice, value: AppLocalizations.of(context)!.priceFormat(contractDetail.cashDiscount)),
+                          _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailBookingNetPrice, value: AppLocalizations.of(context)!.priceFormat(contractDetail.netPrice)),
+
                           _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailBookingAmount, value: AppLocalizations.of(context)!.priceFormat(contractDetail.bookAmount)),
                           _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailContractAmount, value: AppLocalizations.of(context)!.priceFormat(contractDetail.contractAmount)),
                           _buildDetailText(
@@ -69,7 +92,7 @@ class ContractDetailView extends StatelessWidget {
                                     padding: const EdgeInsets.only(left: 4),
                                     child: InkWell(
                                         onTap: () {
-                                          Navigator.pushNamed(context, DownHistoryView.routeName, arguments: contractId);
+                                          Navigator.pushNamed(context, DownHistoryView.routeName, arguments: widget.contractId);
                                         },
                                         child: Row(
                                           children: [
@@ -159,10 +182,18 @@ class ContractDetailView extends StatelessWidget {
                     ),
                     child: SafeArea(
                         child: FilledButton(
-                            onPressed: () {},
+                            onPressed: _isLoadingContractFile
+                                ? null
+                                : () {
+                                    _downloadAndOpenPdf(context, widget.contractId);
+                                  },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: [Text(AppLocalizations.of(context)!.contractDetailDownloadDoc), const Icon(Icons.file_download_outlined)],
+                              children: [
+                                Text(AppLocalizations.of(context)!.contractDetailDownloadDoc),
+                                const Icon(Icons.file_download_outlined),
+                                if (_isLoadingContractFile) const CircularProgressIndicator.adaptive(),
+                              ],
                             ))),
                   ),
                 )
@@ -170,6 +201,31 @@ class ContractDetailView extends StatelessWidget {
             );
           }),
     );
+  }
+
+  Future<void> _downloadAndOpenPdf(BuildContext context, String contractId) async {
+    setState(() {
+      _isLoadingContractFile = true;
+    });
+    try {
+      // ดาวน์โหลดไฟล์ PDF
+      final filePath = await context.read<ContractProvider>().downloadContract(contractId);
+      if (filePath != null) {
+        // เปิดไฟล์ PDF และให้ผู้ใช้เลือกแอป
+        await OpenFile.open(filePath);
+      } else {
+        // แจ้งเตือนเมื่อไม่สามารถดาวน์โหลดไฟล์ได้
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(AppLocalizations.of(context)!.errorUnableToDownloadContract),
+          backgroundColor: Colors.red,
+        ));
+      }
+    } catch (e) {
+      if (kDebugMode) print("Error: $e");
+    }
+    setState(() {
+      _isLoadingContractFile = false;
+    });
   }
 
   Widget _buildDetailText(BuildContext context, {required String label, Widget? additionalWidget, required String value}) {

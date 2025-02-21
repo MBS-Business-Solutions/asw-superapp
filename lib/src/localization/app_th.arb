@@ -6,6 +6,7 @@
   },
   "actionButtonNext": "ถัดไป",
   "errorUnableToProcess": "ไม่สามารถใช้งานได้ กรุณาลองใหม่อีกครั้ง",
+  "errorUnableToDownloadContract": "***ไม่สามารถดาวน์โหลดเอกสารสัญญาได้ กรุณาลองใหม่อีกครั้ง***",
   "errorFieldRequired": "กรุณากรอกข้อมูล",
   "errorNoData": "ไม่พบข้อมูล",
   "bahtUnit": "บาท",
@@ -47,6 +48,21 @@
         "format": "decimalPattern",
         "optionalParameters": {
           "decimalDigits": 2
+        }
+      }
+    }
+  },
+
+  "priceFormatBahtDouble": "{amount} บาท",
+  "@priceFormatBahtDouble": {
+    "description": "The format of the amount",
+    "placeholders": {
+      "amount": {
+        "type": "int",
+        "format": "currency",
+        "optionalParameters": {
+          "decimalDigits": 2,
+          "customPattern": "#,##0.00"
         }
       }
     }
@@ -225,12 +241,15 @@
   "contractDetailSigningDate": "วันที่ลงนาม",
   "contractDetailEstimatedTransferDate": "วันที่ประมาณการโอน",
   "contractDetailContractValueTitle": "มูลค่าสัญญา",
+  "contractDetailBookingSellingPrice": "ราคาขาย",
+  "contractDetailBookingDiscountPrice": "ส่วนลดเงินสด",
+  "contractDetailBookingNetPrice": "ราคาสุทธิ",
   "contractDetailBookingAmount": "จอง",
   "contractDetailContractAmount": "สัญญา",
   "contractDetailDownAmount": "ดาวน์",
   "contractDetailDownAmountDetails": "รายละเอียด",
   "contractDetailTransferAmount": "โอน",
-  "contractDetailPaymentTitle": "รายละเอียดการชำระเงิน",
+  "contractDetailPaymentTitle": "รายละเอียดการชำระ",
   "contractDetailPaymentAmount": "ยอดชำระเงิน",
   "contractDetailRemainDownAmount": "คงเหลือ เงินดาวน์",
   "contractDetailRemainHousePayment": "คงเหลือค่าบ้านทั้งหมด",
@@ -263,5 +282,14 @@
   "paymentChannelViewDue": "ชำระภายใน",
   "paymentChannelViewPayment": "ชำระเงิน",
 
-  "qrViewTitle": "QR PromptPay"
+  "qrViewTitle": "QR Code", 
+  "qrViewProject": "โครงการ",
+  "qrViewUnit": "แปลง/ห้อง",
+  "qrViewTotal": "ยอดชำระทั้งสิ้น",
+  "qrViewPromptPayInstruction": "วิธีการชำระเงินด้วย QR Code พร้อมเพย์",
+  "qrViewPromptPayInstruction1": "1. เปิดแอปพลิเคชันธนาคาร จากนั้นเลือกเมนู \"Scan\"",
+  "qrViewPromptPayInstruction2": "2. สแกน QR Code ร้านค้าที่ต้องการสแกน",
+  "qrViewPromptPayInstruction3": "3. เลือกบัญชีและระบุจำนวนเงินที่ต้องการ กด \"ตรวจสอบข้อมูล\"",
+  "qrViewPromptPayInstruction4": "4. กดยืนยัน"
+
 }

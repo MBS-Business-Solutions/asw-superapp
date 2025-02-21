@@ -45,78 +45,128 @@ class QRView extends StatelessWidget {
               height: double.infinity,
               child: Stack(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
-                    child: WidgetsToImage(
-                      controller: controller,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(mDefaultPadding),
-                            color: Theme.of(context).brightness == Brightness.dark ? mDarkCardBackgroundColor : mLightCardBackgroundColor,
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text('โครงการ', style: Theme.of(context).textTheme.labelMedium),
-                                    const Spacer(),
-                                    Text(contract.projectName, style: Theme.of(context).textTheme.labelMedium!.copyWith(fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                                const SizedBox(height: mMediumPadding),
-                                Row(
-                                  children: [
-                                    Text('แปลง/ห้อง', style: Theme.of(context).textTheme.labelMedium),
-                                    const Spacer(),
-                                    Text(contract.unitNumber, style: Theme.of(context).textTheme.labelMedium!.copyWith(fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                                const SizedBox(height: mMediumPadding),
-                                Row(
-                                  children: [
-                                    Text('ยอดชำระทั้งสิ้น', style: Theme.of(context).textTheme.labelMedium),
-                                    const Spacer(),
-                                    Text(StringUtil.formatNumber(amount.toString()), style: Theme.of(context).textTheme.labelMedium!.copyWith(fontWeight: FontWeight.bold)),
-                                  ],
-                                )
-                              ],
+                  Positioned.fill(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            WidgetsToImage(
+                              controller: controller,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(mDefaultPadding),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      color: Theme.of(context).brightness == Brightness.dark ? mDarkCardBackgroundColor : mLightCardBackgroundColor,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(AppLocalizations.of(context)!.qrViewProject, style: Theme.of(context).textTheme.labelMedium),
+                                            const Spacer(),
+                                            Text(contract.projectName, style: Theme.of(context).textTheme.labelMedium!.copyWith(fontWeight: FontWeight.bold)),
+                                          ],
+                                        ),
+                                        const SizedBox(height: mMediumPadding),
+                                        Row(
+                                          children: [
+                                            Text(AppLocalizations.of(context)!.qrViewUnit, style: Theme.of(context).textTheme.labelMedium),
+                                            const Spacer(),
+                                            Text(contract.unitNumber, style: Theme.of(context).textTheme.labelMedium!.copyWith(fontWeight: FontWeight.bold)),
+                                          ],
+                                        ),
+                                        const SizedBox(height: mMediumPadding),
+                                        Row(
+                                          children: [
+                                            Text(AppLocalizations.of(context)!.qrViewTotal, style: Theme.of(context).textTheme.labelMedium),
+                                            const Spacer(),
+                                            Text(StringUtil.formatNumber(amount.toString()), style: Theme.of(context).textTheme.labelMedium!.copyWith(fontWeight: FontWeight.bold)),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: mDefaultPadding * 2),
+                                  Container(
+                                    padding: const EdgeInsets.all(mDefaultPadding),
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    alignment: Alignment.topCenter,
+                                    child: Column(
+                                      children: [
+                                        QrImageView(
+                                          size: MediaQuery.of(context).size.width * 0.6,
+                                          data: qrCode,
+                                          backgroundColor: Colors.white,
+                                        ),
+                                        const SizedBox(
+                                          height: mMediumPadding,
+                                        ),
+                                        Text(
+                                          AppLocalizations.of(context)!.qrViewTotal,
+                                          style: Theme.of(context).textTheme.labelMedium!.copyWith(color: Colors.black),
+                                        ),
+                                        const SizedBox(
+                                          height: mMediumPadding,
+                                        ),
+                                        Text(
+                                          StringUtil.formatNumber(amount.toString()),
+                                          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: mDefaultPadding),
-                          Container(
-                            padding: const EdgeInsets.all(mDefaultPadding),
-                            width: double.infinity,
-                            color: Colors.white,
-                            alignment: Alignment.topCenter,
-                            child: Column(
-                              children: [
-                                QrImageView(
-                                  size: MediaQuery.of(context).size.width * 0.6,
-                                  data: qrCode,
-                                  backgroundColor: Colors.white,
-                                ),
-                                const SizedBox(
-                                  height: mMediumPadding,
-                                ),
-                                Text(
-                                  'ยอดชำระทั้งสิ้น',
-                                  style: Theme.of(context).textTheme.labelMedium!.copyWith(color: Colors.black),
-                                ),
-                                const SizedBox(
-                                  height: mMediumPadding,
-                                ),
-                                Text(
-                                  StringUtil.formatNumber(amount.toString()),
-                                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                ),
-                              ],
+                            const SizedBox(height: mDefaultPadding * 2),
+                            Text(
+                              AppLocalizations.of(context)!.qrViewPromptPayInstruction,
+                              style: Theme.of(context).textTheme.labelLarge,
+                              textAlign: TextAlign.start,
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: mDefaultPadding),
+                            Padding(
+                              padding: const EdgeInsets.only(left: mMediumPadding),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!.qrViewPromptPayInstruction1,
+                                    style: Theme.of(context).textTheme.labelMedium,
+                                  ),
+                                  const SizedBox(height: mMediumPadding),
+                                  Text(
+                                    AppLocalizations.of(context)!.qrViewPromptPayInstruction2,
+                                    style: Theme.of(context).textTheme.labelMedium,
+                                  ),
+                                  const SizedBox(height: mMediumPadding),
+                                  Text(
+                                    AppLocalizations.of(context)!.qrViewPromptPayInstruction3,
+                                    style: Theme.of(context).textTheme.labelMedium,
+                                  ),
+                                  const SizedBox(height: mMediumPadding),
+                                  Text(
+                                    AppLocalizations.of(context)!.qrViewPromptPayInstruction4,
+                                    style: Theme.of(context).textTheme.labelMedium,
+                                  ),
+                                  SizedBox(height: MediaQuery.of(context).padding.bottom + 140),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -127,7 +177,7 @@ class QRView extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.only(left: mScreenEdgeInsetValue, right: mScreenEdgeInsetValue, top: 16, bottom: 8),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark ? mDarkCardBackgroundColor : mLightCardBackgroundColor,
+                        color: (Theme.of(context).brightness == Brightness.dark ? mDarkCardBackgroundColor : mLightCardBackgroundColor).withOpacity(0.8),
                         border: Border.all(color: Colors.white.withOpacity(0.2)),
                         borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
                       ),

@@ -1,11 +1,14 @@
+import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/dashboard/profile_view.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/campaign/campaign_pop.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/bottom_bar/bottom_bar.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/main/dashboard_main_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
+import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key, required this.controller});
@@ -26,35 +29,50 @@ class _DashboardViewState extends State<DashboardView> {
           const AssetWiseBG(),
           if (_currentTab == BottomTab.home) const DashboardMainView(),
           if (_currentTab == BottomTab.profile) const ProfileView(),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: MediaQuery.of(context).padding.bottom + mDefaultPadding,
-            child: SizedBox(
-              height: 130,
-              child: BottomBar(
-                currentTab: _currentTab,
-                normalFlex: 4,
-                expandedFlex: 5,
-                onTabChanged: (tab) {
-                  setState(() {
-                    _currentTab = tab;
+          Consumer<UserProvider>(
+            builder: (context, provider, child) {
+              if (!provider.isAuthenticated) {
+                if (_currentTab != BottomTab.home) {
+                  Future.delayed(const Duration(milliseconds: 200), () {
+                    setState(() {
+                      _currentTab = BottomTab.home;
+                    });
                   });
-                  switch (tab) {
-                    case BottomTab.home:
-                      break;
-                    case BottomTab.service:
-                      break;
-                    case BottomTab.menu:
-                      break;
-                    case BottomTab.profile:
-                      break;
-                    default:
-                      break;
-                  }
-                },
-              ),
-            ),
+                }
+                return const SizedBox();
+              }
+
+              return Positioned(
+                left: 0,
+                right: 0,
+                bottom: MediaQuery.of(context).padding.bottom + mDefaultPadding,
+                child: SizedBox(
+                  height: 130,
+                  child: BottomBar(
+                    currentTab: _currentTab,
+                    normalFlex: 4,
+                    expandedFlex: 5,
+                    onTabChanged: (tab) {
+                      setState(() {
+                        _currentTab = tab;
+                      });
+                      switch (tab) {
+                        case BottomTab.home:
+                          break;
+                        case BottomTab.service:
+                          break;
+                        case BottomTab.menu:
+                          break;
+                        case BottomTab.profile:
+                          break;
+                        default:
+                          break;
+                      }
+                    },
+                  ),
+                ),
+              );
+            },
           ),
           const CampaignPop(),
         ],

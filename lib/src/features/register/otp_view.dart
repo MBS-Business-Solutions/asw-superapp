@@ -125,6 +125,12 @@ class _OtpViewState extends State<OtpView> {
                         ),
                         OtpInput(
                           controller: otpController,
+                          hasError: _invalidOTP,
+                          onReset: () {
+                            setState(() {
+                              _invalidOTP = false;
+                            });
+                          },
                         ),
                         const SizedBox(
                           height: 8,

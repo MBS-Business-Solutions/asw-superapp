@@ -1,24 +1,46 @@
+import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class OtpInput extends StatefulWidget {
-  const OtpInput({this.otpLength = 6, this.controller, this.focusNode, super.key});
+  const OtpInput({this.otpLength = 6, this.controller, this.focusNode, super.key, this.hasError = false, this.onReset});
   final int otpLength;
   final FocusNode? focusNode;
   final TextEditingController? controller;
+  final bool hasError;
+  final Function()? onReset;
 
   @override
   State<OtpInput> createState() => _OtpInputState();
 }
 
 class _OtpInputState extends State<OtpInput> {
+  late bool _errorState;
   late FocusNode _focusNode;
   List<String> _values = [];
 
   @override
   void initState() {
+    _errorState = widget.hasError;
     _focusNode = widget.focusNode ?? FocusNode();
+    widget.controller?.addListener(_onTextCleared);
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant OtpInput oldWidget) {
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller?.removeListener(_onTextCleared);
+      widget.controller?.addListener(_onTextCleared);
+    }
+    _errorState = widget.hasError;
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    widget.controller?.removeListener(_onTextCleared);
+    super.dispose();
   }
 
   @override
@@ -43,6 +65,10 @@ class _OtpInputState extends State<OtpInput> {
               ),
               onChanged: (value) {
                 setState(() {
+                  if (_errorState) {
+                    _errorState = false;
+                    widget.onReset?.call();
+                  }
                   if (value.isEmpty) {
                     _values.clear();
                   }
@@ -75,7 +101,7 @@ class _OtpInputState extends State<OtpInput> {
                     alignment: Alignment.center,
                     child: Text(
                       index >= _values.length || _values[index].isEmpty ? ' ' : _values[index],
-                      style: const TextStyle(fontSize: 20, color: Colors.black87),
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(color: _errorState ? mRedColor : Colors.black87),
                     ),
                   );
                 }),
@@ -85,5 +111,13 @@ class _OtpInputState extends State<OtpInput> {
         ],
       ),
     );
+  }
+
+  void _onTextCleared() {
+    if (widget.controller?.text.isEmpty ?? true) {
+      setState(() {
+        _values.clear();
+      });
+    }
   }
 }

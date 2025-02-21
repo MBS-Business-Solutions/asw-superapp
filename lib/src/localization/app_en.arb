@@ -6,6 +6,7 @@
   },
   "actionButtonNext": "Next",
   "errorUnableToProcess": "***ไม่สามารถใช้งานได้ กรุณาลองใหม่อีกครั้ง***",
+  "errorUnableToDownloadContract": "***ไม่สามารถดาวน์โหลดเอกสารสัญญาได้ กรุณาลองใหม่อีกครั้ง***",
   "errorFieldRequired": "This field is required.",
   "errorNoData": "No data found.",
   "bahtUnit": "baht",
@@ -47,6 +48,21 @@
         "format": "decimalPattern",
         "optionalParameters": {
           "decimalDigits": 2
+        }
+      }
+    }
+  },
+
+  "priceFormatBahtDouble": "{amount} baht",
+  "@priceFormatBahtDouble": {
+    "description": "The format of the amount",
+    "placeholders": {
+      "amount": {
+        "type": "int",
+        "format": "currency",
+        "optionalParameters": {
+          "decimalDigits": 2,
+          "customPattern": "#,##0.00"
         }
       }
     }
@@ -224,7 +240,10 @@
   "contractDetailContractDate": "Contract Date",
   "contractDetailSigningDate": "Contract Date",
   "contractDetailEstimatedTransferDate": "Estimated Transfer Date",
-  "contractDetailContractValueTitle": "Contract Value",
+  "contractDetailContractValueTitle": "Contract Value",  
+  "contractDetailBookingSellingPrice": "***ราคาขาย***",
+  "contractDetailBookingDiscountPrice": "***ส่วนลดเงินสด***",
+  "contractDetailBookingNetPrice": "***ราคาสุทธิ***",
   "contractDetailBookingAmount": "Booking",
   "contractDetailContractAmount": "Contract",
   "contractDetailDownAmount": "Down payment",
@@ -263,7 +282,16 @@
   "paymentChannelViewDue": "Due Date",
   "paymentChannelViewPayment": "Payment",
 
-  "qrViewTitle": "QR PromptPay"
+  "qrViewTitle": "QR Code",
+  "qrViewProject": "***โครงการ***",
+  "qrViewUnit": "***แปลง/ห้อง***",
+  "qrViewTotal": "***ยอดชำระทั้งสิ้น***",
+  "qrViewPromptPayInstruction": "How to pay with PromptPay QR Code",
+  "qrViewPromptPayInstruction1": "1. Open your banking app and select the \"Scan\" menu.",
+  "qrViewPromptPayInstruction2": "2. Scan the store's QR Code.",
+  "qrViewPromptPayInstruction3": "3. Select your account, enter the amount, and tap \"Confirm\".",
+  "qrViewPromptPayInstruction4": "4. Confirm"
+
 
 
 }

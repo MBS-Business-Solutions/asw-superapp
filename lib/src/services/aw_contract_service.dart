@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AwContractService {
   static Future<List<Contract>> fetchContracts(String token) async {
@@ -146,7 +147,7 @@ class AwContractService {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         List<dynamic> data = jsonResponse['data'];
-        return data.map((json) => DownPaymentDetail.fromJson(json)).toList().reversed.toList();
+        return data.map((json) => DownPaymentDetail.fromJson(json)).toList();
       }
     } catch (e) {
       if (kDebugMode) print(e);
@@ -230,5 +231,37 @@ class AwContractService {
     }
     if (kDebugMode) print(response);
     return null;
+  }
+
+  static Future<String?> downloadFile(String token, String url) async {
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    try {
+      if (response.statusCode == 200) {
+        // หา directory ที่จัดเก็บไฟล์
+        final directory = await getTemporaryDirectory();
+        final filePath = "${directory.path}/downloaded_example.pdf";
+
+        // เขียนไฟล์ลงเครื่อง
+        final file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+        return filePath;
+      } else {
+        print("Failed to download PDF");
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+    }
+    if (kDebugMode) print(response);
+    return null;
+  }
+
+  static String getContractURL(String contractId) {
+    return '$BASE_URL/mobile/contracts/$contractId/download';
   }
 }

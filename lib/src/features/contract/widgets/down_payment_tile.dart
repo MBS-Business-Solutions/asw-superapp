@@ -49,7 +49,7 @@ class DownPaymentTile extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: Text(AppLocalizations.of(context)!.priceFormatBaht(paymentDetail.amount),
+                    child: Text(AppLocalizations.of(context)!.priceFormatBahtDouble(paymentDetail.amount),
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                               color: isPaid ? mPaidColor : mUnPaidColor,
                             )),
@@ -61,7 +61,7 @@ class DownPaymentTile extends StatelessWidget {
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     margin: const EdgeInsets.only(bottom: 4),
-                    child: Text(paymentDetail.status.isEmpty ? '**รอชำระ**' : paymentDetail.status,
+                    child: Text(paymentDetail.status.isNotEmpty ? paymentDetail.status : '***',
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               color: isPaid ? mPaidColor : mUnPaidColor,
                             )),

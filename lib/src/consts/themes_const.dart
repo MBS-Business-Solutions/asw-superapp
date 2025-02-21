@@ -20,7 +20,7 @@ final TextTheme mTextTheme = TextTheme(
   //-------------------------------------
   labelLarge: GoogleFonts.notoSansThai(
     fontSize: 16,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w600,
   ),
   labelMedium: GoogleFonts.notoSansThai(
     fontSize: 13,

@@ -1,3 +1,4 @@
+import 'package:AssetWise/src/consts/constants.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/register/consents_view.dart';
 import 'package:AssetWise/src/providers/register_provider.dart';
@@ -86,7 +87,7 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
                               isEditable: isEditable,
                               label: AppLocalizations.of(context)!.userDetailFirstName,
                               validator: (value) {
-                                if (value!.isEmpty || !RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                                if (value!.isEmpty || RegExp(mNameRegex).hasMatch(value)) {
                                   return AppLocalizations.of(context)!.userDetailInvalidFirstName;
                                 }
                                 return null;
@@ -100,7 +101,7 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
                               isEditable: isEditable,
                               label: AppLocalizations.of(context)!.userDetailLastName,
                               validator: (value) {
-                                if (value!.isEmpty || !RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                                if (value!.isEmpty || RegExp(mNameRegex).hasMatch(value)) {
                                   return AppLocalizations.of(context)!.userDetailInvalidLastName;
                                 }
                                 return null;
@@ -117,7 +118,7 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
                                 keyboardType: TextInputType.phone,
                                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                 validator: (value) {
-                                  if (value!.isEmpty || value.length != 10) {
+                                  if (value!.isNotEmpty && value.length != 10) {
                                     return AppLocalizations.of(context)!.userDetailInvalidPhone;
                                   }
                                   return null;
