@@ -1,4 +1,3 @@
-import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/dashboard/profile_view.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/campaign/campaign_pop.dart';

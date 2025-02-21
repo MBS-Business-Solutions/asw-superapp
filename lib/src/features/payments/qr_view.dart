@@ -214,14 +214,18 @@ class QRView extends StatelessWidget {
   }
 
   Future<void> _saveImage(BuildContext context, WidgetsToImageController controller) async {
-    final bytes = await controller.capture();
-    if (bytes != null) {
-      await Gal.putImageBytes(bytes, name: DateTime.now().toString(), album: 'AssetWise');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('QR Code saved to gallery'),
-        ),
-      );
+    if (!await Gal.hasAccess()) {
+      Gal.requestAccess();
+    } else {
+      final bytes = await controller.capture();
+      if (bytes != null) {
+        await Gal.putImageBytes(bytes, name: DateTime.now().toString(), album: 'AssetWise');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('QR Code saved to gallery'),
+          ),
+        );
+      }
     }
   }
 }
