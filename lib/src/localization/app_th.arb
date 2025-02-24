@@ -9,6 +9,7 @@
   "errorUnableToDownloadContract": "***ไม่สามารถดาวน์โหลดเอกสารสัญญาได้ กรุณาลองใหม่อีกครั้ง***",
   "errorFieldRequired": "กรุณากรอกข้อมูล",
   "errorNoData": "ไม่พบข้อมูล",
+  "errorInvalidPin": "รหัส PIN ไม่ถูกต้อง",
   "bahtUnit": "บาท",
   "priceFormat": "{price}",
   "@priceFormat": {
@@ -290,6 +291,18 @@
   "qrViewPromptPayInstruction1": "1. เปิดแอปพลิเคชันธนาคาร จากนั้นเลือกเมนู \"Scan\"",
   "qrViewPromptPayInstruction2": "2. สแกน QR Code ร้านค้าที่ต้องการสแกน",
   "qrViewPromptPayInstruction3": "3. เลือกบัญชีและระบุจำนวนเงินที่ต้องการ กด \"ตรวจสอบข้อมูล\"",
-  "qrViewPromptPayInstruction4": "4. กดยืนยัน"
+  "qrViewPromptPayInstruction4": "4. กดยืนยัน",
 
+  "pinEntryTitle": "ใส่รหัส PIN",
+  "pinEntryInstruction": "ระบุรหัส PIN จำนวน {digits} หลักเพื่อใช้ในการเข้าสู่ระบบ",
+  "@pinEntryInstruction": {
+    "description": "Message to enter a PIN with a specified number of digits",
+    "placeholders": {
+      "digits": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "pinEntryForget": "ลืมรหัส PIN"
 }

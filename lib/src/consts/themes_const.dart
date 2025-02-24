@@ -10,7 +10,7 @@ final TextTheme mTextTheme = TextTheme(
     fontWeight: FontWeight.w600,
   ),
   titleMedium: GoogleFonts.notoSansThai(
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: FontWeight.w600,
   ),
   titleSmall: GoogleFonts.notoSansThai(

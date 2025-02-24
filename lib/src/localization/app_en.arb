@@ -9,6 +9,7 @@
   "errorUnableToDownloadContract": "***ไม่สามารถดาวน์โหลดเอกสารสัญญาได้ กรุณาลองใหม่อีกครั้ง***",
   "errorFieldRequired": "This field is required.",
   "errorNoData": "No data found.",
+  "errorInvalidPin": "***รหัส PIN ไม่ถูกต้อง***",
   "bahtUnit": "baht",
   "priceFormat": "{price}",
   "@priceFormat": {
@@ -290,8 +291,18 @@
   "qrViewPromptPayInstruction1": "1. Open your banking app and select the \"Scan\" menu.",
   "qrViewPromptPayInstruction2": "2. Scan the store's QR Code.",
   "qrViewPromptPayInstruction3": "3. Select your account, enter the amount, and tap \"Confirm\".",
-  "qrViewPromptPayInstruction4": "4. Confirm"
+  "qrViewPromptPayInstruction4": "4. Confirm",
 
-
-
+  "pinEntryTitle": "Enter PIN",
+  "pinEntryInstruction": "Enter a {digits}-digit PIN to log in.",
+  "@pinEntryInstruction": {
+    "description": "Message to enter a PIN with a specified number of digits",
+    "placeholders": {
+      "digits": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "pinEntryForget": "Forgot PIN code"
 }

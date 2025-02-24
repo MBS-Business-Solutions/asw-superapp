@@ -1,4 +1,5 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
+import 'package:AssetWise/src/consts/constants.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
@@ -18,7 +19,6 @@ class SetPinView extends StatefulWidget {
 }
 
 class _SetPinViewState extends State<SetPinView> {
-  final pinMaxLength = 6;
   final pins = <String>[];
   bool _isConfirmState = false;
   bool _isInvalidPin = false;
@@ -49,14 +49,14 @@ class _SetPinViewState extends State<SetPinView> {
                 ),
               ),
               Text(
-                _isConfirmState ? AppLocalizations.of(context)!.setPinConfirm : AppLocalizations.of(context)!.setPinSetPin(pinMaxLength),
+                _isConfirmState ? AppLocalizations.of(context)!.setPinConfirm : AppLocalizations.of(context)!.setPinSetPin(mPinMaxLength),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(
                 height: 4,
               ),
               Text(
-                AppLocalizations.of(context)!.setPinInstruction(pinMaxLength),
+                AppLocalizations.of(context)!.setPinInstruction(mPinMaxLength),
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,
               ),
@@ -66,7 +66,7 @@ class _SetPinViewState extends State<SetPinView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  for (var i = 0; i < pinMaxLength; i++) ...[
+                  for (var i = 0; i < mPinMaxLength; i++) ...[
                     Container(
                       width: 16,
                       height: 16,
@@ -75,7 +75,7 @@ class _SetPinViewState extends State<SetPinView> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    if (i < pinMaxLength - 1)
+                    if (i < mPinMaxLength - 1)
                       const SizedBox(
                         width: 8,
                       ),
@@ -94,10 +94,10 @@ class _SetPinViewState extends State<SetPinView> {
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: NumPadWidget(
                   onPressed: (value) {
-                    if (pins.length < pinMaxLength) {
+                    if (pins.length < mPinMaxLength) {
                       setState(() {
                         pins.add(value);
-                        if (pins.length == pinMaxLength) {
+                        if (pins.length == mPinMaxLength) {
                           if (_isConfirmState) {
                             if (pins.join() == firstPin) {
                               // save pin
@@ -148,7 +148,13 @@ class _SetPinViewState extends State<SetPinView> {
                   const SizedBox(
                     height: 16,
                   ),
-                  FilledButton(onPressed: () => _processToHome(), child: Text(AppLocalizations.of(context)!.setPinSkip)),
+                  FilledButton(
+                      onPressed: () {
+                        context.read<UserProvider>().setPin(null).then((value) {
+                          _processToHome();
+                        });
+                      },
+                      child: Text(AppLocalizations.of(context)!.setPinSkip)),
                 ],
               )),
             ),

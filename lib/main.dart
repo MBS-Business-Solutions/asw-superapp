@@ -32,13 +32,17 @@ void main() async {
   await initializeFirebase();
   await initIsar();
 
+  final userProvider = UserProvider();
+  await userProvider.initApp();
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
   runApp(MultiProvider(providers: [
     Provider(create: (context) => FirebaseMessagingService()),
     Provider(create: (context) => DashboardProvider()),
-    ChangeNotifierProvider(create: (context) => UserProvider()),
+    ChangeNotifierProvider(
+      create: (context) => userProvider,
+    ),
     ChangeNotifierProxyProvider<UserProvider, SettingsController>(
       create: (context) => settingsController,
       update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
@@ -58,6 +62,7 @@ void main() async {
   ], child: MyApp(settingsController: settingsController)));
 }
 
+bool isPinEntryVisible = false;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<void> initializeFirebase() async {
   await Firebase.initializeApp(

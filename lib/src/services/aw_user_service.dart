@@ -88,14 +88,16 @@ class AwUserService {
   }
 
   static Future<bool> setPreferedLanguage(String token, String language) async {
-    final response = await http.post(
-      Uri.parse('$BASE_URL/mobile/setting/language'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-      body: jsonEncode(<String, String>{"language": language}),
-    );
+    final response = await http
+        .post(
+          Uri.parse('$BASE_URL/mobile/setting/language'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $token',
+          },
+          body: jsonEncode(<String, String>{"language": language}),
+        )
+        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       try {

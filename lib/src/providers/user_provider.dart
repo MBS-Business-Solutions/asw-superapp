@@ -11,12 +11,13 @@ class UserProvider with ChangeNotifier {
   String? get token => _token;
   String testv = 'test';
   bool get isAuthenticated => _token != null;
+  bool _isPinSet = false;
+  bool get isPinSet => _isPinSet;
   UserInformation? _userInformation;
   UserInformation? get userInformation => _userInformation;
 
   UserProvider({String? token, bool? isMember}) {
     _token = token;
-    initApp();
   }
 
   AndroidOptions _getAndroidOptions() => const AndroidOptions(encryptedSharedPreferences: true);
@@ -50,6 +51,7 @@ class UserProvider with ChangeNotifier {
 
   Future<void> initApp() async {
     _token = await secureStorage.read(key: 'SESSION_TOKEN');
+    _isPinSet = await secureStorage.read(key: 'PIN') != null;
     final userJson = await secureStorage.read(key: 'USER_INFO');
     if (userJson != null) {
       _userInformation = UserInformation.fromJson(jsonDecode(userJson));
@@ -64,7 +66,8 @@ class UserProvider with ChangeNotifier {
     return response;
   }
 
-  Future<void> setPin(String pin) async {
+  Future<void> setPin(String? pin) async {
+    _isPinSet = pin != null;
     await secureStorage.write(key: 'PIN', value: pin);
   }
 
