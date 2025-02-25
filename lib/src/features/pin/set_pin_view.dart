@@ -10,9 +10,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SetPinView extends StatefulWidget {
-  const SetPinView({super.key, this.firstSetup = true});
+  const SetPinView({super.key, this.skipable});
   static const String routeName = '/set-pin';
-  final bool firstSetup;
+  final bool? skipable;
 
   @override
   State<SetPinView> createState() => _SetPinViewState();
@@ -27,7 +27,7 @@ class _SetPinViewState extends State<SetPinView> {
 
   @override
   void initState() {
-    _showSkip = widget.firstSetup;
+    _showSkip = widget.skipable ?? false;
     super.initState();
   }
 

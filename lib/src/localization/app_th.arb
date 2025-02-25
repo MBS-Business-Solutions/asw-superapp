@@ -9,7 +9,7 @@
   "errorUnableToDownloadContract": "***ไม่สามารถดาวน์โหลดเอกสารสัญญาได้ กรุณาลองใหม่อีกครั้ง***",
   "errorFieldRequired": "กรุณากรอกข้อมูล",
   "errorNoData": "ไม่พบข้อมูล",
-  "errorInvalidPin": "รหัส PIN ไม่ถูกต้อง",
+  "errorInvalidPin": "หมายเลข OTP ไม่ถูกต้อง",
   "bahtUnit": "บาท",
   "priceFormat": "{price}",
   "@priceFormat": {
@@ -304,5 +304,37 @@
       }
     }
   },
-  "pinEntryForget": "ลืมรหัส PIN"
+  "pinEntryForget": "ลืมรหัส PIN",
+
+  "otpRequestActionResetPin": "ทำยืนยันตัวตนในการตั้งรหัส PIN",
+  "otpRequestActionFirstSetPin": "ใช้ในการเข้าสู่ระบบครั้งต่อไป",
+  "otpRequestMobileLabel": "เบอร์มือถือ",
+  "otpRequestMobile": "กรอกเบอร์มือถือ",
+  "otpRequestMobileHint": "ระบุเบอร์มือถือของท่าน เพื่อ{action}",
+  "@otpRequestMobileHint": {
+    "description": "Hint for the mobile number input field",
+    "placeholders": {
+      "action": {
+        "type": "String",
+        "example": "ทำการสมัครสมาชิก"
+      }
+    }
+  },
+  "otpRequestEMailLabel": "Email",
+  "otpRequestEMail": "กรอก E-Mail",
+  "otpRequestEMailHint": "ระบุ E-mail ของท่าน เพื่อ{action}",
+  "@otpRequestEMailHint": {
+    "description": "Hint for the email input field",
+    "placeholders": {
+      "action": {
+        "type": "String",
+        "example": "ทำการสมัครสมาชิก"
+      }
+    }
+  },
+  "otpRequestLoginByEmail": "เข้าสู่ระบบผ่าน E-mail",
+  "otpRequestNext": "ถัดไป",
+  "otpRequestInvalidData": "กรุณากรอกข้อมูลให้ครบถ้วน",
+  "otpRequestInvalidMobile": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน",
+  "otpRequestInvalidEmail": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน"
 }

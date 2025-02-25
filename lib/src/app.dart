@@ -16,9 +16,11 @@ import 'package:AssetWise/src/features/payments/qr_view.dart';
 import 'package:AssetWise/src/features/pin/pin_entry_view.dart';
 import 'package:AssetWise/src/features/pin/set_pin_view.dart';
 import 'package:AssetWise/src/features/register/consents_view.dart';
-import 'package:AssetWise/src/features/register/otp_view.dart';
+import 'package:AssetWise/src/features/register/register_otp_view.dart';
 import 'package:AssetWise/src/features/register/register_view.dart';
 import 'package:AssetWise/src/features/register/user_detail_view.dart';
+import 'package:AssetWise/src/features/verify_otp/otp_request_view.dart';
+import 'package:AssetWise/src/features/verify_otp/verify_otp_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/services/firebase_service.dart';
@@ -152,6 +154,7 @@ class _MyAppState extends State<MyApp> {
                 // Define a function to handle named routes in order to support
                 // Flutter web url navigation and deep linking.
                 onGenerateRoute: (RouteSettings routeSettings) {
+                  final routeMap = routeSettings.arguments as Map<String, dynamic>?;
                   return MaterialPageRoute<void>(
                     settings: routeSettings,
                     builder: (BuildContext context) {
@@ -165,12 +168,10 @@ class _MyAppState extends State<MyApp> {
                           return DashboardView(controller: widget.settingsController);
                         case RegisterView.routeName:
                           return const RegisterView();
-                        case OtpView.routeName:
-                          return const OtpView();
                         case RegisterUserDetailView.routeName:
                           return const RegisterUserDetailView();
                         case SetPinView.routeName:
-                          return const SetPinView();
+                          return SetPinView(skipable: routeMap?['skipable'] as bool?);
                         case ConsentsView.routeName:
                           return const ConsentsView();
                         case ContractsView.routeName:
@@ -178,33 +179,42 @@ class _MyAppState extends State<MyApp> {
                             openContractId: routeSettings.arguments as String?,
                           );
                         case DownHistoryView.routeName:
-                          return DownHistoryView(contractId: routeSettings.arguments as String);
+                          return DownHistoryView(contractId: routeMap!['contractId'] as String);
                         case ChangeLanguangeView.routeName:
                           return const ChangeLanguangeView();
                         case ReceiptView.routeName:
                           return ReceiptView(
-                            contractNumber: (routeSettings.arguments as Map<String, dynamic>)['contractNumber'] as String,
-                            receiptNumber: (routeSettings.arguments as Map<String, dynamic>)['receiptNumber'] as String,
+                            contractNumber: routeMap!['contractNumber'] as String,
+                            receiptNumber: routeMap['receiptNumber'] as String,
                           );
                         case ReceiptViewFile.routeName:
                           return ReceiptViewFile(
-                            contractNumber: (routeSettings.arguments as Map<String, dynamic>)['contractNumber'] as String,
-                            receiptNumber: (routeSettings.arguments as Map<String, dynamic>)['receiptNumber'] as String,
+                            contractNumber: routeMap!['contractNumber'] as String,
+                            receiptNumber: routeMap['receiptNumber'] as String,
                           );
                         case OverduesView.routeName:
-                          return OverduesView(contract: routeSettings.arguments as Contract);
+                          return OverduesView(contract: routeMap!['contract'] as Contract);
                         case NotificationsView.routeName:
                           return const NotificationsView();
                         case PaymentChannelsView.routeName:
                           return PaymentChannelsView(
-                            contract: (routeSettings.arguments as Map<String, dynamic>)['contract'] as Contract,
-                            overdueDetail: (routeSettings.arguments as Map<String, dynamic>)['overdueDetail'] as OverdueDetail?,
-                            amount: (routeSettings.arguments as Map<String, dynamic>)['amount'] as double?,
+                            contract: routeMap!['contract'] as Contract,
+                            overdueDetail: routeMap['overdueDetail'] as OverdueDetail?,
+                            amount: routeMap['amount'] as double?,
                           );
                         case QRView.routeName:
                           return QRView(
-                            contract: (routeSettings.arguments as Map<String, dynamic>)['contract'] as Contract,
-                            amount: (routeSettings.arguments as Map<String, dynamic>)['amount'] as double,
+                            contract: routeMap!['contract'] as Contract,
+                            amount: routeMap['amount'] as double,
+                          );
+                        case PinEntryView.routeName:
+                          return PinEntryView(
+                            isBackable: routeMap?['isBackable'] as bool?,
+                          );
+                        case OTPRequestView.routeName:
+                          return OTPRequestView(
+                            forAction: routeMap?['forAction'] as String?,
+                            onOTPVerified: routeMap?['onOTPVerified'],
                           );
                         default:
                           // return DashboardView(controller: settingsController);

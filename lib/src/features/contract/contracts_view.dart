@@ -293,7 +293,7 @@ class _ContractsViewState extends State<ContractsView> {
                             },
                             child: Text(AppLocalizations.of(context)!.overdueDetailPayment)),
                         TextButton(
-                            onPressed: () => Navigator.pushNamed(context, OverduesView.routeName, arguments: _selectedContract!),
+                            onPressed: () => Navigator.pushNamed(context, OverduesView.routeName, arguments: {'contract': _selectedContract!}),
                             style: TextButton.styleFrom(foregroundColor: Colors.white),
                             child: Text(AppLocalizations.of(context)!.overdueDetailViewDetail)),
                       ],

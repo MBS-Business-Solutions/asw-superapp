@@ -1,6 +1,7 @@
 import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/constants.dart';
+import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
@@ -10,8 +11,10 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PinEntryView extends StatefulWidget {
-  const PinEntryView({super.key});
+  const PinEntryView({super.key, this.isBackable, this.onPinVerified});
   static const String routeName = '/pin-entry';
+  final bool? isBackable;
+  final ValueChanged<bool>? onPinVerified;
 
   @override
   State<PinEntryView> createState() => _PinEntryViewState();
@@ -33,7 +36,7 @@ class _PinEntryViewState extends State<PinEntryView> {
 
     // TODO: Check iOS can swipe back or not
     return PopScope(
-      canPop: false,
+      canPop: widget.isBackable ?? false,
       child: Scaffold(
         body: Stack(children: [
           const AssetWiseBG(),
@@ -95,12 +98,12 @@ class _PinEntryViewState extends State<PinEntryView> {
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: NumPadWidget(
                     onPressed: (value) {
-                      if (pins.length < mPinMaxLength - 1) {
+                      if (pins.length <= mPinMaxLength) {
                         setState(() {
                           pins.add(value);
                         });
-                      } else if (pins.length <= mPinMaxLength) {
-                        pins.add(value);
+                      }
+                      if (pins.length == mPinMaxLength) {
                         _validatePin();
                       }
                     },
@@ -122,6 +125,17 @@ class _PinEntryViewState extends State<PinEntryView> {
               ],
             ),
           ),
+          if (widget.isBackable ?? false)
+            Positioned(
+              right: mScreenEdgeInsetValue,
+              top: MediaQuery.of(context).padding.top + 16,
+              child: IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () {
+                  Navigator.pop(context, false);
+                },
+              ),
+            ),
           if (_securityDelay)
             Positioned.fill(
               child: Container(
@@ -142,6 +156,7 @@ class _PinEntryViewState extends State<PinEntryView> {
     final isPinValid = await userProvider.validatePin(pin);
     if (isPinValid) {
       isPinEntryVisible = false;
+      widget.onPinVerified?.call(true);
       Navigator.pop(context, true);
     } else {
       setState(() {
@@ -149,7 +164,7 @@ class _PinEntryViewState extends State<PinEntryView> {
         _securityDelay = true;
       });
       // Delay for 1 second to simulate security delay
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(milliseconds: mPinDelayMS));
       setState(() {
         _isInvalidPin = true;
         _securityDelay = false;

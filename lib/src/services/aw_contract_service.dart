@@ -209,16 +209,17 @@ class AwContractService {
 
   static Future<String?> getPaymentGatewayURL({required Contract contract, double amount = 0, String? detail, required String email}) async {
     final formatNumber = NumberFormat('####.00');
+    final body = {
+      'payment_type': '9',
+      'contract_id': contract.contractId,
+      'contract_number': contract.contractNumber ?? '',
+      'total': formatNumber.format(amount),
+      'customer_email': email,
+      'detail': detail ?? '',
+    };
     final response = await http.post(
       Uri.parse('$BASE_URL/payment/link'),
-      body: {
-        'payment_type': '9',
-        'contract_id': contract.contractId,
-        'contract_number': contract.contractNumber ?? '',
-        'total': formatNumber.format(amount),
-        'email': email,
-        'detail': detail ?? '',
-      },
+      body: body,
     );
 
     try {

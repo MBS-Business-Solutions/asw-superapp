@@ -92,7 +92,7 @@ class _ContractDetailViewState extends State<ContractDetailView> {
                                     padding: const EdgeInsets.only(left: 4),
                                     child: InkWell(
                                         onTap: () {
-                                          Navigator.pushNamed(context, DownHistoryView.routeName, arguments: widget.contractId);
+                                          Navigator.pushNamed(context, DownHistoryView.routeName, arguments: {'contractId': widget.contractId});
                                         },
                                         child: Row(
                                           children: [

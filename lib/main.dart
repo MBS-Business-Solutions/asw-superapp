@@ -4,6 +4,7 @@ import 'package:AssetWise/src/providers/dashboard_provider.dart';
 import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:AssetWise/src/providers/register_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
+import 'package:AssetWise/src/providers/verify_otp_provider.dart';
 import 'package:AssetWise/src/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
@@ -59,6 +60,10 @@ void main() async {
       create: (context) => NotificationItemProvider(),
       update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
     ),
+    ProxyProvider<UserProvider, VerifyOtpProvider>(
+      create: (context) => VerifyOtpProvider(),
+      update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
+    )
   ], child: MyApp(settingsController: settingsController)));
 }
 

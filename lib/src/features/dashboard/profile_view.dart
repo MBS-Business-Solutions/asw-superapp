@@ -1,9 +1,15 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/change_languange_view.dart';
+import 'package:AssetWise/src/features/pin/pin_entry_view.dart';
+import 'package:AssetWise/src/features/pin/set_pin_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
+import 'package:AssetWise/src/features/verify_otp/otp_request_view.dart';
+import 'package:AssetWise/src/features/verify_otp/verify_otp_view.dart';
+import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/utils/string_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
@@ -175,7 +181,31 @@ class _ProfileViewState extends State<ProfileView> {
               ListTile(
                 title: Text(AppLocalizations.of(context)!.profilePin),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () {},
+                onTap: () async {
+                  if (context.read<UserProvider>().isPinSet) {
+                    // already set pin, change pin
+                    final pinVerify = await Navigator.pushNamed(context, PinEntryView.routeName, arguments: {'isBackable': true}) as bool?;
+                    if (pinVerify ?? false) {
+                      final otpValidationResult = await Navigator.pushNamed(
+                        context,
+                        OTPRequestView.routeName,
+                        arguments: {
+                          'forAction': AppLocalizations.of(context)!.otpRequestActionResetPin,
+                        },
+                      );
+                      if (otpValidationResult as bool? ?? false) {
+                        // reset pin
+                        Navigator.pushNamed(context, SetPinView.routeName, arguments: {'skipable': true});
+                      }
+                    }
+                    // if (result == true) {
+                    //   Navigator.pushNamed(context, SetPinView.routeName, arguments: {'skipable': true});
+                    // }
+                  } else {
+                    // first time set pin
+                    Navigator.pushNamed(context, SetPinView.routeName, arguments: {'skipable': false});
+                  }
+                },
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.profileDeleteAccount),
@@ -211,7 +241,7 @@ class _ProfileViewState extends State<ProfileView> {
                 title: Text(AppLocalizations.of(context)!.profileExit),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {
-                  exit(0);
+                  SystemNavigator.pop();
                 },
               ),
               ListTile(

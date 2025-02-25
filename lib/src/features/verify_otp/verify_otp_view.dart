@@ -3,38 +3,37 @@ import 'dart:async';
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
-import 'package:AssetWise/src/providers/register_provider.dart';
+import 'package:AssetWise/src/providers/verify_otp_provider.dart';
 import 'package:AssetWise/src/utils/string_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:AssetWise/src/widgets/otp_input.dart';
-import 'package:AssetWise/src/features/register/user_detail_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
-class OtpView extends StatefulWidget {
-  const OtpView({super.key});
-  static const String routeName = '/otp';
-
+class VerifyOTPView extends StatefulWidget {
+  const VerifyOTPView({super.key, this.onOTPVerified});
+  static const String routeName = '/verify-otp';
+  final ValueChanged<VerifyOTPResponse>? onOTPVerified;
   @override
-  State<OtpView> createState() => _OtpViewState();
+  State<VerifyOTPView> createState() => _VerifyOTPViewState();
 }
 
-class _OtpViewState extends State<OtpView> {
+class _VerifyOTPViewState extends State<VerifyOTPView> {
   final otpController = TextEditingController();
-  OTPRef? refCode;
   late Timer _timer;
   int _start = 60;
   bool _isButtonDisabled = true;
   bool _invalidOTP = false;
+  OTPRef? _otpRef;
 
   @override
   void initState() {
-    super.initState();
-    refCode = context.read<RegisterProvider>().otpRef;
+    _otpRef = context.read<VerifyOtpProvider>().otpRef;
     startTimer();
+    super.initState();
   }
 
   @override
@@ -45,10 +44,9 @@ class _OtpViewState extends State<OtpView> {
 
   void startTimer() {
     if (kDebugMode) {
-      print(refCode!.transId);
+      print(_otpRef?.transId);
     }
     _isButtonDisabled = true;
-    _start = 10;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_start <= 1) {
         setState(() {
@@ -98,15 +96,16 @@ class _OtpViewState extends State<OtpView> {
                         const SizedBox(
                           height: 4,
                         ),
-                        Text(
-                          AppLocalizations.of(context)!.otpInstruction(
-                            refCode!.isLoginWithEmail ? 'email' : 'mobile',
-                            refCode!.isLoginWithEmail ? refCode!.sendTo : StringUtil.phoneFormatter(refCode!.sendTo),
-                            refCode!.refCode,
+                        if (_otpRef != null)
+                          Text(
+                            AppLocalizations.of(context)!.otpInstruction(
+                              _otpRef!.isLoginWithEmail ? 'email' : 'mobile',
+                              _otpRef!.isLoginWithEmail ? _otpRef!.sendTo : StringUtil.phoneFormatter(_otpRef!.sendTo),
+                              _otpRef!.refCode,
+                            ),
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            textAlign: TextAlign.center,
                           ),
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          textAlign: TextAlign.center,
-                        ),
                         const SizedBox(
                           height: 4,
                         ),
@@ -137,7 +136,7 @@ class _OtpViewState extends State<OtpView> {
                         ),
                         if (_invalidOTP)
                           Text(
-                            '**หมายเลข OTP ไม่ถูกต้อง**',
+                            AppLocalizations.of(context)!.errorInvalidPin,
                             style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: mRedColor),
                           ),
                         const SizedBox(
@@ -163,40 +162,45 @@ class _OtpViewState extends State<OtpView> {
   }
 
   Future<void> _onResendOtp() async {
-    final registerProvider = context.read<RegisterProvider>();
-    if (registerProvider.isResident) {
-      refCode = await registerProvider.requestOTPResident();
-    } else {
-      refCode = await registerProvider.requestOTPNonResident();
-    }
-
-    if (refCode != null) {
-      setState(() {
-        otpController.text = '';
-        _invalidOTP = false;
-        _isButtonDisabled = true;
-        _start = 60;
-      });
-      startTimer();
-    }
+    _otpRef = await context.read<VerifyOtpProvider>().resendOTP();
+    setState(() {
+      otpController.text = '';
+      _invalidOTP = false;
+      _isButtonDisabled = true;
+      _start = 60;
+    });
+    startTimer();
   }
 
   Future<void> _verifyOTP() async {
-    final registerProvider = context.read<RegisterProvider>();
-    VerifyOTPResponse? response;
-    if (registerProvider.isResident) {
-      response = await registerProvider.verifyOTPResident(otpController.text);
-    } else {
-      response = await registerProvider.verifyOTPNonResident(otpController.text);
-    }
+    final provider = context.read<VerifyOtpProvider>();
+    final response = await provider.verifyOTP(otpController.text);
     if (mounted) {
       if (response != null) {
-        Navigator.pushReplacementNamed(context, RegisterUserDetailView.routeName);
+        widget.onOTPVerified?.call(response);
+        Navigator.pop(context, true);
+        Navigator.pop(context, true);
       } else {
         setState(() {
           _invalidOTP = true;
         });
       }
     }
+    // final registerProvider = context.read<RegisterProvider>();
+    // VerifyOTPResponse? response;
+    // if (registerProvider.isResident) {
+    //   response = await registerProvider.verifyOTPResident(otpController.text);
+    // } else {
+    //   response = await registerProvider.verifyOTPNonResident(otpController.text);
+    // }
+    // if (mounted) {
+    //   if (response != null) {
+    //     Navigator.pushReplacementNamed(context, RegisterUserDetailView.routeName);
+    //   } else {
+    //     setState(() {
+    //       _invalidOTP = true;
+    //     });
+    //   }
+    // }
   }
 }
