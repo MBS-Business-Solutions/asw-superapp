@@ -5,6 +5,7 @@
     "description": "The title of the application"
   },
   "actionButtonNext": "ถัดไป",
+  "actionButtonCancel": "ยกเลิก",
   "errorUnableToProcess": "ไม่สามารถใช้งานได้ กรุณาลองใหม่อีกครั้ง",
   "errorUnableToDownloadContract": "***ไม่สามารถดาวน์โหลดเอกสารสัญญาได้ กรุณาลองใหม่อีกครั้ง***",
   "errorFieldRequired": "กรุณากรอกข้อมูล",
@@ -70,25 +71,11 @@
   },
 
   "bottomBarHome": "หน้าหลัก",
-  "@bottomBarHome": {
-    "description": "Label for icon Bottom App Bar"
-  },
   "bottomBarService": "บริการ",
-  "@bottomBarService": {
-    "description": "Label for icon Bottom App Bar"
-  },
   "bottomBarChat": "แชท",
-  "@bottomBarChat": {
-    "description": "Label for icon Bottom App Bar"
-  },
   "bottomBarMenu": "เมนู",
-  "@bottomBarMenu": {
-    "description": "Label for icon Bottom App Bar"
-  },
-  "bottomBarProfile": "โปรไฟล์",
-  "@bottomBarProfile": {
-    "description": "Label for icon Bottom App Bar"
-  },
+  "bottomBarCalendar": "ปฏิทิน",
+
   "registerMobileLabel": "เบอร์มือถือ",
   "registerMobile": "กรอกเบอร์มือถือ",
   "registerMobileHint": "ระบุเบอร์มือถือของท่าน เพื่อทำการสมัครสมาชิก",
@@ -183,6 +170,7 @@
     "description": "The title of the favourite section"
   },
   "dashboardMainSectionFavouriteMore": "เมนูทั้งหมด",
+  "dashboardMainSectionNotification": "การแจ้งเตือน",
   "dashboardMainSectionRecommended": "โครงการแนะนำ",
   "dashboardMainSectionRecommendedDetail": "เรามุ่งมั่นที่จะออกแบบที่อยู่อาศัย เพื่อความสุขของคนอยู่ โดยคำนึงถึงไลฟ์สไตล์ และการใช้ชีวิตของแต่ละคนที่แตกต่างกัน ให้คุณได้ใช้ชีวิตในแบบที่คุณต้องการ",
 
@@ -244,6 +232,7 @@
   "contractDetailContractValueTitle": "มูลค่าสัญญา",
   "contractDetailBookingSellingPrice": "ราคาขาย",
   "contractDetailBookingDiscountPrice": "ส่วนลดเงินสด",
+  "contractDetailBookingDiscountAtTransferPrice": "ส่วนลด ณ วันโอน",
   "contractDetailBookingNetPrice": "ราคาสุทธิ",
   "contractDetailBookingAmount": "จอง",
   "contractDetailContractAmount": "สัญญา",
@@ -336,5 +325,48 @@
   "otpRequestNext": "ถัดไป",
   "otpRequestInvalidData": "กรุณากรอกข้อมูลให้ครบถ้วน",
   "otpRequestInvalidMobile": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน",
-  "otpRequestInvalidEmail": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน"
+  "otpRequestInvalidEmail": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน",
+
+  "logoutConfirmationTitle": "ต้องการออกจากระบบใช่หรือไม่",
+  "logoutConfirmationMessage": "คุณจะออกจากระบบของ {userName}", 
+  "logoutConfirmationBottomTitle": "คุณแน่ใจหรือไม่ว่าต้องการออกจากระบบ",
+  "logoutConfirmationOKButton": "ออกจากระบบ",
+
+  "closeAppConfirmationTitle": "ต้องการออกจากแอปพลิเคชั่น\nใช่หรือไม่",
+  "closeAppConfirmationMessage": "คุณสามารถกลับเข้ามาใช้งานได้ใหม่ได้\nโดยยืนยันตัวตนผ่านรหัส PIN",
+  "closeAppConfirmationOKButton": "ออกจากแอป",
+
+  "emailOldValueTitle": "แก้ไข E-mail",
+  "emailOldValueInstructions": "หากคุณแก้ไข E-mail ที่นี่ บัญชีทั้งหมดที่ผูกกับบัญชีผู้ใช้นี้ จะถูกแก้ไขตามไปด้วย",
+  "emailOldValueTextLabel": "E-mail",
+  "emailOldValueAction": "บันทึกการเปลี่ยนแปลง",
+  "emailNewValueTitle": "ระบุ E-mail ใหม่",
+  "emailNewValueInstructions": "หากต้องการเปลี่ยนแปลงเบอร์มือถือ กรุณากดส่งคำขอ เพื่อให้เจ้าหน้าที่ทำการติดต่อคุณในภายหลัง",
+  "emailNewValueTextLabel": "ระบุเบอร์ E-mail ใหม่",
+  "emailNewValueAction": "ส่งคำขอเปลี่ยนแปลง E-mail",
+  "emailChangeSuccessTitle": "ส่งข้อมูลสำเร็จ",
+  "emailChangeSuccessIntructions": "เจ้าหน้าที่จะติดต่อคุณกลับภายใน 24 ชั่วโมง",
+  "emailChangeSuccessAction": "กลับสู่หน้าหลัก",
+
+  "phoneOldValueTitle": "เบอร์มือถือ",
+  "phoneOldValueInstructions": "หากต้องการเปลี่ยนแปลงเบอร์มือถือ กรุณากดส่งคำขอ เพื่อให้เจ้าหน้าที่ทำการติดต่อคุณในภายหลัง",
+  "phoneOldValueTextLabel": "เบอร์มือถือ",
+  "phoneOldValueAction": "เปลี่ยนเบอร์",
+  "phoneNewValueTitle": "ระบุเบอร์โทรใหม่",
+  "phoneNewValueInstructions": "หากต้องการเปลี่ยนแปลงเบอร์มือถือ กรุณากดส่งคำขอ เพื่อให้เจ้าหน้าที่ทำการติดต่อคุณในภายหลัง",
+  "phoneNewValueTextLabel": "ระบุเบอร์มือถือใหม่",
+  "phoneNewValueAction": "ส่งคำขอเปลี่ยนแปลงเบอร์มือถือ",
+  "phoneChangeSuccessTitle": "ส่งข้อมูลสำเร็จ",
+  "phoneChangeSuccessIntructions": "*เจ้าหน้าที่จะติดต่อคุณกลับภายใน 24 ชั่วโมง",
+  "phoneChangeSuccessAction": "กลับสู่หน้าหลัก",
+
+  "notificationTitle": "แจ้งเตือนทั้งหมด",
+  "notificationAll": "ทั้งหมด",
+  "notificationPayment": "ชำระค่างวด",
+  "notificationPromotion": "โปรโมชั่น",
+  "notificationHotDeal": "Hot Deal",
+  "notificationNews": "ข่าวสาร",
+  "notificationReadAll": "อ่านทั้งหมด"
+
+
 }

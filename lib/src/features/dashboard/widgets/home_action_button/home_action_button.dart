@@ -1,4 +1,5 @@
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
+import 'package:AssetWise/src/features/profile/profile_view.dart';
 import 'package:AssetWise/src/features/notifications/notifications_view.dart';
 import 'package:AssetWise/src/features/register/register_view.dart';
 import 'package:AssetWise/src/providers/notification_item_provider.dart';
@@ -36,6 +37,11 @@ class HomeActionButtons extends StatelessWidget {
                   Navigator.of(context).pushNamed(ContractsView.routeName);
                 },
                 icon: const Icon(Icons.gite_sharp)),
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(ProfileView.routeName);
+                },
+                icon: const Icon(Icons.person_outline_sharp)),
           ],
         );
       },

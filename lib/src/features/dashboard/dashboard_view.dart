@@ -1,5 +1,4 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
-import 'package:AssetWise/src/features/dashboard/profile_view.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/campaign/campaign_pop.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/bottom_bar/bottom_bar.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/main/dashboard_main_view.dart';
@@ -27,7 +26,6 @@ class _DashboardViewState extends State<DashboardView> {
         children: [
           const AssetWiseBG(),
           if (_currentTab == BottomTab.home) const DashboardMainView(),
-          if (_currentTab == BottomTab.profile) const ProfileView(),
           Consumer<UserProvider>(
             builder: (context, provider, child) {
               if (!provider.isAuthenticated) {
@@ -62,7 +60,7 @@ class _DashboardViewState extends State<DashboardView> {
                           break;
                         case BottomTab.menu:
                           break;
-                        case BottomTab.profile:
+                        case BottomTab.calendar:
                           break;
                         default:
                           break;

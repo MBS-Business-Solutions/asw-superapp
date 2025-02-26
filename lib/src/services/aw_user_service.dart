@@ -112,4 +112,82 @@ class AwUserService {
     if (kDebugMode) print(response);
     return false;
   }
+
+  static Future<bool> updateFCMToken(String userToken, String fcmToken) async {
+    final response = await http
+        .post(
+          Uri.parse('$BASE_URL/auth/fcm'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $userToken',
+          },
+          body: jsonEncode(<String, String>{"token": fcmToken}),
+        )
+        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        if (jsonResponse['status'] == 'success') {
+          return true;
+        }
+      } catch (e) {
+        if (kDebugMode) print(e);
+      }
+    }
+    if (kDebugMode) print(response);
+    return false;
+  }
+
+  static Future<bool> changeEmail(String userToken, String newValue) async {
+    final response = await http
+        .post(
+          Uri.parse('$BASE_URL/mobile/setting/change-email'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $userToken',
+          },
+          body: jsonEncode(<String, String>{"email": newValue}),
+        )
+        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        if (jsonResponse['status'] == 'success') {
+          return true;
+        }
+      } catch (e) {
+        if (kDebugMode) print(e);
+      }
+    }
+    if (kDebugMode) print(response);
+    return false;
+  }
+
+  static Future<bool> changePhone(String userToken, String newValue) async {
+    final response = await http
+        .post(
+          Uri.parse('$BASE_URL/mobile/setting/change-phone'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $userToken',
+          },
+          body: jsonEncode(<String, String>{"phone": newValue}),
+        )
+        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        if (jsonResponse['status'] == 'success') {
+          return true;
+        }
+      } catch (e) {
+        if (kDebugMode) print(e);
+      }
+    }
+    if (kDebugMode) print(response);
+    return false;
+  }
 }

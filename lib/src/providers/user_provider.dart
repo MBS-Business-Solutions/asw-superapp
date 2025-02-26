@@ -9,7 +9,6 @@ class UserProvider with ChangeNotifier {
   late final FlutterSecureStorage secureStorage = FlutterSecureStorage(aOptions: _getAndroidOptions());
   String? _token;
   String? get token => _token;
-  String testv = 'test';
   bool get isAuthenticated => _token != null;
   bool _isPinSet = false;
   bool get isPinSet => _isPinSet;
@@ -84,7 +83,19 @@ class UserProvider with ChangeNotifier {
   Future<void> logout() async {
     _token = null;
     _userInformation = null;
+    _isPinSet = false;
     await secureStorage.deleteAll();
     notifyListeners();
+  }
+
+  Future<bool> changeEmail(String newValue) async {
+    if (token == null) return false;
+    return await AwUserService.changeEmail(_token!, newValue);
+  }
+
+  Future<bool> changePhone(String newValue) async {
+    if (token == null) return false;
+
+    return await AwUserService.changePhone(_token!, newValue);
   }
 }

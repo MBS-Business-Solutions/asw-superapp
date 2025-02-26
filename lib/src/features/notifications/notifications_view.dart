@@ -6,11 +6,12 @@ import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:AssetWise/src/widgets/hot_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NotificationsView extends StatefulWidget {
   const NotificationsView({super.key, this.selectedIndex = 0});
   static const String routeName = '/notifications-and-news';
-  final selectedIndex;
+  final int selectedIndex;
   @override
   State<NotificationsView> createState() => _NotificationsViewState();
 }
@@ -27,18 +28,27 @@ class _NotificationsViewState extends State<NotificationsView> {
   ];
 
   @override
+  void initState() {
+    _selectedIndex = widget.selectedIndex;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('แจ้งเตือนทั้งหมด'),
+        title: Text(
+          AppLocalizations.of(context)!.notificationTitle,
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
         actions: [
           Consumer<NotificationItemProvider>(
             builder: (context, provider, child) => TextButton(
                 onPressed: () => context.read<NotificationItemProvider>().markAllAsRead(),
                 child: Text(
-                  'อ่านทั้งหมด${provider.unreadAllCount > 0 ? ' (${provider.unreadAllCount})' : ''}',
-                  style: const TextStyle(color: mPaidColor),
+                  '${AppLocalizations.of(context)!.notificationReadAll}${provider.unreadAllCount > 0 ? ' (${provider.unreadAllCount})' : ''}',
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: mPaidColor),
                 )),
           ),
         ],
@@ -52,9 +62,10 @@ class _NotificationsViewState extends State<NotificationsView> {
               children: [
                 for (var index = 0; index < menus.length; index++)
                   HotMenuWidget(
-                    titleText: menus[index].keys.first,
+                    titleText: _menuTitle(index),
                     iconAsset: menus[index].values.first,
                     highlight: _selectedIndex == index,
+                    badgeCount: badgeCount(index),
                     onTap: () {
                       setState(() {
                         _selectedIndex = index;
@@ -85,6 +96,40 @@ class _NotificationsViewState extends State<NotificationsView> {
       ),
     );
   }
+
+  String _menuTitle(int index) {
+    switch (index) {
+      case 0:
+        return AppLocalizations.of(context)!.notificationAll;
+      case 1:
+        return AppLocalizations.of(context)!.notificationPayment;
+      case 2:
+        return AppLocalizations.of(context)!.notificationPromotion;
+      case 3:
+        return AppLocalizations.of(context)!.notificationHotDeal;
+      case 4:
+        return AppLocalizations.of(context)!.notificationNews;
+      default:
+        return '';
+    }
+  }
+
+  int badgeCount(int index) {
+    switch (index) {
+      case 0:
+        return context.read<NotificationItemProvider>().unreadAllCount;
+      case 1:
+        return context.read<NotificationItemProvider>().unreadPaymentCount;
+      case 2:
+        return context.read<NotificationItemProvider>().unreadPromotionCount;
+      case 3:
+        return context.read<NotificationItemProvider>().unreadHotDealCount;
+      case 4:
+        return context.read<NotificationItemProvider>().unreadNewsCount;
+      default:
+        return 0;
+    }
+  }
 }
 
 class NotificationItemTile extends StatelessWidget {
@@ -111,7 +156,7 @@ class NotificationItemTile extends StatelessWidget {
                 color: mRedColor,
                 borderRadius: BorderRadius.circular(4),
               ),
-              child: const Icon(Icons.notifications)),
+              child: const Icon(Icons.account_balance_wallet_outlined)),
           const SizedBox(
             width: mDefaultPadding,
           ),

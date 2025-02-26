@@ -15,15 +15,14 @@ import 'package:AssetWise/src/features/payments/payment_channels_view.dart';
 import 'package:AssetWise/src/features/payments/qr_view.dart';
 import 'package:AssetWise/src/features/pin/pin_entry_view.dart';
 import 'package:AssetWise/src/features/pin/set_pin_view.dart';
+import 'package:AssetWise/src/features/profile/profile_view.dart';
 import 'package:AssetWise/src/features/register/consents_view.dart';
-import 'package:AssetWise/src/features/register/register_otp_view.dart';
 import 'package:AssetWise/src/features/register/register_view.dart';
 import 'package:AssetWise/src/features/register/user_detail_view.dart';
 import 'package:AssetWise/src/features/verify_otp/otp_request_view.dart';
-import 'package:AssetWise/src/features/verify_otp/verify_otp_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
-import 'package:AssetWise/src/services/firebase_service.dart';
+import 'package:AssetWise/src/providers/firebase_provider.dart';
 import 'package:AssetWise/src/splash/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -92,7 +91,7 @@ class _MyAppState extends State<MyApp> {
       const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent),
     );
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    context.read<FirebaseMessagingService>().initialize();
+    context.read<FirebaseMessagingProvider>().initialize();
 
     return MaterialApp(
       navigatorKey: navigatorKey,
@@ -166,6 +165,8 @@ class _MyAppState extends State<MyApp> {
                           );
                         case DashboardView.routeName:
                           return DashboardView(controller: widget.settingsController);
+                        case ProfileView.routeName:
+                          return const ProfileView();
                         case RegisterView.routeName:
                           return const RegisterView();
                         case RegisterUserDetailView.routeName:
@@ -195,7 +196,9 @@ class _MyAppState extends State<MyApp> {
                         case OverduesView.routeName:
                           return OverduesView(contract: routeMap!['contract'] as Contract);
                         case NotificationsView.routeName:
-                          return const NotificationsView();
+                          return NotificationsView(
+                            selectedIndex: routeMap?['selectedIndex'] ?? 0,
+                          );
                         case PaymentChannelsView.routeName:
                           return PaymentChannelsView(
                             contract: routeMap!['contract'] as Contract,

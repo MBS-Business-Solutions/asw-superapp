@@ -5,7 +5,7 @@ import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:AssetWise/src/providers/register_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/providers/verify_otp_provider.dart';
-import 'package:AssetWise/src/services/firebase_service.dart';
+import 'package:AssetWise/src/providers/firebase_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
@@ -39,13 +39,16 @@ void main() async {
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
   runApp(MultiProvider(providers: [
-    Provider(create: (context) => FirebaseMessagingService()),
     Provider(create: (context) => DashboardProvider()),
     ChangeNotifierProvider(
       create: (context) => userProvider,
     ),
     ChangeNotifierProxyProvider<UserProvider, SettingsController>(
       create: (context) => settingsController,
+      update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
+    ),
+    ProxyProvider<UserProvider, FirebaseMessagingProvider>(
+      create: (context) => FirebaseMessagingProvider(),
       update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
     ),
     ProxyProvider<UserProvider, RegisterProvider>(

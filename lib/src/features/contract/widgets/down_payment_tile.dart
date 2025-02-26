@@ -51,33 +51,44 @@ class DownPaymentTile extends StatelessWidget {
                   Expanded(
                     child: Text(AppLocalizations.of(context)!.priceFormatBahtDouble(paymentDetail.amount),
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: isPaid ? mPaidColor : mUnPaidColor,
+                              color: mPaidColor,
                             )),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.dark ? mDarkCardBackgroundColor : mLightCardBackgroundColor,
-                      borderRadius: BorderRadius.circular(99),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    margin: const EdgeInsets.only(bottom: 4),
-                    child: Text(paymentDetail.status.isNotEmpty ? paymentDetail.status : '***',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              color: isPaid ? mPaidColor : mUnPaidColor,
-                            )),
-                  )
+                  if (paymentDetail.status.isNotEmpty)
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).brightness == Brightness.dark ? mDarkCardBackgroundColor : mLightCardBackgroundColor,
+                        borderRadius: BorderRadius.circular(99),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      margin: const EdgeInsets.only(bottom: 4),
+                      child: Text(paymentDetail.status,
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                color: isPaid ? mPaidColor : mUnPaidColor,
+                              )),
+                    )
                 ],
               ),
-              if (isPaid)
-                Row(
-                  children: [
-                    Expanded(child: Text(paymentDetail.payments.first.paymentType)),
-                    Text(
-                      paymentDetail.payments.first.receiptNumber,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ],
-                ),
+              if (isPaid) ...[
+                for (final payment in paymentDetail.payments)
+                  Row(
+                    children: [
+                      Expanded(child: Text(payment.paymentType)),
+                      const Spacer(),
+                      const Icon(
+                        Icons.receipt_long_outlined,
+                        size: 14,
+                      ),
+                      const SizedBox(
+                        width: mSmallPadding,
+                      ),
+                      Text(
+                        payment.receiptNumber,
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white),
+                      ),
+                    ],
+                  ),
+              ]
             ],
           ),
         ),

@@ -191,22 +191,22 @@ class _BottomBarState extends State<BottomBar> {
                 flex: widget.normalFlex,
                 child: InkWell(
                   onTap: () {
-                    if (_currentTab == BottomTab.profile) return;
+                    if (_currentTab == BottomTab.calendar) return;
 
                     setState(() {
-                      _currentTab = BottomTab.profile;
-                      widget.onTabChanged?.call(BottomTab.profile);
+                      _currentTab = BottomTab.calendar;
+                      widget.onTabChanged?.call(BottomTab.calendar);
                     });
                   },
                   child: Column(
                     children: [
                       Icon(
-                        Icons.person_outline_sharp,
-                        color: _currentTab == BottomTab.profile ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor,
+                        Icons.calendar_month_sharp,
+                        color: _currentTab == BottomTab.calendar ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor,
                       ),
                       Text(
-                        AppLocalizations.of(context)!.bottomBarProfile,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.profile ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
+                        AppLocalizations.of(context)!.bottomBarCalendar,
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.calendar ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
                       ),
                     ],
                   ),
@@ -225,5 +225,5 @@ enum BottomTab {
   service,
   chat,
   menu,
-  profile,
+  calendar,
 }

@@ -79,6 +79,8 @@ class _ContractDetailViewState extends State<ContractDetailView> {
                               label: AppLocalizations.of(context)!.contractDetailBookingSellingPrice, value: AppLocalizations.of(context)!.priceFormat(contractDetail.sellingPrice)),
                           _buildDetailText(context,
                               label: AppLocalizations.of(context)!.contractDetailBookingDiscountPrice, value: AppLocalizations.of(context)!.priceFormat(contractDetail.cashDiscount)),
+                          _buildDetailText(context,
+                              label: AppLocalizations.of(context)!.contractDetailBookingDiscountAtTransferPrice, value: AppLocalizations.of(context)!.priceFormat(contractDetail.cashDiscountTransfer)),
                           _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailBookingNetPrice, value: AppLocalizations.of(context)!.priceFormat(contractDetail.netPrice)),
 
                           _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailBookingAmount, value: AppLocalizations.of(context)!.priceFormat(contractDetail.bookAmount)),

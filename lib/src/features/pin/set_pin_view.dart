@@ -27,7 +27,7 @@ class _SetPinViewState extends State<SetPinView> {
 
   @override
   void initState() {
-    _showSkip = widget.skipable ?? false;
+    _showSkip = widget.skipable ?? true;
     super.initState();
   }
 

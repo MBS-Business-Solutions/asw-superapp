@@ -39,6 +39,7 @@ class ContractDetail {
   final DateTime transferDate;
   final int sellingPrice;
   final int cashDiscount;
+  final int cashDiscountTransfer;
   final int netPrice;
   final int bookAmount;
   final int contractAmount;
@@ -55,6 +56,7 @@ class ContractDetail {
     required this.transferDate,
     required this.sellingPrice,
     required this.cashDiscount,
+    required this.cashDiscountTransfer,
     required this.netPrice,
     required this.bookAmount,
     required this.contractAmount,
@@ -73,6 +75,7 @@ class ContractDetail {
       transferDate: DateTime.parse(json['transfer_date']),
       sellingPrice: json['selling_price'],
       cashDiscount: json['cash_discount'],
+      cashDiscountTransfer: 9999999, //json['cash_discount_transfer'],
       netPrice: json['net_price'],
       bookAmount: json['book_amount'],
       contractAmount: json['contract_amount'],

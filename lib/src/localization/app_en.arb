@@ -5,11 +5,12 @@
     "description": "The title of the application"
   },
   "actionButtonNext": "Next",
+  "actionButtonCancel": "Cancel",
   "errorUnableToProcess": "***ไม่สามารถใช้งานได้ กรุณาลองใหม่อีกครั้ง***",
   "errorUnableToDownloadContract": "***ไม่สามารถดาวน์โหลดเอกสารสัญญาได้ กรุณาลองใหม่อีกครั้ง***",
   "errorFieldRequired": "This field is required.",
   "errorNoData": "No data found.",
-  "errorInvalidPin": "***หมายเลข OTP ไม่ถูกต้อง***",
+  "errorInvalidPin": "Incorrect OTP number.",
   "bahtUnit": "baht",
   "priceFormat": "{price}",
   "@priceFormat": {
@@ -70,25 +71,11 @@
   },
 
   "bottomBarHome": "Home",
-  "@bottomBarHome": {
-    "description": "Label for icon Bottom App Bar"
-  },
   "bottomBarService": "Services",
-  "@bottomBarService": {
-    "description": "Label for icon Bottom App Bar"
-  },
   "bottomBarChat": "Chat",
-  "@bottomBarChat": {
-    "description": "Label for icon Bottom App Bar"
-  },
   "bottomBarMenu": "Menu",
-  "@bottomBarMenu": {
-    "description": "Label for icon Bottom App Bar"
-  },
-  "bottomBarProfile": "Profile",
-  "@bottomBarProfile": {
-    "description": "Label for icon Bottom App Bar"
-  },
+  "bottomBarCalendar": "*ปฏิทิน*",
+
   "registerMobileLabel": "Mobile Number",
   "registerMobile": "Enter your mobile number",
   "registerMobileHint": "Provide your mobile number to register as a member",
@@ -139,9 +126,9 @@
   "userDetailMobile": "Mobile",
   "userDetailEmail": "Email",
   "userDetailCitizenId": "National ID / Passport No.",
-  "userDetailInvalidFirstName": "**กรุณากรอกชื่อให้ถูกต้อง โดยไม่ใช้อักขระพิเศษ**",
-  "userDetailInvalidLastName": "**กรุณากรอกนามสกุลให้ถูกต้อง โดยไม่ใช้อักขระพิเศษ**",
-  "userDetailInvalidEmail": "**กรุณากรอกรูปแบบ E-mail ให้ถูกต้อง**",
+  "userDetailInvalidFirstName": "Please enter your first name correctly without using special characters.",
+  "userDetailInvalidLastName": "Please enter your last name correctly without using special characters.",
+  "userDetailInvalidEmail": "Please enter a valid E-mail address in the correct format.",
   "userDetailInvalidPhone": "**กรุณากรอกเบอร์มือถือให้ครบ 10 หลัก**",
 
   "consentAgree": "Accept",
@@ -182,7 +169,8 @@
   "@dashboardMainSectionFavourite": {
     "description": "The title of the favourite section"
   },
-  "dashboardMainSectionFavouriteMore": "เมนูทั้งหมด",
+  "dashboardMainSectionFavouriteMore": "*เมนูทั้งหมด*",
+  "dashboardMainSectionNotification": "**การแจ้งเตือน**",
   "dashboardMainSectionRecommended": "Recommended projects",
   "dashboardMainSectionRecommendedDetail": "We are committed to designing homes. For the happiness of the people Taking into account lifestyle and the lifestyle of each person is different Allowing you to live your life the way you want.",
 
@@ -204,8 +192,8 @@
   "profileMyInfo": "My Information",
   "profilePhoneNumber": "Phone Number",
   "profileEmail": "Email",
-  "profileMyAsset":"**บ้านของฉัน**",
-  "profileMyAssetSum":"**{count} {count, plural, =1{unit} other{units}}**",
+  "profileMyAsset":"My Units",
+  "profileMyAssetSum":"{count} {count, plural, =1{unit} other{units}}",
   "@profileMyAssetSum": {
     "description": "Message indicating the number of assets",
     "placeholders": {
@@ -222,7 +210,7 @@
   "profilePin": "PIN Code",
   "profileDeleteAccount": "**ปิดใช้งานหรือลบบัญชี**",
   "profileAbout": "About Assetwise",
-  "profileAuthen": "**การยืนยันตัวตน**",
+  "profileAuthen": "Login",
   "profileExit": "**ออกจากแอปพลิเคชัน Assetwise**",
   "profileLogout": "Log Out",
 
@@ -242,9 +230,10 @@
   "contractDetailSigningDate": "Contract Date",
   "contractDetailEstimatedTransferDate": "Estimated Transfer Date",
   "contractDetailContractValueTitle": "Contract Value",  
-  "contractDetailBookingSellingPrice": "***ราคาขาย***",
-  "contractDetailBookingDiscountPrice": "***ส่วนลดเงินสด***",
-  "contractDetailBookingNetPrice": "***ราคาสุทธิ***",
+  "contractDetailBookingSellingPrice": "Selling Price",
+  "contractDetailBookingDiscountPrice": "Discount",
+  "contractDetailBookingDiscountAtTransferPrice": "***ส่วนลด ณ วันโอน***",
+  "contractDetailBookingNetPrice": "Net Price",
   "contractDetailBookingAmount": "Booking",
   "contractDetailContractAmount": "Contract",
   "contractDetailDownAmount": "Down payment",
@@ -257,18 +246,18 @@
   "contractDetailFreebiesTitle": "Freebies and Discounts List",
   "contractDetailDownloadDoc": "Download Contract Documents",
 
-  "receiptViewTitle": "**รายละเอียดใบเสร็จ**",
-  "receiptViewSuccess": "**ทำรายการสำเร็จ**",
-  "receiptViewPaymentType": "**ช่องทางการชำระเงิน**",
-  "receiptViewDate": "**วันที่ทำรายการ**",
+  "receiptViewTitle": "Receipt Details",
+  "receiptViewSuccess": "Transaction Successful",
+  "receiptViewPaymentType": "Payment Method",
+  "receiptViewDate": "Transaction Date",
   "receiptViewRef1": "**เลขที่รายการ**",
-  "receiptViewRef2": "**หมายเลขอ้างอิง**",
-  "receiptViewRemark": "**หมายเหตุ**",
-  "receiptViewDue": "**วันที่ครบกำหนดชำระ**",
-  "receiptViewViewReceipt": "**ดูใบเสร็จ**",
+  "receiptViewRef2": "Reference Number",
+  "receiptViewRemark": "Notes",
+  "receiptViewDue": "Due Date",
+  "receiptViewViewReceipt": "View Receipt",
 
-  "receiptViewFileTitle": "**ใบเสร็จ**",
-  "receiptViewFileDownload": "**ดาวน์โหลดเอกสาร**",
+  "receiptViewFileTitle": "Receipt",
+  "receiptViewFileDownload": "Download Receipt",
 
   "downHistoryViewTitle": "Down payment details",
 
@@ -306,11 +295,11 @@
   },
   "pinEntryForget": "Forgot PIN code",
 
-  "otpRequestActionResetPin": "ทำยืนยันตัวตนในการตั้งรหัส PIN",
-  "otpRequestActionFirstSetPin": "ใช้ในการเข้าสู่ระบบครั้งต่อไป",
-  "otpRequestMobileLabel": "เบอร์มือถือ",
-  "otpRequestMobile": "กรอกเบอร์มือถือ",
-  "otpRequestMobileHint": "ระบุเบอร์มือถือของท่าน เพื่อ{action}",
+  "otpRequestActionResetPin": "verify your identity for setting up a PIN.",
+  "otpRequestActionFirstSetPin": "verify your identity every time you log in in the future.",
+  "otpRequestMobileLabel": "Mobile Number",
+  "otpRequestMobile": "Enter Mobile Number",
+  "otpRequestMobileHint": "Provide your mobile number to {action}",
   "@otpRequestMobileHint": {
     "description": "Hint for the mobile number input field",
     "placeholders": {
@@ -321,8 +310,8 @@
     }
   },
   "otpRequestEMailLabel": "Email",
-  "otpRequestEMail": "กรอก E-Mail",
-  "otpRequestEMailHint": "ระบุ E-mail ของท่าน เพื่อ{action}",
+  "otpRequestEMail": "Enter Email",
+  "otpRequestEMailHint": "Please enter your email address to {action}",
   "@otpRequestEMailHint": {
     "description": "Hint for the email input field",
     "placeholders": {
@@ -332,9 +321,50 @@
       }
     }
   },
-  "otpRequestLoginByEmail": "เข้าสู่ระบบผ่าน E-mail",
-  "otpRequestNext": "ถัดไป",
+  "otpRequestLoginByEmail": "Log in with Email",
+  "otpRequestNext": "Next",
   "otpRequestInvalidData": "กรุณากรอกข้อมูลให้ครบถ้วน",
-  "otpRequestInvalidMobile": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน",
-  "otpRequestInvalidEmail": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน"
+  "otpRequestInvalidMobile": "Please enter your ID card number to match your registered mobile number.",
+  "otpRequestInvalidEmail": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน",
+
+  "logoutConfirmationTitle": "Do you want to log out?",
+  "logoutConfirmationMessage": "You are about to log out of {userName}", 
+  "logoutConfirmationBottomTitle": "Are you sure you want to log out?",
+  "logoutConfirmationOKButton": "Log out",
+
+  "closeAppConfirmationTitle": "*ต้องการออกจากแอปพลิเคชั่น\nใช่หรือไม่*",
+  "closeAppConfirmationMessage": "*คุณสามารถกลับเข้ามาใช้งานได้ใหม่ได้\nโดยยืนยันตัวตนผ่านรหัส PIN*",
+  "closeAppConfirmationOKButton": "*ออกจากแอป*",
+
+  "emailOldValueTitle": "Edit Email",
+  "emailOldValueInstructions": "If you wish to update your email here, all accounts linked to this user account will also be updated accordingly.",
+  "emailOldValueTextLabel": "E-mail",
+  "emailOldValueAction": "Save Changes",
+  "emailNewValueTitle": "Enter a New E-mail",
+  "emailNewValueInstructions": "If you wish to change your E-mail, please submit a request so that our staff can contact you later.",
+  "emailNewValueTextLabel": "Enter a New E-mail",
+  "emailNewValueAction": "Submit E-mail Change Request",
+  "emailChangeSuccessTitle": "Request Submitted",
+  "emailChangeSuccessIntructions": "You will be contacted within 24 hours.",
+  "emailChangeSuccessAction": "Go back to Home",
+
+  "phoneOldValueTitle": "Phone Number",
+  "phoneOldValueInstructions": "If you wish to change your phone number, please press \"Send Request\" to allow our staff to contact you later.",
+  "phoneOldValueTextLabel": "Phone Number",
+  "phoneOldValueAction": "Change number",
+  "phoneNewValueTitle": "Specify a new phone number",
+  "phoneNewValueInstructions": "If you wish to change your phone number, please press \"Send Request\" to allow our staff to contact you later.",
+  "phoneNewValueTextLabel": "Specify a new phone number",
+  "phoneNewValueAction": "Submit a Phone Number Change Request",
+  "phoneChangeSuccessTitle": "Request Submitted",
+  "phoneChangeSuccessIntructions": "You will be contacted within 24 hours.",
+  "phoneChangeSuccessAction": "Go back to Home",
+
+  "notificationTitle": "All Notifications",
+  "notificationAll": "All",
+  "notificationPayment": "Payment",
+  "notificationPromotion": "Promotion",
+  "notificationHotDeal": "Hot Deal",
+  "notificationNews": "News",
+  "notificationReadAll": "Mark All as Read"
 }
