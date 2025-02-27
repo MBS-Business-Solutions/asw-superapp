@@ -41,7 +41,7 @@ class AboutAsswiseView extends StatelessWidget {
                           fit: BoxFit.contain,
                         ),
                       ),
-                      SizedBox(height: mMediumPadding),
+                      const SizedBox(height: mMediumPadding),
                       FutureBuilder(
                           future: PackageInfo.fromPlatform(),
                           builder: (context, snapshot) {
@@ -49,14 +49,14 @@ class AboutAsswiseView extends StatelessWidget {
                               final PackageInfo packageInfo = snapshot.data as PackageInfo;
                               return Text(AppLocalizations.of(context)!.aboutAssetWiseVersion(packageInfo.buildNumber, packageInfo.version));
                             } else {
-                              return Text('');
+                              return const Text('');
                             }
                           }),
                       Text(AppLocalizations.of(context)!.aboutAssetWiseCopyright),
                     ],
                   ),
                 ),
-                SizedBox(height: mMediumPadding),
+                const SizedBox(height: mMediumPadding),
                 Container(
                   color: Theme.of(context).scaffoldBackgroundColor,
                   child: ListTile(

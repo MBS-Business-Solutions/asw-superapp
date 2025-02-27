@@ -191,7 +191,7 @@ class AwUserService {
     return false;
   }
 
-  static Future<UserInformation?> getUserInformation(String userToken, String customer_id) async {
+  static Future<UserInformation?> getUserInformation(String userToken, String customerId) async {
     final response = await http
         .post(
           Uri.parse('$BASE_URL/mobile/setting/active'),
@@ -199,7 +199,7 @@ class AwUserService {
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': 'Bearer $userToken',
           },
-          body: jsonEncode(<String, String>{"customer_id": customer_id}),
+          body: jsonEncode(<String, String>{"customer_id": customerId}),
         )
         .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
 

@@ -192,7 +192,7 @@ class _ContractsViewState extends State<ContractsView> {
                               label: Text(AppLocalizations.of(context)!.contractsViewContract),
                             ),
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
                   ),
                 ],
               ),

@@ -29,8 +29,8 @@ class AwDropdownform<T> extends StatefulWidget {
 
 class _AwDropdownformState<T> extends State<AwDropdownform> {
   bool _isError = false;
-  List<T> _items = [];
-  List<Widget> _titles = [];
+  final List<T> _items = [];
+  final List<Widget> _titles = [];
   @override
   void initState() {
     _items.clear();
@@ -65,7 +65,7 @@ class _AwDropdownformState<T> extends State<AwDropdownform> {
             DropdownButtonFormField<T>(
               decoration: InputDecoration(
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.only(top: mDefaultPadding), // ปรับ padding
+                contentPadding: const EdgeInsets.only(top: mDefaultPadding), // ปรับ padding
                 errorStyle: Theme.of(context).textTheme.bodySmall!.copyWith(color: mRedColor),
               ),
               icon: const Icon(Icons.keyboard_arrow_down),

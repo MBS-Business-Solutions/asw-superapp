@@ -37,17 +37,17 @@ class _MyAssetsViewState extends State<MyAssetsView> {
                   future: _contractsFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     }
-                    final contracts = snapshot.data as List<Contract>?;
+                    final contracts = snapshot.data;
                     return CustomScrollView(
                       slivers: [
-                        SliverAppBar(
+                        const SliverAppBar(
                           backgroundColor: Colors.transparent,
                           centerTitle: true,
-                          title: const Text('บ้านของฉัน'),
+                          title: Text('บ้านของฉัน'),
                           floating: true,
                           pinned: true,
                         ),
@@ -76,8 +76,8 @@ class _MyAssetsViewState extends State<MyAssetsView> {
             bottom: MediaQuery.of(context).padding.bottom + mMediumPadding,
             child: Container(
               width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
-              child: FilledButton.icon(onPressed: () => _addNewAsset(), icon: Icon(Icons.add), label: Text('เพิ่มบ้าน')),
+              padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+              child: FilledButton.icon(onPressed: () => _addNewAsset(), icon: const Icon(Icons.add), label: const Text('เพิ่มบ้าน')),
             ),
           ),
         ],
@@ -86,7 +86,7 @@ class _MyAssetsViewState extends State<MyAssetsView> {
   }
 
   void _addNewAsset() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => AddAssetView()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const AddAssetView()));
   }
 
   void _showContractActionBottomSheet(Contract contract) async {
@@ -95,28 +95,28 @@ class _MyAssetsViewState extends State<MyAssetsView> {
         builder: (context) {
           return Container(
             width: double.infinity,
-            padding: EdgeInsets.only(left: mScreenEdgeInsetValue, right: mScreenEdgeInsetValue, top: mScreenEdgeInsetValue),
+            padding: const EdgeInsets.only(left: mScreenEdgeInsetValue, right: mScreenEdgeInsetValue, top: mScreenEdgeInsetValue),
             child: SafeArea(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  FilledButton(onPressed: () => Navigator.pop(context, _MyAssetAction.viewDetail), child: Text('ดูรายละเอียด')),
-                  SizedBox(height: mDefaultPadding),
+                  FilledButton(onPressed: () => Navigator.pop(context, _MyAssetAction.viewDetail), child: const Text('ดูรายละเอียด')),
+                  const SizedBox(height: mDefaultPadding),
                   OutlinedButton(
                       onPressed: () => Navigator.pop(context, _MyAssetAction.setDefault),
                       child: Text(
                         'ตั้งเป็นค่าเริ่มต้น',
                         style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                       )),
-                  SizedBox(height: mDefaultPadding),
+                  const SizedBox(height: mDefaultPadding),
                   OutlinedButton(
                       onPressed: () => Navigator.pop(context, _MyAssetAction.delete),
                       child: Text(
                         'ลบบ้าน',
                         style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                       )),
-                  SizedBox(height: mDefaultPadding),
+                  const SizedBox(height: mDefaultPadding),
                 ],
               ),
             ),
@@ -172,7 +172,7 @@ class _MyAssetsViewState extends State<MyAssetsView> {
     if (result) {
       // call API to delete contract
 
-      final isDeleted = true;
+      const isDeleted = true;
       if (isDeleted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           showCloseIcon: true,
@@ -183,11 +183,11 @@ class _MyAssetsViewState extends State<MyAssetsView> {
             padding: const EdgeInsets.symmetric(horizontal: mDefaultPadding),
             child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.check_circle,
                   color: mGreenColor,
                 ),
-                SizedBox(width: mMediumPadding),
+                const SizedBox(width: mMediumPadding),
                 Text(
                   'ลบข้อมูลบ้านสำเร็จ',
                   style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
@@ -228,7 +228,7 @@ class MyAssetListTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  margin: EdgeInsets.all(mSmallPadding),
+                  margin: const EdgeInsets.all(mSmallPadding),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
                   ),
@@ -241,7 +241,7 @@ class MyAssetListTile extends StatelessWidget {
                         fit: BoxFit.cover,
                       )),
                 ),
-                SizedBox(width: mMediumPadding),
+                const SizedBox(width: mMediumPadding),
                 Column(
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -271,7 +271,7 @@ class MyAssetListTile extends StatelessWidget {
               ],
             ),
           ),
-          trailing: Icon(Icons.chevron_right),
+          trailing: const Icon(Icons.chevron_right),
         ),
       ),
     );

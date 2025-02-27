@@ -1,14 +1,10 @@
-import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/features/verify_otp/verify_otp_view.dart';
-import 'package:AssetWise/src/providers/verify_otp_provider.dart';
 import 'package:AssetWise/src/widgets/aw_dropdownform.dart';
 import 'package:AssetWise/src/widgets/aw_textformfield.dart';
-import 'package:AssetWise/src/widgets/otp_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 class AddAssetView extends StatefulWidget {
   const AddAssetView({super.key});
@@ -29,9 +25,9 @@ class _AddAssetViewState extends State<AddAssetView> {
         child: Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.transparent,
-              leading: SizedBox(),
+              leading: const SizedBox(),
               actions: [
-                IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.close)),
+                IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close)),
               ],
             ),
             body: Padding(
@@ -47,7 +43,7 @@ class _AddAssetViewState extends State<AddAssetView> {
                     'ระบุรายละเอียดของคุณสำหรับการเข้าใช้บริการ',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  SizedBox(height: mDefaultPadding),
+                  const SizedBox(height: mDefaultPadding),
                   AwDropdownform<String>(
                     itemBuilder: (context, index) => 'project $index',
                     titleBuilder: (context, index) => Text('project $index'),
@@ -60,7 +56,7 @@ class _AddAssetViewState extends State<AddAssetView> {
                       return null;
                     },
                   ),
-                  SizedBox(height: mDefaultPadding),
+                  const SizedBox(height: mDefaultPadding),
                   AwTextFormField(
                     label: 'บ้านเลขที่ *',
                     validator: (value) {
@@ -70,7 +66,7 @@ class _AddAssetViewState extends State<AddAssetView> {
                       return null;
                     },
                   ),
-                  SizedBox(height: mDefaultPadding),
+                  const SizedBox(height: mDefaultPadding),
                   AwTextFormField(
                     label: 'รหัสบัตรประชาชน 4 ตัวหลัง *',
                     keyboardType: TextInputType.number,
@@ -83,8 +79,8 @@ class _AddAssetViewState extends State<AddAssetView> {
                       return null;
                     },
                   ),
-                  SizedBox(height: mDefaultPadding),
-                  SizedBox(width: double.infinity, child: FilledButton(onPressed: () => _submit(), child: Text('ถัดไป'))),
+                  const SizedBox(height: mDefaultPadding),
+                  SizedBox(width: double.infinity, child: FilledButton(onPressed: () => _submit(), child: const Text('ถัดไป'))),
                 ],
               ),
             )),
@@ -97,7 +93,7 @@ class _AddAssetViewState extends State<AddAssetView> {
     if (_formKey.currentState!.validate()) {
       // if (await context.read<VerifyOtpProvider>().requestOTP(phoneEmail: '0832494545') != null) {
       // Process data.
-      final otpVerified = await Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyOTPView()));
+      final otpVerified = await Navigator.push(context, MaterialPageRoute(builder: (context) => const VerifyOTPView()));
       // if (otpVerified != null) {
       Navigator.pushReplacementNamed(context, ContractsView.routeName, arguments: {'linkId': 'contract.id'});
       // }
