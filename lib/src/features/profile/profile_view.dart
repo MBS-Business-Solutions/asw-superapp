@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/about_assetwise/about_asswise_view.dart';
@@ -218,13 +220,15 @@ class _ProfileViewState extends State<ProfileView> {
                               style: Theme.of(context).textTheme.titleSmall,
                             ),
                           ),
-                          ListTile(
-                            title: Text(AppLocalizations.of(context)!.profileExit),
-                            trailing: const Icon(Icons.chevron_right),
-                            onTap: () {
-                              _showCloseAppConfirmation();
-                            },
-                          ),
+                          // iOS ไม่อนุญาตให้ปิดแอป
+                          if (!Platform.isIOS)
+                            ListTile(
+                              title: Text(AppLocalizations.of(context)!.profileExit),
+                              trailing: const Icon(Icons.chevron_right),
+                              onTap: () {
+                                _showCloseAppConfirmation();
+                              },
+                            ),
                           ListTile(
                             title: Text(AppLocalizations.of(context)!.profileLogout),
                             trailing: const Icon(

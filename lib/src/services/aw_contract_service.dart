@@ -179,6 +179,7 @@ class AwContractService {
 
   static String getViewReceiptURL(String contractId, String receiptNumber) {
     final pdfUrl = getReceiptURL(contractId, receiptNumber);
+
     return '${Platform.isAndroid ? 'https://docs.google.com/gview?embedded=true&url=' : ''}$pdfUrl';
   }
 
@@ -207,7 +208,7 @@ class AwContractService {
     return null;
   }
 
-  static Future<String?> getPaymentGatewayURL({required Contract contract, double amount = 0, String? detail, required String email}) async {
+  static Future<String?> getPaymentGatewayURL({required String token, required Contract contract, double amount = 0, String? detail, required String email}) async {
     final formatNumber = NumberFormat('####.00');
     final body = {
       'payment_type': '9',
@@ -220,6 +221,9 @@ class AwContractService {
     final response = await http.post(
       Uri.parse('$BASE_URL/payment/link'),
       body: body,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
     );
 
     try {
@@ -234,7 +238,7 @@ class AwContractService {
     return null;
   }
 
-  static Future<String?> downloadFile(String token, String url) async {
+  static Future<String?> downloadFile(String token, String url, String fileName) async {
     final response = await http.get(
       Uri.parse(url),
       headers: {
@@ -245,15 +249,17 @@ class AwContractService {
     try {
       if (response.statusCode == 200) {
         // หา directory ที่จัดเก็บไฟล์
-        final directory = await getTemporaryDirectory();
-        final filePath = "${directory.path}/downloaded_example.pdf";
+        final directory = await getDownloadsDirectory() ?? await getTemporaryDirectory();
+        final filePath = "${directory.path}/$fileName.pdf";
 
         // เขียนไฟล์ลงเครื่อง
         final file = File(filePath);
         await file.writeAsBytes(response.bodyBytes);
         return filePath;
       } else {
-        print("Failed to download PDF");
+        if (kDebugMode) {
+          print("Failed to download PDF");
+        }
       }
     } catch (e) {
       if (kDebugMode) print(e);

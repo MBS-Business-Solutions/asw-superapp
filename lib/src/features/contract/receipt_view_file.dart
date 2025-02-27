@@ -20,6 +20,7 @@ class _ReceiptViewFileState extends State<ReceiptViewFile> {
 
   @override
   void initState() {
+    final url = AwContractService.getViewReceiptURL(widget.contractNumber, widget.receiptNumber);
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(NavigationDelegate(
@@ -29,7 +30,7 @@ class _ReceiptViewFileState extends State<ReceiptViewFile> {
           });
         },
       ))
-      ..loadRequest(Uri.parse(AwContractService.getViewReceiptURL(widget.contractNumber, widget.receiptNumber)));
+      ..loadRequest(Uri.parse(url));
     super.initState();
   }
 
