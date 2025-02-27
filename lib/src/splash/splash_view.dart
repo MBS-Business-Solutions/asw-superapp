@@ -1,7 +1,5 @@
 import 'package:AssetWise/src/features/dashboard/dashboard_view.dart';
-import 'package:AssetWise/src/features/pin/pin_entry_view.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
-import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/services/aw_content_service.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +15,6 @@ class SplashView extends StatelessWidget {
       context.read<DashboardProvider>().reload(),
     ]);
     if (context.mounted) {
-      if (context.read<UserProvider>().shouldValidatePin) {
-        await Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => const PinEntryView(),
-          fullscreenDialog: true,
-        ));
-      }
       Navigator.of(context).pushReplacementNamed(DashboardView.routeName);
     }
   }
