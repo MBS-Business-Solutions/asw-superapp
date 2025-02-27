@@ -53,6 +53,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool _showShield = false;
+  bool _showPinEntry = false;
 
   @override
   void initState() {
@@ -74,7 +75,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _afterResumed() async {
-    if (context.read<UserProvider>().shouldValidatePin) {
+    if (!_showPinEntry && context.read<UserProvider>().shouldValidatePin) {
+      _showPinEntry = true;
       await Navigator.push(
         navigatorKey.currentContext ?? context,
         MaterialPageRoute(
@@ -82,8 +84,11 @@ class _MyAppState extends State<MyApp> {
           fullscreenDialog: true,
         ),
       );
+      _showPinEntry = false;
     }
-    if (mounted) setState(() => _showShield = false);
+    if (mounted) {
+      setState(() => _showShield = false);
+    }
   }
 
   @override
@@ -135,14 +140,16 @@ class _MyAppState extends State<MyApp> {
                   Locale('en', ''), // English, no country code
                   Locale('th', ''), // Thai, no country code
                 ],
-                locale: widget.settingsController.locale, // Set default locale to Thai
+                locale: widget
+                    .settingsController.locale, // Set default locale to Thai
 
                 // Use AppLocalizations to configure the correct application title
                 // depending on the user's locale.
                 //
                 // The appTitle is defined in .arb files found in the localization
                 // directory.
-                onGenerateTitle: (BuildContext context) => AppLocalizations.of(context)!.appTitle,
+                onGenerateTitle: (BuildContext context) =>
+                    AppLocalizations.of(context)!.appTitle,
 
                 // Define a light and dark color theme. Then, read the user's
                 // preferred ThemeMode (light, dark, or system default) from the
@@ -154,18 +161,22 @@ class _MyAppState extends State<MyApp> {
                 // Define a function to handle named routes in order to support
                 // Flutter web url navigation and deep linking.
                 onGenerateRoute: (RouteSettings routeSettings) {
-                  final routeMap = routeSettings.arguments as Map<String, dynamic>?;
+                  final routeMap =
+                      routeSettings.arguments as Map<String, dynamic>?;
                   return MaterialPageRoute<dynamic>(
                     settings: routeSettings,
                     builder: (BuildContext context) {
                       switch (routeSettings.name) {
                         case UIShowcaseScreen.routeName:
                           return UIShowcaseScreen(
-                            onSwitchToDarkMode: () => widget.settingsController.updateThemeMode(ThemeMode.dark),
-                            onSwitchToLightMode: () => widget.settingsController.updateThemeMode(ThemeMode.light),
+                            onSwitchToDarkMode: () => widget.settingsController
+                                .updateThemeMode(ThemeMode.dark),
+                            onSwitchToLightMode: () => widget.settingsController
+                                .updateThemeMode(ThemeMode.light),
                           );
                         case DashboardView.routeName:
-                          return DashboardView(controller: widget.settingsController);
+                          return DashboardView(
+                              controller: widget.settingsController);
                         case ProfileView.routeName:
                           return const ProfileView();
                         case RegisterView.routeName:
@@ -173,7 +184,8 @@ class _MyAppState extends State<MyApp> {
                         case RegisterUserDetailView.routeName:
                           return const RegisterUserDetailView();
                         case SetPinView.routeName:
-                          return SetPinView(skipable: routeMap?['skipable'] as bool?);
+                          return SetPinView(
+                              skipable: routeMap?['skipable'] as bool?);
                         case ConsentsView.routeName:
                           return const ConsentsView();
                         case ContractsView.routeName:
@@ -181,21 +193,25 @@ class _MyAppState extends State<MyApp> {
                             linkId: routeMap?['linkId'] as String?,
                           );
                         case DownHistoryView.routeName:
-                          return DownHistoryView(contractId: routeMap!['contractId'] as String);
+                          return DownHistoryView(
+                              contractId: routeMap!['contractId'] as String);
                         case ChangeLanguangeView.routeName:
                           return const ChangeLanguangeView();
                         case ReceiptView.routeName:
                           return ReceiptView(
-                            contractNumber: routeMap!['contractNumber'] as String,
+                            contractNumber:
+                                routeMap!['contractNumber'] as String,
                             receiptNumber: routeMap['receiptNumber'] as String,
                           );
                         case ReceiptViewFile.routeName:
                           return ReceiptViewFile(
-                            contractNumber: routeMap!['contractNumber'] as String,
+                            contractNumber:
+                                routeMap!['contractNumber'] as String,
                             receiptNumber: routeMap['receiptNumber'] as String,
                           );
                         case OverduesView.routeName:
-                          return OverduesView(contract: routeMap!['contract'] as Contract);
+                          return OverduesView(
+                              contract: routeMap!['contract'] as Contract);
                         case NotificationsView.routeName:
                           return NotificationsView(
                             selectedIndex: routeMap?['selectedIndex'] ?? 0,
@@ -203,7 +219,8 @@ class _MyAppState extends State<MyApp> {
                         case PaymentChannelsView.routeName:
                           return PaymentChannelsView(
                             contract: routeMap!['contract'] as Contract,
-                            overdueDetail: routeMap['overdueDetail'] as OverdueDetail?,
+                            overdueDetail:
+                                routeMap['overdueDetail'] as OverdueDetail?,
                             amount: routeMap['amount'] as double?,
                           );
                         case QRView.routeName:
@@ -249,14 +266,21 @@ class _ShieldGuard extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
-        color: (brightness == Brightness.dark ? mDarkBackgroundBottomBar : mLightBackgroundBottomBar).withOpacity(0.3),
+        color: (brightness == Brightness.dark
+                ? mDarkBackgroundBottomBar
+                : mLightBackgroundBottomBar)
+            .withOpacity(0.3),
         alignment: Alignment.center,
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
           child: Center(
             child: SvgPicture.asset(
               'assets/images/ASW_Logo_Rac_dark-bg.svg',
-              colorFilter: ColorFilter.mode(brightness == Brightness.dark ? Colors.white : mAssetWiseLogoColor, BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(
+                  brightness == Brightness.dark
+                      ? Colors.white
+                      : mAssetWiseLogoColor,
+                  BlendMode.srcIn),
               width: MediaQuery.of(context).size.width * 0.6,
             ),
           ),

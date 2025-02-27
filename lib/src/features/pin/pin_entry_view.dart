@@ -1,4 +1,3 @@
-import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/constants.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
@@ -32,8 +31,6 @@ class _PinEntryViewState extends State<PinEntryView> {
 
   @override
   Widget build(BuildContext context) {
-    isPinEntryVisible = true;
-
     // TODO: Check iOS can swipe back or not
     return PopScope(
       canPop: widget.isBackable ?? false,
@@ -47,7 +44,8 @@ class _PinEntryViewState extends State<PinEntryView> {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 64, bottom: 32),
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).padding.top + 64, bottom: 32),
                   child: AssetWiseLogo(
                     width: MediaQuery.of(context).size.width * 0.5,
                   ),
@@ -60,7 +58,8 @@ class _PinEntryViewState extends State<PinEntryView> {
                   height: 4,
                 ),
                 Text(
-                  AppLocalizations.of(context)!.pinEntryInstruction(mPinMaxLength),
+                  AppLocalizations.of(context)!
+                      .pinEntryInstruction(mPinMaxLength),
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -75,7 +74,9 @@ class _PinEntryViewState extends State<PinEntryView> {
                         width: 16,
                         height: 16,
                         decoration: BoxDecoration(
-                          color: i < pins.length ? mBrightPrimaryColor : Theme.of(context).highlightColor,
+                          color: i < pins.length
+                              ? mBrightPrimaryColor
+                              : Theme.of(context).highlightColor,
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
@@ -90,7 +91,9 @@ class _PinEntryViewState extends State<PinEntryView> {
                   height: 8,
                 ),
                 Text(
-                  _isInvalidPin ? AppLocalizations.of(context)!.errorInvalidPin : '',
+                  _isInvalidPin
+                      ? AppLocalizations.of(context)!.errorInvalidPin
+                      : '',
                   style: const TextStyle(color: mRedColor),
                 ),
                 SizedBox(
@@ -120,7 +123,8 @@ class _PinEntryViewState extends State<PinEntryView> {
                     onPressed: () {},
                     child: Text(
                       AppLocalizations.of(context)!.pinEntryForget,
-                      style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface),
                     )),
               ],
             ),
@@ -154,9 +158,8 @@ class _PinEntryViewState extends State<PinEntryView> {
     final userProvider = context.read<UserProvider>();
     final pin = pins.join();
     final isPinValid = await userProvider.validatePin(pin);
+
     if (isPinValid) {
-      isPinEntryVisible = false;
-      widget.onPinVerified?.call(true);
       Navigator.pop(context, true);
     } else {
       setState(() {
