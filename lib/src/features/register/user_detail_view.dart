@@ -1,6 +1,7 @@
 import 'package:AssetWise/src/consts/constants.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/register/consents_view.dart';
+import 'package:AssetWise/src/features/register/register_view.dart';
 import 'package:AssetWise/src/providers/register_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
@@ -32,8 +33,8 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
     if (verifyOTPResponse != null) {
       firstNameController.text = verifyOTPResponse.firstName ?? '';
       lastNameController.text = verifyOTPResponse.lastName ?? '';
-      phoneController.text = verifyOTPResponse.phone ?? '';
-      emailController.text = verifyOTPResponse.email ?? '';
+      phoneController.text = !registerProvider.isLoginWithEmail ? registerProvider.phoneEmail : '';
+      emailController.text = registerProvider.isLoginWithEmail ? registerProvider.phoneEmail : '';
     }
     super.initState();
   }
@@ -179,17 +180,17 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
 
   Future<void> _openConsentPage(BuildContext context) async {
     final registerProvider = context.read<RegisterProvider>();
+    bool loginResult = false;
     if (!registerProvider.isResident) {
       if (_formKey.currentState!.validate()) {
-        final loginResult = await context.read<UserProvider>().loginNewUser(
+        if (await context.read<UserProvider>().loginNewUser(
               type: registerProvider.isLoginWithEmail ? 'email' : 'phone',
               firstName: firstNameController.text,
               lastName: lastNameController.text,
               phone: phoneController.text,
               email: emailController.text,
-            );
-        if (loginResult) {
-          Navigator.of(context).pushReplacementNamed(ConsentsView.routeName);
+            )) {
+          loginResult = true;
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(AppLocalizations.of(context)!.errorUnableToProcess),
@@ -201,7 +202,7 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
         final userId = registerProvider.verifyOTPResponse!.id!;
         if (await context.read<UserProvider>().login(userId)) {
           if (context.mounted) {
-            Navigator.of(context).pushReplacementNamed(ConsentsView.routeName);
+            loginResult = true;
           }
         } else {
           if (context.mounted) {
@@ -211,6 +212,10 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
           }
         }
       }
+    }
+
+    if (loginResult) {
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const ConsentsView()), ModalRoute.withName(RegisterView.routeName));
     }
   }
 }

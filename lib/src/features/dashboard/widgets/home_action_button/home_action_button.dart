@@ -1,4 +1,5 @@
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
+import 'package:AssetWise/src/features/pin/pin_entry_view.dart';
 import 'package:AssetWise/src/features/profile/profile_view.dart';
 import 'package:AssetWise/src/features/notifications/notifications_view.dart';
 import 'package:AssetWise/src/features/register/register_view.dart';
@@ -19,7 +20,7 @@ class HomeActionButtons extends StatelessWidget {
         if (!(userProvider.isAuthenticated)) {
           return FilledButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(RegisterView.routeName);
+                _login(context);
               },
               child: const Icon(Icons.login));
         }
@@ -46,5 +47,18 @@ class HomeActionButtons extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _login(BuildContext context) async {
+    final userProvider = context.read<UserProvider>();
+    final isPinSet = userProvider.isPinSet;
+    if (isPinSet) {
+      final isValidPin = await Navigator.of(context).pushNamed(PinEntryView.routeName, arguments: {'isBackable': true});
+      if (isValidPin == true) {
+        userProvider.reloginUsingPin();
+      }
+    } else {
+      Navigator.of(context).pushNamed(RegisterView.routeName);
+    }
   }
 }

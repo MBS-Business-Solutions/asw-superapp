@@ -101,8 +101,7 @@ class _SetPinViewState extends State<SetPinView> {
                           if (_isConfirmState) {
                             if (pins.join() == firstPin) {
                               // save pin
-                              Provider.of<UserProvider>(context, listen: false).setPin(pins.join());
-                              _processToHome();
+                              _setPin(pins.join());
                             } else {
                               pins.clear();
                               _isInvalidPin = true;
@@ -148,13 +147,7 @@ class _SetPinViewState extends State<SetPinView> {
                   const SizedBox(
                     height: 16,
                   ),
-                  FilledButton(
-                      onPressed: () {
-                        context.read<UserProvider>().setPin(null).then((value) {
-                          _processToHome();
-                        });
-                      },
-                      child: Text(AppLocalizations.of(context)!.setPinSkip)),
+                  FilledButton(onPressed: () => _setPin(null), child: Text(AppLocalizations.of(context)!.setPinSkip)),
                 ],
               )),
             ),
@@ -163,7 +156,12 @@ class _SetPinViewState extends State<SetPinView> {
     );
   }
 
+  void _setPin(String? pin) async {
+    await context.read<UserProvider>().setPin(pin);
+    _processToHome();
+  }
+
   void _processToHome() {
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.popUntil(context, (route) => route.isFirst);
   }
 }

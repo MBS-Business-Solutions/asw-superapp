@@ -2,13 +2,15 @@ import 'dart:async';
 
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/register/consents_view.dart';
+import 'package:AssetWise/src/features/register/register_view.dart';
+import 'package:AssetWise/src/features/register/user_detail_view.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/register_provider.dart';
 import 'package:AssetWise/src/utils/string_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:AssetWise/src/widgets/otp_input.dart';
-import 'package:AssetWise/src/features/register/user_detail_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -190,7 +192,8 @@ class _RegisterVerifyOtpViewState extends State<RegisterVerifyOtpView> {
     }
     if (mounted) {
       if (response != null) {
-        Navigator.pushReplacementNamed(context, RegisterUserDetailView.routeName);
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const RegisterUserDetailView()), ModalRoute.withName(RegisterView.routeName));
+        //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ConsentsView()));
       } else {
         setState(() {
           _invalidOTP = true;

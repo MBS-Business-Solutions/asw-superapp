@@ -366,5 +366,12 @@
   "notificationPromotion": "Promotion",
   "notificationHotDeal": "Hot Deal",
   "notificationNews": "News",
-  "notificationReadAll": "Mark All as Read"
+  "notificationReadAll": "Mark All as Read",
+
+  "aboutAssetWiseTitle": "About Assetwise",
+  "aboutAssetWiseVersion": "Version {version} ({build})",
+  "aboutAssetWiseCopyright": "ⓒ 2025 บริษัท แอสเซทไวส์ จำกัด",
+  "aboutAssetWiseTermOfService": "Terms of Service",
+  "aboutAssetWisePrivacyPolicy": "Privacy Policy",
+  "aboutAssetWiseSecurityPolicy": "Security Policy"
 }

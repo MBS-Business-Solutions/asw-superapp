@@ -57,6 +57,7 @@ class _AwTextFormFieldState extends State<AwTextFormField> {
             ),
             keyboardAppearance: Theme.of(context).brightness,
             keyboardType: widget.keyboardType,
+            inputFormatters: widget.inputFormatters,
             validator: (value) {
               final res = widget.validator?.call(value);
               if (res != null) {

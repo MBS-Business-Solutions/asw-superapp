@@ -4,12 +4,14 @@ import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/themes_const.dart';
 import 'package:AssetWise/src/0_test/ui_showcase_screen.dart';
+import 'package:AssetWise/src/features/about_assetwise/about_asswise_view.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/features/contract/down_history_view.dart';
 import 'package:AssetWise/src/features/contract/overdues_view.dart';
 import 'package:AssetWise/src/features/contract/receipt_view.dart';
 import 'package:AssetWise/src/features/contract/receipt_view_file.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/change_languange_view.dart';
+import 'package:AssetWise/src/features/my_assets/my_assets_view.dart';
 import 'package:AssetWise/src/features/notifications/notifications_view.dart';
 import 'package:AssetWise/src/features/payments/payment_channels_view.dart';
 import 'package:AssetWise/src/features/payments/qr_view.dart';
@@ -72,8 +74,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _afterResumed() async {
-    final isPinSet = context.read<UserProvider>().isPinSet;
-    if (isPinSet && !isPinEntryVisible) {
+    if (context.read<UserProvider>().shouldValidatePin) {
       await Navigator.push(
         navigatorKey.currentContext ?? context,
         MaterialPageRoute(
@@ -154,7 +155,7 @@ class _MyAppState extends State<MyApp> {
                 // Flutter web url navigation and deep linking.
                 onGenerateRoute: (RouteSettings routeSettings) {
                   final routeMap = routeSettings.arguments as Map<String, dynamic>?;
-                  return MaterialPageRoute<void>(
+                  return MaterialPageRoute<dynamic>(
                     settings: routeSettings,
                     builder: (BuildContext context) {
                       switch (routeSettings.name) {
@@ -177,7 +178,7 @@ class _MyAppState extends State<MyApp> {
                           return const ConsentsView();
                         case ContractsView.routeName:
                           return ContractsView(
-                            openContractId: routeSettings.arguments as String?,
+                            linkId: routeMap?['linkId'] as String?,
                           );
                         case DownHistoryView.routeName:
                           return DownHistoryView(contractId: routeMap!['contractId'] as String);
@@ -219,6 +220,10 @@ class _MyAppState extends State<MyApp> {
                             forAction: routeMap?['forAction'] as String?,
                             onOTPVerified: routeMap?['onOTPVerified'],
                           );
+                        case AboutAsswiseView.routeName:
+                          return const AboutAsswiseView();
+                        case MyAssetsView.routeName:
+                          return const MyAssetsView();
                         default:
                           // return DashboardView(controller: settingsController);
                           return const SplashView();

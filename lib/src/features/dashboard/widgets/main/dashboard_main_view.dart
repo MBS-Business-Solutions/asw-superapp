@@ -1,6 +1,7 @@
 import 'package:AssetWise/src/features/dashboard/widgets/home_action_button/home_action_button.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/main/notification_section.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
+import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
@@ -58,10 +59,15 @@ class DashboardMainView extends StatelessWidget {
                 ],
               )),
         ),
-        const SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.only(left: mScreenEdgeInsetValue, right: mScreenEdgeInsetValue),
-            child: DashboardNotificationSection(),
+        SliverToBoxAdapter(
+          child: Consumer<UserProvider>(
+            builder: (context, provider, child) {
+              if (!provider.isAuthenticated) return const SizedBox();
+              return const Padding(
+                padding: EdgeInsets.only(left: mScreenEdgeInsetValue, right: mScreenEdgeInsetValue),
+                child: DashboardNotificationSection(),
+              );
+            },
           ),
         ),
         SliverToBoxAdapter(

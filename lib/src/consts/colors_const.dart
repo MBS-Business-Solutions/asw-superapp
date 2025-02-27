@@ -42,6 +42,7 @@ const Color mGreyColor = Color(0xFF787878);
 const Color mGreyBackgroundColor = Color(0xFF444444);
 
 const Color mRedColor = Color(0xFFF2846D);
+const Color mGreenColor = Color(0xFF139F4B);
 
 const Color mTileWarnColor = Color(0xFF431E16);
 const Color mAssetWiseLogoColor = Color(0xFF123f6d);

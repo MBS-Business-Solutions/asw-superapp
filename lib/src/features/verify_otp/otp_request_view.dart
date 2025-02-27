@@ -184,7 +184,10 @@ class _OTPRequestViewState extends State<OTPRequestView> {
             phoneEmail: sendTo,
           );
       if (ref != null && mounted) {
-        Navigator.push(ctx, MaterialPageRoute(builder: (context) => VerifyOTPView(onOTPVerified: widget.onOTPVerified)));
+        final otpVerified = await Navigator.push(ctx, MaterialPageRoute(builder: (context) => VerifyOTPView(onOTPVerified: widget.onOTPVerified)));
+        if (otpVerified ?? false) {
+          Navigator.pop(ctx, true);
+        }
       } else {
         // Show error message
         setState(() {

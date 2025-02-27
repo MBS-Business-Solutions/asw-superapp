@@ -4,7 +4,6 @@ import 'package:AssetWise/src/services/aw_contract_service.dart';
 
 class ContractProvider {
   late List<Contract> _contracts;
-  List<Contract> get contracts => _contracts;
 
   UserProvider? _userProvider;
 

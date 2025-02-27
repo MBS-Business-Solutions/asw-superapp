@@ -180,7 +180,7 @@ class _ConsentsViewState extends State<ConsentsView> {
   void _submitConsents(Consent consent) async {
     final result = await context.read<UserProvider>().submitConsents(consent.id, _userConsents);
     if (result && mounted) {
-      Navigator.of(context).pushReplacementNamed(SetPinView.routeName);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const SetPinView()), (route) => route.isFirst);
     }
   }
 }

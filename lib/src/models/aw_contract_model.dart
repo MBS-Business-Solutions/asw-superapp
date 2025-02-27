@@ -6,6 +6,7 @@ class Contract {
   final String projectName;
   final String unitNumber;
   final bool isDefault;
+  final bool isResident;
   final String imageUrl;
 
   Contract({
@@ -16,6 +17,7 @@ class Contract {
     required this.projectName,
     required this.unitNumber,
     required this.isDefault,
+    required this.isResident,
     required this.imageUrl,
   });
 
@@ -28,6 +30,7 @@ class Contract {
       projectName: json['project_name'],
       unitNumber: json['unit_number'],
       isDefault: json['is_default'],
+      isResident: json['is_resident'],
       imageUrl: json['image_url'],
     );
   }

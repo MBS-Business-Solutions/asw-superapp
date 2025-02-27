@@ -1,6 +1,8 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/about_assetwise/about_asswise_view.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/change_languange_view.dart';
+import 'package:AssetWise/src/features/my_assets/my_assets_view.dart';
 import 'package:AssetWise/src/features/pin/pin_entry_view.dart';
 import 'package:AssetWise/src/features/pin/set_pin_view.dart';
 import 'package:AssetWise/src/features/profile/widgets/email_old_value_view.dart';
@@ -14,7 +16,6 @@ import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -28,249 +29,224 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   bool _isDarkMode = false;
-  String _appVersion = '';
   UserInformation? _userInformation;
+  late Future<UserInformation?> _userInformationFuture;
 
   @override
   void initState() {
-    _loadAppVersion();
+    _userInformationFuture = context.read<UserProvider>().fetchUserInformation();
     super.initState();
-  }
-
-  void _loadAppVersion() async {
-    final packageInfo = await PackageInfo.fromPlatform();
-    setState(() {
-      _appVersion = '${packageInfo.version} build ${packageInfo.buildNumber}';
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    _userInformation = context.watch<UserProvider>().userInformation;
     _isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final userProvider = context.read<UserProvider>();
     return Scaffold(
       body: Stack(
         children: [
           const AssetWiseBG(),
-          ListView(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                height: 96,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+          FutureBuilder(
+              future: _userInformationFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                _userInformation = snapshot.data;
+                return ListView(
                   children: [
-                    CircleAvatar(
-                      radius: 32,
-                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                      child: const Icon(Icons.person),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                        child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.profileNameFormat(
-                            StringUtil.capitalize(_userInformation?.firstName),
-                            StringUtil.capitalize(_userInformation?.lastName),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      height: 96,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            radius: 32,
+                            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                            child: const Icon(Icons.person),
                           ),
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        Text('V.$_appVersion', style: Theme.of(context).textTheme.labelLarge),
-                      ],
-                    ))
-                  ],
-                ),
-              ),
-              const SizedBox(height: 8),
-              // โหมดสีเข้ม
-              Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: SwitchListTile.adaptive(
-                  value: _isDarkMode,
-                  onChanged: (value) {
-                    context.read<SettingsController>().updateThemeMode(value ? ThemeMode.dark : ThemeMode.light);
-                  },
-                  title: Text(AppLocalizations.of(context)!.profileDarkMode),
-                ),
-              ),
-              const SizedBox(height: 8),
-              // ข้อมูลของฉัน
-              Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                      child: Text(
-                        AppLocalizations.of(context)!.profileMyInfo,
-                        style: Theme.of(context).textTheme.titleSmall,
+                          const SizedBox(width: 16),
+                          Expanded(
+                              child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)!.profileNameFormat(
+                                  StringUtil.capitalize(_userInformation?.firstName),
+                                  StringUtil.capitalize(_userInformation?.lastName),
+                                ),
+                                style: Theme.of(context).textTheme.headlineSmall,
+                              ),
+                              Text('ID : A123456780', style: Theme.of(context).textTheme.bodySmall),
+                            ],
+                          ))
+                        ],
                       ),
                     ),
-                    // change phone number
-                    ListTile(
-                      title: Text(AppLocalizations.of(context)!.profilePhoneNumber),
-                      subtitle: Text(userProvider.userInformation?.phone ?? '-'),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PhoneOldValueView())),
-                    ),
-                    // change email
-                    ListTile(
-                      title: Text(AppLocalizations.of(context)!.profileEmail),
-                      subtitle: Text(_userInformation?.email ?? '-'),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const EmailOldValueView())),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 8),
-              // บ้านของฉัน
-              Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListTile(
-                      title: Text(AppLocalizations.of(context)!.profileMyAsset),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () {},
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 8),
-              Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                      child: Text(
-                        AppLocalizations.of(context)!.profileLanguage,
-                        style: Theme.of(context).textTheme.titleSmall,
+                    const SizedBox(height: 8),
+                    // โหมดสีเข้ม
+                    Container(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: SwitchListTile.adaptive(
+                        value: _isDarkMode,
+                        onChanged: (value) {
+                          context.read<SettingsController>().updateThemeMode(value ? ThemeMode.dark : ThemeMode.light);
+                        },
+                        title: Text(AppLocalizations.of(context)!.profileDarkMode),
                       ),
                     ),
-                    ListTile(
-                      title: Text(AppLocalizations.of(context)!.profileChangeLanguage),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () {
-                        Navigator.of(context).pushNamed(ChangeLanguangeView.routeName);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 8),
-              Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                      child: Text(
-                        AppLocalizations.of(context)!.profileSettings,
-                        style: Theme.of(context).textTheme.titleSmall,
+                    const SizedBox(height: 8),
+                    // ข้อมูลของฉัน
+                    Container(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                            child: Text(
+                              AppLocalizations.of(context)!.profileMyInfo,
+                              style: Theme.of(context).textTheme.titleSmall,
+                            ),
+                          ),
+                          // change phone number
+                          ListTile(
+                            title: Text(AppLocalizations.of(context)!.profilePhoneNumber),
+                            subtitle: Text(_userInformation?.phone ?? '-'),
+                            trailing: const Icon(Icons.chevron_right),
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PhoneOldValueView())),
+                          ),
+                          // change email
+                          ListTile(
+                            title: Text(AppLocalizations.of(context)!.profileEmail),
+                            subtitle: Text(_userInformation?.email ?? '-'),
+                            trailing: const Icon(Icons.chevron_right),
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const EmailOldValueView())),
+                          ),
+                        ],
                       ),
                     ),
-                    ListTile(
-                      title: Text(AppLocalizations.of(context)!.profilePersonalInfo),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      title: Text(AppLocalizations.of(context)!.profilePin),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () async {
-                        if (context.read<UserProvider>().isPinSet) {
-                          // already set pin, change pin
-                          final pinVerify = await Navigator.pushNamed(context, PinEntryView.routeName, arguments: {'isBackable': true}) as bool?;
-                          if (pinVerify ?? false) {
-                            final otpValidationResult = await Navigator.pushNamed(
-                              context,
-                              OTPRequestView.routeName,
-                              arguments: {
-                                'forAction': AppLocalizations.of(context)!.otpRequestActionResetPin,
-                              },
-                            );
-                            if (otpValidationResult as bool? ?? false) {
-                              // reset pin
-                              Navigator.pushNamed(context, SetPinView.routeName, arguments: {'skipable': true});
-                            }
-                          }
-                          // if (result == true) {
-                          //   Navigator.pushNamed(context, SetPinView.routeName, arguments: {'skipable': true});
-                          // }
-                        } else {
-                          // first time set pin
-                          Navigator.pushNamed(context, SetPinView.routeName, arguments: {'skipable': false});
-                        }
-                      },
-                    ),
-                    ListTile(
-                      title: Text(AppLocalizations.of(context)!.profileDeleteAccount),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () {},
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 8),
-              Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: ListTile(
-                  title: Text(AppLocalizations.of(context)!.profileAbout),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () {},
-                ),
-              ),
-              const SizedBox(height: 8),
-              Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                      child: Text(
-                        AppLocalizations.of(context)!.profileAuthen,
-                        style: Theme.of(context).textTheme.titleSmall,
+                    const SizedBox(height: 8),
+                    // บ้านของฉัน
+                    Container(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListTile(
+                            title: Text(AppLocalizations.of(context)!.profileMyAsset),
+                            trailing: const Icon(Icons.chevron_right),
+                            onTap: () => Navigator.pushNamed(context, MyAssetsView.routeName),
+                          ),
+                        ],
                       ),
                     ),
-                    ListTile(
-                      title: Text(AppLocalizations.of(context)!.profileExit),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () {
-                        _showCloseAppConfirmation();
-                      },
-                    ),
-                    ListTile(
-                      title: Text(AppLocalizations.of(context)!.profileLogout),
-                      trailing: const Icon(
-                        Icons.logout,
-                        color: mRedColor,
+                    const SizedBox(height: 8),
+                    Container(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                            child: Text(
+                              AppLocalizations.of(context)!.profileLanguage,
+                              style: Theme.of(context).textTheme.titleSmall,
+                            ),
+                          ),
+                          ListTile(
+                            title: Text(AppLocalizations.of(context)!.profileChangeLanguage),
+                            trailing: const Icon(Icons.chevron_right),
+                            onTap: () {
+                              Navigator.of(context).pushNamed(ChangeLanguangeView.routeName);
+                            },
+                          ),
+                        ],
                       ),
-                      onTap: () {
-                        _showLogoutBottomSheet();
-                        // context.read<UserProvider>().logout();
-                        // ScaffoldMessenger.of(context).showSnackBar(
-                        //   const SnackBar(
-                        //     content: Text('Logout success'),
-                        //   ),
-                        // );
-                      },
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                            child: Text(
+                              AppLocalizations.of(context)!.profileSettings,
+                              style: Theme.of(context).textTheme.titleSmall,
+                            ),
+                          ),
+                          ListTile(
+                            title: Text(AppLocalizations.of(context)!.profilePersonalInfo),
+                            trailing: const Icon(Icons.chevron_right),
+                            onTap: () {},
+                          ),
+                          ListTile(
+                            title: Text(AppLocalizations.of(context)!.profilePin),
+                            trailing: const Icon(Icons.chevron_right),
+                            onTap: () => _changePinNewPin(),
+                          ),
+                          ListTile(
+                            title: Text(AppLocalizations.of(context)!.profileDeleteAccount),
+                            trailing: const Icon(Icons.chevron_right),
+                            onTap: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: ListTile(
+                        title: Text(AppLocalizations.of(context)!.profileAbout),
+                        trailing: const Icon(Icons.chevron_right),
+                        onTap: () => Navigator.pushNamed(context, AboutAsswiseView.routeName),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                            child: Text(
+                              AppLocalizations.of(context)!.profileAuthen,
+                              style: Theme.of(context).textTheme.titleSmall,
+                            ),
+                          ),
+                          ListTile(
+                            title: Text(AppLocalizations.of(context)!.profileExit),
+                            trailing: const Icon(Icons.chevron_right),
+                            onTap: () {
+                              _showCloseAppConfirmation();
+                            },
+                          ),
+                          ListTile(
+                            title: Text(AppLocalizations.of(context)!.profileLogout),
+                            trailing: const Icon(
+                              Icons.logout,
+                              color: mRedColor,
+                            ),
+                            onTap: () {
+                              _showLogoutBottomSheet();
+                              // context.read<UserProvider>().logout();
+                              // ScaffoldMessenger.of(context).showSnackBar(
+                              //   const SnackBar(
+                              //     content: Text('Logout success'),
+                              //   ),
+                              // );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ],
-                ),
-              ),
-            ],
-          ),
+                );
+              }),
           Positioned(
             top: MediaQuery.of(context).padding.top,
             right: mDefaultPadding,
@@ -279,6 +255,29 @@ class _ProfileViewState extends State<ProfileView> {
         ],
       ),
     );
+  }
+
+  void _changePinNewPin() async {
+    if (context.read<UserProvider>().isPinSet) {
+      // already set pin, change pin
+      final pinVerify = await Navigator.pushNamed(context, PinEntryView.routeName, arguments: {'isBackable': true}) as bool?;
+      if (pinVerify ?? false) {
+        final otpValidationResult = await Navigator.pushNamed(
+          context,
+          OTPRequestView.routeName,
+          arguments: {
+            'forAction': AppLocalizations.of(context)!.otpRequestActionResetPin,
+          },
+        );
+        if (otpValidationResult as bool? ?? false) {
+          // reset pin
+          Navigator.pushNamed(context, SetPinView.routeName, arguments: {'skipable': true});
+        }
+      }
+    } else {
+      // first time set pin
+      Navigator.pushNamed(context, SetPinView.routeName, arguments: {'skipable': false});
+    }
   }
 
   void _showLogoutBottomSheet() async {

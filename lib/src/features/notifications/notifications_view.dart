@@ -143,7 +143,7 @@ class NotificationItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        Navigator.pushNamed(context, ContractsView.routeName, arguments: 'contract');
+        Navigator.pushNamed(context, ContractsView.routeName, arguments: {'linkId': 'id'});
       },
       tileColor: mTileWarnColor,
       title: Row(

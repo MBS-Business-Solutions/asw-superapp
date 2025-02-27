@@ -366,7 +366,12 @@
   "notificationPromotion": "โปรโมชั่น",
   "notificationHotDeal": "Hot Deal",
   "notificationNews": "ข่าวสาร",
-  "notificationReadAll": "อ่านทั้งหมด"
+  "notificationReadAll": "อ่านทั้งหมด",
 
-
+  "aboutAssetWiseTitle": "เกี่ยวกับ AssetWise",
+  "aboutAssetWiseVersion": "เวอร์ชั่น {version} ({build})",
+  "aboutAssetWiseCopyright": "ⓒ 2025 บริษัท แอสเซทไวส์ จำกัด",
+  "aboutAssetWiseTermOfService": "เงื่อนไขการให้บริการ",
+  "aboutAssetWisePrivacyPolicy": "นโยบายคุ้มครองข้อมูลส่วนตัว",
+  "aboutAssetWiseSecurityPolicy": "นโยบายความปลอดภัย"
 }

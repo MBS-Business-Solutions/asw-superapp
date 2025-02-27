@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/services/aw_user_service.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +13,11 @@ class UserProvider with ChangeNotifier {
   bool get isAuthenticated => _token != null;
   bool _isPinSet = false;
   bool get isPinSet => _isPinSet;
+  bool get shouldValidatePin => _isPinSet && isAuthenticated && !isPinEntryVisible;
   UserInformation? _userInformation;
   UserInformation? get userInformation => _userInformation;
+  String? _userId;
+  String? get userId => _userId;
 
   UserProvider({String? token, bool? isMember}) {
     _token = token;
@@ -26,9 +30,13 @@ class UserProvider with ChangeNotifier {
     if (tokenResponse != null) {
       _token = tokenResponse.token;
       _userInformation = tokenResponse.userInformation;
+      _userId = userId;
+      await Future.wait([
+        secureStorage.delete(key: 'LOGOUT'),
+        secureStorage.write(key: 'SESSION_TOKEN', value: _token),
+        secureStorage.write(key: 'USER_ID', value: _userId),
+      ]);
 
-      await secureStorage.write(key: 'SESSION_TOKEN', value: _token);
-      await secureStorage.write(key: 'USER_INFO', value: _userInformation!.toJson());
       notifyListeners();
       return true;
     }
@@ -41,6 +49,8 @@ class UserProvider with ChangeNotifier {
       _token = tokenResponse.token;
       _userInformation = tokenResponse.userInformation;
 
+      await secureStorage.delete(key: 'LOGOUT');
+      await secureStorage.write(key: 'USER_INFO', value: _userInformation!.toJson());
       await secureStorage.write(key: 'SESSION_TOKEN', value: _token);
       notifyListeners();
       return true;
@@ -48,16 +58,45 @@ class UserProvider with ChangeNotifier {
     return false;
   }
 
+  Future<void> reloginUsingPin() async {
+    // get new token if needed
+    await secureStorage.delete(key: 'LOGOUT');
+    await _loadPreviousData();
+    notifyListeners();
+  }
+
+  Future<void> logout() async {
+    _token = null;
+    _userInformation = null;
+    await secureStorage.write(key: 'LOGOUT', value: 'true');
+    // await secureStorage.deleteAll();
+    notifyListeners();
+  }
+
   Future<void> initApp() async {
+    _isPinSet = await secureStorage.read(key: 'PIN') != null;
+    if (await secureStorage.read(key: 'LOGOUT') == null) {
+      // reload data from secure storage
+
+      await _loadPreviousData();
+      notifyListeners();
+    }
+  }
+
+  Future<void> _loadPreviousData() async {
     _token = await secureStorage.read(key: 'SESSION_TOKEN');
     _isPinSet = await secureStorage.read(key: 'PIN') != null;
-    final userJson = await secureStorage.read(key: 'USER_INFO');
-    if (userJson != null) {
-      _userInformation = UserInformation.fromJson(jsonDecode(userJson));
+    _userId = await secureStorage.read(key: 'USER_ID');
+    if (_userId != null && _token != null) {
+      // fetch last updated user information
+      fetchUserInformation();
+    } else {
+      // if login anonymously, fetch user information from secure storage instead
+      final userJson = await secureStorage.read(key: 'USER_INFO');
+      if (userJson != null) {
+        _userInformation = UserInformation.fromJson(json.decode(userJson));
+      }
     }
-    notifyListeners();
-
-    // send FCM Token to server
   }
 
   Future<bool> submitConsents(String consentId, Map<String, bool> consents) async {
@@ -80,14 +119,6 @@ class UserProvider with ChangeNotifier {
     await AwUserService.setPreferedLanguage(_token!, language);
   }
 
-  Future<void> logout() async {
-    _token = null;
-    _userInformation = null;
-    _isPinSet = false;
-    await secureStorage.deleteAll();
-    notifyListeners();
-  }
-
   Future<bool> changeEmail(String newValue) async {
     if (token == null) return false;
     return await AwUserService.changeEmail(_token!, newValue);
@@ -97,5 +128,15 @@ class UserProvider with ChangeNotifier {
     if (token == null) return false;
 
     return await AwUserService.changePhone(_token!, newValue);
+  }
+
+  Future<UserInformation?> fetchUserInformation() async {
+    if (token == null) return null;
+    final userInformation = await AwUserService.getUserInformation(_token!, _userId!);
+    if (userInformation != null) {
+      _userInformation = userInformation;
+      await secureStorage.write(key: 'USER_INFO', value: _userInformation!.toJson());
+    }
+    return _userInformation;
   }
 }

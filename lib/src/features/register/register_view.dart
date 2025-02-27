@@ -232,9 +232,9 @@ class _RegisterViewState extends State<RegisterView> {
       if (_isResident) {
         // Validate customer
         bool isValidResident = await AwRegisterService.customerCheck(
-          isByMobile: true,
+          isByMobile: !_emailForm,
           idCard4: _idCardController.text,
-          phoneEmail: _mobileController.text,
+          phoneEmail: sendTo,
         );
         if (!isValidResident) {
           // Show error message
@@ -248,7 +248,7 @@ class _RegisterViewState extends State<RegisterView> {
                 isLoginWithEmail: _emailForm,
               );
           if (ref != null && mounted) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterVerifyOtpView()));
+            _registerProcess();
           } else {
             // Show error message
             setState(() {
@@ -262,7 +262,7 @@ class _RegisterViewState extends State<RegisterView> {
               isLoginWithEmail: _emailForm,
             );
         if (ref != null && mounted) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterVerifyOtpView()));
+          _registerProcess();
         } else {
           // Show error message
           setState(() {
@@ -275,5 +275,9 @@ class _RegisterViewState extends State<RegisterView> {
         _isLoading = false;
       });
     }
+  }
+
+  void _registerProcess() async {
+    await Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterVerifyOtpView()));
   }
 }

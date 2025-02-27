@@ -14,9 +14,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ContractsView extends StatefulWidget {
-  const ContractsView({super.key, this.openContractId});
+  const ContractsView({super.key, this.linkId});
   static const String routeName = '/contracts';
-  final String? openContractId;
+  final String? linkId;
 
   @override
   State<ContractsView> createState() => _ContractsViewState();
@@ -44,10 +44,12 @@ class _ContractsViewState extends State<ContractsView> {
       setState(() {
         _contracts = contracts;
         _selectedYear = DateTime.now().year;
-        _selectedContract = contracts.firstWhere(
-          (element) => element.contractId == widget.openContractId,
-          orElse: () => contracts.first,
-        );
+
+        _selectedIndex = contracts.indexWhere((element) => element.id == widget.linkId);
+        if (_selectedIndex < 0) {
+          _selectedIndex = 0;
+        }
+        _selectedContract = contracts[_selectedIndex];
         if (_selectedContract != null) {
           _fetchOverdueDetail = _fetchOverdueDetail ?? context.read<ContractProvider>().fetchOverdueDetail(_selectedContract!.contractId);
         }
@@ -174,20 +176,24 @@ class _ContractsViewState extends State<ContractsView> {
                     ],
                   ),
                   Expanded(
-                      child: Center(
-                          child: OutlinedButton.icon(
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ContractDetailView(
-                                  contractId: _selectedContract!.contractId,
-                                ))),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                    ),
-                    icon: const Icon(Icons.dock_sharp),
-                    label: Text(AppLocalizations.of(context)!.contractsViewContract),
-                  ))),
+                    child: _contracts![_selectedIndex].isResident
+                        ? Center(
+                            child: OutlinedButton.icon(
+                              onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ContractDetailView(
+                                            contractId: _selectedContract!.contractId,
+                                          ))),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: Colors.white,
+                              ),
+                              icon: const Icon(Icons.dock_sharp),
+                              label: Text(AppLocalizations.of(context)!.contractsViewContract),
+                            ),
+                          )
+                        : SizedBox(),
+                  ),
                 ],
               ),
             ),

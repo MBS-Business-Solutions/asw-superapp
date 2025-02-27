@@ -179,7 +179,6 @@ class _VerifyOTPViewState extends State<VerifyOTPView> {
       if (response != null) {
         widget.onOTPVerified?.call(response);
         Navigator.pop(context, true);
-        Navigator.pop(context, true);
       } else {
         setState(() {
           _invalidOTP = true;

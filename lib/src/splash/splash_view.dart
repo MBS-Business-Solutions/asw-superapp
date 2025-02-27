@@ -17,7 +17,7 @@ class SplashView extends StatelessWidget {
       context.read<DashboardProvider>().reload(),
     ]);
     if (context.mounted) {
-      if (context.read<UserProvider>().isPinSet) {
+      if (context.read<UserProvider>().shouldValidatePin) {
         await Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => const PinEntryView(),
           fullscreenDialog: true,
