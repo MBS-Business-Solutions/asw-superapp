@@ -378,5 +378,11 @@
   "aboutAssetWiseCopyright": "ⓒ 2025 บริษัท แอสเซทไวส์ จำกัด",
   "aboutAssetWiseTermOfService": "Terms of Service",
   "aboutAssetWisePrivacyPolicy": "Privacy Policy",
-  "aboutAssetWiseSecurityPolicy": "Security Policy"
+  "aboutAssetWiseSecurityPolicy": "Security Policy",
+
+  "registerBuyerTitle": "Buyer Registration",
+  "registerBuyerHeader": "Verify Identity",
+  "registerBuyerInstruction": "Please verify your identity with your National ID number or Passport number for security purposes.",
+  "registerBuyerIdentifier": "National ID / Passport No.",
+  "registerBuyerRegister": "Register"
 }

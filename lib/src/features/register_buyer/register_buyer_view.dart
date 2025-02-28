@@ -23,7 +23,7 @@ class _RegisterBuyerRequestViewState extends State<RegisterBuyerRequestView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text('ลงทะเบียนผู้ซื้อ'),
+        title: Text(AppLocalizations.of(context)!.registerBuyerTitle),
         centerTitle: true,
       ),
       body: GestureDetector(
@@ -38,21 +38,21 @@ class _RegisterBuyerRequestViewState extends State<RegisterBuyerRequestView> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'ยืนยันตัวตน',
+                  AppLocalizations.of(context)!.registerBuyerHeader,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 SizedBox(height: mMediumPadding),
                 Text(
-                  'กรุณายืนยันตัวตนด้วยเลขบัตรประชาชนหรือหมายเลข Passport เพื่อยืนยันตัวตนนตัวตน',
+                  AppLocalizations.of(context)!.registerBuyerInstruction,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 SizedBox(height: mDefaultPadding),
                 AwTextFormField(
                   controller: _idCardController,
-                  label: 'เลขบัตรประจำตัวประชาชน / Passport No.',
+                  label: AppLocalizations.of(context)!.registerBuyerIdentifier,
                   validator: (value) {
                     if (value?.isEmpty ?? false) {
-                      return 'กรุณากรอกเลขบัตรประจำตัวประชาชน / Passport No.';
+                      return AppLocalizations.of(context)!.errorFieldRequired;
                     }
                     return null;
                   },
@@ -60,7 +60,7 @@ class _RegisterBuyerRequestViewState extends State<RegisterBuyerRequestView> {
                 SizedBox(height: mDefaultPadding),
                 FilledButton(
                   onPressed: () => _registerBuyer(),
-                  child: Text('ลงทะเบียน'),
+                  child: Text(AppLocalizations.of(context)!.registerBuyerRegister),
                 ),
               ],
             ),

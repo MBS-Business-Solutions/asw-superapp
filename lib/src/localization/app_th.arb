@@ -378,5 +378,12 @@
   "aboutAssetWiseCopyright": "ⓒ 2025 บริษัท แอสเซทไวส์ จำกัด",
   "aboutAssetWiseTermOfService": "เงื่อนไขการให้บริการ",
   "aboutAssetWisePrivacyPolicy": "นโยบายคุ้มครองข้อมูลส่วนตัว",
-  "aboutAssetWiseSecurityPolicy": "นโยบายความปลอดภัย"
+  "aboutAssetWiseSecurityPolicy": "นโยบายความปลอดภัย",
+
+  "registerBuyerTitle": "ลงทะเบียนผู้ซื้อ",
+  "registerBuyerHeader": "ยืนยันตัวตน",
+  "registerBuyerInstruction": "กรุณายืนยันตัวตนของคุณด้วยเลขประจำตัวประชาชนหรือหมายเลข Passport เพื่อความปลอดภัย",
+  "registerBuyerIdentifier": "เลขประจำตัวประชาชน / Passport No.",
+  "registerBuyerRegister": "ลงทะเบียน"
+
 }
