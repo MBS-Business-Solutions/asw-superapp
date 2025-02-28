@@ -1,47 +1,60 @@
-import 'package:AssetWise/src/models/aw_content_model.dart';
+import 'package:AssetWise/src/models/aw_otp_model.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
-import 'package:AssetWise/src/services/aw_register_service.dart';
+import 'package:AssetWise/src/services/aw_otp_service.dart';
 
 class VerifyOtpProvider {
   OTPRef? _otpRef;
   OTPRef? get otpRef => _otpRef;
   OTPChannel _channel = OTPChannel.sms;
   OTPChannel get channel => _channel;
-  String _phoneEmail = '';
-  String get phoneEmail => _phoneEmail;
-  VerifyOTPResponse? _verifyOTPResponse;
+  OTPVerifyResponse? _verifyOTPResponse;
+  OTPRequest? _otpRequest;
+  OTPRequest? get otpRequest => _otpRequest;
 
   UserProvider? _userProvider;
   void updateUserProvider(UserProvider userProvider) {
     _userProvider = userProvider;
   }
 
-  Future<OTPRef?> requestOTP({OTPChannel channel = OTPChannel.sms, required String phoneEmail}) async {
-    _channel = channel;
-    _phoneEmail = phoneEmail;
+  Future<OTPRef?> requestOTP({OTPFor action = OTPFor.other, OTPChannel channel = OTPChannel.sms, required String sendTo, bool? isResident, String? idCard4}) async {
+    final isSMS = channel == OTPChannel.sms;
+    _otpRequest = OTPRequest(
+      email: isSMS ? null : sendTo,
+      phone: isSMS ? sendTo : null,
+      idCard4: idCard4,
+      channel: isSMS ? 'phone' : 'email',
+      userType: isResident != null ? (isResident ? 'resident' : 'person') : null,
+      sendTo: sendTo,
+    );
 
-    // TODO: change to real API for verify OTP user that alread login
-    _otpRef = await AwRegisterService.sendOTP(token: _userProvider!.token!, isLoginWithEmail: channel == OTPChannel.email, phoneEmail: phoneEmail);
+    return resendOTP(action: action);
+  }
+
+  Future<OTPRef?> resendOTP({OTPFor action = OTPFor.other}) async {
+    switch (action) {
+      case OTPFor.reLogin:
+        _otpRef = await AwOtpService.sendOTPForReLogin(token: _userProvider!.token!, request: _otpRequest!);
+      case OTPFor.validateUser:
+        _otpRef = await AwOtpService.sendOTPForValidateUser(token: _userProvider!.token!, request: _otpRequest!);
+      case OTPFor.changePin:
+        _otpRef = await AwOtpService.sendOTPForChangePin(token: _userProvider!.token!, request: _otpRequest!);
+      default:
+        return null;
+    }
     return _otpRef;
   }
 
-  Future<OTPRef?> resendOTP() async {
-    if (_otpRef != null) {
-      _otpRef = await requestOTP(channel: _channel, phoneEmail: _phoneEmail);
-      return _otpRef;
-    }
-    return null;
-  }
-
-  Future<VerifyOTPResponse?> verifyOTP(String otp) async {
-    if (_otpRef != null) {
-      _verifyOTPResponse = await AwRegisterService.verifyOTP(token: _userProvider!.token!, transId: _otpRef!.transId, otp: otp);
+  Future<OTPVerifyResponse?> verifyOTP({OTPFor action = OTPFor.other, required String otp}) async {
+    switch (action) {
+      case OTPFor.reLogin:
+        _verifyOTPResponse = await AwOtpService.verifyOTPForLogin(token: _userProvider!.token!, transId: _otpRef!.transId!, otp: otp);
+      case OTPFor.validateUser:
+        _verifyOTPResponse = await AwOtpService.verifyOTPForValidateUser(token: _userProvider!.token!, transId: _otpRef!.transId!, otp: otp);
+      case OTPFor.changePin:
+        _verifyOTPResponse = await AwOtpService.verifyOTPForChangePin(token: _userProvider!.token!, transId: _otpRef!.transId!, otp: otp);
+      default:
+        return null;
     }
     return _verifyOTPResponse;
   }
-}
-
-enum OTPChannel {
-  email,
-  sms,
 }

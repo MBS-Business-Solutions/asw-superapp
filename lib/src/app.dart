@@ -23,6 +23,8 @@ import 'package:AssetWise/src/features/register/register_view.dart';
 import 'package:AssetWise/src/features/register/user_detail_view.dart';
 import 'package:AssetWise/src/features/verify_otp/otp_request_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
+import 'package:AssetWise/src/models/aw_otp_model.dart';
+import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/providers/firebase_provider.dart';
 import 'package:AssetWise/src/splash/splash_view.dart';
@@ -33,9 +35,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-
 import 'features/settings/settings_controller.dart';
-
 import 'features/dashboard/dashboard_view.dart';
 
 /// The Widget that configures your application.
@@ -80,18 +80,36 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _afterResumed() async {
-    if (!_showPinEntry && context.read<UserProvider>().shouldValidatePin) {
-      _showPinEntry = true;
-      await Navigator.push(
-        navigatorKey.currentContext ?? context,
-        MaterialPageRoute(
-          builder: (context) => const PinEntryView(),
-          fullscreenDialog: true,
-        ),
-      );
-      _showPinEntry = false;
+    if (!_showPinEntry) {
+      if (context.read<UserProvider>().shouldValidatePin) {
+        _showPinEntry = true;
+        await Navigator.push(
+          navigatorKey.currentContext ?? context,
+          MaterialPageRoute(
+            builder: (context) => const PinEntryView(),
+            fullscreenDialog: true,
+          ),
+        );
+        _showPinEntry = false;
+      } else if (context.read<UserProvider>().shouldValidateOTP) {
+        _showPinEntry = true;
+        await Navigator.push(
+          navigatorKey.currentContext ?? context,
+          MaterialPageRoute(
+            builder: (context) => OTPRequestView(
+              otpFor: OTPFor.reLogin,
+              forAction: AppLocalizations.of(context)!.otpRequestActionReLogin,
+              isBackable: false,
+              canLoginAsResident: true,
+            ),
+            fullscreenDialog: true,
+          ),
+        );
+        _showPinEntry = false;
+      }
     }
     if (mounted) {
+      context.read<NotificationItemProvider>().fetchNotificationItems();
       setState(() => _showShield = false);
     }
   }
@@ -228,7 +246,7 @@ class _MyAppState extends State<MyApp> {
                         case OTPRequestView.routeName:
                           return OTPRequestView(
                             forAction: routeMap?['forAction'] as String?,
-                            onOTPVerified: routeMap?['onOTPVerified'],
+                            otpFor: routeMap?['otpFor'] as OTPFor,
                           );
                         case AboutAsswiseView.routeName:
                           return const AboutAsswiseView();

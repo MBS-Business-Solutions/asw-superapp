@@ -1,14 +1,12 @@
 import 'dart:convert';
 
-import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/services/aw_user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserProvider with ChangeNotifier {
-  late final FlutterSecureStorage secureStorage =
-      FlutterSecureStorage(aOptions: _getAndroidOptions());
+  late final FlutterSecureStorage secureStorage = FlutterSecureStorage(aOptions: _getAndroidOptions());
   String? _token;
   String? get token => _token;
   bool get isAuthenticated => _token != null;
@@ -16,6 +14,10 @@ class UserProvider with ChangeNotifier {
   bool get isPinSet => _isPinSet;
   bool get shouldValidatePin {
     return _isPinSet && isAuthenticated;
+  }
+
+  bool get shouldValidateOTP {
+    return !_isPinSet && isAuthenticated;
   }
 
   UserInformation? _userInformation;
@@ -27,8 +29,7 @@ class UserProvider with ChangeNotifier {
     _token = token;
   }
 
-  AndroidOptions _getAndroidOptions() =>
-      const AndroidOptions(encryptedSharedPreferences: true);
+  AndroidOptions _getAndroidOptions() => const AndroidOptions(encryptedSharedPreferences: true);
 
   Future<bool> login(String userId) async {
     final tokenResponse = await AwUserService().login(userId);
@@ -48,25 +49,14 @@ class UserProvider with ChangeNotifier {
     return false;
   }
 
-  Future<bool> loginNewUser(
-      {required String type,
-      required String phone,
-      required String email,
-      required String firstName,
-      required String lastName}) async {
-    final tokenResponse = await AwUserService().loginNewUser(
-        type: type,
-        phone: phone,
-        email: email,
-        firstName: firstName,
-        lastName: lastName);
+  Future<bool> loginNewUser({required String type, required String phone, required String email, required String firstName, required String lastName}) async {
+    final tokenResponse = await AwUserService().loginNewUser(type: type, phone: phone, email: email, firstName: firstName, lastName: lastName);
     if (tokenResponse != null) {
       _token = tokenResponse.token;
       _userInformation = tokenResponse.userInformation;
 
       await secureStorage.delete(key: 'LOGOUT');
-      await secureStorage.write(
-          key: 'USER_INFO', value: _userInformation!.toJson());
+      await secureStorage.write(key: 'USER_INFO', value: _userInformation!.toJson());
       await secureStorage.write(key: 'SESSION_TOKEN', value: _token);
       notifyListeners();
       return true;
@@ -83,9 +73,10 @@ class UserProvider with ChangeNotifier {
 
   Future<void> logout() async {
     _token = null;
+    _isPinSet = false;
+    _userId = null;
     _userInformation = null;
-    await secureStorage.write(key: 'LOGOUT', value: 'true');
-    // await secureStorage.deleteAll();
+    await secureStorage.deleteAll();
     notifyListeners();
   }
 
@@ -115,10 +106,8 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> submitConsents(
-      String consentId, Map<String, bool> consents) async {
-    final response =
-        await AwUserService.submitConsents(_token!, consentId, consents);
+  Future<bool> submitConsents(String consentId, Map<String, bool> consents) async {
+    final response = await AwUserService.submitConsents(_token!, consentId, consents);
     return response;
   }
 
@@ -150,12 +139,10 @@ class UserProvider with ChangeNotifier {
 
   Future<UserInformation?> fetchUserInformation() async {
     if (token == null) return null;
-    final userInformation =
-        await AwUserService.getUserInformation(_token!, _userId!);
+    final userInformation = await AwUserService.getUserInformation(_token!, _userId!);
     if (userInformation != null) {
       _userInformation = userInformation;
-      await secureStorage.write(
-          key: 'USER_INFO', value: _userInformation!.toJson());
+      await secureStorage.write(key: 'USER_INFO', value: _userInformation!.toJson());
     }
     return _userInformation;
   }

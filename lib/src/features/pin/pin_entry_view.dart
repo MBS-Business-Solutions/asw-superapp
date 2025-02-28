@@ -44,8 +44,7 @@ class _PinEntryViewState extends State<PinEntryView> {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).padding.top + 64, bottom: 32),
+                  padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 64, bottom: 32),
                   child: AssetWiseLogo(
                     width: MediaQuery.of(context).size.width * 0.5,
                   ),
@@ -58,8 +57,7 @@ class _PinEntryViewState extends State<PinEntryView> {
                   height: 4,
                 ),
                 Text(
-                  AppLocalizations.of(context)!
-                      .pinEntryInstruction(mPinMaxLength),
+                  AppLocalizations.of(context)!.pinEntryInstruction(mPinMaxLength),
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -74,9 +72,7 @@ class _PinEntryViewState extends State<PinEntryView> {
                         width: 16,
                         height: 16,
                         decoration: BoxDecoration(
-                          color: i < pins.length
-                              ? mBrightPrimaryColor
-                              : Theme.of(context).highlightColor,
+                          color: i < pins.length ? mBrightPrimaryColor : Theme.of(context).highlightColor,
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
@@ -91,9 +87,7 @@ class _PinEntryViewState extends State<PinEntryView> {
                   height: 8,
                 ),
                 Text(
-                  _isInvalidPin
-                      ? AppLocalizations.of(context)!.errorInvalidPin
-                      : '',
+                  _isInvalidPin ? AppLocalizations.of(context)!.errorInvalidPIN : '',
                   style: const TextStyle(color: mRedColor),
                 ),
                 SizedBox(
@@ -123,8 +117,7 @@ class _PinEntryViewState extends State<PinEntryView> {
                     onPressed: () {},
                     child: Text(
                       AppLocalizations.of(context)!.pinEntryForget,
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface),
+                      style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                     )),
               ],
             ),

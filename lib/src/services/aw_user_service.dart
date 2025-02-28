@@ -192,16 +192,13 @@ class AwUserService {
   }
 
   static Future<UserInformation?> getUserInformation(String userToken, String customerId) async {
-    final response = await http
-        .post(
-          Uri.parse('$BASE_URL/mobile/setting/active'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer $userToken',
-          },
-          body: jsonEncode(<String, String>{"customer_id": customerId}),
-        )
-        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/home/me'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $userToken',
+      },
+    ).timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       try {

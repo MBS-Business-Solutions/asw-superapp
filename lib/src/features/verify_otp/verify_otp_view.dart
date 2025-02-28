@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
-import 'package:AssetWise/src/models/aw_content_model.dart';
+import 'package:AssetWise/src/models/aw_otp_model.dart';
 import 'package:AssetWise/src/providers/verify_otp_provider.dart';
 import 'package:AssetWise/src/utils/string_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
@@ -14,9 +14,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 class VerifyOTPView extends StatefulWidget {
-  const VerifyOTPView({super.key, this.onOTPVerified});
+  const VerifyOTPView({super.key, required this.action});
   static const String routeName = '/verify-otp';
-  final ValueChanged<VerifyOTPResponse>? onOTPVerified;
+  final OTPFor action;
   @override
   State<VerifyOTPView> createState() => _VerifyOTPViewState();
 }
@@ -63,6 +63,7 @@ class _VerifyOTPViewState extends State<VerifyOTPView> {
 
   @override
   Widget build(BuildContext context) {
+    final _otpRequest = context.read<VerifyOtpProvider>().otpRequest;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -99,9 +100,9 @@ class _VerifyOTPViewState extends State<VerifyOTPView> {
                         if (_otpRef != null)
                           Text(
                             AppLocalizations.of(context)!.otpInstruction(
-                              _otpRef!.isLoginWithEmail ? 'email' : 'mobile',
-                              _otpRef!.isLoginWithEmail ? _otpRef!.sendTo : StringUtil.phoneFormatter(_otpRef!.sendTo),
-                              _otpRef!.refCode,
+                              _otpRequest!.channel == 'email' ? 'email' : 'mobile',
+                              _otpRequest.channel == 'email' ? _otpRequest.email! : StringUtil.phoneFormatter(_otpRequest.phone!),
+                              _otpRef!.refCode!,
                             ),
                             style: Theme.of(context).textTheme.bodyMedium,
                             textAlign: TextAlign.center,
@@ -136,7 +137,7 @@ class _VerifyOTPViewState extends State<VerifyOTPView> {
                         ),
                         if (_invalidOTP)
                           Text(
-                            AppLocalizations.of(context)!.errorInvalidPin,
+                            AppLocalizations.of(context)!.errorInvalidOTP,
                             style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: mRedColor),
                           ),
                         const SizedBox(
@@ -162,22 +163,24 @@ class _VerifyOTPViewState extends State<VerifyOTPView> {
   }
 
   Future<void> _onResendOtp() async {
-    _otpRef = await context.read<VerifyOtpProvider>().resendOTP();
-    setState(() {
-      otpController.text = '';
-      _invalidOTP = false;
-      _isButtonDisabled = true;
-      _start = 60;
-    });
-    startTimer();
+    _otpRef = await context.read<VerifyOtpProvider>().resendOTP(action: widget.action);
+    if (_otpRef != null) {
+      setState(() {
+        otpController.text = '';
+        _invalidOTP = false;
+        _isButtonDisabled = true;
+        _start = 60;
+      });
+      startTimer();
+    }
   }
 
   Future<void> _verifyOTP() async {
     final provider = context.read<VerifyOtpProvider>();
-    final response = await provider.verifyOTP(otpController.text);
+    final response = await provider.verifyOTP(action: widget.action, otp: otpController.text);
     if (mounted) {
       if (response != null) {
-        widget.onOTPVerified?.call(response);
+        // widget.onOTPVerified?.call(response);
         Navigator.pop(context, true);
       } else {
         setState(() {
@@ -185,21 +188,5 @@ class _VerifyOTPViewState extends State<VerifyOTPView> {
         });
       }
     }
-    // final registerProvider = context.read<RegisterProvider>();
-    // VerifyOTPResponse? response;
-    // if (registerProvider.isResident) {
-    //   response = await registerProvider.verifyOTPResident(otpController.text);
-    // } else {
-    //   response = await registerProvider.verifyOTPNonResident(otpController.text);
-    // }
-    // if (mounted) {
-    //   if (response != null) {
-    //     Navigator.pushReplacementNamed(context, RegisterUserDetailView.routeName);
-    //   } else {
-    //     setState(() {
-    //       _invalidOTP = true;
-    //     });
-    //   }
-    // }
   }
 }

@@ -10,7 +10,8 @@
   "errorUnableToDownloadContract": "***ไม่สามารถดาวน์โหลดเอกสารสัญญาได้ กรุณาลองใหม่อีกครั้ง***",
   "errorFieldRequired": "กรุณากรอกข้อมูล",
   "errorNoData": "ไม่พบข้อมูล",
-  "errorInvalidPin": "หมายเลข OTP ไม่ถูกต้อง",
+  "errorInvalidOTP": "หมายเลข OTP ไม่ถูกต้อง",
+  "errorInvalidPIN": "รหัส PIN ไม่ถูกต้อง",
   "bahtUnit": "บาท",
   "priceFormat": "{price}",
   "@priceFormat": {
@@ -91,6 +92,8 @@
   "registerError": "ไม่สามารถทำงานได้ กรุณาลองใหม่อีกครั้ง",
   "otpTitle": "กรอก OTP",
   "otpRequestAgain": "ขอรหัสอีกครั้ง",
+  "otpRequestIsResident": "เป็นลูกบ้าน",
+  "otpRequestLast4Digits": "เลขบัตรประชาชน 4 ตัวหลัง",
   "otpRequestCountdown": "ขอรหัสอีกครั้งใน {time, plural, =0{} =1{1 วินาที} other{{time} วินาที}}",
   "@otpRequestCountdown": {
     "description": "Message indicating the countdown time to request the OTP code again",
@@ -188,6 +191,7 @@
       }
     }
   },
+  "profileRegisterBuyer": "ลงทะเบียนผู้ซื้อ",
   "profileDarkMode": "โหมดสีเข้ม",
   "profileMyInfo": "ข้อมูลของฉัน",
   "profilePhoneNumber": "เบอร์มือถือ",
@@ -297,6 +301,7 @@
 
   "otpRequestActionResetPin": "ทำยืนยันตัวตนในการตั้งรหัส PIN",
   "otpRequestActionFirstSetPin": "ใช้ในการเข้าสู่ระบบครั้งต่อไป",
+  "otpRequestActionReLogin": "ทำการสมัครสมาชิก",
   "otpRequestMobileLabel": "เบอร์มือถือ",
   "otpRequestMobile": "กรอกเบอร์มือถือ",
   "otpRequestMobileHint": "ระบุเบอร์มือถือของท่าน เพื่อ{action}",

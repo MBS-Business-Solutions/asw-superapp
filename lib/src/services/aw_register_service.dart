@@ -1,4 +1,5 @@
 import 'package:AssetWise/src/consts/url_const.dart';
+import 'package:AssetWise/src/features/register/register_otp_view.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -30,7 +31,7 @@ class AwRegisterService {
     return false;
   }
 
-  static Future<OTPRef?> sendOTPResident({bool isLoginWithEmail = false, required String idCard4, required String phoneEmail}) async {
+  static Future<RegisterOTPRef?> sendOTPResident({bool isLoginWithEmail = false, required String idCard4, required String phoneEmail}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/request-resident-otp'),
       headers: <String, String>{
@@ -47,7 +48,7 @@ class AwRegisterService {
       try {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == 'success') {
-          return OTPRef.fromJson(jsonResponse['data'], sendTo: phoneEmail, isLoginWithEmail: isLoginWithEmail, idCard: idCard4);
+          return RegisterOTPRef.fromJson(jsonResponse['data'], sendTo: phoneEmail, isLoginWithEmail: isLoginWithEmail, idCard: idCard4);
         }
       } catch (e) {
         if (kDebugMode) print(e);
@@ -57,7 +58,7 @@ class AwRegisterService {
     return null;
   }
 
-  static Future<VerifyOTPResponse?> verifyOTPResident({required String transId, required String otp}) async {
+  static Future<RegisterOTPVerifyResponse?> verifyOTPResident({required String transId, required String otp}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/verify-resident-otp'),
       headers: <String, String>{
@@ -70,7 +71,7 @@ class AwRegisterService {
       try {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == 'success') {
-          return VerifyOTPResponse.fromJson(jsonResponse['data']);
+          return RegisterOTPVerifyResponse.fromJson(jsonResponse['data']);
         }
       } catch (e) {
         if (kDebugMode) print(e);
@@ -80,7 +81,7 @@ class AwRegisterService {
     return null;
   }
 
-  static Future<OTPRef?> sendOTPNonResident({bool isLoginWithEmail = false, required String phoneEmail}) async {
+  static Future<RegisterOTPRef?> sendOTPNonResident({bool isLoginWithEmail = false, required String phoneEmail}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/request-person-otp'),
       headers: <String, String>{
@@ -96,7 +97,7 @@ class AwRegisterService {
       try {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == 'success') {
-          return OTPRef.fromJson(jsonResponse['data'], sendTo: phoneEmail, isLoginWithEmail: isLoginWithEmail);
+          return RegisterOTPRef.fromJson(jsonResponse['data'], sendTo: phoneEmail, isLoginWithEmail: isLoginWithEmail);
         }
       } catch (e) {
         if (kDebugMode) print(e);
@@ -106,7 +107,7 @@ class AwRegisterService {
     return null;
   }
 
-  static Future<VerifyOTPResponse?> verifyOTPNonResident({required String transId, required String otp}) async {
+  static Future<RegisterOTPVerifyResponse?> verifyOTPNonResident({required String transId, required String otp}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/verify-person-otp'),
       headers: <String, String>{
@@ -119,7 +120,7 @@ class AwRegisterService {
       try {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == 'success') {
-          return VerifyOTPResponse.fromJson(jsonResponse['data']);
+          return RegisterOTPVerifyResponse.fromJson(jsonResponse['data']);
         }
       } catch (e) {
         if (kDebugMode) print(e);
@@ -144,55 +145,6 @@ class AwRegisterService {
       }
     } catch (e) {
       if (kDebugMode) print(e);
-    }
-    if (kDebugMode) print(response);
-    return null;
-  }
-
-  static Future<OTPRef?> sendOTP({required String token, bool isLoginWithEmail = false, required String phoneEmail}) async {
-    final response = await http.post(
-      Uri.parse('$BASE_URL/mobile/register/request-person-otp'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        "type": isLoginWithEmail ? 'email' : 'phone',
-        if (isLoginWithEmail) "email": phoneEmail else "phone": phoneEmail,
-      }),
-    );
-
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      try {
-        Map<String, dynamic> jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == 'success') {
-          return OTPRef.fromJson(jsonResponse['data'], sendTo: phoneEmail, isLoginWithEmail: isLoginWithEmail);
-        }
-      } catch (e) {
-        if (kDebugMode) print(e);
-      }
-    }
-    if (kDebugMode) print(response);
-    return null;
-  }
-
-  static Future<VerifyOTPResponse?> verifyOTP({required String token, required String transId, required String otp}) async {
-    final response = await http.post(
-      Uri.parse('$BASE_URL/mobile/register/verify-person-otp'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{"trans_id": transId, "otp": otp}),
-    );
-
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      try {
-        Map<String, dynamic> jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == 'success') {
-          return VerifyOTPResponse.fromJson(jsonResponse['data']);
-        }
-      } catch (e) {
-        if (kDebugMode) print(e);
-      }
     }
     if (kDebugMode) print(response);
     return null;

@@ -10,7 +10,8 @@
   "errorUnableToDownloadContract": "***ไม่สามารถดาวน์โหลดเอกสารสัญญาได้ กรุณาลองใหม่อีกครั้ง***",
   "errorFieldRequired": "This field is required.",
   "errorNoData": "No data found.",
-  "errorInvalidPin": "Incorrect OTP number.",
+  "errorInvalidOTP": "Incorrect OTP number.",
+  "errorInvalidPIN": "Incorrect PIN number.",
   "bahtUnit": "baht",
   "priceFormat": "{price}",
   "@priceFormat": {
@@ -90,6 +91,8 @@
   "registerInvalidResident": "Please enter your ID card number to match your registered mobile number.",
   "registerError": "Unable to process. Please try again.",
   "otpTitle": "Enter OTP",
+  "otpRequestIsResident": "Existing customer",
+  "otpRequestLast4Digits": "Last 4 digits of ID card",
   "otpRequestAgain": "Request code again.",
   "otpRequestCountdown": "Request code again in {time, plural, =0{} =1{1 second} other{{time} seconds}}",
   "@otpRequestCountdown": {
@@ -188,6 +191,7 @@
       }
     }
   },
+  "profileRegisterBuyer": "Register Buyer",
   "profileDarkMode": "Dark Mode",
   "profileMyInfo": "My Information",
   "profilePhoneNumber": "Phone Number",
@@ -297,6 +301,7 @@
 
   "otpRequestActionResetPin": "verify your identity for setting up a PIN.",
   "otpRequestActionFirstSetPin": "verify your identity every time you log in in the future.",
+  "otpRequestActionReLogin": "register as a member.",
   "otpRequestMobileLabel": "Mobile Number",
   "otpRequestMobile": "Enter Mobile Number",
   "otpRequestMobileHint": "Provide your mobile number to {action}",

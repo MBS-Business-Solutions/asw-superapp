@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Project {
   final int id;
   final String name;
@@ -22,14 +24,14 @@ class ImageContent {
   }
 }
 
-class OTPRef {
+class RegisterOTPRef {
   final bool isLoginWithEmail;
   final String? idCard;
   final String sendTo;
   final String transId;
   final String refCode;
 
-  OTPRef({
+  RegisterOTPRef({
     required this.isLoginWithEmail,
     this.idCard,
     required this.transId,
@@ -37,13 +39,13 @@ class OTPRef {
     required this.sendTo,
   });
 
-  factory OTPRef.fromJson(
+  factory RegisterOTPRef.fromJson(
     Map<String, dynamic> json, {
     String? idCard,
     required String sendTo,
     required bool isLoginWithEmail,
   }) {
-    return OTPRef(
+    return RegisterOTPRef(
       transId: json['trans_id'],
       refCode: json['ref_code'],
       sendTo: sendTo,
@@ -53,7 +55,7 @@ class OTPRef {
   }
 }
 
-class VerifyOTPResponse {
+class RegisterOTPVerifyResponse {
   final String? id;
   final String? firstName;
   final String? lastName;
@@ -61,10 +63,10 @@ class VerifyOTPResponse {
   final String? email;
   final String? idCard;
 
-  VerifyOTPResponse({this.id, this.phone, this.firstName, this.lastName, this.email, this.idCard});
+  RegisterOTPVerifyResponse({this.id, this.phone, this.firstName, this.lastName, this.email, this.idCard});
 
-  factory VerifyOTPResponse.fromJson(Map<String, dynamic> json) {
-    return VerifyOTPResponse(id: json['id'], phone: json['phone'], firstName: json['first_name'], lastName: json['last_name'], email: json['email'], idCard: json['id_card']);
+  factory RegisterOTPVerifyResponse.fromJson(Map<String, dynamic> json) {
+    return RegisterOTPVerifyResponse(id: json['id'], phone: json['phone'], firstName: json['first_name'], lastName: json['last_name'], email: json['email'], idCard: json['id_card']);
   }
 }
 
@@ -123,31 +125,42 @@ class UserInformation {
   final String lastName;
   final String phone;
   final String email;
-  final List<Unit>? units;
+  final int? unitCount;
+  final String? language;
+  final bool? isVerified;
 
   UserInformation({
     required this.firstName,
     required this.lastName,
     required this.phone,
     required this.email,
-    this.units,
+    required this.unitCount,
+    required this.language,
+    required this.isVerified,
   });
 
   factory UserInformation.fromJson(Map<String, dynamic> json) {
-    var unitsList = json['units'] as List?;
-    List<Unit>? units = unitsList?.map((i) => Unit.fromJson(i)).toList();
-
     return UserInformation(
       firstName: json['first_name'],
       lastName: json['last_name'],
       phone: json['phone'],
       email: json['email'],
-      units: units,
+      unitCount: json['unit_count'],
+      language: json['language'],
+      isVerified: json['is_verified'],
     );
   }
 
   String toJson() {
-    return '{"first_name": "$firstName", "last_name": "$lastName", "phone": "$phone", "email": "$email"}';
+    return json.encode({
+      'first_name': firstName,
+      'last_name': lastName,
+      'phone': phone,
+      'email': email,
+      'unit_count': unitCount,
+      'language': language,
+      'is_verified': isVerified,
+    });
   }
 }
 

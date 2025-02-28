@@ -1,6 +1,7 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/features/verify_otp/verify_otp_view.dart';
+import 'package:AssetWise/src/models/aw_otp_model.dart';
 import 'package:AssetWise/src/widgets/aw_dropdownform.dart';
 import 'package:AssetWise/src/widgets/aw_textformfield.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +94,12 @@ class _AddAssetViewState extends State<AddAssetView> {
     if (_formKey.currentState!.validate()) {
       // if (await context.read<VerifyOtpProvider>().requestOTP(phoneEmail: '0832494545') != null) {
       // Process data.
-      final otpVerified = await Navigator.push(context, MaterialPageRoute(builder: (context) => const VerifyOTPView()));
+      final otpVerified = await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const VerifyOTPView(
+                    action: OTPFor.other,
+                  )));
       // if (otpVerified != null) {
       Navigator.pushReplacementNamed(context, ContractsView.routeName, arguments: {'linkId': 'contract.id'});
       // }

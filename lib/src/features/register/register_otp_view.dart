@@ -25,7 +25,7 @@ class RegisterVerifyOtpView extends StatefulWidget {
 
 class _RegisterVerifyOtpViewState extends State<RegisterVerifyOtpView> {
   final otpController = TextEditingController();
-  OTPRef? refCode;
+  RegisterOTPRef? refCode;
   late Timer _timer;
   int _start = 60;
   bool _isButtonDisabled = true;
@@ -137,7 +137,7 @@ class _RegisterVerifyOtpViewState extends State<RegisterVerifyOtpView> {
                         ),
                         if (_invalidOTP)
                           Text(
-                            '**หมายเลข OTP ไม่ถูกต้อง**',
+                            AppLocalizations.of(context)!.errorInvalidOTP,
                             style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: mRedColor),
                           ),
                         const SizedBox(
@@ -183,7 +183,7 @@ class _RegisterVerifyOtpViewState extends State<RegisterVerifyOtpView> {
 
   Future<void> _verifyOTP() async {
     final registerProvider = context.read<RegisterProvider>();
-    VerifyOTPResponse? response;
+    RegisterOTPVerifyResponse? response;
     if (registerProvider.isResident) {
       response = await registerProvider.verifyOTPResident(otpController.text);
     } else {

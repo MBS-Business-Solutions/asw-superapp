@@ -9,9 +9,11 @@ import 'package:AssetWise/src/features/pin/pin_entry_view.dart';
 import 'package:AssetWise/src/features/pin/set_pin_view.dart';
 import 'package:AssetWise/src/features/profile/widgets/email_old_value_view.dart';
 import 'package:AssetWise/src/features/profile/widgets/phone_old_value_view.dart';
+import 'package:AssetWise/src/features/register_buyer/register_buyer_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/features/verify_otp/otp_request_view.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
+import 'package:AssetWise/src/models/aw_otp_model.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/utils/string_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
@@ -56,35 +58,43 @@ class _ProfileViewState extends State<ProfileView> {
                 _userInformation = snapshot.data;
                 return ListView(
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      height: 96,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 32,
-                            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                            child: const Icon(Icons.person),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                              child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    Stack(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mMediumPadding),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                AppLocalizations.of(context)!.profileNameFormat(
-                                  StringUtil.capitalize(_userInformation?.firstName),
-                                  StringUtil.capitalize(_userInformation?.lastName),
-                                ),
-                                style: Theme.of(context).textTheme.headlineSmall,
+                              CircleAvatar(
+                                radius: 32,
+                                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                                child: const Icon(Icons.person),
                               ),
-                              Text('ID : A123456780', style: Theme.of(context).textTheme.bodySmall),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                  child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!.profileNameFormat(
+                                      StringUtil.capitalize(_userInformation?.firstName),
+                                      StringUtil.capitalize(_userInformation?.lastName),
+                                    ),
+                                    style: Theme.of(context).textTheme.headlineSmall,
+                                  ),
+                                  Text('ID : ${context.read<UserProvider>().userId ?? ''}', style: Theme.of(context).textTheme.bodySmall),
+                                  if (!(_userInformation?.isVerified ?? false)) FilledButton(onPressed: () => _registerBuyer(), child: Text(AppLocalizations.of(context)!.profileRegisterBuyer)),
+                                ],
+                              ))
                             ],
-                          ))
-                        ],
-                      ),
+                          ),
+                        ),
+                        Positioned(
+                          right: mDefaultPadding,
+                          child: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close)),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 8),
                     // โหมดสีเข้ม
@@ -251,11 +261,6 @@ class _ProfileViewState extends State<ProfileView> {
                   ],
                 );
               }),
-          Positioned(
-            top: MediaQuery.of(context).padding.top,
-            right: mDefaultPadding,
-            child: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close)),
-          ),
         ],
       ),
     );
@@ -271,6 +276,7 @@ class _ProfileViewState extends State<ProfileView> {
           OTPRequestView.routeName,
           arguments: {
             'forAction': AppLocalizations.of(context)!.otpRequestActionResetPin,
+            'otpFor': OTPFor.changePin,
           },
         );
         if (otpValidationResult as bool? ?? false) {
@@ -420,6 +426,13 @@ class _ProfileViewState extends State<ProfileView> {
     );
     if (result == true) {
       SystemNavigator.pop();
+    }
+  }
+
+  Future<void> _registerBuyer() async {
+    final result = await Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterBuyerRequestView()));
+    if (result) {
+      Navigator.pop(context);
     }
   }
 }

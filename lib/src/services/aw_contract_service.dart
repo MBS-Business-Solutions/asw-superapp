@@ -31,8 +31,7 @@ class AwContractService {
     return [];
   }
 
-  static Future<ContractDetail?> fetchContractDetail(
-      String token, String contractId) async {
+  static Future<ContractDetail?> fetchContractDetail(String token, String contractId) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId'),
       headers: {
@@ -54,8 +53,7 @@ class AwContractService {
     return null;
   }
 
-  static Future<List<String>> fetchFreebies(
-      String token, String contractId) async {
+  static Future<List<String>> fetchFreebies(String token, String contractId) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/promotions'),
       headers: {
@@ -76,8 +74,7 @@ class AwContractService {
     return [];
   }
 
-  static Future<List<PaymentDetail>?> fetchPaymentsByYear(
-      String token, String contractId, int year) async {
+  static Future<List<PaymentDetail>?> fetchPaymentsByYear(String token, String contractId, int year) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/payments?year=$year'),
       headers: {
@@ -98,8 +95,7 @@ class AwContractService {
     return null;
   }
 
-  static Future<OverdueDetail?> fetchOverdueDetail(
-      String token, String contractId) async {
+  static Future<OverdueDetail?> fetchOverdueDetail(String token, String contractId) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/overdue'),
       headers: {
@@ -119,11 +115,9 @@ class AwContractService {
     return null;
   }
 
-  static Future<ReceiptDetail?> fetchReceiptDetail(
-      String token, String contractId, String receiptNumber) async {
+  static Future<ReceiptDetail?> fetchReceiptDetail(String token, String contractId, String receiptNumber) async {
     final response = await http.get(
-      Uri.parse(
-          '$BASE_URL/mobile/contracts/$contractId/payments/$receiptNumber'),
+      Uri.parse('$BASE_URL/mobile/contracts/$contractId/payments/$receiptNumber'),
       headers: {
         'Authorization': 'Bearer $token',
       },
@@ -141,8 +135,7 @@ class AwContractService {
     return null;
   }
 
-  static Future<List<DownPaymentDetail>> fetchTerms(
-      String token, String contractId) async {
+  static Future<List<DownPaymentDetail>> fetchTerms(String token, String contractId) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/terms'),
       headers: {
@@ -163,8 +156,7 @@ class AwContractService {
     return [];
   }
 
-  static Future<List<DownPaymentTermDue>> fetchDownPaymentDues(
-      String token, String contractId) async {
+  static Future<List<DownPaymentTermDue>> fetchDownPaymentDues(String token, String contractId) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/terms-due'),
       headers: {
@@ -186,21 +178,17 @@ class AwContractService {
   }
 
   static String getViewReceiptURL(String contractId, String receiptNumber) {
-    final pdfUrl = getReceiptURL(contractId, receiptNumber);
-
-    return '${Platform.isAndroid ? 'https://docs.google.com/gview?embedded=true&url=' : ''}$pdfUrl';
+    return '$BASE_URL/mobile/contracts/$contractId/payments/$receiptNumber/view';
   }
 
   static String getReceiptURL(String contractId, String receiptNumber) {
     return '$BASE_URL/mobile/contracts/$contractId/payments/$receiptNumber/download';
   }
 
-  static Future<String?> getQRPaymentCode(String token,
-      {required String contractId, double amount = 0}) async {
+  static Future<String?> getQRPaymentCode(String token, {required String contractId, double amount = 0}) async {
     final formatNumber = NumberFormat('####.00');
     final response = await http.get(
-      Uri.parse(
-          '$BASE_URL/mobile/contracts/$contractId/qr-code?amount=${formatNumber.format(amount)}'),
+      Uri.parse('$BASE_URL/mobile/contracts/$contractId/qr-code?amount=${formatNumber.format(amount)}'),
       headers: {
         'Authorization': 'Bearer $token',
       },
@@ -218,12 +206,7 @@ class AwContractService {
     return null;
   }
 
-  static Future<String?> getPaymentGatewayURL(
-      {required String token,
-      required Contract contract,
-      double amount = 0,
-      String? detail,
-      required String email}) async {
+  static Future<String?> getPaymentGatewayURL({required String token, required Contract contract, double amount = 0, String? detail, required String email}) async {
     final formatNumber = NumberFormat('####.00');
     final body = {
       'payment_type': '9',
@@ -253,8 +236,7 @@ class AwContractService {
     return null;
   }
 
-  static Future<String?> downloadFile(
-      String token, String url, String fileName) async {
+  static Future<String?> downloadFile(String token, String url, String fileName) async {
     final response = await http.get(
       Uri.parse(url),
       headers: {

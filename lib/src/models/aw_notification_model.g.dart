@@ -22,9 +22,9 @@ const NotificationItemSchema = CollectionSchema(
       name: r'createAt',
       type: IsarType.dateTime,
     ),
-    r'group': PropertySchema(
+    r'data': PropertySchema(
       id: 1,
-      name: r'group',
+      name: r'data',
       type: IsarType.string,
     ),
     r'id': PropertySchema(
@@ -37,14 +37,24 @@ const NotificationItemSchema = CollectionSchema(
       name: r'isRead',
       type: IsarType.bool,
     ),
-    r'message': PropertySchema(
+    r'messageEn': PropertySchema(
       id: 4,
-      name: r'message',
+      name: r'messageEn',
       type: IsarType.string,
     ),
-    r'title': PropertySchema(
+    r'messageTh': PropertySchema(
       id: 5,
-      name: r'title',
+      name: r'messageTh',
+      type: IsarType.string,
+    ),
+    r'titleEn': PropertySchema(
+      id: 6,
+      name: r'titleEn',
+      type: IsarType.string,
+    ),
+    r'titleTh': PropertySchema(
+      id: 7,
+      name: r'titleTh',
       type: IsarType.string,
     )
   },
@@ -68,10 +78,17 @@ int _notificationItemEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.group.length * 3;
+  {
+    final value = object.data;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.id.length * 3;
-  bytesCount += 3 + object.message.length * 3;
-  bytesCount += 3 + object.title.length * 3;
+  bytesCount += 3 + object.messageEn.length * 3;
+  bytesCount += 3 + object.messageTh.length * 3;
+  bytesCount += 3 + object.titleEn.length * 3;
+  bytesCount += 3 + object.titleTh.length * 3;
   return bytesCount;
 }
 
@@ -82,11 +99,13 @@ void _notificationItemSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.createAt);
-  writer.writeString(offsets[1], object.group);
+  writer.writeString(offsets[1], object.data);
   writer.writeString(offsets[2], object.id);
   writer.writeBool(offsets[3], object.isRead);
-  writer.writeString(offsets[4], object.message);
-  writer.writeString(offsets[5], object.title);
+  writer.writeString(offsets[4], object.messageEn);
+  writer.writeString(offsets[5], object.messageTh);
+  writer.writeString(offsets[6], object.titleEn);
+  writer.writeString(offsets[7], object.titleTh);
 }
 
 NotificationItem _notificationItemDeserialize(
@@ -97,12 +116,14 @@ NotificationItem _notificationItemDeserialize(
 ) {
   final object = NotificationItem(
     createAt: reader.readDateTime(offsets[0]),
-    group: reader.readString(offsets[1]),
+    data: reader.readStringOrNull(offsets[1]),
     id: reader.readString(offsets[2]),
-    message: reader.readString(offsets[4]),
-    title: reader.readString(offsets[5]),
+    isRead: reader.readBoolOrNull(offsets[3]) ?? false,
+    messageEn: reader.readString(offsets[4]),
+    messageTh: reader.readString(offsets[5]),
+    titleEn: reader.readString(offsets[6]),
+    titleTh: reader.readString(offsets[7]),
   );
-  object.isRead = reader.readBool(offsets[3]);
   return object;
 }
 
@@ -116,14 +137,18 @@ P _notificationItemDeserializeProp<P>(
     case 0:
       return (reader.readDateTime(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 2:
       return (reader.readString(offset)) as P;
     case 3:
-      return (reader.readBool(offset)) as P;
+      return (reader.readBoolOrNull(offset) ?? false) as P;
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
+      return (reader.readString(offset)) as P;
+    case 6:
+      return (reader.readString(offset)) as P;
+    case 7:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -280,13 +305,31 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      groupEqualTo(
-    String value, {
+      dataIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'data',
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      dataIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'data',
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      dataEqualTo(
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'group',
+        property: r'data',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -294,15 +337,15 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      groupGreaterThan(
-    String value, {
+      dataGreaterThan(
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'group',
+        property: r'data',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -310,15 +353,15 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      groupLessThan(
-    String value, {
+      dataLessThan(
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'group',
+        property: r'data',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -326,16 +369,16 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      groupBetween(
-    String lower,
-    String upper, {
+      dataBetween(
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'group',
+        property: r'data',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -346,13 +389,13 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      groupStartsWith(
+      dataStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'group',
+        property: r'data',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -360,13 +403,13 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      groupEndsWith(
+      dataEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'group',
+        property: r'data',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -374,10 +417,10 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      groupContains(String value, {bool caseSensitive = true}) {
+      dataContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'group',
+        property: r'data',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -385,10 +428,10 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      groupMatches(String pattern, {bool caseSensitive = true}) {
+      dataMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'group',
+        property: r'data',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
@@ -396,20 +439,20 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      groupIsEmpty() {
+      dataIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'group',
+        property: r'data',
         value: '',
       ));
     });
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      groupIsNotEmpty() {
+      dataIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'group',
+        property: r'data',
         value: '',
       ));
     });
@@ -618,13 +661,13 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      messageEqualTo(
+      messageEnEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'message',
+        property: r'messageEn',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -632,7 +675,7 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      messageGreaterThan(
+      messageEnGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -640,7 +683,7 @@ extension NotificationItemQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'message',
+        property: r'messageEn',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -648,7 +691,7 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      messageLessThan(
+      messageEnLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -656,7 +699,7 @@ extension NotificationItemQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'message',
+        property: r'messageEn',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -664,7 +707,7 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      messageBetween(
+      messageEnBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -673,7 +716,7 @@ extension NotificationItemQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'message',
+        property: r'messageEn',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -684,13 +727,13 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      messageStartsWith(
+      messageEnStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'message',
+        property: r'messageEn',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -698,13 +741,13 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      messageEndsWith(
+      messageEnEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'message',
+        property: r'messageEn',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -712,10 +755,10 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      messageContains(String value, {bool caseSensitive = true}) {
+      messageEnContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'message',
+        property: r'messageEn',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -723,10 +766,10 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      messageMatches(String pattern, {bool caseSensitive = true}) {
+      messageEnMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'message',
+        property: r'messageEn',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
@@ -734,33 +777,33 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      messageIsEmpty() {
+      messageEnIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'message',
+        property: r'messageEn',
         value: '',
       ));
     });
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      messageIsNotEmpty() {
+      messageEnIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'message',
+        property: r'messageEn',
         value: '',
       ));
     });
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      titleEqualTo(
+      messageThEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'title',
+        property: r'messageTh',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -768,7 +811,7 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      titleGreaterThan(
+      messageThGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -776,7 +819,7 @@ extension NotificationItemQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'title',
+        property: r'messageTh',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -784,7 +827,7 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      titleLessThan(
+      messageThLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -792,7 +835,7 @@ extension NotificationItemQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'title',
+        property: r'messageTh',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -800,7 +843,7 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      titleBetween(
+      messageThBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -809,7 +852,7 @@ extension NotificationItemQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'title',
+        property: r'messageTh',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -820,13 +863,13 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      titleStartsWith(
+      messageThStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'title',
+        property: r'messageTh',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -834,13 +877,13 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      titleEndsWith(
+      messageThEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'title',
+        property: r'messageTh',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -848,10 +891,10 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      titleContains(String value, {bool caseSensitive = true}) {
+      messageThContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'title',
+        property: r'messageTh',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -859,10 +902,10 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      titleMatches(String pattern, {bool caseSensitive = true}) {
+      messageThMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'title',
+        property: r'messageTh',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
@@ -870,20 +913,292 @@ extension NotificationItemQueryFilter
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      titleIsEmpty() {
+      messageThIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'title',
+        property: r'messageTh',
         value: '',
       ));
     });
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
-      titleIsNotEmpty() {
+      messageThIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'title',
+        property: r'messageTh',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleEnEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'titleEn',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleEnGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'titleEn',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleEnLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'titleEn',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleEnBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'titleEn',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleEnStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'titleEn',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleEnEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'titleEn',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleEnContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'titleEn',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleEnMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'titleEn',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleEnIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'titleEn',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleEnIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'titleEn',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleThEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'titleTh',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleThGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'titleTh',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleThLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'titleTh',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleThBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'titleTh',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleThStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'titleTh',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleThEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'titleTh',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleThContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'titleTh',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleThMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'titleTh',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleThIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'titleTh',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterFilterCondition>
+      titleThIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'titleTh',
         value: '',
       ));
     });
@@ -912,16 +1227,16 @@ extension NotificationItemQuerySortBy
     });
   }
 
-  QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy> sortByGroup() {
+  QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy> sortByData() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'group', Sort.asc);
+      return query.addSortBy(r'data', Sort.asc);
     });
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
-      sortByGroupDesc() {
+      sortByDataDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'group', Sort.desc);
+      return query.addSortBy(r'data', Sort.desc);
     });
   }
 
@@ -953,29 +1268,58 @@ extension NotificationItemQuerySortBy
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
-      sortByMessage() {
+      sortByMessageEn() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'message', Sort.asc);
+      return query.addSortBy(r'messageEn', Sort.asc);
     });
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
-      sortByMessageDesc() {
+      sortByMessageEnDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'message', Sort.desc);
-    });
-  }
-
-  QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy> sortByTitle() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'title', Sort.asc);
+      return query.addSortBy(r'messageEn', Sort.desc);
     });
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
-      sortByTitleDesc() {
+      sortByMessageTh() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'title', Sort.desc);
+      return query.addSortBy(r'messageTh', Sort.asc);
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
+      sortByMessageThDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'messageTh', Sort.desc);
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
+      sortByTitleEn() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'titleEn', Sort.asc);
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
+      sortByTitleEnDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'titleEn', Sort.desc);
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
+      sortByTitleTh() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'titleTh', Sort.asc);
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
+      sortByTitleThDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'titleTh', Sort.desc);
     });
   }
 }
@@ -996,16 +1340,16 @@ extension NotificationItemQuerySortThenBy
     });
   }
 
-  QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy> thenByGroup() {
+  QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy> thenByData() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'group', Sort.asc);
+      return query.addSortBy(r'data', Sort.asc);
     });
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
-      thenByGroupDesc() {
+      thenByDataDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'group', Sort.desc);
+      return query.addSortBy(r'data', Sort.desc);
     });
   }
 
@@ -1051,29 +1395,58 @@ extension NotificationItemQuerySortThenBy
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
-      thenByMessage() {
+      thenByMessageEn() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'message', Sort.asc);
+      return query.addSortBy(r'messageEn', Sort.asc);
     });
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
-      thenByMessageDesc() {
+      thenByMessageEnDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'message', Sort.desc);
-    });
-  }
-
-  QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy> thenByTitle() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'title', Sort.asc);
+      return query.addSortBy(r'messageEn', Sort.desc);
     });
   }
 
   QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
-      thenByTitleDesc() {
+      thenByMessageTh() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'title', Sort.desc);
+      return query.addSortBy(r'messageTh', Sort.asc);
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
+      thenByMessageThDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'messageTh', Sort.desc);
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
+      thenByTitleEn() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'titleEn', Sort.asc);
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
+      thenByTitleEnDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'titleEn', Sort.desc);
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
+      thenByTitleTh() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'titleTh', Sort.asc);
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QAfterSortBy>
+      thenByTitleThDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'titleTh', Sort.desc);
     });
   }
 }
@@ -1087,10 +1460,10 @@ extension NotificationItemQueryWhereDistinct
     });
   }
 
-  QueryBuilder<NotificationItem, NotificationItem, QDistinct> distinctByGroup(
+  QueryBuilder<NotificationItem, NotificationItem, QDistinct> distinctByData(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'group', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'data', caseSensitive: caseSensitive);
     });
   }
 
@@ -1108,17 +1481,31 @@ extension NotificationItemQueryWhereDistinct
     });
   }
 
-  QueryBuilder<NotificationItem, NotificationItem, QDistinct> distinctByMessage(
-      {bool caseSensitive = true}) {
+  QueryBuilder<NotificationItem, NotificationItem, QDistinct>
+      distinctByMessageEn({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'message', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'messageEn', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<NotificationItem, NotificationItem, QDistinct> distinctByTitle(
+  QueryBuilder<NotificationItem, NotificationItem, QDistinct>
+      distinctByMessageTh({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'messageTh', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QDistinct> distinctByTitleEn(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'title', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'titleEn', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<NotificationItem, NotificationItem, QDistinct> distinctByTitleTh(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'titleTh', caseSensitive: caseSensitive);
     });
   }
 }
@@ -1138,9 +1525,9 @@ extension NotificationItemQueryProperty
     });
   }
 
-  QueryBuilder<NotificationItem, String, QQueryOperations> groupProperty() {
+  QueryBuilder<NotificationItem, String?, QQueryOperations> dataProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'group');
+      return query.addPropertyName(r'data');
     });
   }
 
@@ -1156,15 +1543,27 @@ extension NotificationItemQueryProperty
     });
   }
 
-  QueryBuilder<NotificationItem, String, QQueryOperations> messageProperty() {
+  QueryBuilder<NotificationItem, String, QQueryOperations> messageEnProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'message');
+      return query.addPropertyName(r'messageEn');
     });
   }
 
-  QueryBuilder<NotificationItem, String, QQueryOperations> titleProperty() {
+  QueryBuilder<NotificationItem, String, QQueryOperations> messageThProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'title');
+      return query.addPropertyName(r'messageTh');
+    });
+  }
+
+  QueryBuilder<NotificationItem, String, QQueryOperations> titleEnProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'titleEn');
+    });
+  }
+
+  QueryBuilder<NotificationItem, String, QQueryOperations> titleThProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'titleTh');
     });
   }
 }

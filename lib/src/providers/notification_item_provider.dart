@@ -3,6 +3,7 @@ import 'package:AssetWise/src/models/aw_notification_model.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/services/aw_notification_item_service.dart';
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
 
 class NotificationItemProvider with ChangeNotifier {
   UserProvider? _userProvider;
@@ -18,6 +19,8 @@ class NotificationItemProvider with ChangeNotifier {
   int get unreadHotDealCount => _unreadHotDealCount;
   int get unreadNewsCount => _unreadNewsCount;
 
+  final List<NotificationItem> _notificationItems = [];
+
   void updateUserProvider(UserProvider userProvider) {
     _userProvider = userProvider;
 
@@ -26,18 +29,24 @@ class NotificationItemProvider with ChangeNotifier {
   }
 
   Future<void> fetchNotificationItems() async {
-    final notificationItems = await AwNotificationItemService.fetchNotificationItems();
-
-    _unreadPaymentCount = 5;
+    if (_userProvider == null) return;
+    final notificationFromServer = await AwNotificationItemService.fetchNotificationItems(_userProvider!.token!);
+    await isar.writeTxn(() async {
+      await isar.notificationItems.clear();
+      for (final item in notificationFromServer) {
+        await isar.notificationItems.put(item);
+      }
+    });
+    _notificationItems.clear();
+    _notificationItems.addAll(isar.notificationItems.where().findAllSync());
     _reCount();
     notifyListeners();
   }
 
   Future<void> markAllAsRead() async {
     _unreadAllCount = 0;
-    final notificationItems = await AwNotificationItemService.fetchNotificationItems();
     await isar.writeTxn(() async {
-      for (final item in notificationItems) {
+      for (final item in await isar.notificationItems.where().findAll()) {
         if (!item.isRead) {
           item.isRead = true;
           isar.notificationItems.put(item);
@@ -48,5 +57,7 @@ class NotificationItemProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void _reCount() {}
+  void _reCount() {
+    _unreadAllCount = _notificationItems.where((element) => !element.isRead).length;
+  }
 }

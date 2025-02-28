@@ -13,17 +13,17 @@ class RegisterProvider {
   String get phoneEmail => _phoneEmail;
   String _idCard4 = '';
   String get idCard4 => _idCard4;
-  OTPRef? _otpRef;
-  OTPRef? get otpRef => _otpRef;
-  VerifyOTPResponse? _verifyOTPResponse;
-  VerifyOTPResponse? get verifyOTPResponse => _verifyOTPResponse;
+  RegisterOTPRef? _otpRef;
+  RegisterOTPRef? get otpRef => _otpRef;
+  RegisterOTPVerifyResponse? _verifyOTPResponse;
+  RegisterOTPVerifyResponse? get verifyOTPResponse => _verifyOTPResponse;
 
   RegisterProvider updateUserProvider(UserProvider userProvider) {
     _userProvider = userProvider;
     return this;
   }
 
-  Future<OTPRef?> requestOTPResident({bool? isLoginWithEmail, String? idCard4, String? phoneEmail}) async {
+  Future<RegisterOTPRef?> requestOTPResident({bool? isLoginWithEmail, String? idCard4, String? phoneEmail}) async {
     _isResident = true;
     _idCard4 = idCard4 ?? _idCard4;
     _phoneEmail = phoneEmail ?? _phoneEmail;
@@ -33,14 +33,14 @@ class RegisterProvider {
     return otpRef;
   }
 
-  Future<VerifyOTPResponse?> verifyOTPResident(String otp) async {
+  Future<RegisterOTPVerifyResponse?> verifyOTPResident(String otp) async {
     if (otpRef != null) {
       _verifyOTPResponse = await AwRegisterService.verifyOTPResident(transId: otpRef!.transId, otp: otp);
     }
     return verifyOTPResponse;
   }
 
-  Future<OTPRef?> requestOTPNonResident({bool? isLoginWithEmail, String? phoneEmail}) async {
+  Future<RegisterOTPRef?> requestOTPNonResident({bool? isLoginWithEmail, String? phoneEmail}) async {
     _isResident = false;
     _phoneEmail = phoneEmail ?? _phoneEmail;
     _isLoginWithEmail = isLoginWithEmail ?? _isLoginWithEmail;
@@ -49,7 +49,7 @@ class RegisterProvider {
     return otpRef;
   }
 
-  Future<VerifyOTPResponse?> verifyOTPNonResident(String otp) async {
+  Future<RegisterOTPVerifyResponse?> verifyOTPNonResident(String otp) async {
     if (otpRef != null) {
       _verifyOTPResponse = await AwRegisterService.verifyOTPNonResident(transId: otpRef!.transId, otp: otp);
     }
