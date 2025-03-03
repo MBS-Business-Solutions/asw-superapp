@@ -70,6 +70,8 @@ class NotificationItem {
   late String messageTh;
   late String messageEn;
   late DateTime createAt;
+  late String timeStamp;
+  late String type;
   String? data;
   bool isRead;
 
@@ -80,6 +82,8 @@ class NotificationItem {
     required this.messageTh,
     required this.messageEn,
     required this.createAt,
+    required this.type,
+    required this.timeStamp,
     this.data,
     this.isRead = false,
   });
@@ -92,6 +96,8 @@ class NotificationItem {
       messageTh: json['message_th'] as String,
       messageEn: json['message_en'] as String,
       createAt: DateTime.parse(json['create_at'] as String),
+      timeStamp: json['create_at'] as String,
+      type: json['type'] as String,
       data: json['data'] as String?,
     );
   }

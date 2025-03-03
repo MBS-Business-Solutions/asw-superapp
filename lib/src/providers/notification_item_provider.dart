@@ -9,9 +9,9 @@ class NotificationItemProvider with ChangeNotifier {
   UserProvider? _userProvider;
   int _unreadAllCount = 2;
   int _unreadPaymentCount = 0;
-  final int _unreadPromotionCount = 3;
-  final int _unreadHotDealCount = 2;
-  final int _unreadNewsCount = 1;
+  int _unreadPromotionCount = 3;
+  int _unreadHotDealCount = 2;
+  int _unreadNewsCount = 1;
 
   int get unreadAllCount => _unreadAllCount;
   int get unreadPaymentCount => _unreadPaymentCount;
@@ -20,6 +20,11 @@ class NotificationItemProvider with ChangeNotifier {
   int get unreadNewsCount => _unreadNewsCount;
 
   final List<NotificationItem> _notificationItems = [];
+  List<NotificationItem> get allNotification => _notificationItems;
+  List<NotificationItem> get paymentNotification => _notificationItems.where((element) => element.type == 'overdue').toList();
+  List<NotificationItem> get promotionNotification => _notificationItems.where((element) => element.type == 'promotion').toList();
+  List<NotificationItem> get hotDealNotification => _notificationItems.where((element) => element.type == 'hot_deal').toList();
+  List<NotificationItem> get newsNotification => _notificationItems.where((element) => element.type == 'news').toList();
 
   void updateUserProvider(UserProvider userProvider) {
     _userProvider = userProvider;
@@ -30,21 +35,23 @@ class NotificationItemProvider with ChangeNotifier {
 
   Future<void> fetchNotificationItems() async {
     if (_userProvider == null) return;
-    final notificationFromServer = await AwNotificationItemService.fetchNotificationItems(_userProvider!.token!);
+    final notificationFromServer = await AwNotificationItemService.fetchNotificationItems(
+      _userProvider!.token!,
+      lastItemDate: _notificationItems.isNotEmpty ? _notificationItems.last.timeStamp : null,
+    );
     await isar.writeTxn(() async {
       await isar.notificationItems.clear();
       for (final item in notificationFromServer) {
         await isar.notificationItems.put(item);
       }
     });
-    _notificationItems.clear();
-    _notificationItems.addAll(isar.notificationItems.where().findAllSync());
+    _reload();
     _reCount();
     notifyListeners();
   }
 
   Future<void> markAllAsRead() async {
-    _unreadAllCount = 0;
+    _resetCount();
     await isar.writeTxn(() async {
       for (final item in await isar.notificationItems.where().findAll()) {
         if (!item.isRead) {
@@ -53,11 +60,31 @@ class NotificationItemProvider with ChangeNotifier {
         }
       }
     });
+    _reload();
     _reCount();
     notifyListeners();
   }
 
+  void _reload() {
+    // TODO: remove clear when API fixed bug
+    _notificationItems.clear();
+
+    _notificationItems.addAll(isar.notificationItems.where().findAllSync());
+  }
+
   void _reCount() {
     _unreadAllCount = _notificationItems.where((element) => !element.isRead).length;
+    _unreadPaymentCount = _notificationItems.where((element) => element.type == 'overdue' && !element.isRead).length;
+    _unreadPromotionCount = _notificationItems.where((element) => element.type == 'promotion' && !element.isRead).length;
+    _unreadHotDealCount = _notificationItems.where((element) => element.type == 'hot_deal' && !element.isRead).length;
+    _unreadNewsCount = _notificationItems.where((element) => element.type == 'news' && !element.isRead).length;
+  }
+
+  void _resetCount() {
+    _unreadAllCount = 0;
+    _unreadPaymentCount = 0;
+    _unreadPromotionCount = 0;
+    _unreadHotDealCount = 0;
+    _unreadNewsCount = 0;
   }
 }

@@ -11,10 +11,12 @@ class DownPaymentTermDueTile extends StatefulWidget {
     required this.termDue,
     this.onTap,
     this.initial = false,
+    required this.canChange,
   });
   final DownPaymentTermDue termDue;
   final ValueChanged<bool>? onTap;
   final bool initial;
+  final bool Function(DownPaymentTermDue due, bool value) canChange;
 
   @override
   State<DownPaymentTermDueTile> createState() => _DownPaymentTermDueTileState();
@@ -51,19 +53,25 @@ class _DownPaymentTermDueTileState extends State<DownPaymentTermDueTile> {
         color: Colors.transparent,
         child: ListTile(
           contentPadding: const EdgeInsets.only(left: mDefaultPadding),
-          onTap: () => _onTap(!state),
+          onTap: () {
+            if (widget.canChange(widget.termDue, !state)) _onTap(!state);
+          },
           // contentPadding: EdgeInsets.zero,
           title: Row(
             children: [
               Expanded(
-                child: Text(
-                  DateFormatterUtil.formatFullDate(context, widget.termDue.dueDate),
-                  style: Theme.of(context).textTheme.titleSmall,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    DateFormatterUtil.formatFullDate(context, widget.termDue.dueDate),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ),
               ),
               Text(
                 widget.termDue.termName,
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mBrightPrimaryColor),
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: mBrightPrimaryColor),
               ),
               IgnorePointer(
                 child: Checkbox(value: state, onChanged: (value) {}),

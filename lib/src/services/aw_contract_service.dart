@@ -287,4 +287,71 @@ class AwContractService {
     }
     return downloadDirectory.path;
   }
+
+  static Future<bool> setDefaultContract(String token, String unitId) async {
+    final body = {
+      'unit_id': unitId,
+    };
+    final response = await http.post(
+      Uri.parse('$BASE_URL/mobile/setting/unit-default'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      body: body,
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return true;
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+    }
+    if (kDebugMode) print(response);
+    return false;
+  }
+
+  static Future<bool> removeContract(String token, String unitId) async {
+    final body = {
+      'unit_id': unitId,
+    };
+    final response = await http.post(
+      Uri.parse('$BASE_URL/mobile/setting/unit-default'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      body: body,
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return true;
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+    }
+    if (kDebugMode) print(response);
+    return false;
+  }
+
+  static Future<List<ContractProject>> fetchProjects(String token, {String? language}) async {
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/setting/projects'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Language': language ?? 'th',
+      },
+    );
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        List<dynamic> data = jsonResponse['data'];
+        return data.map((json) => ContractProject.fromJson(json)).toList();
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+    }
+    if (kDebugMode) print(response);
+    return [];
+  }
 }

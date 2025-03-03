@@ -115,9 +115,20 @@ class _RegisterVerifyOtpViewState extends State<RegisterVerifyOtpView> {
                         ),
                         TextButton.icon(
                           onPressed: _isButtonDisabled ? null : () => _onResendOtp(),
-                          label: Text(
-                            _isButtonDisabled ? AppLocalizations.of(context)!.otpRequestCountdown(_start) : AppLocalizations.of(context)!.otpRequestAgain,
-                          ),
+                          label: _isButtonDisabled
+                              ? Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(text: AppLocalizations.of(context)!.otpRequestCountdownPrefix),
+                                      TextSpan(text: ' '),
+                                      TextSpan(
+                                        text: AppLocalizations.of(context)!.otpRequestCountdown(_start),
+                                        style: TextStyle(color: mPrimaryMatColor),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Text(AppLocalizations.of(context)!.otpRequestAgain),
                           icon: const Icon(Icons.refresh),
                         ),
                         const SizedBox(

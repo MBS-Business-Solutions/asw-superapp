@@ -4,6 +4,7 @@ import 'package:AssetWise/src/features/notifications/notifications_view.dart';
 import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:AssetWise/src/widgets/hot_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -68,43 +69,54 @@ class DashboardNotificationSection extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: mDefaultPadding),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: mMediumPadding),
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.white.withOpacity(0.2),
-                spreadRadius: 0,
-                blurRadius: 5,
-                offset: const Offset(0, -1),
-              ),
+        ..._buildUnpaidItems(context),
+      ],
+    );
+  }
+
+  List<Widget> _buildUnpaidItems(BuildContext context) {
+    final unpaidList = context.watch<NotificationItemProvider>().paymentNotification.where((element) => !element.isRead).toList();
+    final preferedLanguage = Localizations.localeOf(context).languageCode;
+    final timeFormatter = DateFormat('HH:mm');
+    final result = List.generate(unpaidList.length, (index) {
+      final item = unpaidList[index];
+      return Container(
+        margin: EdgeInsets.only(top: mDefaultPadding),
+        padding: const EdgeInsets.only(left: mDefaultPadding, right: mDefaultPadding),
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.white.withOpacity(0.2),
+              spreadRadius: 0,
+              blurRadius: 5,
+              offset: const Offset(0, -1),
+            ),
+          ],
+        ),
+        child: ListTile(
+          contentPadding: EdgeInsets.zero,
+          title: Row(
+            children: [
+              const Icon(Icons.price_check_sharp, color: mRedColor),
+              const SizedBox(width: mMediumPadding),
+              Text(preferedLanguage == 'en' ? item.titleEn : item.titleTh, style: Theme.of(context).textTheme.labelLarge!.copyWith(color: mRedColor)),
+              const Spacer(),
+              Text(timeFormatter.format(item.createAt), style: Theme.of(context).textTheme.bodySmall),
             ],
           ),
-          child: ListTile(
-            contentPadding: EdgeInsets.zero,
-            title: Row(
-              children: [
-                const Icon(Icons.price_check_sharp, color: mRedColor),
-                const SizedBox(width: mMediumPadding),
-                Text('ชำระค่างวด ธันวาคม 2567', style: Theme.of(context).textTheme.labelLarge!.copyWith(color: mRedColor)),
-                const Spacer(),
-                Text('15:36 น.', style: Theme.of(context).textTheme.bodySmall),
-              ],
-            ),
-            subtitle: Padding(
-              padding: const EdgeInsets.symmetric(vertical: mSmallPadding),
-              child: Text(
-                'เรียน คุณสมชาย ท่านมีรายการชำระค่างวด ธันวาคม 2567 จำนวน 1 รายการ รายละเอียดเพิ่มเติม',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+          subtitle: Padding(
+            padding: const EdgeInsets.symmetric(vertical: mSmallPadding),
+            child: Text(
+              preferedLanguage == 'en' ? item.messageEn : item.messageTh,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
         ),
-      ],
-    );
+      );
+    });
+    return result;
   }
 }

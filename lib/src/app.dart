@@ -11,6 +11,7 @@ import 'package:AssetWise/src/features/contract/overdues_view.dart';
 import 'package:AssetWise/src/features/contract/receipt_view.dart';
 import 'package:AssetWise/src/features/contract/receipt_view_file.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/change_languange_view.dart';
+import 'package:AssetWise/src/features/manage_personal_info/manage_personal_info_view.dart';
 import 'package:AssetWise/src/features/my_assets/my_assets_view.dart';
 import 'package:AssetWise/src/features/notifications/notifications_view.dart';
 import 'package:AssetWise/src/features/payments/payment_channels_view.dart';
@@ -252,6 +253,8 @@ class _MyAppState extends State<MyApp> {
                           return const AboutAsswiseView();
                         case MyAssetsView.routeName:
                           return const MyAssetsView();
+                        case ManagePersonalInfoView.routeName:
+                          return const ManagePersonalInfoView();
                         default:
                           // return DashboardView(controller: settingsController);
                           return const SplashView();

@@ -4,6 +4,7 @@ import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/about_assetwise/about_asswise_view.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/change_languange_view.dart';
+import 'package:AssetWise/src/features/manage_personal_info/manage_personal_info_view.dart';
 import 'package:AssetWise/src/features/my_assets/my_assets_view.dart';
 import 'package:AssetWise/src/features/pin/pin_entry_view.dart';
 import 'package:AssetWise/src/features/pin/set_pin_view.dart';
@@ -193,7 +194,7 @@ class _ProfileViewState extends State<ProfileView> {
                           ListTile(
                             title: Text(AppLocalizations.of(context)!.profilePersonalInfo),
                             trailing: const Icon(Icons.chevron_right),
-                            onTap: () {},
+                            onTap: () => _managePersonalInfo(),
                           ),
                           ListTile(
                             title: Text(AppLocalizations.of(context)!.profilePin),
@@ -264,6 +265,10 @@ class _ProfileViewState extends State<ProfileView> {
         ],
       ),
     );
+  }
+
+  void _managePersonalInfo() {
+    Navigator.pushNamed(context, ManagePersonalInfoView.routeName);
   }
 
   void _changePinNewPin() async {

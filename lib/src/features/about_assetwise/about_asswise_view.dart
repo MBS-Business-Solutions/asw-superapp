@@ -1,5 +1,6 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/about_assetwise/about_policy_view.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -60,6 +61,7 @@ class AboutAsswiseView extends StatelessWidget {
                 Container(
                   color: Theme.of(context).scaffoldBackgroundColor,
                   child: ListTile(
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AboutPolicyView(title: AppLocalizations.of(context)!.aboutAssetWiseTermOfService))),
                     title: Text(AppLocalizations.of(context)!.aboutAssetWiseTermOfService),
                     trailing: const Icon(Icons.chevron_right),
                   ),
@@ -67,6 +69,7 @@ class AboutAsswiseView extends StatelessWidget {
                 Container(
                   color: Theme.of(context).scaffoldBackgroundColor,
                   child: ListTile(
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AboutPolicyView(title: AppLocalizations.of(context)!.aboutAssetWisePrivacyPolicy))),
                     title: Text(AppLocalizations.of(context)!.aboutAssetWisePrivacyPolicy),
                     trailing: const Icon(Icons.chevron_right),
                   ),
@@ -74,6 +77,7 @@ class AboutAsswiseView extends StatelessWidget {
                 Container(
                   color: Theme.of(context).scaffoldBackgroundColor,
                   child: ListTile(
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AboutPolicyView(title: AppLocalizations.of(context)!.aboutAssetWiseSecurityPolicy))),
                     title: Text(AppLocalizations.of(context)!.aboutAssetWiseSecurityPolicy),
                     trailing: const Icon(Icons.chevron_right),
                   ),

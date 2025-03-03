@@ -5,11 +5,12 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class AwNotificationItemService {
-  static Future<List<NotificationItem>> fetchNotificationItems(String token) async {
+  static Future<List<NotificationItem>> fetchNotificationItems(String token, {String? lastItemDate, String? language}) async {
     final response = await http.get(
-      Uri.parse('$BASE_URL/mobile/notifications?cursor=2025-02-28T03:47:55'),
+      Uri.parse('$BASE_URL/mobile/notifications${lastItemDate == null ? '' : '?cursor=$lastItemDate'}'),
       headers: {
         'Authorization': 'Bearer $token',
+        'Content-Language': language ?? 'th',
       },
     );
 

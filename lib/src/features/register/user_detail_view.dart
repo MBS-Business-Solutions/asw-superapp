@@ -33,8 +33,8 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
     if (verifyOTPResponse != null) {
       firstNameController.text = verifyOTPResponse.firstName ?? '';
       lastNameController.text = verifyOTPResponse.lastName ?? '';
-      phoneController.text = !registerProvider.isLoginWithEmail ? registerProvider.phoneEmail : '';
-      emailController.text = registerProvider.isLoginWithEmail ? registerProvider.phoneEmail : '';
+      phoneController.text = verifyOTPResponse.phone ?? '';
+      emailController.text = verifyOTPResponse.email ?? '';
     }
     super.initState();
   }

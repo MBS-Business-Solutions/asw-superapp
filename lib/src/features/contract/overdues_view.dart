@@ -86,6 +86,17 @@ class _OverduesViewState extends State<OverduesView> {
                       );
                     }
                     return DownPaymentTermDueTile(
+                      canChange: (due, tobeValue) {
+                        final previousDue = (index - 1) < 0 ? null : downTermDues[index - 1];
+                        final nextDue = (index + 1) >= downTermDues.length ? null : downTermDues[index + 1];
+                        if (tobeValue) {
+                          // user selected this due
+                          return previousDue == null || _selectedDownPaymentTermDue.contains(previousDue);
+                        } else {
+                          // user unselected this due
+                          return nextDue == null || !_selectedDownPaymentTermDue.contains(nextDue);
+                        }
+                      },
                       onTap: (value) {
                         setState(() {
                           if (!value) {

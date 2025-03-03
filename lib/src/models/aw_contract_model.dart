@@ -243,3 +243,20 @@ class DownPaymentTermDue {
     );
   }
 }
+
+class ContractProject {
+  final String id;
+  final String name;
+
+  ContractProject({
+    required this.id,
+    required this.name,
+  });
+
+  factory ContractProject.fromJson(Map<String, dynamic> json) {
+    return ContractProject(
+      id: json['id'],
+      name: json['name'],
+    );
+  }
+}

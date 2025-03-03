@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class AwOtpService {
-  static Future<OTPRef?> sendOTPForReLogin({required String token, required OTPRequest request}) async {
+  static Future<OTPRef?> sendOTPForReLogin({required String token, required OTPRequest request, String? language}) async {
     final body = {
       "type": request.userType, // 'resident' | 'person'
       "otp_type": request.channel, // 'phone' | 'email'
@@ -18,6 +18,7 @@ class AwOtpService {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
+        'Content-Language': language ?? 'th',
       },
       body: jsonEncode(body),
     );
@@ -38,7 +39,7 @@ class AwOtpService {
     return null;
   }
 
-  static Future<OTPRef?> sendOTPForValidateUser({required String token, required OTPRequest request}) async {
+  static Future<OTPRef?> sendOTPForValidateUser({required String token, required OTPRequest request, String? language}) async {
     final body = {
       "id_card": request.sendTo,
     };
@@ -47,6 +48,7 @@ class AwOtpService {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
+        'Content-Language': language ?? 'th',
       },
       body: jsonEncode(body),
     );
@@ -65,7 +67,7 @@ class AwOtpService {
     return null;
   }
 
-  static Future<OTPRef?> sendOTPForChangePin({required String token, required OTPRequest request}) async {
+  static Future<OTPRef?> sendOTPForChangePin({required String token, required OTPRequest request, String? language}) async {
     final body = {
       "type": request.channel,
       "phone": request.phone,
@@ -76,6 +78,7 @@ class AwOtpService {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
+        'Content-Language': language ?? 'th',
       },
       body: jsonEncode(body),
     );
@@ -93,12 +96,13 @@ class AwOtpService {
     return null;
   }
 
-  static Future<OTPVerifyResponse?> verifyOTPForLogin({required String token, required String transId, required String otp}) async {
+  static Future<OTPVerifyResponse?> verifyOTPForLogin({required String token, required String transId, required String otp, String? language}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/verify-login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
+        'Content-Language': language ?? 'th',
       },
       body: jsonEncode({
         "trans_id": transId,
@@ -120,12 +124,13 @@ class AwOtpService {
     return null;
   }
 
-  static Future<OTPVerifyResponse?> verifyOTPForValidateUser({required String token, required String transId, required String otp}) async {
+  static Future<OTPVerifyResponse?> verifyOTPForValidateUser({required String token, required String transId, required String otp, String? language}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/verify-buyer-otp'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
+        'Content-Language': language ?? 'th',
       },
       body: jsonEncode({
         "trans_id": transId,
@@ -147,12 +152,13 @@ class AwOtpService {
     return null;
   }
 
-  static Future<OTPVerifyResponse?> verifyOTPForChangePin({required String token, required String transId, required String otp}) async {
+  static Future<OTPVerifyResponse?> verifyOTPForChangePin({required String token, required String transId, required String otp, String? language}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/verify-change-pin'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
+        'Content-Language': language ?? 'th',
       },
       body: jsonEncode({
         "trans_id": transId,

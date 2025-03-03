@@ -61,9 +61,26 @@ class ContractProvider {
     return AwContractService.getPaymentGatewayURL(token: _userProvider!.token!, contract: contract, amount: amount, detail: detail, email: email);
   }
 
-  Future<String?> downloadContract(String contractId) async {
+  Future<String?> downloadContract(String contractId, String filename) async {
     if (_userProvider == null) return null;
     final url = AwContractService.getContractURL(contractId);
-    return AwContractService.downloadFile(_userProvider!.token!, url, contractId);
+    return AwContractService.downloadFile(_userProvider!.token!, url, filename);
+  }
+
+  Future<bool> setDefaultContract(String unitId) async {
+    if (_userProvider == null) return false;
+    final result = await AwContractService.setDefaultContract(_userProvider!.token!, unitId);
+    return result;
+  }
+
+  Future<bool> removeContract(String unitId) async {
+    if (_userProvider == null) return false;
+    final result = await AwContractService.removeContract(_userProvider!.token!, unitId);
+    return result;
+  }
+
+  Future<List<ContractProject>> fetchProjects() async {
+    if (_userProvider == null) return [];
+    return AwContractService.fetchProjects(_userProvider!.token!);
   }
 }

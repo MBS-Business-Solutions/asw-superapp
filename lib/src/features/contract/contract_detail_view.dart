@@ -25,8 +25,7 @@ class _ContractDetailViewState extends State<ContractDetailView> {
 
   @override
   void initState() {
-    _contractDetailFuture =
-        context.read<ContractProvider>().fetchContractDetail(widget.contractId);
+    _contractDetailFuture = context.read<ContractProvider>().fetchContractDetail(widget.contractId);
     super.initState();
   }
 
@@ -39,9 +38,7 @@ class _ContractDetailViewState extends State<ContractDetailView> {
           AppLocalizations.of(context)!.contractDetailTitle,
           style: Theme.of(context).textTheme.titleSmall,
         ),
-        backgroundColor: Theme.of(context).brightness == Brightness.dark
-            ? mDarkBackgroundColor
-            : mLightBackgroundColor,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark ? mDarkBackgroundColor : mLightBackgroundColor,
       ),
       body: FutureBuilder(
           future: _contractDetailFuture,
@@ -62,82 +59,42 @@ class _ContractDetailViewState extends State<ContractDetailView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
+                          _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailContractDate, value: DateFormatterUtil.formatShortDate(context, contractDetail.date)),
+                          _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailSigningDate, value: DateFormatterUtil.formatShortDate(context, contractDetail.signDate)),
                           _buildDetailText(context,
-                              label: AppLocalizations.of(context)!
-                                  .contractDetailContractDate,
-                              value: DateFormatterUtil.formatShortDate(
-                                  context, contractDetail.date)),
-                          _buildDetailText(context,
-                              label: AppLocalizations.of(context)!
-                                  .contractDetailSigningDate,
-                              value: DateFormatterUtil.formatShortDate(
-                                  context, contractDetail.signDate)),
-                          _buildDetailText(context,
-                              label: AppLocalizations.of(context)!
-                                  .contractDetailEstimatedTransferDate,
-                              value: DateFormatterUtil.formatShortDate(
-                                  context, contractDetail.transferDate)),
+                              label: AppLocalizations.of(context)!.contractDetailEstimatedTransferDate, value: DateFormatterUtil.formatShortDate(context, contractDetail.transferDate)),
                           const Divider(
                             color: Colors.white10,
                             thickness: 4,
                           ),
                           // มูลค่าสัญญา
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: mMediumPadding,
-                                horizontal: mScreenEdgeInsetValue),
+                            padding: const EdgeInsets.symmetric(vertical: mMediumPadding, horizontal: mScreenEdgeInsetValue),
                             child: Text(
-                              AppLocalizations.of(context)!
-                                  .contractDetailContractValueTitle,
+                              AppLocalizations.of(context)!.contractDetailContractValueTitle,
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
                           ),
                           _buildDetailText(context,
-                              label: AppLocalizations.of(context)!
-                                  .contractDetailBookingSellingPrice,
-                              value: AppLocalizations.of(context)!
-                                  .priceFormat(contractDetail.sellingPrice)),
+                              label: AppLocalizations.of(context)!.contractDetailBookingSellingPrice, value: AppLocalizations.of(context)!.priceFormat(contractDetail.sellingPrice)),
                           _buildDetailText(context,
-                              label: AppLocalizations.of(context)!
-                                  .contractDetailBookingDiscountPrice,
-                              value: AppLocalizations.of(context)!
-                                  .priceFormat(contractDetail.cashDiscount)),
+                              label: AppLocalizations.of(context)!.contractDetailBookingDiscountPrice, value: AppLocalizations.of(context)!.priceFormat(contractDetail.cashDiscount)),
                           _buildDetailText(context,
-                              label: AppLocalizations.of(context)!
-                                  .contractDetailBookingDiscountAtTransferPrice,
-                              value: AppLocalizations.of(context)!.priceFormat(
-                                  contractDetail.cashDiscountTransfer)),
-                          _buildDetailText(context,
-                              label: AppLocalizations.of(context)!
-                                  .contractDetailBookingNetPrice,
-                              value: AppLocalizations.of(context)!
-                                  .priceFormat(contractDetail.netPrice)),
+                              label: AppLocalizations.of(context)!.contractDetailBookingDiscountAtTransferPrice, value: AppLocalizations.of(context)!.priceFormat(contractDetail.cashDiscountTransfer)),
+                          _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailBookingNetPrice, value: AppLocalizations.of(context)!.priceFormat(contractDetail.netPrice)),
 
-                          _buildDetailText(context,
-                              label: AppLocalizations.of(context)!
-                                  .contractDetailBookingAmount,
-                              value: AppLocalizations.of(context)!
-                                  .priceFormat(contractDetail.bookAmount)),
-                          _buildDetailText(context,
-                              label: AppLocalizations.of(context)!
-                                  .contractDetailContractAmount,
-                              value: AppLocalizations.of(context)!
-                                  .priceFormat(contractDetail.contractAmount)),
+                          _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailBookingAmount, value: AppLocalizations.of(context)!.priceFormat(contractDetail.bookAmount)),
+                          _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailContractAmount, value: AppLocalizations.of(context)!.priceFormat(contractDetail.contractAmount)),
                           _buildDetailText(
                             context,
-                            label: AppLocalizations.of(context)!
-                                .contractDetailDownAmount,
+                            label: AppLocalizations.of(context)!.contractDetailDownAmount,
                             additionalWidget: contractDetail.downAmount <= 0
                                 ? null
                                 : Padding(
                                     padding: const EdgeInsets.only(left: 4),
                                     child: InkWell(
                                         onTap: () {
-                                          Navigator.pushNamed(context,
-                                              DownHistoryView.routeName,
-                                              arguments: {
-                                                'contractId': widget.contractId
-                                              });
+                                          Navigator.pushNamed(context, DownHistoryView.routeName, arguments: {'contractId': widget.contractId});
                                         },
                                         child: Row(
                                           children: [
@@ -147,104 +104,69 @@ class _ContractDetailViewState extends State<ContractDetailView> {
                                               color: mUnPaidColor,
                                             ),
                                             const SizedBox(width: 4),
-                                            Text(
-                                                AppLocalizations.of(context)!
-                                                    .contractDetailDownAmountDetails,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .labelMedium!
-                                                    .copyWith(
+                                            Text(AppLocalizations.of(context)!.contractDetailDownAmountDetails,
+                                                style: Theme.of(context).textTheme.labelMedium!.copyWith(
                                                       color: mUnPaidColor,
-                                                      decorationColor:
-                                                          mUnPaidColor,
-                                                      decoration: TextDecoration
-                                                          .underline,
+                                                      decorationColor: mUnPaidColor,
+                                                      decoration: TextDecoration.underline,
                                                     )),
                                           ],
                                         )),
                                   ),
-                            value: AppLocalizations.of(context)!
-                                .priceFormat(contractDetail.downAmount),
+                            value: AppLocalizations.of(context)!.priceFormat(contractDetail.downAmount),
                           ),
-                          _buildDetailText(context,
-                              label: AppLocalizations.of(context)!
-                                  .contractDetailTransferAmount,
-                              value: AppLocalizations.of(context)!
-                                  .priceFormat(contractDetail.transferAmount)),
+                          _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailTransferAmount, value: AppLocalizations.of(context)!.priceFormat(contractDetail.transferAmount)),
                           const Divider(
                             color: Colors.white10,
                             thickness: 4,
                           ),
                           // รายละเอียดการชำระเงิน
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: mMediumPadding,
-                                horizontal: mScreenEdgeInsetValue),
+                            padding: const EdgeInsets.symmetric(vertical: mMediumPadding, horizontal: mScreenEdgeInsetValue),
                             child: Text(
-                              AppLocalizations.of(context)!
-                                  .contractDetailPaymentTitle,
+                              AppLocalizations.of(context)!.contractDetailPaymentTitle,
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
                           ),
+                          _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailPaymentAmount, value: AppLocalizations.of(context)!.priceFormat(contractDetail.paymentAmount)),
                           _buildDetailText(context,
-                              label: AppLocalizations.of(context)!
-                                  .contractDetailPaymentAmount,
-                              value: AppLocalizations.of(context)!
-                                  .priceFormat(contractDetail.paymentAmount)),
+                              label: AppLocalizations.of(context)!.contractDetailRemainDownAmount, value: AppLocalizations.of(context)!.priceFormat(contractDetail.remainDownAmount)),
                           _buildDetailText(context,
-                              label: AppLocalizations.of(context)!
-                                  .contractDetailRemainDownAmount,
-                              value: AppLocalizations.of(context)!
-                                  .priceFormat(contractDetail.remainAmount)),
-                          _buildDetailText(context,
-                              label: AppLocalizations.of(context)!
-                                  .contractDetailRemainHousePayment,
-                              value: AppLocalizations.of(context)!.priceFormat(
-                                  contractDetail.remainDownAmount)),
+                              label: AppLocalizations.of(context)!.contractDetailRemainHousePayment, value: AppLocalizations.of(context)!.priceFormat(contractDetail.remainAmount)),
                           const Divider(
                             color: Colors.white10,
                             thickness: 4,
                           ),
                           // รายการของแถมและส่วนลด
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: mMediumPadding,
-                                horizontal: mScreenEdgeInsetValue),
+                            padding: const EdgeInsets.symmetric(vertical: mMediumPadding, horizontal: mScreenEdgeInsetValue),
                             child: Text(
-                              AppLocalizations.of(context)!
-                                  .contractDetailFreebiesTitle,
+                              AppLocalizations.of(context)!.contractDetailFreebiesTitle,
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
                           ),
 
                           for (final freebie in contractDetail.freebies ?? [])
                             Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: mMediumPadding,
-                                  horizontal: mScreenEdgeInsetValue),
+                              padding: const EdgeInsets.symmetric(vertical: mMediumPadding, horizontal: mScreenEdgeInsetValue),
                               child: Row(
                                 children: [
                                   Text(
                                     '\u2022 ',
-                                    style:
-                                        Theme.of(context).textTheme.labelMedium,
+                                    style: Theme.of(context).textTheme.labelMedium,
                                   ),
                                   Expanded(
                                     child: Text(
                                       freebie,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium,
+                                      style: Theme.of(context).textTheme.labelMedium,
                                     ),
                                   )
                                 ],
                               ),
                             ),
-                          SizedBox(
-                              height:
-                                  MediaQuery.of(context).padding.bottom + 64),
+                          SizedBox(height: MediaQuery.of(context).padding.bottom + 64),
                         ],
                       ),
                     ),
@@ -255,31 +177,25 @@ class _ContractDetailViewState extends State<ContractDetailView> {
                   left: 0,
                   right: 0,
                   child: Container(
-                    padding: const EdgeInsets.only(
-                        left: 24, right: 24, top: 16, bottom: 8),
+                    padding: const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 8),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.2),
                       border: Border.all(color: Colors.white.withOpacity(0.2)),
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(24),
-                          topRight: Radius.circular(24)),
+                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
                     ),
                     child: SafeArea(
                         child: FilledButton(
                             onPressed: _isLoadingContractFile
                                 ? null
                                 : () {
-                                    _downloadAndOpenPdf(
-                                        context, widget.contractId);
+                                    _downloadAndOpenPdf(context, widget.contractId, widget.contractId);
                                   },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(AppLocalizations.of(context)!
-                                    .contractDetailDownloadDoc),
+                                Text(AppLocalizations.of(context)!.contractDetailDownloadDoc),
                                 const Icon(Icons.file_download_outlined),
-                                if (_isLoadingContractFile)
-                                  const CircularProgressIndicator.adaptive(),
+                                if (_isLoadingContractFile) SizedBox(width: 16, height: 16, child: const CircularProgressIndicator.adaptive()),
                               ],
                             ))),
                   ),
@@ -290,15 +206,13 @@ class _ContractDetailViewState extends State<ContractDetailView> {
     );
   }
 
-  Future<void> _downloadAndOpenPdf(
-      BuildContext context, String contractId) async {
+  Future<void> _downloadAndOpenPdf(BuildContext context, String contractId, String filename) async {
     setState(() {
       _isLoadingContractFile = true;
     });
     try {
       // ดาวน์โหลดไฟล์ PDF
-      final filePath =
-          await context.read<ContractProvider>().downloadContract(contractId);
+      final filePath = await context.read<ContractProvider>().downloadContract(contractId, filename);
       if (filePath != null) {
         // เปิดไฟล์ PDF และให้ผู้ใช้เลือกแอป
 
@@ -307,8 +221,7 @@ class _ContractDetailViewState extends State<ContractDetailView> {
       } else {
         // แจ้งเตือนเมื่อไม่สามารถดาวน์โหลดไฟล์ได้
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content:
-              Text(AppLocalizations.of(context)!.errorUnableToDownloadContract),
+          content: Text(AppLocalizations.of(context)!.errorUnableToDownloadContract),
           backgroundColor: Colors.red,
         ));
       }
@@ -320,10 +233,7 @@ class _ContractDetailViewState extends State<ContractDetailView> {
     });
   }
 
-  Widget _buildDetailText(BuildContext context,
-      {required String label,
-      Widget? additionalWidget,
-      required String value}) {
+  Widget _buildDetailText(BuildContext context, {required String label, Widget? additionalWidget, required String value}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 24),
       child: Row(

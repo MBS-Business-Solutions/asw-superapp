@@ -8,6 +8,7 @@ import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyAssetsView extends StatefulWidget {
   const MyAssetsView({super.key});
@@ -44,10 +45,10 @@ class _MyAssetsViewState extends State<MyAssetsView> {
                     final contracts = snapshot.data;
                     return CustomScrollView(
                       slivers: [
-                        const SliverAppBar(
+                        SliverAppBar(
                           backgroundColor: Colors.transparent,
                           centerTitle: true,
-                          title: Text('บ้านของฉัน'),
+                          title: Text(AppLocalizations.of(context)!.myAssetTitle),
                           floating: true,
                           pinned: true,
                         ),
@@ -55,7 +56,7 @@ class _MyAssetsViewState extends State<MyAssetsView> {
                           SliverToBoxAdapter(
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
-                              child: Text('${contracts?.length} หลัง', style: Theme.of(context).textTheme.labelLarge),
+                              child: Text(AppLocalizations.of(context)!.myAssetSum(contracts?.length ?? 0), style: Theme.of(context).textTheme.labelLarge),
                             ),
                           ),
                         SliverList(
@@ -77,7 +78,7 @@ class _MyAssetsViewState extends State<MyAssetsView> {
             child: Container(
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
-              child: FilledButton.icon(onPressed: () => _addNewAsset(), icon: const Icon(Icons.add), label: const Text('เพิ่มบ้าน')),
+              child: FilledButton.icon(onPressed: () => _addNewAsset(), icon: const Icon(Icons.add), label: Text(AppLocalizations.of(context)!.myAssetAdd)),
             ),
           ),
         ],
@@ -101,20 +102,23 @@ class _MyAssetsViewState extends State<MyAssetsView> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  FilledButton(onPressed: () => Navigator.pop(context, _MyAssetAction.viewDetail), child: const Text('ดูรายละเอียด')),
+                  FilledButton(
+                    onPressed: () => Navigator.pop(context, _MyAssetAction.viewDetail),
+                    child: Text(AppLocalizations.of(context)!.myAssetViewDetail),
+                  ),
                   const SizedBox(height: mDefaultPadding),
                   OutlinedButton(
                       onPressed: () => Navigator.pop(context, _MyAssetAction.setDefault),
                       child: Text(
-                        'ตั้งเป็นค่าเริ่มต้น',
+                        AppLocalizations.of(context)!.myAssetSetDefault,
                         style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                       )),
                   const SizedBox(height: mDefaultPadding),
                   OutlinedButton(
-                      onPressed: () => Navigator.pop(context, _MyAssetAction.delete),
+                      onPressed: () => contract.isResident ? null : Navigator.pop(context, _MyAssetAction.delete),
                       child: Text(
-                        'ลบบ้าน',
-                        style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                        AppLocalizations.of(context)!.myAssetDelete,
+                        style: TextStyle(color: contract.isResident ? mGreyColor : Theme.of(context).colorScheme.onSurface),
                       )),
                   const SizedBox(height: mDefaultPadding),
                 ],
@@ -124,9 +128,10 @@ class _MyAssetsViewState extends State<MyAssetsView> {
         });
     switch (action) {
       case _MyAssetAction.viewDetail:
-        Navigator.pushNamed(context, ContractsView.routeName, arguments: {'linkId': contract.id});
+        _viewDetail(contract);
         break;
       case _MyAssetAction.setDefault:
+        _setDefault(contract);
         break;
       case _MyAssetAction.delete:
         _showDeleteConfirmation(contract);
@@ -136,15 +141,28 @@ class _MyAssetsViewState extends State<MyAssetsView> {
     }
   }
 
+  void _viewDetail(Contract contract) {
+    Navigator.pushNamed(context, ContractsView.routeName, arguments: {'linkId': contract.id});
+  }
+
+  void _setDefault(Contract contract) async {
+    if (mounted) {
+      final result = await context.read<ContractProvider>().setDefaultContract(contract.id);
+      if (result) {
+        Navigator.pushNamed(context, ContractsView.routeName, arguments: {'linkId': contract.id});
+      }
+    }
+  }
+
   void _showDeleteConfirmation(Contract contract) async {
     final result = await showDialog(
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: Text('ต้องการลบบ้านใช่หรือไม่', style: Theme.of(context).textTheme.labelLarge),
+          title: Text(AppLocalizations.of(context)!.myAssetDeleteConfirmation, style: Theme.of(context).textTheme.labelLarge),
           content: Padding(
             padding: const EdgeInsets.only(top: mDefaultPadding),
-            child: Text('หากคุณทำการลบบ้านเลขที่ ${contract.unitNumber}\nข้อมูลทั้งหมดจะถูกลบออกจากระบบ', style: Theme.of(context).textTheme.bodyMedium),
+            child: Text(AppLocalizations.of(context)!.myAssetDeleteDetail(contract.unitNumber), style: Theme.of(context).textTheme.bodyMedium),
           ),
           actions: [
             TextButton(
@@ -152,7 +170,7 @@ class _MyAssetsViewState extends State<MyAssetsView> {
                 Navigator.pop(context, true);
               },
               child: Text(
-                'ลบ',
+                AppLocalizations.of(context)!.myAssetDeleteDelete,
                 style: Theme.of(context).textTheme.labelLarge!.copyWith(color: mRedColor),
               ),
             ),
@@ -161,7 +179,7 @@ class _MyAssetsViewState extends State<MyAssetsView> {
                 Navigator.pop(context, false);
               },
               child: Text(
-                'ยกเลิก',
+                AppLocalizations.of(context)!.myAssetDeleteCancel,
                 style: Theme.of(context).textTheme.labelLarge!.copyWith(color: Theme.of(context).colorScheme.onSurface),
               ),
             ),
@@ -170,9 +188,7 @@ class _MyAssetsViewState extends State<MyAssetsView> {
       },
     );
     if (result) {
-      // call API to delete contract
-
-      const isDeleted = true;
+      final isDeleted = await context.read<ContractProvider>().removeContract(contract.id);
       if (isDeleted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           showCloseIcon: true,
@@ -189,7 +205,32 @@ class _MyAssetsViewState extends State<MyAssetsView> {
                 ),
                 const SizedBox(width: mMediumPadding),
                 Text(
-                  'ลบข้อมูลบ้านสำเร็จ',
+                  AppLocalizations.of(context)!.myAssetDeleteSuccess,
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                ),
+              ],
+            ),
+          ),
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height - 100, right: 20, left: 20),
+        ));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          showCloseIcon: true,
+          closeIconColor: Theme.of(context).colorScheme.onSurface,
+          padding: EdgeInsets.zero,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          content: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: mDefaultPadding),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.error,
+                  color: mRedColor,
+                ),
+                const SizedBox(width: mMediumPadding),
+                Text(
+                  AppLocalizations.of(context)!.errorUnableToProcess,
                   style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                 ),
               ],
@@ -259,7 +300,7 @@ class MyAssetListTile extends StatelessWidget {
                                 ),
                                 const SizedBox(width: mMediumPadding),
                                 Text(
-                                  'ค่าเริ่มต้น',
+                                  AppLocalizations.of(context)!.myAssetDefault,
                                   style: Theme.of(context).textTheme.bodySmall!.copyWith(color: mPaidColor),
                                 )
                               ],

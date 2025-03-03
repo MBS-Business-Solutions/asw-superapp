@@ -5,6 +5,7 @@ import 'package:AssetWise/src/models/aw_notification_model.dart';
 import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:AssetWise/src/widgets/hot_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -35,66 +36,85 @@ class _NotificationsViewState extends State<NotificationsView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: Text(
-          AppLocalizations.of(context)!.notificationTitle,
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
-        actions: [
-          Consumer<NotificationItemProvider>(
-            builder: (context, provider, child) => TextButton(
+    final preferedLanguage = Localizations.localeOf(context).languageCode;
+    return Consumer<NotificationItemProvider>(
+      builder: (context, provider, child) => Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title: Text(
+            AppLocalizations.of(context)!.notificationTitle,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          actions: [
+            TextButton(
                 onPressed: () => context.read<NotificationItemProvider>().markAllAsRead(),
                 child: Text(
                   '${AppLocalizations.of(context)!.notificationReadAll}${provider.unreadAllCount > 0 ? ' (${provider.unreadAllCount})' : ''}',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: mPaidColor),
                 )),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mMediumPadding),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                for (var index = 0; index < menus.length; index++)
-                  HotMenuWidget(
-                    titleText: _menuTitle(index),
-                    iconAsset: menus[index].values.first,
-                    highlight: _selectedIndex == index,
-                    badgeCount: badgeCount(index),
-                    onTap: () {
-                      setState(() {
-                        _selectedIndex = index;
-                      });
-                    },
-                  ),
-              ],
+          ],
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mMediumPadding),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  for (var index = 0; index < menus.length; index++)
+                    HotMenuWidget(
+                      titleText: _menuTitle(index),
+                      iconAsset: menus[index].values.first,
+                      highlight: _selectedIndex == index,
+                      badgeCount: badgeCount(index),
+                      onTap: () {
+                        setState(() {
+                          _selectedIndex = index;
+                        });
+                      },
+                    ),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: ListView.separated(
-              itemBuilder: (context, index) {
-                return NotificationItemTile(
-                  notificationItem:
-                      NotificationItem.fromJson({"id": "7f074112-ceb5-4b32-97c4-eb506e878933", "title": "ทดสอบ", "message": "ทดสอบ api ว่ามีรายการขึ้นมาไหม", "create_at": "2025-02-07T10:12:46.394Z"}),
-                );
-              },
-              itemCount: 3,
-              separatorBuilder: (context, index) {
-                return const Divider(
-                  height: 1,
-                  thickness: 1,
-                );
-              },
-            ),
-          )
-        ],
+            Expanded(
+              child: ListView.separated(
+                itemBuilder: (context, index) {
+                  final notificationItem = _list(_selectedIndex)[index];
+                  return NotificationItemTile(
+                    preferedLanguage: preferedLanguage,
+                    notificationItem: notificationItem,
+                  );
+                },
+                itemCount: _list(_selectedIndex).length,
+                separatorBuilder: (context, index) {
+                  return const Divider(
+                    height: 1,
+                    thickness: 1,
+                  );
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
+  }
+
+  List<NotificationItem> _list(int index) {
+    switch (index) {
+      case 0:
+        return context.read<NotificationItemProvider>().allNotification;
+      case 1:
+        return context.read<NotificationItemProvider>().paymentNotification;
+      case 2:
+        return context.read<NotificationItemProvider>().promotionNotification;
+      case 3:
+        return context.read<NotificationItemProvider>().hotDealNotification;
+      case 4:
+        return context.read<NotificationItemProvider>().newsNotification;
+      default:
+        return [];
+    }
   }
 
   String _menuTitle(int index) {
@@ -136,11 +156,14 @@ class NotificationItemTile extends StatelessWidget {
   const NotificationItemTile({
     super.key,
     required this.notificationItem,
+    required this.preferedLanguage,
   });
   final NotificationItem notificationItem;
+  final String preferedLanguage;
 
   @override
   Widget build(BuildContext context) {
+    final timeFormatter = DateFormat('HH:mm');
     return ListTile(
       onTap: () {
         Navigator.pushNamed(context, ContractsView.routeName, arguments: {'linkId': 'id'});
@@ -165,22 +188,26 @@ class NotificationItemTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'ชำระค่างวด ธันวาคม 2567',
+                  _lang(preferedLanguage, en: notificationItem.titleEn, th: notificationItem.titleTh),
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
                 Text(
-                  'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s',
+                  _lang(preferedLanguage, en: notificationItem.messageEn, th: notificationItem.messageTh),
                   softWrap: true,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
-                Text('15:36 น.', style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: mGreyColor)),
+                Text(timeFormatter.format(notificationItem.createAt), style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: mGreyColor)),
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  String _lang(String preferedLanguage, {required String th, required String en}) {
+    return preferedLanguage == 'en' ? en : th;
   }
 }

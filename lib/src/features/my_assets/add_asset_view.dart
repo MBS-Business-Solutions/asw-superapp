@@ -1,11 +1,16 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
+import 'package:AssetWise/src/features/register_buyer/register_buyer_view.dart';
 import 'package:AssetWise/src/features/verify_otp/verify_otp_view.dart';
+import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/models/aw_otp_model.dart';
+import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/widgets/aw_dropdownform.dart';
 import 'package:AssetWise/src/widgets/aw_textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class AddAssetView extends StatefulWidget {
   const AddAssetView({super.key});
@@ -17,6 +22,15 @@ class AddAssetView extends StatefulWidget {
 class _AddAssetViewState extends State<AddAssetView> {
   final _formKey = GlobalKey<FormState>();
   final _invalidProject = false;
+  final List<ContractProject> _projects = [];
+  late Future<List<ContractProject>> _fetchProjectsFuture;
+
+  @override
+  void initState() {
+    _fetchProjectsFuture = context.read<ContractProvider>().fetchProjects();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -31,60 +45,68 @@ class _AddAssetViewState extends State<AddAssetView> {
                 IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close)),
               ],
             ),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'เพิ่มบ้าน',
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ),
-                  Text(
-                    'ระบุรายละเอียดของคุณสำหรับการเข้าใช้บริการ',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  const SizedBox(height: mDefaultPadding),
-                  AwDropdownform<String>(
-                    itemBuilder: (context, index) => 'project $index',
-                    titleBuilder: (context, index) => Text('project $index'),
-                    itemCount: 5,
-                    label: 'โครงการ *',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'กรุณาระบุโครงการ';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: mDefaultPadding),
-                  AwTextFormField(
-                    label: 'บ้านเลขที่ *',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'กรุณาระบุบ้านเลขที่';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: mDefaultPadding),
-                  AwTextFormField(
-                    label: 'รหัสบัตรประชาชน 4 ตัวหลัง *',
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    maxLength: 4,
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return 'กรุณาระบุรหัสบัตรประชาชน 4 ตัวหลัง';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: mDefaultPadding),
-                  SizedBox(width: double.infinity, child: FilledButton(onPressed: () => _submit(), child: const Text('ถัดไป'))),
-                ],
-              ),
-            )),
+            body: FutureBuilder(
+                future: _fetchProjectsFuture,
+                builder: (context, sanpshot) {
+                  if (sanpshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  final projects = sanpshot.data as List<ContractProject>;
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.addAssetTitle,
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
+                        Text(
+                          AppLocalizations.of(context)!.addAssetInstruction,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        const SizedBox(height: mDefaultPadding),
+                        AwDropdownform<String>(
+                          itemBuilder: (context, index) => projects[index].id,
+                          titleBuilder: (context, index) => Text(projects[index].name),
+                          itemCount: projects.length,
+                          label: AppLocalizations.of(context)!.addAssetProject,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return AppLocalizations.of(context)!.addAssetProjectRequired;
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: mDefaultPadding),
+                        AwTextFormField(
+                          label: AppLocalizations.of(context)!.addAssetUnit,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return AppLocalizations.of(context)!.addAssetUnitRequired;
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: mDefaultPadding),
+                        AwTextFormField(
+                          label: AppLocalizations.of(context)!.addAssetLast4Id,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          maxLength: 4,
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return AppLocalizations.of(context)!.addAssetLast4IdRequired;
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: mDefaultPadding),
+                        SizedBox(width: double.infinity, child: FilledButton(onPressed: () => _submit(), child: const Text('ถัดไป'))),
+                      ],
+                    ),
+                  );
+                })),
       ),
     );
   }
