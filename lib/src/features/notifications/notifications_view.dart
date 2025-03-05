@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/models/aw_notification_model.dart';
 import 'package:AssetWise/src/providers/notification_item_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/hot_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -47,10 +50,12 @@ class _NotificationsViewState extends State<NotificationsView> {
           ),
           actions: [
             TextButton(
-                onPressed: () => context.read<NotificationItemProvider>().markAllAsRead(),
+                onPressed: () => context.read<NotificationItemProvider>().markAsRead(),
                 child: Text(
                   '${AppLocalizations.of(context)!.notificationReadAll}${provider.unreadAllCount > 0 ? ' (${provider.unreadAllCount})' : ''}',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: mPaidColor),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: CommonUtil.colorTheme(context, darkColor: mDarkPaidColor, lightColor: mLightPaidColor),
+                      ),
                 )),
           ],
         ),
@@ -165,8 +170,12 @@ class NotificationItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final timeFormatter = DateFormat('HH:mm');
     return ListTile(
-      onTap: () {
-        Navigator.pushNamed(context, ContractsView.routeName, arguments: {'linkId': 'id'});
+      onTap: () async {
+        // mark read
+        await context.read<NotificationItemProvider>().markAsRead(id: notificationItem.id);
+        if (notificationItem.data == null) return;
+        final data = jsonDecode(notificationItem.data!);
+        Navigator.pushNamed(context, ContractsView.routeName, arguments: {'linkId': data['contract_id']});
       },
       tileColor: mTileWarnColor,
       title: Row(

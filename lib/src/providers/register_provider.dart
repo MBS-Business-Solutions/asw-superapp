@@ -9,8 +9,11 @@ class RegisterProvider {
   bool get isResident => _isResident;
   bool _isLoginWithEmail = false;
   bool get isLoginWithEmail => _isLoginWithEmail;
-  String _phoneEmail = '';
-  String get phoneEmail => _phoneEmail;
+  String _sendTo = '';
+  String? _email;
+  String? get email => _email;
+  String? _phone;
+  String? get phone => _phone;
   String _idCard4 = '';
   String get idCard4 => _idCard4;
   RegisterOTPRef? _otpRef;
@@ -23,13 +26,11 @@ class RegisterProvider {
     return this;
   }
 
-  Future<RegisterOTPRef?> requestOTPResident({bool? isLoginWithEmail, String? idCard4, String? phoneEmail}) async {
+  Future<RegisterOTPRef?> requestOTPResident({bool? isLoginWithEmail, String? idCard4, String? email, String? phone}) async {
+    _saveValues(isLoginWithEmail: isLoginWithEmail, idCard4: idCard4, email: email, phone: phone);
     _isResident = true;
-    _idCard4 = idCard4 ?? _idCard4;
-    _phoneEmail = phoneEmail ?? _phoneEmail;
-    _isLoginWithEmail = isLoginWithEmail ?? _isLoginWithEmail;
 
-    _otpRef = await AwRegisterService.sendOTPResident(isLoginWithEmail: _isLoginWithEmail, idCard4: _idCard4, phoneEmail: _phoneEmail);
+    _otpRef = await AwRegisterService.sendOTPResident(isLoginWithEmail: _isLoginWithEmail, idCard4: _idCard4, phoneEmail: _sendTo);
     return otpRef;
   }
 
@@ -40,12 +41,11 @@ class RegisterProvider {
     return verifyOTPResponse;
   }
 
-  Future<RegisterOTPRef?> requestOTPNonResident({bool? isLoginWithEmail, String? phoneEmail}) async {
+  Future<RegisterOTPRef?> requestOTPNonResident({bool? isLoginWithEmail, String? email, String? phone}) async {
+    _saveValues(isLoginWithEmail: isLoginWithEmail, idCard4: idCard4, email: email, phone: phone);
     _isResident = false;
-    _phoneEmail = phoneEmail ?? _phoneEmail;
-    _isLoginWithEmail = isLoginWithEmail ?? _isLoginWithEmail;
 
-    _otpRef = await AwRegisterService.sendOTPNonResident(isLoginWithEmail: _isLoginWithEmail, phoneEmail: _phoneEmail);
+    _otpRef = await AwRegisterService.sendOTPNonResident(isLoginWithEmail: _isLoginWithEmail, phoneEmail: _sendTo);
     return otpRef;
   }
 
@@ -54,5 +54,14 @@ class RegisterProvider {
       _verifyOTPResponse = await AwRegisterService.verifyOTPNonResident(transId: otpRef!.transId, otp: otp);
     }
     return verifyOTPResponse;
+  }
+
+  void _saveValues({bool? isLoginWithEmail, String? idCard4, String? email, String? phone}) {
+    final sendTo = (isLoginWithEmail ?? false) ? email : phone;
+    _email = (isLoginWithEmail ?? false) ? email : null;
+    _phone = (isLoginWithEmail ?? false) ? null : phone;
+    _idCard4 = idCard4 ?? _idCard4;
+    _sendTo = sendTo ?? _sendTo;
+    _isLoginWithEmail = isLoginWithEmail ?? _isLoginWithEmail;
   }
 }

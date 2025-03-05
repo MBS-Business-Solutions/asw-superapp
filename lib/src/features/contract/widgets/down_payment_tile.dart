@@ -1,6 +1,7 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/utils/date_formatter_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -51,7 +52,7 @@ class DownPaymentTile extends StatelessWidget {
                   Expanded(
                     child: Text(AppLocalizations.of(context)!.priceFormatBahtDouble(paymentDetail.amount),
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: mPaidColor,
+                              color: CommonUtil.colorTheme(context, darkColor: mDarkPaidColor, lightColor: mLightPaidColor),
                             )),
                   ),
                   if (paymentDetail.status.isNotEmpty)
@@ -64,7 +65,9 @@ class DownPaymentTile extends StatelessWidget {
                       margin: const EdgeInsets.only(bottom: 4),
                       child: Text(paymentDetail.status,
                           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                color: isPaid ? mPaidColor : mUnPaidColor,
+                                color: isPaid
+                                    ? CommonUtil.colorTheme(context, darkColor: mDarkPaidColor, lightColor: mLightPaidColor)
+                                    : CommonUtil.colorTheme(context, darkColor: mDarkUnPaidColor, lightColor: mLightUnPaidColor),
                               )),
                     )
                 ],

@@ -186,3 +186,74 @@ class Unit {
     );
   }
 }
+
+class PersonalConsent {
+  final String id;
+  final String name;
+
+  PersonalConsent({required this.id, required this.name});
+
+  factory PersonalConsent.fromJson(Map<String, dynamic> json) {
+    return PersonalConsent(
+      id: json['id'],
+      name: json['name'],
+    );
+  }
+}
+
+class PersonalConsentDetail {
+  final String headerName;
+  final DateTime updateDate;
+  final String content;
+  final bool isGiven;
+
+  PersonalConsentDetail({
+    required this.headerName,
+    required this.updateDate,
+    required this.content,
+    required this.isGiven,
+  });
+
+  factory PersonalConsentDetail.fromJson(Map<String, dynamic> json) {
+    return PersonalConsentDetail(
+      headerName: json['header_name'],
+      updateDate: DateTime.parse(json['update_date']),
+      content: json['content'],
+      isGiven: json['is_given'],
+    );
+  }
+}
+
+class AboutItem {
+  final String id;
+  final String name;
+
+  AboutItem({required this.id, required this.name});
+
+  factory AboutItem.fromJson(Map<String, dynamic> json) {
+    return AboutItem(
+      id: json['id'],
+      name: json['name'],
+    );
+  }
+}
+
+class AboutItemDetail {
+  final String headerName;
+  final DateTime updateDate;
+  final String content;
+
+  AboutItemDetail({
+    required this.headerName,
+    required this.updateDate,
+    required this.content,
+  });
+
+  factory AboutItemDetail.fromJson(Map<String, dynamic> json) {
+    return AboutItemDetail(
+      headerName: json['header_name'],
+      updateDate: DateTime.parse(json['update_date']),
+      content: json['content'],
+    );
+  }
+}

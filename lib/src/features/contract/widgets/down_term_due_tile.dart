@@ -1,6 +1,7 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/utils/date_formatter_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -71,7 +72,7 @@ class _DownPaymentTermDueTileState extends State<DownPaymentTermDueTile> {
               ),
               Text(
                 widget.termDue.termName,
-                style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: mBrightPrimaryColor),
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: CommonUtil.colorTheme(context, darkColor: mDarkUnPaidColor, lightColor: mLightUnPaidColor)),
               ),
               IgnorePointer(
                 child: Checkbox(value: state, onChanged: (value) {}),

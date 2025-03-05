@@ -10,6 +10,7 @@ class VerifyOtpProvider {
   OTPVerifyResponse? _verifyOTPResponse;
   OTPRequest? _otpRequest;
   OTPRequest? get otpRequest => _otpRequest;
+  OTPAddUnitRequest? _otpAddUnitRequest;
 
   UserProvider? _userProvider;
   void updateUserProvider(UserProvider userProvider) {
@@ -34,10 +35,22 @@ class VerifyOtpProvider {
     switch (action) {
       case OTPFor.reLogin:
         _otpRef = await AwOtpService.sendOTPForReLogin(token: _userProvider!.token!, request: _otpRequest!);
+        break;
       case OTPFor.validateUser:
         _otpRef = await AwOtpService.sendOTPForValidateUser(token: _userProvider!.token!, request: _otpRequest!);
+        break;
       case OTPFor.changePin:
         _otpRef = await AwOtpService.sendOTPForChangePin(token: _userProvider!.token!, request: _otpRequest!);
+        break;
+      case OTPFor.addUnit:
+        if (_otpAddUnitRequest == null) return null;
+        _otpRef = await sendOTPForUnitAdd(
+          projectCode: _otpAddUnitRequest!.projectCode,
+          unitNumber: _otpAddUnitRequest!.unitNumber,
+          last4Id: _otpAddUnitRequest!.last4Id,
+        );
+        break;
+
       default:
         return null;
     }
@@ -48,13 +61,37 @@ class VerifyOtpProvider {
     switch (action) {
       case OTPFor.reLogin:
         _verifyOTPResponse = await AwOtpService.verifyOTPForLogin(token: _userProvider!.token!, transId: _otpRef!.transId!, otp: otp);
+        break;
       case OTPFor.validateUser:
         _verifyOTPResponse = await AwOtpService.verifyOTPForValidateUser(token: _userProvider!.token!, transId: _otpRef!.transId!, otp: otp);
+        break;
       case OTPFor.changePin:
         _verifyOTPResponse = await AwOtpService.verifyOTPForChangePin(token: _userProvider!.token!, transId: _otpRef!.transId!, otp: otp);
+        break;
       default:
         return null;
     }
     return _verifyOTPResponse;
+  }
+
+  Future<OTPRef?> sendOTPForUnitAdd({required String projectCode, required String unitNumber, required String last4Id}) async {
+    _otpAddUnitRequest = OTPAddUnitRequest(projectCode: projectCode, unitNumber: unitNumber, last4Id: last4Id);
+
+    if (_userProvider == null || _userProvider!.token == null) return null;
+    _otpRef = await AwOtpService.sendOTPForUnitAdd(token: _userProvider!.token!, projectCode: projectCode, unitNumber: unitNumber, last4Id: last4Id);
+    if (_otpRef != null) {
+      _otpRequest = OTPRequest.fromJson({
+        'channel': 'phone',
+        'otpType': 'phone',
+        'idCard4': last4Id,
+        'phone': _otpRef!.identifier,
+      });
+    }
+    return _otpRef;
+  }
+
+  Future<OTPAddUnitResponse?> verifyOTPForAddUnit({required String otp}) async {
+    final result = await AwOtpService.verifyOTPForAddUnit(token: _userProvider!.token!, transId: _otpRef!.transId!, otp: otp);
+    return result;
   }
 }

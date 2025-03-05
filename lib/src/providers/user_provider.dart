@@ -139,11 +139,36 @@ class UserProvider with ChangeNotifier {
 
   Future<UserInformation?> fetchUserInformation() async {
     if (token == null) return null;
-    final userInformation = await AwUserService.getUserInformation(_token!, _userId!);
+    final userInformation = await AwUserService.getUserInformation(_token!);
     if (userInformation != null) {
       _userInformation = userInformation;
       await secureStorage.write(key: 'USER_INFO', value: _userInformation!.toJson());
     }
     return _userInformation;
+  }
+
+  Future<List<PersonalConsent>> fetchPersonalConsents() async {
+    if (token == null) return [];
+    return await AwUserService.fetchPersonalConsents(_token!, language: userInformation?.language);
+  }
+
+  Future<PersonalConsentDetail?> fetchPersonalConsentDetail(String consentId) async {
+    if (token == null) return null;
+    return await AwUserService.fetchPersonalConsentDetail(_token!, consentId, language: userInformation?.language);
+  }
+
+  Future<bool> submitConsent(String consentId, bool value) async {
+    if (token == null) return false;
+    return await AwUserService.submitPersonalConsent(_token!, consentId, value);
+  }
+
+  Future<List<AboutItem>> fetchAboutItems() async {
+    if (token == null) return [];
+    return await AwUserService.fetchAboutItems(_token!, language: userInformation?.language);
+  }
+
+  Future<AboutItemDetail?> fetchAboutItemDetail(String consentId) async {
+    if (token == null) return null;
+    return await AwUserService.fetchAboutItemDetail(_token!, consentId, language: userInformation?.language);
   }
 }

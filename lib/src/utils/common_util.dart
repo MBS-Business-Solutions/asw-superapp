@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class CommonUtil {
   static int fastHash(String string) {
     var hash = 0xcbf29ce484222325;
@@ -12,5 +14,9 @@ class CommonUtil {
     }
 
     return hash;
+  }
+
+  static Color colorTheme(BuildContext context, {required Color darkColor, required Color lightColor}) {
+    return Theme.of(context).brightness == Brightness.dark ? darkColor : lightColor;
   }
 }

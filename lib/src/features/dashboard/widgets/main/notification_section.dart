@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/features/notifications/notifications_view.dart';
 import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:AssetWise/src/widgets/hot_menu.dart';
@@ -95,6 +98,12 @@ class DashboardNotificationSection extends StatelessWidget {
           ],
         ),
         child: ListTile(
+          onTap: () async {
+            await context.read<NotificationItemProvider>().markAsRead(id: item.id);
+            if (item.data == null) return;
+            final data = jsonDecode(item.data!);
+            Navigator.pushNamed(context, ContractsView.routeName, arguments: {'linkId': data['contract_id']});
+          },
           contentPadding: EdgeInsets.zero,
           title: Row(
             children: [

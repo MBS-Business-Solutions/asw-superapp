@@ -48,7 +48,6 @@ class _EmailNewValueViewState extends State<EmailNewValueView> {
                       controller: _emailController,
                       label: AppLocalizations.of(context)!.emailNewValueTextLabel,
                       keyboardType: TextInputType.emailAddress,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       validator: (value) {
                         if (value!.isEmpty || !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
                           return AppLocalizations.of(context)!.userDetailInvalidEmail;

@@ -3,6 +3,7 @@ import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/down_history_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/utils/date_formatter_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -77,10 +78,18 @@ class _ContractDetailViewState extends State<ContractDetailView> {
                           ),
                           _buildDetailText(context,
                               label: AppLocalizations.of(context)!.contractDetailBookingSellingPrice, value: AppLocalizations.of(context)!.priceFormat(contractDetail.sellingPrice)),
-                          _buildDetailText(context,
-                              label: AppLocalizations.of(context)!.contractDetailBookingDiscountPrice, value: AppLocalizations.of(context)!.priceFormat(contractDetail.cashDiscount)),
-                          _buildDetailText(context,
-                              label: AppLocalizations.of(context)!.contractDetailBookingDiscountAtTransferPrice, value: AppLocalizations.of(context)!.priceFormat(contractDetail.cashDiscountTransfer)),
+                          _buildDetailText(
+                            context,
+                            label: AppLocalizations.of(context)!.contractDetailBookingDiscountPrice,
+                            value: AppLocalizations.of(context)!.priceFormat(contractDetail.cashDiscount),
+                            show: contractDetail.cashDiscount > 0,
+                          ),
+                          _buildDetailText(
+                            context,
+                            label: AppLocalizations.of(context)!.contractDetailBookingDiscountAtTransferPrice,
+                            value: AppLocalizations.of(context)!.priceFormat(contractDetail.cashDiscountTransfer),
+                            show: contractDetail.cashDiscountTransfer > 0,
+                          ),
                           _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailBookingNetPrice, value: AppLocalizations.of(context)!.priceFormat(contractDetail.netPrice)),
 
                           _buildDetailText(context, label: AppLocalizations.of(context)!.contractDetailBookingAmount, value: AppLocalizations.of(context)!.priceFormat(contractDetail.bookAmount)),
@@ -98,16 +107,16 @@ class _ContractDetailViewState extends State<ContractDetailView> {
                                         },
                                         child: Row(
                                           children: [
-                                            const Icon(
+                                            Icon(
                                               Icons.remove_red_eye,
                                               size: 16,
-                                              color: mUnPaidColor,
+                                              color: CommonUtil.colorTheme(context, darkColor: mDarkUnPaidColor, lightColor: mLightUnPaidColor),
                                             ),
                                             const SizedBox(width: 4),
                                             Text(AppLocalizations.of(context)!.contractDetailDownAmountDetails,
                                                 style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                                                      color: mUnPaidColor,
-                                                      decorationColor: mUnPaidColor,
+                                                      color: CommonUtil.colorTheme(context, darkColor: mDarkUnPaidColor, lightColor: mLightUnPaidColor),
+                                                      decorationColor: CommonUtil.colorTheme(context, darkColor: mDarkUnPaidColor, lightColor: mLightUnPaidColor),
                                                       decoration: TextDecoration.underline,
                                                     )),
                                           ],
@@ -233,7 +242,8 @@ class _ContractDetailViewState extends State<ContractDetailView> {
     });
   }
 
-  Widget _buildDetailText(BuildContext context, {required String label, Widget? additionalWidget, required String value}) {
+  Widget _buildDetailText(BuildContext context, {required String label, Widget? additionalWidget, required String value, bool show = true}) {
+    if (!show) return const SizedBox();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 24),
       child: Row(

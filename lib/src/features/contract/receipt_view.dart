@@ -2,6 +2,7 @@ import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/receipt_view_file.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/utils/date_formatter_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,10 @@ class _ReceiptViewState extends State<ReceiptView> {
                               'assets/images/payment_success.svg',
                             ),
                             const SizedBox(height: mDefaultPadding),
-                            Text(AppLocalizations.of(context)!.receiptViewSuccess, style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: mPaidColor)),
+                            Text(AppLocalizations.of(context)!.receiptViewSuccess,
+                                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                                      color: CommonUtil.colorTheme(context, darkColor: mDarkPaidColor, lightColor: mLightPaidColor),
+                                    )),
                             const SizedBox(height: mMediumPadding),
                             Text(AppLocalizations.of(context)!.priceFormatDouble(receiptDetail.amount), style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white)),
                             const SizedBox(height: mMediumPadding),

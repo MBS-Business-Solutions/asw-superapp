@@ -101,7 +101,7 @@ class _OtpInputState extends State<OtpInput> {
                     alignment: Alignment.center,
                     child: Text(
                       index >= _values.length || _values[index].isEmpty ? ' ' : _values[index],
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(color: _errorState ? mRedColor : Colors.black87),
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(color: _errorState ? mBrightRedColor : Colors.black87),
                     ),
                   );
                 }),

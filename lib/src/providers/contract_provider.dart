@@ -1,3 +1,4 @@
+import 'package:AssetWise/src/models/aw_common_model.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/services/aw_contract_service.dart';
@@ -73,8 +74,8 @@ class ContractProvider {
     return result;
   }
 
-  Future<bool> removeContract(String unitId) async {
-    if (_userProvider == null) return false;
+  Future<ServiceResponse?> removeContract(String unitId) async {
+    if (_userProvider == null) return null;
     final result = await AwContractService.removeContract(_userProvider!.token!, unitId);
     return result;
   }

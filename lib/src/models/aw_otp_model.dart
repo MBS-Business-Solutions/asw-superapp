@@ -70,10 +70,69 @@ class OTPVerifyResponse {
   }
 }
 
+class OTPAddUnitRequest {
+  String projectCode;
+  String unitNumber;
+  String last4Id;
+
+  OTPAddUnitRequest({
+    required this.projectCode,
+    required this.unitNumber,
+    required this.last4Id,
+  });
+}
+
+class OTPAddUnitResponse {
+  int code;
+  String status;
+  String? unitId;
+  String? projectId;
+  String? contractId;
+  String? customerId;
+  String? unitNumber;
+  String? houseNumber;
+  String? projectName;
+  String? projectType;
+  String? contractNumber;
+  String? projectNameEn;
+
+  OTPAddUnitResponse({
+    required this.code,
+    required this.status,
+    this.unitId,
+    this.projectId,
+    this.contractId,
+    this.customerId,
+    this.unitNumber,
+    this.houseNumber,
+    this.projectName,
+    this.projectType,
+    this.contractNumber,
+    this.projectNameEn,
+  });
+  factory OTPAddUnitResponse.fromJson(Map<String, dynamic> json) {
+    return OTPAddUnitResponse(
+      code: json['code'] as int,
+      status: json['status'] as String,
+      unitId: json['data']?['unit_id'] as String?,
+      projectId: json['data']?['project_id'] as String?,
+      contractId: json['data']?['contract_id'] as String?,
+      customerId: json['data']?['customer_id'] as String?,
+      unitNumber: json['data']?['unit_number'] as String?,
+      houseNumber: json['data']?['house_number'] as String?,
+      projectName: json['data']?['project_name'] as String?,
+      projectType: json['data']?['project_type'] as String?,
+      contractNumber: json['data']?['contract_number'] as String?,
+      projectNameEn: json['data']?['project_name_en'] as String?,
+    );
+  }
+}
+
 enum OTPFor {
   reLogin,
   validateUser,
   changePin,
+  addUnit,
   other,
 }
 

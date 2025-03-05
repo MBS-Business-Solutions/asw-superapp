@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:AssetWise/src/consts/url_const.dart';
+import 'package:AssetWise/src/models/aw_common_model.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -293,7 +294,7 @@ class AwContractService {
       'unit_id': unitId,
     };
     final response = await http.post(
-      Uri.parse('$BASE_URL/mobile/setting/unit-default'),
+      Uri.parse('$BASE_URL/mobile/setting/units/$unitId/default'),
       headers: {
         'Authorization': 'Bearer $token',
       },
@@ -311,12 +312,12 @@ class AwContractService {
     return false;
   }
 
-  static Future<bool> removeContract(String token, String unitId) async {
+  static Future<ServiceResponse?> removeContract(String token, String unitId) async {
     final body = {
       'unit_id': unitId,
     };
     final response = await http.post(
-      Uri.parse('$BASE_URL/mobile/setting/unit-default'),
+      Uri.parse('$BASE_URL/mobile/setting/units/$unitId/remove'),
       headers: {
         'Authorization': 'Bearer $token',
       },
@@ -324,14 +325,12 @@ class AwContractService {
     );
 
     try {
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        return true;
-      }
+      return ServiceResponse.fromJson(json.decode(response.body));
     } catch (e) {
       if (kDebugMode) print(e);
     }
     if (kDebugMode) print(response);
-    return false;
+    return null;
   }
 
   static Future<List<ContractProject>> fetchProjects(String token, {String? language}) async {

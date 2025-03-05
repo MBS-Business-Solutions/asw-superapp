@@ -55,129 +55,132 @@ class _OTPRequestViewState extends State<OTPRequestView> {
             leading: widget.isBackable ? null : SizedBox(),
             backgroundColor: Colors.transparent,
           ),
-          body: Stack(
-            children: [
-              const AssetWiseBG(),
-              Positioned(
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-                child: SingleChildScrollView(
-                  child: SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, bottom: 32),
-                              child: AssetWiseLogo(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                              ),
-                            ),
-                            Text(
-                              _emailForm ? AppLocalizations.of(context)!.otpRequestEMail : AppLocalizations.of(context)!.otpRequestMobile,
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              _emailForm ? AppLocalizations.of(context)!.otpRequestEMailHint(widget.forAction ?? '') : AppLocalizations.of(context)!.otpRequestMobileHint(widget.forAction ?? ''),
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            if (widget.canLoginAsResident)
-                              GestureDetector(
-                                onTap: () {
-                                  FocusScope.of(context).unfocus();
-                                  setState(() {
-                                    _isResident = !_isResident;
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    Checkbox(
-                                      value: _isResident,
-                                      onChanged: (value) {
-                                        FocusScope.of(context).unfocus();
-                                        setState(() {
-                                          _isResident = value!;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      AppLocalizations.of(context)!.otpRequestIsResident,
-                                      style: Theme.of(context).textTheme.bodyMedium,
-                                    ),
-                                  ],
+          body: IgnorePointer(
+            ignoring: _isLoading,
+            child: Stack(
+              children: [
+                const AssetWiseBG(),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: SingleChildScrollView(
+                    child: SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, bottom: 32),
+                                child: AssetWiseLogo(
+                                  width: MediaQuery.of(context).size.width * 0.5,
                                 ),
                               ),
-                            SwitchListTile.adaptive(
-                              contentPadding: EdgeInsets.zero,
-                              value: _emailForm,
-                              onChanged: (value) {
-                                setState(() {
-                                  FocusScope.of(context).unfocus();
-                                  _emailForm = value;
-                                });
-                              },
-                              title: Text(AppLocalizations.of(context)!.otpRequestLoginByEmail),
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            _emailForm ? _buildEmailForm() : _buildMobileForm(),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            if (_showError != null)
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 8),
-                                    child: Icon(
-                                      Icons.cancel_outlined,
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                  Expanded(
-                                      child: Text(
-                                    _showError!,
-                                    style: Theme.of(context).textTheme.labelMedium,
-                                  ))
-                                ],
+                              Text(
+                                _emailForm ? AppLocalizations.of(context)!.otpRequestEMail : AppLocalizations.of(context)!.otpRequestMobile,
+                                style: Theme.of(context).textTheme.titleLarge,
                               ),
-                            const SizedBox(
-                              height: 24,
-                            ),
-                            SizedBox(
-                                width: double.infinity,
-                                height: 56,
-                                child: FilledButton(
-                                  onPressed: _isLoading
-                                      ? null
-                                      : () {
-                                          _processToOTPForm(context);
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Text(
+                                _emailForm ? AppLocalizations.of(context)!.otpRequestEMailHint(widget.forAction ?? '') : AppLocalizations.of(context)!.otpRequestMobileHint(widget.forAction ?? ''),
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              if (widget.canLoginAsResident)
+                                GestureDetector(
+                                  onTap: () {
+                                    FocusScope.of(context).unfocus();
+                                    setState(() {
+                                      _isResident = !_isResident;
+                                    });
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Checkbox(
+                                        value: _isResident,
+                                        onChanged: (value) {
+                                          FocusScope.of(context).unfocus();
+                                          setState(() {
+                                            _isResident = value!;
+                                          });
                                         },
-                                  child: _isLoading ? const CircularProgressIndicator() : Text(AppLocalizations.of(context)!.otpRequestNext),
-                                )),
-                            SizedBox(
-                              height: MediaQuery.of(context).viewInsets.bottom,
-                            )
-                          ],
+                                      ),
+                                      Text(
+                                        AppLocalizations.of(context)!.otpRequestIsResident,
+                                        style: Theme.of(context).textTheme.bodyMedium,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              SwitchListTile.adaptive(
+                                contentPadding: EdgeInsets.zero,
+                                value: _emailForm,
+                                onChanged: (value) {
+                                  setState(() {
+                                    FocusScope.of(context).unfocus();
+                                    _emailForm = value;
+                                  });
+                                },
+                                title: Text(AppLocalizations.of(context)!.otpRequestLoginByEmail),
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              _emailForm ? _buildEmailForm() : _buildMobileForm(),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              if (_showError != null)
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 8),
+                                      child: Icon(
+                                        Icons.cancel_outlined,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                    Expanded(
+                                        child: Text(
+                                      _showError!,
+                                      style: Theme.of(context).textTheme.labelMedium,
+                                    ))
+                                  ],
+                                ),
+                              const SizedBox(
+                                height: 24,
+                              ),
+                              SizedBox(
+                                  width: double.infinity,
+                                  height: 56,
+                                  child: FilledButton(
+                                    onPressed: _isLoading
+                                        ? null
+                                        : () {
+                                            _processToOTPForm(context);
+                                          },
+                                    child: _isLoading ? const CircularProgressIndicator() : Text(AppLocalizations.of(context)!.otpRequestNext),
+                                  )),
+                              SizedBox(
+                                height: MediaQuery.of(context).viewInsets.bottom,
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),

@@ -8,6 +8,7 @@ import 'package:AssetWise/src/features/payments/payment_channels_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/utils/date_formatter_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -74,13 +75,14 @@ class _ContractsViewState extends State<ContractsView> {
     return Scaffold(
         body: Stack(
       children: [
-        Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: _contracts == null ? const Center(child: CircularProgressIndicator()) : _buildContractSelector(context),
-        ),
-        if (_contracts != null)
+        if (_contracts != null && _contracts!.isNotEmpty)
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: _contracts == null ? const Center(child: CircularProgressIndicator()) : _buildContractSelector(context),
+          ),
+        if (_contracts != null && _contracts!.isNotEmpty)
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -112,7 +114,10 @@ class _ContractsViewState extends State<ContractsView> {
           top: MediaQuery.of(context).padding.top,
           left: 0,
           child: IconButton(
-            icon: const Icon(Icons.close),
+            icon: const Icon(
+              Icons.close,
+              color: mDarkBodyTextColor,
+            ),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -154,7 +159,10 @@ class _ContractsViewState extends State<ContractsView> {
         child: Row(
           children: [
             IconButton(
-              icon: const Icon(Icons.chevron_left),
+              icon: Icon(
+                Icons.chevron_left,
+                // color: mDarkBodyTextColor,
+              ),
               onPressed: _selectedIndex > 0
                   ? () {
                       setState(() {
@@ -163,6 +171,7 @@ class _ContractsViewState extends State<ContractsView> {
                       });
                     }
                   : null,
+              color: mDarkBodyTextColor,
             ),
             Expanded(
               child: Column(
@@ -171,8 +180,8 @@ class _ContractsViewState extends State<ContractsView> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(_contracts![_selectedIndex].unitNumber, style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Colors.white)),
-                      Text(_contracts![_selectedIndex].projectName, style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white)),
+                      Text(_contracts![_selectedIndex].unitNumber, style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: mDarkBodyTextColor)),
+                      Text(_contracts![_selectedIndex].projectName, style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: mDarkBodyTextColor)),
                     ],
                   ),
                   Expanded(
@@ -186,7 +195,7 @@ class _ContractsViewState extends State<ContractsView> {
                                             contractId: _selectedContract!.contractId,
                                           ))),
                               style: OutlinedButton.styleFrom(
-                                foregroundColor: Colors.white,
+                                foregroundColor: mDarkBodyTextColor,
                               ),
                               icon: const Icon(Icons.dock_sharp),
                               label: Text(AppLocalizations.of(context)!.contractsViewContract),
@@ -198,7 +207,10 @@ class _ContractsViewState extends State<ContractsView> {
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.chevron_right),
+              icon: const Icon(
+                Icons.chevron_right,
+                // color: mDarkBodyTextColor,
+              ),
               onPressed: _selectedIndex < _contracts!.length - 1
                   ? () {
                       setState(() {
@@ -207,6 +219,7 @@ class _ContractsViewState extends State<ContractsView> {
                       });
                     }
                   : null,
+              color: mDarkBodyTextColor,
             ),
           ],
         ),
@@ -260,8 +273,18 @@ class _ContractsViewState extends State<ContractsView> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(AppLocalizations.of(context)!.overdueDetailAmountLabel, style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mUnPaidColor)),
-                            Text(AppLocalizations.of(context)!.priceFormatBaht(overdueDetail.amount), style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mUnPaidColor)),
+                            Text(
+                              AppLocalizations.of(context)!.overdueDetailAmountLabel,
+                              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                    color: CommonUtil.colorTheme(context, darkColor: mDarkUnPaidColor, lightColor: mLightUnPaidColor),
+                                  ),
+                            ),
+                            Text(
+                              AppLocalizations.of(context)!.priceFormatBaht(overdueDetail.amount),
+                              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                    color: CommonUtil.colorTheme(context, darkColor: mDarkUnPaidColor, lightColor: mLightUnPaidColor),
+                                  ),
+                            ),
                           ],
                         ),
                         const SizedBox(height: 8),
@@ -300,7 +323,7 @@ class _ContractsViewState extends State<ContractsView> {
                             child: Text(AppLocalizations.of(context)!.overdueDetailPayment)),
                         TextButton(
                             onPressed: () => Navigator.pushNamed(context, OverduesView.routeName, arguments: {'contract': _selectedContract!}),
-                            style: TextButton.styleFrom(foregroundColor: Colors.white),
+                            style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.onSurface),
                             child: Text(AppLocalizations.of(context)!.overdueDetailViewDetail)),
                       ],
                     ),

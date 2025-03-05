@@ -423,5 +423,7 @@
   "managePersonalInfoCollectionPersonalInfo": "Collection and Use of Personal Information",
   "managePersonalInfoMarketingPurpose": "Consent for Marketing Purposes",
   "managePersonalInfoDisclosureMarketing": "Consent for Disclosure of Information for Marketing Purposes",
-  "managePersonalInfoGiveConsent": "Give Consent"
+  "managePersonalInfoGiveConsent": "Give Consent",
+
+  "lastUpdated": "Last updated {date}"
 }

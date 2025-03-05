@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/features/my_assets/add_asset_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +22,7 @@ class MyAssetsView extends StatefulWidget {
 }
 
 class _MyAssetsViewState extends State<MyAssetsView> {
-  late final Future<List<Contract>?> _contractsFuture;
+  late Future<List<Contract>?> _contractsFuture;
   @override
   void initState() {
     _contractsFuture = context.read<ContractProvider>().fetchContracts();
@@ -86,8 +89,10 @@ class _MyAssetsViewState extends State<MyAssetsView> {
     );
   }
 
-  void _addNewAsset() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const AddAssetView()));
+  void _addNewAsset() async {
+    await Navigator.push(context, MaterialPageRoute(builder: (context) => const AddAssetView()));
+
+    _refreshData();
   }
 
   void _showContractActionBottomSheet(Contract contract) async {
@@ -114,13 +119,15 @@ class _MyAssetsViewState extends State<MyAssetsView> {
                         style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                       )),
                   const SizedBox(height: mDefaultPadding),
-                  OutlinedButton(
-                      onPressed: () => contract.isResident ? null : Navigator.pop(context, _MyAssetAction.delete),
-                      child: Text(
-                        AppLocalizations.of(context)!.myAssetDelete,
-                        style: TextStyle(color: contract.isResident ? mGreyColor : Theme.of(context).colorScheme.onSurface),
-                      )),
-                  const SizedBox(height: mDefaultPadding),
+                  if (!contract.isResident || true) ...[
+                    OutlinedButton(
+                        onPressed: () => Navigator.pop(context, _MyAssetAction.delete),
+                        child: Text(
+                          AppLocalizations.of(context)!.myAssetDelete,
+                          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                        )),
+                    const SizedBox(height: mDefaultPadding),
+                  ]
                 ],
               ),
             ),
@@ -148,8 +155,9 @@ class _MyAssetsViewState extends State<MyAssetsView> {
   void _setDefault(Contract contract) async {
     if (mounted) {
       final result = await context.read<ContractProvider>().setDefaultContract(contract.id);
+      _refreshData();
       if (result) {
-        Navigator.pushNamed(context, ContractsView.routeName, arguments: {'linkId': contract.id});
+        Navigator.pushNamed(context, ContractsView.routeName, arguments: {'linkId': contract.contractId});
       }
     }
   }
@@ -188,8 +196,9 @@ class _MyAssetsViewState extends State<MyAssetsView> {
       },
     );
     if (result) {
-      final isDeleted = await context.read<ContractProvider>().removeContract(contract.id);
-      if (isDeleted) {
+      final response = await context.read<ContractProvider>().removeContract(contract.id);
+      if (response != null) {
+        final isSuccess = response.status == 'success';
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           showCloseIcon: true,
           closeIconColor: Theme.of(context).colorScheme.onSurface,
@@ -199,13 +208,13 @@ class _MyAssetsViewState extends State<MyAssetsView> {
             padding: const EdgeInsets.symmetric(horizontal: mDefaultPadding),
             child: Row(
               children: [
-                const Icon(
-                  Icons.check_circle,
-                  color: mGreenColor,
+                Icon(
+                  isSuccess ? Icons.check_circle : Icons.error,
+                  color: isSuccess ? mGreenColor : mBrightRedColor,
                 ),
                 const SizedBox(width: mMediumPadding),
                 Text(
-                  AppLocalizations.of(context)!.myAssetDeleteSuccess,
+                  isSuccess ? AppLocalizations.of(context)!.myAssetDeleteSuccess : response.message ?? '-',
                   style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                 ),
               ],
@@ -214,6 +223,7 @@ class _MyAssetsViewState extends State<MyAssetsView> {
           behavior: SnackBarBehavior.floating,
           margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height - 100, right: 20, left: 20),
         ));
+        _refreshData();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           showCloseIcon: true,
@@ -241,6 +251,12 @@ class _MyAssetsViewState extends State<MyAssetsView> {
         ));
       }
     }
+  }
+
+  void _refreshData() {
+    setState(() {
+      _contractsFuture = context.read<ContractProvider>().fetchContracts();
+    });
   }
 }
 
@@ -293,15 +309,17 @@ class MyAssetListTile extends StatelessWidget {
                       child: contract.isDefault
                           ? Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.check_circle_outline,
-                                  color: mPaidColor,
+                                  color: CommonUtil.colorTheme(context, darkColor: mDarkPaidColor, lightColor: mLightPaidColor),
                                   size: 20,
                                 ),
                                 const SizedBox(width: mMediumPadding),
                                 Text(
                                   AppLocalizations.of(context)!.myAssetDefault,
-                                  style: Theme.of(context).textTheme.bodySmall!.copyWith(color: mPaidColor),
+                                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                        color: CommonUtil.colorTheme(context, darkColor: mDarkPaidColor, lightColor: mLightPaidColor),
+                                      ),
                                 )
                               ],
                             )

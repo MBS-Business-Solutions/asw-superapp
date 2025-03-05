@@ -1,3 +1,4 @@
+import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/features/register_buyer/register_buyer_view.dart';
@@ -5,6 +6,7 @@ import 'package:AssetWise/src/features/verify_otp/verify_otp_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/models/aw_otp_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
+import 'package:AssetWise/src/providers/verify_otp_provider.dart';
 import 'package:AssetWise/src/widgets/aw_dropdownform.dart';
 import 'package:AssetWise/src/widgets/aw_textformfield.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +23,11 @@ class AddAssetView extends StatefulWidget {
 
 class _AddAssetViewState extends State<AddAssetView> {
   final _formKey = GlobalKey<FormState>();
-  final _invalidProject = false;
-  final List<ContractProject> _projects = [];
+  String? _selectedProject;
   late Future<List<ContractProject>> _fetchProjectsFuture;
+  String? _errorMessage;
+  final _unitController = TextEditingController();
+  final _last4IdController = TextEditingController();
 
   @override
   void initState() {
@@ -55,7 +59,7 @@ class _AddAssetViewState extends State<AddAssetView> {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
                           AppLocalizations.of(context)!.addAssetTitle,
@@ -71,6 +75,9 @@ class _AddAssetViewState extends State<AddAssetView> {
                           titleBuilder: (context, index) => Text(projects[index].name),
                           itemCount: projects.length,
                           label: AppLocalizations.of(context)!.addAssetProject,
+                          onChanged: (dynamic project) {
+                            _selectedProject = project;
+                          },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return AppLocalizations.of(context)!.addAssetProjectRequired;
@@ -80,6 +87,7 @@ class _AddAssetViewState extends State<AddAssetView> {
                         ),
                         const SizedBox(height: mDefaultPadding),
                         AwTextFormField(
+                          controller: _unitController,
                           label: AppLocalizations.of(context)!.addAssetUnit,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -90,6 +98,7 @@ class _AddAssetViewState extends State<AddAssetView> {
                         ),
                         const SizedBox(height: mDefaultPadding),
                         AwTextFormField(
+                          controller: _last4IdController,
                           label: AppLocalizations.of(context)!.addAssetLast4Id,
                           keyboardType: TextInputType.number,
                           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -101,6 +110,10 @@ class _AddAssetViewState extends State<AddAssetView> {
                             return null;
                           },
                         ),
+                        if (_errorMessage != null) ...[
+                          const SizedBox(height: mDefaultPadding),
+                          Text(_errorMessage ?? 'Error message', style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: mRedColor), textAlign: TextAlign.center),
+                        ],
                         const SizedBox(height: mDefaultPadding),
                         SizedBox(width: double.infinity, child: FilledButton(onPressed: () => _submit(), child: const Text('ถัดไป'))),
                       ],
@@ -114,18 +127,23 @@ class _AddAssetViewState extends State<AddAssetView> {
   void _submit() async {
     // TODO: Implement submit logic
     if (_formKey.currentState!.validate()) {
-      // if (await context.read<VerifyOtpProvider>().requestOTP(phoneEmail: '0832494545') != null) {
-      // Process data.
-      final otpVerified = await Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const VerifyOTPView(
-                    action: OTPFor.other,
-                  )));
-      // if (otpVerified != null) {
-      Navigator.pushReplacementNamed(context, ContractsView.routeName, arguments: {'linkId': 'contract.id'});
-      // }
-      // }
+      final otp = await context.read<VerifyOtpProvider>().sendOTPForUnitAdd(
+            projectCode: _selectedProject!, //'W8C001',
+            unitNumber: _unitController.text, //'78/245',
+            last4Id: _last4IdController.text, //'7940',
+          );
+      if (otp != null) {
+        if (otp.success != 'success') {
+          setState(() {
+            _errorMessage = otp.message;
+          });
+          return;
+        }
+        final otpVerified = await Navigator.push(context, MaterialPageRoute(builder: (context) => const VerifyOTPView(action: OTPFor.addUnit))) as OTPAddUnitResponse?;
+        if (otpVerified != null) {
+          Navigator.pushReplacementNamed(context, ContractsView.routeName, arguments: {'linkId': otpVerified.contractId});
+        }
+      }
     }
   }
 }

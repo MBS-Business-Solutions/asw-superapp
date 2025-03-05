@@ -1,7 +1,9 @@
 import 'package:AssetWise/src/features/manage_personal_info/personal_info_view.dart';
+import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class ManagePersonalInfoView extends StatelessWidget {
   const ManagePersonalInfoView({super.key});
@@ -20,33 +22,25 @@ class ManagePersonalInfoView extends StatelessWidget {
         children: [
           const AssetWiseBG(),
           Positioned.fill(
-            child: ListView(
-              children: [
-                Container(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  child: ListTile(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PersonalInfoView(title: AppLocalizations.of(context)!.managePersonalInfoCollectionPersonalInfo))),
-                    title: Text(AppLocalizations.of(context)!.managePersonalInfoCollectionPersonalInfo),
-                    trailing: const Icon(Icons.chevron_right),
+            child: FutureBuilder(
+              future: context.read<UserProvider>().fetchPersonalConsents(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final list = snapshot.data!;
+                return ListView.builder(
+                  itemBuilder: (context, index) => Container(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    child: ListTile(
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PersonalInfoView(personalConsent: list[index]))),
+                      title: Text(list[index].name),
+                      trailing: const Icon(Icons.chevron_right),
+                    ),
                   ),
-                ),
-                Container(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  child: ListTile(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PersonalInfoView(title: AppLocalizations.of(context)!.managePersonalInfoMarketingPurpose))),
-                    title: Text(AppLocalizations.of(context)!.managePersonalInfoMarketingPurpose),
-                    trailing: const Icon(Icons.chevron_right),
-                  ),
-                ),
-                Container(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  child: ListTile(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PersonalInfoView(title: AppLocalizations.of(context)!.managePersonalInfoDisclosureMarketing))),
-                    title: Text(AppLocalizations.of(context)!.managePersonalInfoDisclosureMarketing),
-                    trailing: const Icon(Icons.chevron_right),
-                  ),
-                ),
-              ],
+                  itemCount: list.length,
+                );
+              },
             ),
           ),
         ],

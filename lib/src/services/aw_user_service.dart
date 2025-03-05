@@ -191,7 +191,7 @@ class AwUserService {
     return false;
   }
 
-  static Future<UserInformation?> getUserInformation(String userToken, String customerId) async {
+  static Future<UserInformation?> getUserInformation(String userToken) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/home/me'),
       headers: <String, String>{
@@ -205,6 +205,132 @@ class AwUserService {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == 'success') {
           return UserInformation.fromJson(jsonResponse['data']);
+        }
+      } catch (e) {
+        if (kDebugMode) print(e);
+      }
+    }
+    if (kDebugMode) print(response);
+    return null;
+  }
+
+  static Future<List<PersonalConsent>> fetchPersonalConsents(String userToken, {String? language}) async {
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/setting/consent'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $userToken',
+        'Content-Language': language ?? 'th',
+      },
+    ).timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        if (jsonResponse['status'] == 'success') {
+          var consentsList = jsonResponse['data'] as List;
+          return consentsList.map((i) => PersonalConsent.fromJson(i)).toList();
+        }
+      } catch (e) {
+        if (kDebugMode) print(e);
+      }
+    }
+    if (kDebugMode) print(response);
+    return [];
+  }
+
+  static Future<PersonalConsentDetail?> fetchPersonalConsentDetail(String userToken, String consentId, {String? language}) async {
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/setting/consent/$consentId'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $userToken',
+        'Content-Language': language ?? 'th',
+      },
+    ).timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        if (jsonResponse['status'] == 'success') {
+          return PersonalConsentDetail.fromJson(jsonResponse['data']);
+        }
+      } catch (e) {
+        if (kDebugMode) print(e);
+      }
+    }
+    if (kDebugMode) print(response);
+    return null;
+  }
+
+  static Future<bool> submitPersonalConsent(String userToken, String consentId, bool consentGiven) async {
+    final response = await http
+        .post(
+          Uri.parse('$BASE_URL/mobile/setting/consent/$consentId'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $userToken',
+          },
+          body: jsonEncode({
+            "is_given": consentGiven,
+          }),
+        )
+        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        if (jsonResponse['status'] == 'success') {
+          return true;
+        }
+      } catch (e) {
+        if (kDebugMode) print(e);
+      }
+    }
+    if (kDebugMode) print(response);
+    return false;
+  }
+
+  static Future<List<AboutItem>> fetchAboutItems(String userToken, {String? language}) async {
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/setting/about'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $userToken',
+        'Content-Language': language ?? 'th',
+      },
+    ).timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        if (jsonResponse['status'] == 'success') {
+          var consentsList = jsonResponse['data'] as List;
+          return consentsList.map((i) => AboutItem.fromJson(i)).toList();
+        }
+      } catch (e) {
+        if (kDebugMode) print(e);
+      }
+    }
+    if (kDebugMode) print(response);
+    return [];
+  }
+
+  static Future<AboutItemDetail?> fetchAboutItemDetail(String userToken, String consentId, {String? language}) async {
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/setting/about/$consentId'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $userToken',
+        'Content-Language': language ?? 'th',
+      },
+    ).timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        if (jsonResponse['status'] == 'success') {
+          return AboutItemDetail.fromJson(jsonResponse['data']);
         }
       } catch (e) {
         if (kDebugMode) print(e);

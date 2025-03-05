@@ -4,6 +4,7 @@ import 'package:AssetWise/src/features/contract/widgets/down_term_due_tile.dart'
 import 'package:AssetWise/src/features/payments/payment_channels_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -74,12 +75,12 @@ class _OverduesViewState extends State<OverduesView> {
                             Expanded(
                               child: Text(
                                 AppLocalizations.of(context)!.overduesViewSumLabel,
-                                style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mBrightPrimaryColor),
+                                style: Theme.of(context).textTheme.titleMedium!.copyWith(color: CommonUtil.colorTheme(context, darkColor: mDarkUnPaidColor, lightColor: mLightUnPaidColor)),
                               ),
                             ),
                             Text(
                               AppLocalizations.of(context)!.priceFormatDouble(_payAmount),
-                              style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mBrightPrimaryColor),
+                              style: Theme.of(context).textTheme.titleMedium!.copyWith(color: CommonUtil.colorTheme(context, darkColor: mDarkUnPaidColor, lightColor: mLightUnPaidColor)),
                             ),
                           ],
                         ),

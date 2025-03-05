@@ -422,7 +422,7 @@
   "managePersonalInfoCollectionPersonalInfo": "การรวมรวบและใช้ข้อมูลส่วนบุคคล",
   "managePersonalInfoMarketingPurpose": "ความยินยอมเพื่อวัตถุประสงค์ทางการตลาด",
   "managePersonalInfoDisclosureMarketing": "ความยินยอมในการเปิดเผยข้อมูลเพื่อวัตถุประสงค์ทางการตลาด",
-  "managePersonalInfoGiveConsent": "ให้ความยินยอม"
+  "managePersonalInfoGiveConsent": "ให้ความยินยอม",
 
-
+  "lastUpdated": "อัปเดตล่าสุด {date}"
 }

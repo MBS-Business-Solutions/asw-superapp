@@ -33,8 +33,8 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
     if (verifyOTPResponse != null) {
       firstNameController.text = verifyOTPResponse.firstName ?? '';
       lastNameController.text = verifyOTPResponse.lastName ?? '';
-      phoneController.text = verifyOTPResponse.phone ?? '';
-      emailController.text = verifyOTPResponse.email ?? '';
+      phoneController.text = registerProvider.phone ?? verifyOTPResponse.phone ?? '';
+      emailController.text = registerProvider.email ?? verifyOTPResponse.email ?? '';
     }
     super.initState();
   }
@@ -134,7 +134,6 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
                                 isEditable: isEditable,
                                 label: AppLocalizations.of(context)!.userDetailEmail,
                                 keyboardType: TextInputType.emailAddress,
-                                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                 validator: (value) {
                                   if (value!.isNotEmpty && !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
                                     return AppLocalizations.of(context)!.userDetailInvalidEmail;

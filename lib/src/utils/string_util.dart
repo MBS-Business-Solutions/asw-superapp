@@ -7,7 +7,7 @@ class StringUtil {
   }
 
   static String phoneFormatter(String phone) {
-    phone = phone.replaceAll(RegExp(r'\D'), '');
+    phone = phone.replaceAll(RegExp(r'-'), '');
     final tmpPhone = '$phone          '.substring(0, 10);
     return '${tmpPhone.substring(0, 3)}-${tmpPhone.substring(3, 6)}-${tmpPhone.substring(6, 10)}';
   }

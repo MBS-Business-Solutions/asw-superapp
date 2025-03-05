@@ -42,7 +42,7 @@ class _DashboardViewState extends State<DashboardView> {
               return Positioned(
                 left: 0,
                 right: 0,
-                bottom: MediaQuery.of(context).padding.bottom + mDefaultPadding,
+                bottom: MediaQuery.of(context).padding.bottom,
                 child: SizedBox(
                   height: 130,
                   child: BottomBar(

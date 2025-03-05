@@ -96,6 +96,31 @@ class AwOtpService {
     return null;
   }
 
+  static Future<OTPRef?> sendOTPForUnitAdd({
+    required String token,
+    required String projectCode,
+    required String unitNumber,
+    required String last4Id,
+    String? language,
+  }) async {
+    final body = {"project_code": projectCode, "unit_number": unitNumber, "id_card4": last4Id};
+    final response = await http.post(
+      Uri.parse('$BASE_URL/mobile/setting/unit-add'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+        'Content-Language': language ?? 'th',
+      },
+      body: jsonEncode(body),
+    );
+    Map<String, dynamic> jsonResponse = json.decode(response.body);
+    if (response.statusCode >= 200 && response.statusCode < 500) {
+      return OTPRef.fromJson(jsonResponse);
+    }
+    if (kDebugMode) print(response);
+    return OTPRef.fromJson({"code": response.statusCode, "status": "fail", 'message': 'error'});
+  }
+
   static Future<OTPVerifyResponse?> verifyOTPForLogin({required String token, required String transId, required String otp, String? language}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/verify-login'),
@@ -172,6 +197,50 @@ class AwOtpService {
         if (jsonResponse['status'] == 'success') {
           return OTPVerifyResponse.fromJson(jsonResponse);
         }
+      } catch (e) {
+        if (kDebugMode) print(e);
+      }
+    }
+    if (kDebugMode) print(response);
+    return null;
+  }
+
+  static Future<OTPAddUnitResponse?> verifyOTPForAddUnit({required String token, required String transId, required String otp, String? language}) async {
+    final response = await http.post(
+      Uri.parse('$BASE_URL/mobile/setting/verify-unit-add'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+        'Content-Language': language ?? 'th',
+      },
+      body: jsonEncode({
+        "trans_id": transId,
+        "otp": otp,
+      }),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 500) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        return OTPAddUnitResponse.fromJson(jsonResponse);
+        // return OTPAddUnitResponse.fromJson({
+        //   "code": 201,
+        //   "status": "success",
+        //   "data": {
+        //     "email": "Chanyanut894@gmail.com",
+        //     "phone": "0994926691",
+        //     "unit_id": "da916b51-0796-4412-947b-c6ad8551938f",
+        //     "project_id": "W8C001",
+        //     "contract_id": "SO-W8C001-25020005",
+        //     "customer_id": "39ec08dd-6cea-4066-835c-13507a6bdbd8",
+        //     "unit_number": "B209",
+        //     "house_number": "78/245",
+        //     "project_name": "แอทโมซ โฟลว์ มีนบุรี",
+        //     "project_type": "C",
+        //     "contract_number": "CO-W8C001-250025",
+        //     "project_name_en": "Atmoz Flow Minburi"
+        //   }
+        // });
       } catch (e) {
         if (kDebugMode) print(e);
       }

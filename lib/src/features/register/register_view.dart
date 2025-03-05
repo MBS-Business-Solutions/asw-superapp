@@ -37,128 +37,131 @@ class _RegisterViewState extends State<RegisterView> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
         ),
-        body: Stack(
-          children: [
-            const AssetWiseBG(),
-            Positioned(
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0,
-              child: SingleChildScrollView(
-                child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, bottom: 32),
-                            child: AssetWiseLogo(
-                              width: MediaQuery.of(context).size.width * 0.5,
+        body: IgnorePointer(
+          ignoring: _isLoading,
+          child: Stack(
+            children: [
+              const AssetWiseBG(),
+              Positioned(
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+                child: SingleChildScrollView(
+                  child: SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, bottom: 32),
+                              child: AssetWiseLogo(
+                                width: MediaQuery.of(context).size.width * 0.5,
+                              ),
                             ),
-                          ),
-                          Text(
-                            _emailForm ? AppLocalizations.of(context)!.registerEMail : AppLocalizations.of(context)!.registerMobile,
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                          const SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            _emailForm ? AppLocalizations.of(context)!.registerEMailHint : AppLocalizations.of(context)!.registerMobileHint,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                          const SizedBox(
-                            height: 4,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              FocusScope.of(context).unfocus();
-                              setState(() {
-                                _isResident = !_isResident;
-                              });
-                            },
-                            child: Row(
-                              children: [
-                                Checkbox(
-                                  value: _isResident,
-                                  onChanged: (value) {
-                                    FocusScope.of(context).unfocus();
-                                    setState(() {
-                                      _isResident = value!;
-                                    });
-                                  },
-                                ),
-                                Text(
-                                  AppLocalizations.of(context)!.registerIsResident,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                              ],
+                            Text(
+                              _emailForm ? AppLocalizations.of(context)!.registerEMail : AppLocalizations.of(context)!.registerMobile,
+                              style: Theme.of(context).textTheme.titleLarge,
                             ),
-                          ),
-                          SwitchListTile.adaptive(
-                            contentPadding: EdgeInsets.zero,
-                            value: _emailForm,
-                            onChanged: (value) {
-                              setState(() {
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            Text(
+                              _emailForm ? AppLocalizations.of(context)!.registerEMailHint : AppLocalizations.of(context)!.registerMobileHint,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            GestureDetector(
+                              onTap: () {
                                 FocusScope.of(context).unfocus();
-                                _emailForm = value;
-                              });
-                            },
-                            title: Text(AppLocalizations.of(context)!.registerLoginByEmail),
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          _emailForm ? _buildEmailForm() : _buildMobileForm(),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          if (_showError != null)
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 8),
-                                  child: Icon(
-                                    Icons.cancel_outlined,
-                                    color: Colors.red,
+                                setState(() {
+                                  _isResident = !_isResident;
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  Checkbox(
+                                    value: _isResident,
+                                    onChanged: (value) {
+                                      FocusScope.of(context).unfocus();
+                                      setState(() {
+                                        _isResident = value!;
+                                      });
+                                    },
                                   ),
-                                ),
-                                Expanded(
-                                    child: Text(
-                                  _showError!,
-                                  style: Theme.of(context).textTheme.labelMedium,
-                                ))
-                              ],
+                                  Text(
+                                    AppLocalizations.of(context)!.registerIsResident,
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ],
+                              ),
                             ),
-                          const SizedBox(
-                            height: 24,
-                          ),
-                          SizedBox(
-                              width: double.infinity,
-                              height: 56,
-                              child: FilledButton(
-                                onPressed: _isLoading
-                                    ? null
-                                    : () {
-                                        _processToOTPForm();
-                                      },
-                                child: _isLoading ? const CircularProgressIndicator() : Text(AppLocalizations.of(context)!.registerNext),
-                              )),
-                          SizedBox(
-                            height: MediaQuery.of(context).viewInsets.bottom,
-                          )
-                        ],
+                            SwitchListTile.adaptive(
+                              contentPadding: EdgeInsets.zero,
+                              value: _emailForm,
+                              onChanged: (value) {
+                                setState(() {
+                                  FocusScope.of(context).unfocus();
+                                  _emailForm = value;
+                                });
+                              },
+                              title: Text(AppLocalizations.of(context)!.registerLoginByEmail),
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            _emailForm ? _buildEmailForm() : _buildMobileForm(),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            if (_showError != null)
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 8),
+                                    child: Icon(
+                                      Icons.cancel_outlined,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  Expanded(
+                                      child: Text(
+                                    _showError!,
+                                    style: Theme.of(context).textTheme.labelMedium,
+                                  ))
+                                ],
+                              ),
+                            const SizedBox(
+                              height: 24,
+                            ),
+                            SizedBox(
+                                width: double.infinity,
+                                height: 56,
+                                child: FilledButton(
+                                  onPressed: _isLoading
+                                      ? null
+                                      : () {
+                                          _processToOTPForm();
+                                        },
+                                  child: _isLoading ? const CircularProgressIndicator() : Text(AppLocalizations.of(context)!.registerNext),
+                                )),
+                            SizedBox(
+                              height: MediaQuery.of(context).viewInsets.bottom,
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -244,7 +247,8 @@ class _RegisterViewState extends State<RegisterView> {
         } else {
           final ref = await context.read<RegisterProvider>().requestOTPResident(
                 idCard4: _idCardController.text,
-                phoneEmail: sendTo,
+                email: _emailController.text,
+                phone: _mobileController.text,
                 isLoginWithEmail: _emailForm,
               );
           if (ref != null && mounted) {
@@ -258,7 +262,8 @@ class _RegisterViewState extends State<RegisterView> {
         }
       } else {
         final ref = await context.read<RegisterProvider>().requestOTPNonResident(
-              phoneEmail: sendTo,
+              email: _emailController.text,
+              phone: _mobileController.text,
               isLoginWithEmail: _emailForm,
             );
         if (ref != null && mounted) {

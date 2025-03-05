@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:isar/isar.dart';
 
@@ -98,7 +100,7 @@ class NotificationItem {
       createAt: DateTime.parse(json['create_at'] as String),
       timeStamp: json['create_at'] as String,
       type: json['type'] as String,
-      data: json['data'] as String?,
+      data: jsonEncode(json['data']) as String?,
     );
   }
 }

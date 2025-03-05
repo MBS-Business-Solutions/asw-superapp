@@ -64,20 +64,20 @@ class _MyAppState extends State<MyApp> {
         _afterResumed();
       }
     });
-    AppLifecycleListener(
-      onStateChange: (AppLifecycleState state) {
-        if (state == AppLifecycleState.inactive) {
-          // ใช้ addPostFrameCallback เพื่อให้ UI มีโอกาสอัปเดตก่อนแอปไป Background
-          SchedulerBinding.instance.addPostFrameCallback((_) {
-            if (mounted) {
-              setState(() => _showShield = true);
-            }
-          });
-        } else if (state == AppLifecycleState.resumed) {
-          _afterResumed();
-        }
-      },
-    );
+    // AppLifecycleListener(
+    //   onStateChange: (AppLifecycleState state) {
+    //     if (state == AppLifecycleState.inactive) {
+    //       // ใช้ addPostFrameCallback เพื่อให้ UI มีโอกาสอัปเดตก่อนแอปไป Background
+    //       SchedulerBinding.instance.addPostFrameCallback((_) {
+    //         if (mounted) {
+    //           setState(() => _showShield = true);
+    //         }
+    //       });
+    //     } else if (state == AppLifecycleState.resumed) {
+    //       _afterResumed();
+    //     }
+    //   },
+    // );
   }
 
   Future<void> _afterResumed() async {
@@ -118,7 +118,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent),
+      SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent, statusBarBrightness: Theme.of(context).brightness),
     );
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     context.read<FirebaseMessagingProvider>().initialize();

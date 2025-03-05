@@ -1,6 +1,9 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/constants.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/pin/set_pin_view.dart';
+import 'package:AssetWise/src/features/verify_otp/otp_request_view.dart';
+import 'package:AssetWise/src/models/aw_otp_model.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
@@ -114,7 +117,9 @@ class _PinEntryViewState extends State<PinEntryView> {
                   ),
                 ),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _onForgetPin();
+                    },
                     child: Text(
                       AppLocalizations.of(context)!.pinEntryForget,
                       style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
@@ -145,6 +150,30 @@ class _PinEntryViewState extends State<PinEntryView> {
         ]),
       ),
     );
+  }
+
+  void _onForgetPin() async {
+    // already set pin, change pin
+    final otpValidationResult = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OTPRequestView(
+          forAction: AppLocalizations.of(context)!.otpRequestActionResetPin,
+          otpFor: OTPFor.changePin,
+        ),
+      ),
+    );
+    if (otpValidationResult as bool? ?? false) {
+      // reset pin
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SetPinView(
+            skipable: false,
+          ),
+        ),
+      );
+    }
   }
 
   Future<void> _validatePin() async {

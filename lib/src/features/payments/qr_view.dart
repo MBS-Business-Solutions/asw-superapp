@@ -1,5 +1,6 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/utils/string_util.dart';
@@ -15,12 +16,10 @@ class QRView extends StatelessWidget {
     super.key,
     required this.contract,
     required this.amount,
-    this.numberOfBackStep = 2,
   });
   static const String routeName = '/qr_view';
   final Contract contract;
   final double amount;
-  final int numberOfBackStep;
 
   @override
   Widget build(BuildContext context) {
@@ -197,9 +196,7 @@ class QRView extends StatelessWidget {
                           ),
                           FilledButton(
                               onPressed: () {
-                                for (var i = 0; i < numberOfBackStep; i++) {
-                                  Navigator.of(context).pop();
-                                }
+                                Navigator.popUntil(context, ModalRoute.withName(ContractsView.routeName));
                               },
                               child: const Text('เสร็จสิ้น')),
                         ],

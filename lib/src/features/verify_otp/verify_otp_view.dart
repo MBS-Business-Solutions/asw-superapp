@@ -25,6 +25,7 @@ class _VerifyOTPViewState extends State<VerifyOTPView> {
   final otpController = TextEditingController();
   late Timer _timer;
   int _start = 60;
+  bool _isLoading = false;
   bool _isButtonDisabled = true;
   bool _invalidOTP = false;
   OTPRef? _otpRef;
@@ -63,7 +64,7 @@ class _VerifyOTPViewState extends State<VerifyOTPView> {
 
   @override
   Widget build(BuildContext context) {
-    final _otpRequest = context.read<VerifyOtpProvider>().otpRequest;
+    final otpRequest = context.read<VerifyOtpProvider>().otpRequest;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -71,103 +72,112 @@ class _VerifyOTPViewState extends State<VerifyOTPView> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
         ),
-        body: Stack(
-          children: [
-            const AssetWiseBG(),
-            Positioned(
-              left: 0,
-              right: 0,
-              top: 0,
-              child: SingleChildScrollView(
-                child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, bottom: 32),
-                          child: AssetWiseLogo(
-                            width: MediaQuery.of(context).size.width * 0.5,
-                          ),
-                        ),
-                        Text(
-                          AppLocalizations.of(context)!.otpTitle,
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        if (_otpRef != null)
-                          Text(
-                            AppLocalizations.of(context)!.otpInstruction(
-                              _otpRequest!.channel == 'email' ? 'email' : 'mobile',
-                              _otpRequest.channel == 'email' ? _otpRequest.email! : StringUtil.phoneFormatter(_otpRequest.phone!),
-                              _otpRef!.refCode!,
+        body: IgnorePointer(
+          ignoring: _isLoading,
+          child: Stack(
+            children: [
+              const AssetWiseBG(),
+              Positioned(
+                left: 0,
+                right: 0,
+                top: 0,
+                child: SingleChildScrollView(
+                  child: SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, bottom: 32),
+                            child: AssetWiseLogo(
+                              width: MediaQuery.of(context).size.width * 0.5,
                             ),
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            textAlign: TextAlign.center,
                           ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        TextButton.icon(
-                          onPressed: _isButtonDisabled ? null : () => _onResendOtp(),
-                          label: _isButtonDisabled
-                              ? Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(text: AppLocalizations.of(context)!.otpRequestCountdownPrefix),
-                                      TextSpan(text: ' '),
-                                      TextSpan(
-                                        text: AppLocalizations.of(context)!.otpRequestCountdown(_start),
-                                        style: TextStyle(color: mPrimaryMatColor),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : Text(AppLocalizations.of(context)!.otpRequestAgain),
-                          icon: const Icon(Icons.refresh),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        OtpInput(
-                          controller: otpController,
-                          hasError: _invalidOTP,
-                          onReset: () {
-                            setState(() {
-                              _invalidOTP = false;
-                            });
-                          },
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        if (_invalidOTP)
                           Text(
-                            AppLocalizations.of(context)!.errorInvalidOTP,
-                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: mRedColor),
+                            AppLocalizations.of(context)!.otpTitle,
+                            style: Theme.of(context).textTheme.titleLarge,
                           ),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        SizedBox(
-                            width: double.infinity,
-                            height: 56,
-                            child: FilledButton(
-                              onPressed: () => _verifyOTP(),
-                              child: Text(AppLocalizations.of(context)!.actionButtonNext),
-                            )),
-                      ],
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          if (_otpRef != null)
+                            Text(
+                              AppLocalizations.of(context)!.otpInstruction(
+                                otpRequest!.channel == 'email' ? 'email' : 'mobile',
+                                otpRequest.channel == 'email' ? otpRequest.email! : StringUtil.phoneFormatter(otpRequest.phone!),
+                                _otpRef!.refCode!,
+                              ),
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              textAlign: TextAlign.center,
+                            ),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          TextButton.icon(
+                            onPressed: _isButtonDisabled ? null : () => _onResendOtp(),
+                            label: _isButtonDisabled
+                                ? Text.rich(
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(text: AppLocalizations.of(context)!.otpRequestCountdownPrefix),
+                                        TextSpan(text: ' '),
+                                        TextSpan(
+                                          text: AppLocalizations.of(context)!.otpRequestCountdown(_start),
+                                          style: TextStyle(color: mPrimaryMatColor),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : Text(AppLocalizations.of(context)!.otpRequestAgain),
+                            icon: const Icon(Icons.refresh),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          OtpInput(
+                            controller: otpController,
+                            hasError: _invalidOTP,
+                            onReset: () {
+                              setState(() {
+                                _invalidOTP = false;
+                              });
+                            },
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          if (_invalidOTP)
+                            Text(
+                              AppLocalizations.of(context)!.errorInvalidOTP,
+                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: mRedColor),
+                            ),
+                          const SizedBox(
+                            height: 24,
+                          ),
+                          SizedBox(
+                              width: double.infinity,
+                              height: 56,
+                              child: FilledButton(
+                                onPressed: _isLoading ? null : () => _verifyOTP(),
+                                child: _isLoading
+                                    ? SizedBox(
+                                        height: 16,
+                                        width: 16,
+                                        child: const CircularProgressIndicator(),
+                                      )
+                                    : Text(AppLocalizations.of(context)!.actionButtonNext),
+                              )),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -187,17 +197,33 @@ class _VerifyOTPViewState extends State<VerifyOTPView> {
   }
 
   Future<void> _verifyOTP() async {
+    setState(() {
+      _isLoading = true;
+    });
     final provider = context.read<VerifyOtpProvider>();
-    final response = await provider.verifyOTP(action: widget.action, otp: otpController.text);
-    if (mounted) {
-      if (response != null) {
-        // widget.onOTPVerified?.call(response);
-        Navigator.pop(context, true);
+    if (widget.action == OTPFor.addUnit) {
+      final response = await provider.verifyOTPForAddUnit(otp: otpController.text);
+      if (response != null && response.status == 'success') {
+        Navigator.pop(context, response);
       } else {
         setState(() {
           _invalidOTP = true;
         });
       }
+    } else {
+      final response = await provider.verifyOTP(action: widget.action, otp: otpController.text);
+      if (mounted) {
+        if (response != null) {
+          Navigator.pop(context, true);
+        } else {
+          setState(() {
+            _invalidOTP = true;
+          });
+        }
+      }
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

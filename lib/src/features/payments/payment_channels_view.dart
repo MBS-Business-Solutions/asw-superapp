@@ -240,7 +240,6 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
             builder: (context) => QRView(
                   contract: widget.contract,
                   amount: amount,
-                  numberOfBackStep: widget.overdueDetail != null ? 2 : 3,
                 )),
       );
     } else if (_paymentChannel == 'card') {
@@ -251,7 +250,6 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
               amount: amount,
               contract: widget.contract,
               detail: widget.contract.unitNumber,
-              numberOfBackStep: widget.overdueDetail != null ? 2 : 3,
             ),
           ));
     }
