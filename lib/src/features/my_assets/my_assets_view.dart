@@ -22,6 +22,7 @@ class MyAssetsView extends StatefulWidget {
 }
 
 class _MyAssetsViewState extends State<MyAssetsView> {
+  int? _selectedIndex;
   late Future<List<Contract>?> _contractsFuture;
   @override
   void initState() {
@@ -67,7 +68,8 @@ class _MyAssetsViewState extends State<MyAssetsView> {
                           (context, index) {
                             final contract = contracts![index];
                             return MyAssetListTile(
-                              onActionPressed: (contract) => _showContractActionBottomSheet(contract),
+                              onActionPressed: (contract) => _showContractActionBottomSheet(contract, index),
+                              isSelected: _selectedIndex == index,
                               contract: contract,
                             );
                           },
@@ -95,7 +97,10 @@ class _MyAssetsViewState extends State<MyAssetsView> {
     _refreshData();
   }
 
-  void _showContractActionBottomSheet(Contract contract) async {
+  void _showContractActionBottomSheet(Contract contract, int? selectedIndex) async {
+    setState(() {
+      _selectedIndex = selectedIndex;
+    });
     final action = await showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -119,7 +124,7 @@ class _MyAssetsViewState extends State<MyAssetsView> {
                         style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                       )),
                   const SizedBox(height: mDefaultPadding),
-                  if (!contract.isResident || true) ...[
+                  if (!contract.isResident) ...[
                     OutlinedButton(
                         onPressed: () => Navigator.pop(context, _MyAssetAction.delete),
                         child: Text(
@@ -146,6 +151,9 @@ class _MyAssetsViewState extends State<MyAssetsView> {
       default:
         break;
     }
+    setState(() {
+      _selectedIndex = null;
+    });
   }
 
   void _viewDetail(Contract contract) {
@@ -267,9 +275,11 @@ class MyAssetListTile extends StatelessWidget {
     super.key,
     required this.contract,
     this.onActionPressed,
+    this.isSelected = false,
   });
   final Contract contract;
   final Function(Contract contract)? onActionPressed;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -280,6 +290,7 @@ class MyAssetListTile extends StatelessWidget {
           onActionPressed?.call(contract);
         },
         child: ListTile(
+          selected: isSelected,
           title: IntrinsicHeight(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -303,8 +314,8 @@ class MyAssetListTile extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(child: Text(contract.unitNumber, style: Theme.of(context).textTheme.labelLarge)),
-                    Expanded(child: Text(contract.projectName, style: Theme.of(context).textTheme.labelMedium)),
+                    Expanded(child: Text(contract.unitNumber, style: Theme.of(context).textTheme.labelLarge!.copyWith(color: isSelected ? mBrightPrimaryColor : null))),
+                    Expanded(child: Text(contract.projectName, style: Theme.of(context).textTheme.labelMedium!.copyWith(color: isSelected ? mBrightPrimaryColor : null))),
                     Expanded(
                       child: contract.isDefault
                           ? Row(

@@ -78,7 +78,7 @@ class ContractDetail {
       transferDate: DateTime.parse(json['transfer_date']),
       sellingPrice: json['selling_price'],
       cashDiscount: json['cash_discount'],
-      cashDiscountTransfer: 9999999, //json['cash_discount_transfer'],
+      cashDiscountTransfer: json['transfer_discount'],
       netPrice: json['net_price'],
       bookAmount: json['book_amount'],
       contractAmount: json['contract_amount'],

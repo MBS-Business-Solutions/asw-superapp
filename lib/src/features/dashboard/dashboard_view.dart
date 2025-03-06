@@ -1,12 +1,14 @@
-import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/campaign/campaign_pop.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/bottom_bar/bottom_bar.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/main/dashboard_main_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key, required this.controller});
@@ -25,7 +27,19 @@ class _DashboardViewState extends State<DashboardView> {
       body: Stack(
         children: [
           const AssetWiseBG(),
-          if (_currentTab == BottomTab.home) const DashboardMainView(),
+          if (_currentTab == BottomTab.home)
+            const DashboardMainView()
+          else
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SvgPicture.asset('assets/images/ComingSoon.svg'),
+                  const SizedBox(height: 20),
+                  Text(AppLocalizations.of(context)!.errorComingSoon, style: Theme.of(context).textTheme.titleLarge),
+                ],
+              ),
+            ),
           Consumer<UserProvider>(
             builder: (context, provider, child) {
               if (!provider.isAuthenticated) {

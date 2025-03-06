@@ -12,6 +12,7 @@
   "errorNoData": "No data found.",
   "errorInvalidOTP": "Incorrect OTP number.",
   "errorInvalidPIN": "Please enter the PIN code correctly.",
+  "errorComingSoon": "ยังไม่เปิดใช้บริการ",
   "bahtUnit": "baht",
   "priceFormat": "{price}",
   "@priceFormat": {
@@ -278,9 +279,9 @@
   "paymentChannelViewPayment": "Payment",
 
   "qrViewTitle": "QR Code",
-  "qrViewProject": "***โครงการ***",
-  "qrViewUnit": "***แปลง/ห้อง***",
-  "qrViewTotal": "***ยอดชำระทั้งสิ้น***",
+  "qrViewProject": "Project",
+  "qrViewUnit": "Unit",
+  "qrViewTotal": "Total Payment",
   "qrViewPromptPayInstruction": "How to pay with PromptPay QR Code",
   "qrViewPromptPayInstruction1": "1. Open your banking app and select the \"Scan\" menu.",
   "qrViewPromptPayInstruction2": "2. Scan the store's QR Code.",

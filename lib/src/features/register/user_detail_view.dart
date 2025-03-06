@@ -1,5 +1,6 @@
 import 'package:AssetWise/src/consts/constants.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/pin/set_pin_view.dart';
 import 'package:AssetWise/src/features/register/consents_view.dart';
 import 'package:AssetWise/src/features/register/register_view.dart';
 import 'package:AssetWise/src/providers/register_provider.dart';
@@ -180,6 +181,7 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
   Future<void> _openConsentPage(BuildContext context) async {
     final registerProvider = context.read<RegisterProvider>();
     bool loginResult = false;
+    bool consentGave = false;
     if (!registerProvider.isResident) {
       if (_formKey.currentState!.validate()) {
         if (await context.read<UserProvider>().loginNewUser(
@@ -189,6 +191,8 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
               phone: phoneController.text,
               email: emailController.text,
             )) {
+          // load user info
+          consentGave = context.read<UserProvider>().userInformation?.consent ?? false;
           loginResult = true;
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -202,6 +206,7 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
         if (await context.read<UserProvider>().login(userId)) {
           if (context.mounted) {
             loginResult = true;
+            consentGave = context.read<UserProvider>().userInformation?.consent ?? false;
           }
         } else {
           if (context.mounted) {
@@ -214,7 +219,11 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
     }
 
     if (loginResult) {
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const ConsentsView()), ModalRoute.withName(RegisterView.routeName));
+      if (!consentGave) {
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const ConsentsView()), ModalRoute.withName(RegisterView.routeName));
+      } else {
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const SetPinView()), (route) => route.isFirst);
+      }
     }
   }
 }

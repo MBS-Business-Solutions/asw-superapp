@@ -36,10 +36,12 @@ class _ProfileViewState extends State<ProfileView> {
   bool _isDarkMode = false;
   UserInformation? _userInformation;
   late Future<UserInformation?> _userInformationFuture;
+  late UserProvider _userProvider;
 
   @override
   void initState() {
-    _userInformationFuture = context.read<UserProvider>().fetchUserInformation();
+    _userProvider = context.read<UserProvider>();
+    _userInformationFuture = _userProvider.fetchUserInformation();
     super.initState();
   }
 
@@ -84,7 +86,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     ),
                                     style: Theme.of(context).textTheme.headlineSmall,
                                   ),
-                                  Text('ID : ${context.read<UserProvider>().userId ?? ''}', style: Theme.of(context).textTheme.bodySmall),
+                                  if (_userProvider.userId?.isNotEmpty ?? false) Text('ID : ${_userProvider.userId ?? ''}', style: Theme.of(context).textTheme.bodySmall),
                                   if (!(_userInformation?.isVerified ?? false)) FilledButton(onPressed: () => _registerBuyer(), child: Text(AppLocalizations.of(context)!.profileRegisterBuyer)),
                                 ],
                               ))
@@ -248,7 +250,7 @@ class _ProfileViewState extends State<ProfileView> {
                             ),
                             onTap: () {
                               _showLogoutBottomSheet();
-                              // context.read<UserProvider>().logout();
+                              // _userProvider.logout();
                               // ScaffoldMessenger.of(context).showSnackBar(
                               //   const SnackBar(
                               //     content: Text('Logout success'),
@@ -272,7 +274,7 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   void _changePinNewPin() async {
-    if (context.read<UserProvider>().isPinSet) {
+    if (_userProvider.isPinSet) {
       // already set pin, change pin
       final pinVerify = await Navigator.pushNamed(context, PinEntryView.routeName, arguments: {'isBackable': true}) as bool?;
       if (pinVerify ?? false) {
@@ -387,7 +389,7 @@ class _ProfileViewState extends State<ProfileView> {
     );
     if (result == true) {
       if (mounted) {
-        await context.read<UserProvider>().logout();
+        await _userProvider.logout();
         Navigator.pop(context);
       }
     }

@@ -109,8 +109,15 @@ class DashboardNotificationSection extends StatelessWidget {
             children: [
               const Icon(Icons.price_check_sharp, color: mRedColor),
               const SizedBox(width: mMediumPadding),
-              Text(preferedLanguage == 'en' ? item.titleEn : item.titleTh, style: Theme.of(context).textTheme.labelLarge!.copyWith(color: mRedColor)),
-              const Spacer(),
+              Expanded(
+                child: Text(
+                  preferedLanguage == 'en' ? item.titleEn : item.titleTh,
+                  style: Theme.of(context).textTheme.labelLarge!.copyWith(color: mRedColor),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: mMediumPadding),
               Text(timeFormatter.format(item.createAt), style: Theme.of(context).textTheme.bodySmall),
             ],
           ),

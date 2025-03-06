@@ -12,6 +12,7 @@
   "errorNoData": "ไม่พบข้อมูล",
   "errorInvalidOTP": "หมายเลข OTP ไม่ถูกต้อง",
   "errorInvalidPIN": "กรุณากรอกรหัส PIN ให้ถูกต้อง",
+  "errorComingSoon": "ยังไม่เปิดใช้บริการ",
   "bahtUnit": "บาท",
   "priceFormat": "{price}",
   "@priceFormat": {

@@ -46,7 +46,7 @@ class _ContractsViewState extends State<ContractsView> {
         _contracts = contracts;
         _selectedYear = DateTime.now().year;
 
-        _selectedIndex = contracts.indexWhere((element) => element.id == widget.linkId);
+        _selectedIndex = contracts.indexWhere((element) => element.contractId == widget.linkId);
         if (_selectedIndex < 0) {
           _selectedIndex = 0;
         }

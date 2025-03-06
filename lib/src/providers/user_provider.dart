@@ -6,7 +6,6 @@ import 'package:AssetWise/src/services/aw_user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:AssetWise/src/models/aw_notification_model.dart';
 
 class UserProvider with ChangeNotifier {
   late final FlutterSecureStorage secureStorage = FlutterSecureStorage(
@@ -35,17 +34,17 @@ class UserProvider with ChangeNotifier {
     _token = token;
   }
 
-  AndroidOptions _getAndroidOptions() =>
-      const AndroidOptions(encryptedSharedPreferences: true);
-  IOSOptions _getIosOptions() => const IOSOptions(
-      accessibility: KeychainAccessibility.unlocked_this_device);
+  AndroidOptions _getAndroidOptions() => const AndroidOptions(encryptedSharedPreferences: true);
+  IOSOptions _getIosOptions() => const IOSOptions(accessibility: KeychainAccessibility.unlocked_this_device);
 
   Future<bool> login(String userId) async {
     final tokenResponse = await AwUserService().login(userId);
     if (tokenResponse != null) {
       _token = tokenResponse.token;
-      _userInformation = tokenResponse.userInformation;
       _userId = userId;
+      // _userInformation = tokenResponse.userInformation;
+      await fetchUserInformation();
+
       await Future.wait([
         secureStorage.delete(key: 'LOGOUT'),
         secureStorage.write(key: 'SESSION_TOKEN', value: _token),
@@ -58,25 +57,15 @@ class UserProvider with ChangeNotifier {
     return false;
   }
 
-  Future<bool> loginNewUser(
-      {required String type,
-      required String phone,
-      required String email,
-      required String firstName,
-      required String lastName}) async {
-    final tokenResponse = await AwUserService().loginNewUser(
-        type: type,
-        phone: phone,
-        email: email,
-        firstName: firstName,
-        lastName: lastName);
+  Future<bool> loginNewUser({required String type, required String phone, required String email, required String firstName, required String lastName}) async {
+    final tokenResponse = await AwUserService().loginNewUser(type: type, phone: phone, email: email, firstName: firstName, lastName: lastName);
     if (tokenResponse != null) {
       _token = tokenResponse.token;
-      _userInformation = tokenResponse.userInformation;
+      // _userInformation = tokenResponse.userInformation;
+      await fetchUserInformation();
 
       await secureStorage.delete(key: 'LOGOUT');
-      await secureStorage.write(
-          key: 'USER_INFO', value: _userInformation!.toJson());
+      await secureStorage.write(key: 'USER_INFO', value: _userInformation!.toJson());
       await secureStorage.write(key: 'SESSION_TOKEN', value: _token);
       notifyListeners();
       return true;
@@ -120,8 +109,7 @@ class UserProvider with ChangeNotifier {
     if (isFirstLoad) {
       final secureStorageUnlock = FlutterSecureStorage(
         aOptions: _getAndroidOptions(),
-        iOptions: const IOSOptions(
-            accessibility: KeychainAccessibility.unlocked_this_device),
+        iOptions: const IOSOptions(accessibility: KeychainAccessibility.unlocked_this_device),
       );
       await secureStorageUnlock.deleteAll();
       await secureStorage.deleteAll();
@@ -143,10 +131,8 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> submitConsents(
-      String consentId, Map<String, bool> consents) async {
-    final response =
-        await AwUserService.submitConsents(_token!, consentId, consents);
+  Future<bool> submitConsents(String consentId, Map<String, bool> consents) async {
+    final response = await AwUserService.submitConsents(_token!, consentId, consents);
     return response;
   }
 
@@ -181,23 +167,19 @@ class UserProvider with ChangeNotifier {
     final userInformation = await AwUserService.getUserInformation(_token!);
     if (userInformation != null) {
       _userInformation = userInformation;
-      await secureStorage.write(
-          key: 'USER_INFO', value: _userInformation!.toJson());
+      await secureStorage.write(key: 'USER_INFO', value: _userInformation!.toJson());
     }
     return _userInformation;
   }
 
   Future<List<PersonalConsent>> fetchPersonalConsents() async {
     if (token == null) return [];
-    return await AwUserService.fetchPersonalConsents(_token!,
-        language: userInformation?.language);
+    return await AwUserService.fetchPersonalConsents(_token!, language: userInformation?.language);
   }
 
-  Future<PersonalConsentDetail?> fetchPersonalConsentDetail(
-      String consentId) async {
+  Future<PersonalConsentDetail?> fetchPersonalConsentDetail(String consentId) async {
     if (token == null) return null;
-    return await AwUserService.fetchPersonalConsentDetail(_token!, consentId,
-        language: userInformation?.language);
+    return await AwUserService.fetchPersonalConsentDetail(_token!, consentId, language: userInformation?.language);
   }
 
   Future<bool> submitConsent(String consentId, bool value) async {
@@ -207,13 +189,11 @@ class UserProvider with ChangeNotifier {
 
   Future<List<AboutItem>> fetchAboutItems() async {
     if (token == null) return [];
-    return await AwUserService.fetchAboutItems(_token!,
-        language: userInformation?.language);
+    return await AwUserService.fetchAboutItems(_token!, language: userInformation?.language);
   }
 
   Future<AboutItemDetail?> fetchAboutItemDetail(String consentId) async {
     if (token == null) return null;
-    return await AwUserService.fetchAboutItemDetail(_token!, consentId,
-        language: userInformation?.language);
+    return await AwUserService.fetchAboutItemDetail(_token!, consentId, language: userInformation?.language);
   }
 }

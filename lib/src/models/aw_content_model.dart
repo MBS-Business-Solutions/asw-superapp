@@ -128,6 +128,7 @@ class UserInformation {
   final int? unitCount;
   final String? language;
   final bool? isVerified;
+  final bool? consent;
 
   UserInformation({
     required this.firstName,
@@ -137,6 +138,7 @@ class UserInformation {
     required this.unitCount,
     required this.language,
     required this.isVerified,
+    this.consent,
   });
 
   factory UserInformation.fromJson(Map<String, dynamic> json) {
@@ -148,6 +150,7 @@ class UserInformation {
       unitCount: json['unit_count'],
       language: json['language'],
       isVerified: json['is_verified'],
+      consent: json['consent'],
     );
   }
 
