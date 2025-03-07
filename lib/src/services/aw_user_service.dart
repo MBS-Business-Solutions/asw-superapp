@@ -339,4 +339,27 @@ class AwUserService {
     if (kDebugMode) print(response);
     return null;
   }
+
+  static Future<bool> logout(String userToken) async {
+    final response = await http.post(
+      Uri.parse('$BASE_URL/mobile/setting/logout'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $userToken',
+      },
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        if (jsonResponse['status'] == 'success') {
+          return true;
+        }
+      } catch (e) {
+        if (kDebugMode) print(e);
+      }
+    }
+    if (kDebugMode) print(response);
+    return false;
+  }
 }

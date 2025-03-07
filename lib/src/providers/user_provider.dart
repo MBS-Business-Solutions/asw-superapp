@@ -85,6 +85,7 @@ class UserProvider with ChangeNotifier {
     _isPinSet = false;
     _userId = null;
     _userInformation = null;
+    if (token != null) await AwUserService.logout(_token!);
     await secureStorage.deleteAll();
     await isar.writeTxn(() async {
       await isar.clear();
