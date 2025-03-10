@@ -260,3 +260,61 @@ class ContractProject {
     );
   }
 }
+
+class PaymentGatewayResponse {
+  final String status;
+  final int code;
+  final String message;
+  final DateTime timestamp;
+  final String path;
+  final String? paymentUrl;
+
+  PaymentGatewayResponse({
+    required this.status,
+    required this.code,
+    required this.message,
+    required this.timestamp,
+    required this.path,
+    this.paymentUrl,
+  });
+
+  factory PaymentGatewayResponse.fromJson(Map<String, dynamic> json) {
+    return PaymentGatewayResponse(
+      status: json['status'],
+      code: json['code'],
+      message: json['message'],
+      timestamp: DateTime.parse(json['timestamp']),
+      path: json['path'],
+      paymentUrl: json['data']?['payment_url'],
+    );
+  }
+}
+
+class QRResponse {
+  final String status;
+  final int code;
+  final String message;
+  final DateTime timestamp;
+  final String path;
+  final String? qrCode;
+
+  QRResponse({
+    required this.status,
+    required this.code,
+    required this.message,
+    required this.timestamp,
+    required this.path,
+    this.qrCode,
+  });
+
+  factory QRResponse.fromJson(Map<String, dynamic> json) {
+    return QRResponse(
+      status: json['status'],
+      code: json['code'],
+      message: json['message'],
+      timestamp: DateTime.parse(json['timestamp']),
+      path: json['path'],
+      qrCode: json['data']?['qr_code'],
+    );
+  }
+}

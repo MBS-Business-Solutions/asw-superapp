@@ -30,14 +30,14 @@ class QRView extends StatelessWidget {
         title: Text(AppLocalizations.of(context)!.qrViewTitle),
         centerTitle: true,
       ),
-      body: FutureBuilder(
+      body: FutureBuilder<QRResponse?>(
           future: context.read<ContractProvider>().getQRPaymentCode(contractId: contract.contractId, amount: amount),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             }
             final qrCode = snapshot.data;
-            if (qrCode == null) {
+            if (qrCode == null || qrCode.status != 'success') {
               return const Center(child: Text('Error'));
             }
             return SizedBox(
@@ -103,7 +103,7 @@ class QRView extends StatelessWidget {
                                       children: [
                                         QrImageView(
                                           size: MediaQuery.of(context).size.width * 0.6,
-                                          data: qrCode,
+                                          data: qrCode.qrCode!,
                                           backgroundColor: Colors.white,
                                         ),
                                         const SizedBox(
@@ -192,13 +192,13 @@ class QRView extends StatelessWidget {
                               backgroundColor: mGreyBackgroundColor,
                               foregroundColor: Colors.white,
                             ),
-                            child: const Text('ดาวน์โหลด QR Code'),
+                            child: Text(AppLocalizations.of(context)!.qrViewPromptPayDownload),
                           ),
                           FilledButton(
                               onPressed: () {
                                 Navigator.popUntil(context, ModalRoute.withName(ContractsView.routeName));
                               },
-                              child: const Text('เสร็จสิ้น')),
+                              child: Text(AppLocalizations.of(context)!.qrViewPromptPayDone)),
                         ],
                       )),
                     ),

@@ -1,11 +1,12 @@
-import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
+import 'package:AssetWise/src/features/payments/unable_to_payment_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PaymentGatewayView extends StatefulWidget {
   const PaymentGatewayView({super.key, required this.contract, required this.amount, this.detail});
@@ -34,24 +35,32 @@ class _PaymentGatewayViewState extends State<PaymentGatewayView> {
         onPageFinished: (url) {},
       ));
     final userEmail = context.read<UserProvider>().userInformation?.email ?? '';
-    final url = await context.read<ContractProvider>().getPaymentGatewayURL(
+    final response = await context.read<ContractProvider>().getPaymentGatewayURL(
           contract: widget.contract,
           amount: widget.amount,
           detail: widget.detail,
           email: userEmail,
         );
-    if (url == null) {
-      Navigator.of(context).pop();
+    if (response?.status != 'success') {
+      String? reason = response?.message;
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (context) => UnableToPaymentView(
+                  reason: reason ?? AppLocalizations.of(context)!.errorUnableToProcess,
+                )),
+        ModalRoute.withName(ContractsView.routeName),
+      );
       return;
     }
-    _controller.loadRequest(Uri.parse(url));
+    _controller.loadRequest(Uri.parse(response?.paymentUrl ?? ''));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('ชำระเงิน'),
+          title: Text(AppLocalizations.of(context)!.paymentChannelViewPaymentTitle),
           centerTitle: true,
           leading: const SizedBox(),
           actions: [

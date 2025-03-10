@@ -53,12 +53,12 @@ class ContractProvider {
     return AwContractService.fetchDownPaymentDues(_userProvider!.token!, contractId);
   }
 
-  Future<String?> getQRPaymentCode({required String contractId, double amount = 0}) async {
+  Future<QRResponse?> getQRPaymentCode({required String contractId, double amount = 0}) async {
     if (_userProvider == null) return null;
     return AwContractService.getQRPaymentCode(_userProvider!.token!, contractId: contractId, amount: amount);
   }
 
-  Future<String?> getPaymentGatewayURL({required Contract contract, double amount = 0, String? detail, required String email}) async {
+  Future<PaymentGatewayResponse?> getPaymentGatewayURL({required Contract contract, double amount = 0, String? detail, required String email}) async {
     return AwContractService.getPaymentGatewayURL(token: _userProvider!.token!, contract: contract, amount: amount, detail: detail, email: email);
   }
 

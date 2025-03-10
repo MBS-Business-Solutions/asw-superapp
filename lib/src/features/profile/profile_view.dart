@@ -86,7 +86,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     ),
                                     style: Theme.of(context).textTheme.headlineSmall,
                                   ),
-                                  if (_userProvider.userId?.isNotEmpty ?? false) Text('ID : ${_userProvider.userId ?? ''}', style: Theme.of(context).textTheme.bodySmall),
+                                  if (_userInformation?.code?.isNotEmpty ?? false) Text('ID : ${_userInformation?.code ?? ''}', style: Theme.of(context).textTheme.bodySmall),
                                   if (!(_userInformation?.isVerified ?? false)) FilledButton(onPressed: () => _registerBuyer(), child: Text(AppLocalizations.of(context)!.profileRegisterBuyer)),
                                 ],
                               ))

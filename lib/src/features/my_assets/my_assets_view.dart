@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
@@ -157,7 +155,7 @@ class _MyAssetsViewState extends State<MyAssetsView> {
   }
 
   void _viewDetail(Contract contract) {
-    Navigator.pushNamed(context, ContractsView.routeName, arguments: {'linkId': contract.id});
+    Navigator.pushNamed(context, ContractsView.routeName, arguments: {'linkId': contract.contractId});
   }
 
   void _setDefault(Contract contract) async {

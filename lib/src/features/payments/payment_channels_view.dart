@@ -1,12 +1,16 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/features/payments/payment_gateway_view.dart';
 import 'package:AssetWise/src/features/payments/qr_view.dart';
+import 'package:AssetWise/src/features/payments/unable_to_payment_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
+import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/utils/date_formatter_util.dart';
 import 'package:AssetWise/src/utils/string_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class PaymentChannelsView extends StatefulWidget {
   const PaymentChannelsView({super.key, required this.contract, this.overdueDetail, this.amount});
@@ -231,17 +235,30 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
     return !_hideButton && _paymentChannel != null && _amountController.text.isNotEmpty;
   }
 
-  void _onPayTap() {
+  void _onPayTap() async {
     final amount = double.parse(StringUtil.removeSymbol(_amountController.text));
     if (_paymentChannel == 'qr') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => QRView(
-                  contract: widget.contract,
-                  amount: amount,
-                )),
-      );
+      // test before push
+      final qrResponse = await context.read<ContractProvider>().getQRPaymentCode(contractId: widget.contract.contractId, amount: amount);
+      if (qrResponse == null || qrResponse.status != 'success') {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => UnableToPaymentView(
+                    reason: qrResponse?.message ?? AppLocalizations.of(context)!.errorUnableToProcess,
+                  )),
+          ModalRoute.withName(ContractsView.routeName),
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => QRView(
+                    contract: widget.contract,
+                    amount: amount,
+                  )),
+        );
+      }
     } else if (_paymentChannel == 'card') {
       Navigator.push(
           context,

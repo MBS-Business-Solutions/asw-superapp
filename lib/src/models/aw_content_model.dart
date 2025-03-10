@@ -129,6 +129,7 @@ class UserInformation {
   final String? language;
   final bool? isVerified;
   final bool? consent;
+  final String? code;
 
   UserInformation({
     required this.firstName,
@@ -139,6 +140,7 @@ class UserInformation {
     required this.language,
     required this.isVerified,
     this.consent,
+    this.code,
   });
 
   factory UserInformation.fromJson(Map<String, dynamic> json) {
@@ -151,6 +153,7 @@ class UserInformation {
       language: json['language'],
       isVerified: json['is_verified'],
       consent: json['consent'],
+      code: json['code'],
     );
   }
 

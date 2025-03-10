@@ -287,6 +287,8 @@
   "qrViewPromptPayInstruction2": "2. Scan the store's QR Code.",
   "qrViewPromptPayInstruction3": "3. Select your account, enter the amount, and tap \"Confirm\".",
   "qrViewPromptPayInstruction4": "4. Confirm",
+  "qrViewPromptPayDownload": "ดาวน์โหลด QR Code",
+  "qrViewPromptPayDone": "เสร็จสิ้น",
 
   "pinEntryTitle": "Enter PIN",
   "pinEntryInstruction": "Enter a {digits}-digit PIN to log in.",
@@ -426,5 +428,8 @@
   "managePersonalInfoDisclosureMarketing": "Consent for Disclosure of Information for Marketing Purposes",
   "managePersonalInfoGiveConsent": "Give Consent",
 
-  "lastUpdated": "Last updated {date}"
+  "lastUpdated": "Last updated {date}",
+
+  "unableToPayHeading": "ไม่สามารถชำระเงินได้ในขณะนี้",
+  "unableToPayBack": "กลับไปหน้าสัญญา"
 }

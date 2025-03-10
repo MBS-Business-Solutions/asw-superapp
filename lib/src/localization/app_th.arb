@@ -287,6 +287,8 @@
   "qrViewPromptPayInstruction2": "2. สแกน QR Code ร้านค้าที่ต้องการสแกน",
   "qrViewPromptPayInstruction3": "3. เลือกบัญชีและระบุจำนวนเงินที่ต้องการ กด \"ตรวจสอบข้อมูล\"",
   "qrViewPromptPayInstruction4": "4. กดยืนยัน",
+  "qrViewPromptPayDownload": "ดาวน์โหลด QR Code",
+  "qrViewPromptPayDone": "เสร็จสิ้น",
 
   "pinEntryTitle": "ใส่รหัส PIN",
   "pinEntryInstruction": "ระบุรหัส PIN จำนวน {digits} หลักเพื่อใช้ในการเข้าสู่ระบบ",
@@ -425,5 +427,8 @@
   "managePersonalInfoDisclosureMarketing": "ความยินยอมในการเปิดเผยข้อมูลเพื่อวัตถุประสงค์ทางการตลาด",
   "managePersonalInfoGiveConsent": "ให้ความยินยอม",
 
-  "lastUpdated": "อัปเดตล่าสุด {date}"
+  "lastUpdated": "อัปเดตล่าสุด {date}",
+
+  "unableToPayHeading": "ไม่สามารถชำระเงินได้ในขณะนี้",
+  "unableToPayBack": "กลับไปหน้าสัญญา"
 }

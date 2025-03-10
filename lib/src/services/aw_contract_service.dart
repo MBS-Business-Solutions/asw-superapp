@@ -186,19 +186,20 @@ class AwContractService {
     return '$BASE_URL/mobile/contracts/$contractId/payments/$receiptNumber/download';
   }
 
-  static Future<String?> getQRPaymentCode(String token, {required String contractId, double amount = 0}) async {
+  static Future<QRResponse?> getQRPaymentCode(String token, {required String contractId, double amount = 0, String? language}) async {
     final formatNumber = NumberFormat('####.00');
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/qr-code?amount=${formatNumber.format(amount)}'),
       headers: {
         'Authorization': 'Bearer $token',
+        'Content-Language': language ?? 'th',
       },
     );
 
     try {
-      if (response.statusCode >= 200 && response.statusCode < 300) {
+      if (response.statusCode >= 200 && response.statusCode < 500) {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
-        return jsonResponse['data']['qr_code'];
+        return QRResponse.fromJson(jsonResponse);
       }
     } catch (e) {
       if (kDebugMode) print(e);
@@ -207,7 +208,7 @@ class AwContractService {
     return null;
   }
 
-  static Future<String?> getPaymentGatewayURL({required String token, required Contract contract, double amount = 0, String? detail, required String email}) async {
+  static Future<PaymentGatewayResponse?> getPaymentGatewayURL({required String token, required Contract contract, double amount = 0, String? detail, required String email}) async {
     final formatNumber = NumberFormat('####.00');
     final body = {
       'payment_type': '9',
@@ -226,9 +227,9 @@ class AwContractService {
     );
 
     try {
-      if (response.statusCode >= 200 && response.statusCode < 300) {
+      if (response.statusCode >= 200 && response.statusCode < 500) {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
-        return jsonResponse['data']['payment_url'];
+        return PaymentGatewayResponse.fromJson(jsonResponse);
       }
     } catch (e) {
       if (kDebugMode) print(e);
