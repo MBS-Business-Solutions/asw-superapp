@@ -73,6 +73,9 @@ class _MyAssetsViewState extends State<MyAssetsView> {
                           },
                           childCount: contracts?.length,
                         )),
+                        SliverToBoxAdapter(
+                          child: SizedBox(height: MediaQuery.of(context).padding.bottom + 48),
+                        ),
                       ],
                     );
                   })),
