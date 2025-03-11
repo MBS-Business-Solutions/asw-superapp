@@ -92,7 +92,6 @@ class _PhoneNewValueViewState extends State<PhoneNewValueView> {
               builder: (context) => const PhoneChangeSuccess(),
             ));
       } else {
-        // TODO: Show error message
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(AppLocalizations.of(context)!.errorUnableToProcess),
         ));

@@ -104,7 +104,7 @@ class _VerifyOTPViewState extends State<VerifyOTPView> {
                             Text(
                               AppLocalizations.of(context)!.otpInstruction(
                                 otpRequest!.channel == 'email' ? 'email' : 'mobile',
-                                otpRequest.channel == 'email' ? otpRequest.email! : StringUtil.phoneFormatter(otpRequest.phone!),
+                                otpRequest.channel == 'email' ? otpRequest.email! : StringUtil.phoneFormatter(otpRequest.phone!, hiddenChar: 'X'),
                                 _otpRef!.refCode!,
                               ),
                               style: Theme.of(context).textTheme.bodyMedium,
@@ -123,10 +123,10 @@ class _VerifyOTPViewState extends State<VerifyOTPView> {
                                     TextSpan(
                                       children: [
                                         TextSpan(text: AppLocalizations.of(context)!.otpRequestCountdownPrefix),
-                                        TextSpan(text: ' '),
+                                        const TextSpan(text: ' '),
                                         TextSpan(
                                           text: AppLocalizations.of(context)!.otpRequestCountdown(_start),
-                                          style: TextStyle(color: mPrimaryMatColor),
+                                          style: const TextStyle(color: mPrimaryMatColor),
                                         ),
                                       ],
                                     ),
@@ -163,10 +163,10 @@ class _VerifyOTPViewState extends State<VerifyOTPView> {
                               child: FilledButton(
                                 onPressed: _isLoading ? null : () => _verifyOTP(),
                                 child: _isLoading
-                                    ? SizedBox(
+                                    ? const SizedBox(
                                         height: 16,
                                         width: 16,
-                                        child: const CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(),
                                       )
                                     : Text(AppLocalizations.of(context)!.actionButtonNext),
                               )),

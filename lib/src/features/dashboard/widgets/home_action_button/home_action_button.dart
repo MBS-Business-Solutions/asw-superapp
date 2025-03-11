@@ -35,7 +35,7 @@ class HomeActionButtons extends StatelessWidget {
                   icon: Badge.count(isLabelVisible: provider.unreadAllCount > 0, count: provider.unreadAllCount, child: const Icon(Icons.notifications_none))),
             ),
             FutureBuilder(
-                future: context.read<ContractProvider>().fetchContracts(),
+                future: context.read<ContractProvider>().fetchContracts(context),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const SizedBox();

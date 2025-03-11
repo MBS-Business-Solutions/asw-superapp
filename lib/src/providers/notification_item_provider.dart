@@ -33,6 +33,9 @@ class NotificationItemProvider with ChangeNotifier {
 
   void updateUserProvider(UserProvider userProvider) {
     _userProvider = userProvider;
+    // reload from isar db if available
+    _reload();
+    _reCount();
     // fetch with user token
     fetchNotificationItems();
   }
@@ -80,8 +83,10 @@ class NotificationItemProvider with ChangeNotifier {
   }
 
   void _reload() {
-    _notificationItems.clear();
-    _notificationItems.addAll(isar.notificationItems.where().findAllSync());
+    if (isar.isOpen) {
+      _notificationItems.clear();
+      _notificationItems.addAll(isar.notificationItems.where().findAllSync());
+    }
   }
 
   void _reCount() {

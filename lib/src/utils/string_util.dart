@@ -6,10 +6,13 @@ class StringUtil {
     return s[0].toUpperCase() + s.substring(1);
   }
 
-  static String phoneFormatter(String phone) {
+  static String phoneFormatter(String phone, {String? hiddenChar}) {
     phone = phone.replaceAll(RegExp(r'-'), '');
-    final tmpPhone = '$phone          '.substring(0, 10);
-    return '${tmpPhone.substring(0, 3)}-${tmpPhone.substring(3, 6)}-${tmpPhone.substring(6, 10)}';
+    var tmpPhone = '$phone          '.substring(0, 10);
+    if (hiddenChar != null) {
+      tmpPhone = tmpPhone.replaceRange(0, 6, hiddenChar * 6);
+    }
+    return '${tmpPhone.substring(0, 2)}-${tmpPhone.substring(2, 6)}-${tmpPhone.substring(6, 10)}';
   }
 
   static String formatNumber(String number) {

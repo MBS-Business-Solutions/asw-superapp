@@ -106,7 +106,7 @@
       }
     }
   },
-  "otpInstruction": "ระบุตัวเลข 6 หลักที่ถูกส่งไปยัง{sendtoType, select, email {อีเมล\n{sendto}} other {เบอร์มือถือของคุณ\n{sendto}}} รหัสอ้างอิง : {refCode}",
+  "otpInstruction": "ระบุตัวเลข 6 หลักที่ถูกส่งไปยัง{sendtoType, select, email {อีเมล\n{sendto}} other {\n{sendto}}} รหัสอ้างอิง : {refCode}",
   "@otpInstruction": {
     "description": "ข้อความยืนยันรหัส OTP โดยเลือกตามประเภทการส่ง (อีเมลหรือเบอร์โทรศัพท์)",
     "placeholders": {
@@ -348,7 +348,7 @@
   "emailOldValueTitle": "แก้ไข E-mail",
   "emailOldValueInstructions": "หากคุณแก้ไข E-mail ที่นี่ บัญชีทั้งหมดที่ผูกกับบัญชีผู้ใช้นี้ จะถูกแก้ไขตามไปด้วย",
   "emailOldValueTextLabel": "E-mail",
-  "emailOldValueAction": "บันทึกการเปลี่ยนแปลง",
+  "emailOldValueAction": "เปลี่ยน E-mail",
   "emailNewValueTitle": "ระบุ E-mail ใหม่",
   "emailNewValueInstructions": "หากต้องการเปลี่ยนแปลงเบอร์มือถือ กรุณากดส่งคำขอ เพื่อให้เจ้าหน้าที่ทำการติดต่อคุณในภายหลัง",
   "emailNewValueTextLabel": "ระบุเบอร์ E-mail ใหม่",

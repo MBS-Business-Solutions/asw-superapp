@@ -29,21 +29,23 @@ class SplashView extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
               return const Center(
-                child: CircularProgressIndicator.adaptive(),
+                child: CircularProgressIndicator(),
               );
             }
 
             return Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(snapshot.data!),
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.25),
-                    BlendMode.darken,
-                  ),
-                ),
-              ),
+              decoration: snapshot.data!.isEmpty
+                  ? null
+                  : BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(snapshot.data!),
+                        fit: BoxFit.cover,
+                        colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.25),
+                          BlendMode.darken,
+                        ),
+                      ),
+                    ),
               child: Center(
                 child: AssetWiseLogo(
                   width: MediaQuery.of(context).size.width * 0.6,

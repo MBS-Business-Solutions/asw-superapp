@@ -52,7 +52,7 @@ class _OTPRequestViewState extends State<OTPRequestView> {
         child: Scaffold(
           extendBodyBehindAppBar: true,
           appBar: AppBar(
-            leading: widget.isBackable ? null : SizedBox(),
+            leading: widget.isBackable ? null : const SizedBox(),
             backgroundColor: Colors.transparent,
           ),
           body: IgnorePointer(

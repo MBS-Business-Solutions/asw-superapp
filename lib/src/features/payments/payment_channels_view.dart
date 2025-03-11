@@ -27,6 +27,7 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
   String? _paymentChannel;
   final TextEditingController _amountController = TextEditingController();
   bool _hideButton = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -216,9 +217,10 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
                         ),
                         const SizedBox(height: mDefaultPadding),
                       ],
-                      FilledButton(
+                      FilledButton.icon(
                         onPressed: _canPay() ? () => _onPayTap() : null,
-                        child: Text(AppLocalizations.of(context)!.paymentChannelViewPayment),
+                        icon: _isLoading ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator()) : null,
+                        label: Text(AppLocalizations.of(context)!.paymentChannelViewPayment),
                       ),
                     ],
                   ),
@@ -232,10 +234,14 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
   }
 
   bool _canPay() {
+    if (_isLoading) return false;
     return !_hideButton && _paymentChannel != null && _amountController.text.isNotEmpty;
   }
 
   void _onPayTap() async {
+    setState(() {
+      _isLoading = true;
+    });
     final amount = double.parse(StringUtil.removeSymbol(_amountController.text));
     if (_paymentChannel == 'qr') {
       // test before push
@@ -270,5 +276,8 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
             ),
           ));
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

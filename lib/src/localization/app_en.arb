@@ -214,10 +214,10 @@
   "profileSettings": "Account Settings",
   "profilePersonalInfo": "Manage Personal Information",
   "profilePin": "PIN Code",
-  "profileDeleteAccount": "**ปิดใช้งานหรือลบบัญชี**",
+  "profileDeleteAccount": "Deactivate or Delete Account",
   "profileAbout": "About Assetwise",
   "profileAuthen": "Login",
-  "profileExit": "**ออกจากแอปพลิเคชัน Assetwise**",
+  "profileExit": "Exit",
   "profileLogout": "Log Out",
 
   "contractsViewContract": "Contract Details",
@@ -341,14 +341,14 @@
   "logoutConfirmationBottomTitle": "Are you sure you want to log out?",
   "logoutConfirmationOKButton": "Log out",
 
-  "closeAppConfirmationTitle": "*ต้องการออกจากแอปพลิเคชั่น\nใช่หรือไม่*",
-  "closeAppConfirmationMessage": "*คุณสามารถกลับเข้ามาใช้งานได้ใหม่ได้\nโดยยืนยันตัวตนผ่านรหัส PIN*",
-  "closeAppConfirmationOKButton": "*ออกจากแอป*",
+  "closeAppConfirmationTitle": "Do you want to exit?",
+  "closeAppConfirmationMessage": "You can re-log in\n by verifying your identity with a PIN.",
+  "closeAppConfirmationOKButton": "Exit",
 
   "emailOldValueTitle": "Edit Email",
   "emailOldValueInstructions": "If you wish to update your email here, all accounts linked to this user account will also be updated accordingly.",
   "emailOldValueTextLabel": "E-mail",
-  "emailOldValueAction": "Save Changes",
+  "emailOldValueAction": "Change E-mail",
   "emailNewValueTitle": "Enter a New E-mail",
   "emailNewValueInstructions": "If you wish to change your E-mail, please submit a request so that our staff can contact you later.",
   "emailNewValueTextLabel": "Enter a New E-mail",
@@ -391,7 +391,7 @@
   "registerBuyerRegister": "Register",
 
   "myAssetTitle": "My Home",
-  "myAssetSum": " {count, plural, =0{} =1{1 หลัง} other{{count} หลัง}}",
+  "myAssetSum": " {count, plural, =0{} =1{1 Unit} other{{count} Unit}}",
   "@myAssetSum": {
     "description": "Message indicating the number of assets",
     "placeholders": {

@@ -84,7 +84,7 @@ class DashboardNotificationSection extends StatelessWidget {
     final result = List.generate(unpaidList.length, (index) {
       final item = unpaidList[index];
       return Container(
-        margin: EdgeInsets.only(top: mDefaultPadding),
+        margin: const EdgeInsets.only(top: mDefaultPadding),
         padding: const EdgeInsets.only(left: mDefaultPadding, right: mDefaultPadding),
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,

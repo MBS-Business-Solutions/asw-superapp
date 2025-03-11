@@ -34,7 +34,6 @@ class _PinEntryViewState extends State<PinEntryView> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Check iOS can swipe back or not
     return PopScope(
       canPop: widget.isBackable ?? false,
       child: Scaffold(

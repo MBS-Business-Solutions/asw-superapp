@@ -63,12 +63,12 @@ class AboutAsswiseView extends StatelessWidget {
                     ),
                   ),
                 ),
-                SliverToBoxAdapter(child: const SizedBox(height: mMediumPadding)),
+                const SliverToBoxAdapter(child: SizedBox(height: mMediumPadding)),
                 FutureBuilder(
                     future: context.read<UserProvider>().fetchAboutItems(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return SliverFillRemaining(
+                        return const SliverFillRemaining(
                           child: Center(
                             child: CircularProgressIndicator(),
                           ),

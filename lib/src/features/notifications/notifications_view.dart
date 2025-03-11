@@ -177,7 +177,7 @@ class NotificationItemTile extends StatelessWidget {
         final data = jsonDecode(notificationItem.data!);
         Navigator.pushNamed(context, ContractsView.routeName, arguments: {'linkId': data['contract_id']});
       },
-      tileColor: mTileWarnColor,
+      tileColor: notificationItem.isRead ? null : mTileWarnColor,
       title: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -5,7 +5,7 @@ import 'package:AssetWise/src/services/aw_otp_service.dart';
 class VerifyOtpProvider {
   OTPRef? _otpRef;
   OTPRef? get otpRef => _otpRef;
-  OTPChannel _channel = OTPChannel.sms;
+  final OTPChannel _channel = OTPChannel.sms;
   OTPChannel get channel => _channel;
   OTPVerifyResponse? _verifyOTPResponse;
   OTPRequest? _otpRequest;

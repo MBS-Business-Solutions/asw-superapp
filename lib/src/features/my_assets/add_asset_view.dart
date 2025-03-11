@@ -1,7 +1,6 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
-import 'package:AssetWise/src/features/register_buyer/register_buyer_view.dart';
 import 'package:AssetWise/src/features/verify_otp/verify_otp_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/models/aw_otp_model.dart';
@@ -31,7 +30,7 @@ class _AddAssetViewState extends State<AddAssetView> {
 
   @override
   void initState() {
-    _fetchProjectsFuture = context.read<ContractProvider>().fetchProjects();
+    _fetchProjectsFuture = context.read<ContractProvider>().fetchProjects(context);
     super.initState();
   }
 
@@ -125,7 +124,6 @@ class _AddAssetViewState extends State<AddAssetView> {
   }
 
   void _submit() async {
-    // TODO: Implement submit logic
     if (_formKey.currentState!.validate()) {
       final otp = await context.read<VerifyOtpProvider>().sendOTPForUnitAdd(
             projectCode: _selectedProject!, //'W8C001',

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/services/aw_user_service.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +20,9 @@ class UserProvider with ChangeNotifier {
   bool get shouldValidatePin {
     return _isPinSet && isAuthenticated;
   }
+
+  String _language = 'th';
+  String get language => _language;
 
   bool get shouldValidateOTP {
     return !_isPinSet && isAuthenticated;
@@ -50,7 +53,7 @@ class UserProvider with ChangeNotifier {
         secureStorage.write(key: 'SESSION_TOKEN', value: _token),
         secureStorage.write(key: 'USER_ID', value: _userId),
       ]);
-
+      await reloadIsar(_userInformation?.code);
       notifyListeners();
       return true;
     }
@@ -67,6 +70,8 @@ class UserProvider with ChangeNotifier {
       await secureStorage.delete(key: 'LOGOUT');
       await secureStorage.write(key: 'USER_INFO', value: _userInformation!.toJson());
       await secureStorage.write(key: 'SESSION_TOKEN', value: _token);
+
+      await reloadIsar(_userInformation?.code);
       notifyListeners();
       return true;
     }
@@ -85,11 +90,12 @@ class UserProvider with ChangeNotifier {
     _isPinSet = false;
     _userId = null;
     _userInformation = null;
-    if (token != null) await AwUserService.logout(_token!);
+    if (token != null) await AwUserService.logout(_token!, _language);
     await secureStorage.deleteAll();
-    await isar.writeTxn(() async {
-      await isar.clear();
-    });
+    // await isar.writeTxn(() async {
+    //   await isar.clear();
+    // });
+    await reloadIsar();
 
     notifyListeners();
   }
@@ -118,11 +124,14 @@ class UserProvider with ChangeNotifier {
     }
 
     _token = await secureStorage.read(key: 'SESSION_TOKEN');
+    if (kDebugMode) {
+      print('Token: $_token');
+    }
     _isPinSet = await secureStorage.read(key: 'PIN') != null;
     _userId = await secureStorage.read(key: 'USER_ID');
     if (_userId != null && _token != null) {
       // fetch last updated user information
-      fetchUserInformation();
+      await fetchUserInformation();
     } else {
       // if login anonymously, fetch user information from secure storage instead
       final userJson = await secureStorage.read(key: 'USER_INFO');
@@ -130,6 +139,7 @@ class UserProvider with ChangeNotifier {
         _userInformation = UserInformation.fromJson(json.decode(userJson));
       }
     }
+    await reloadIsar(_userInformation?.code);
   }
 
   Future<bool> submitConsents(String consentId, Map<String, bool> consents) async {
@@ -149,7 +159,9 @@ class UserProvider with ChangeNotifier {
 
   Future<void> setPreferedLanguage(String language) async {
     if (token == null) return;
+    _language = language;
     await AwUserService.setPreferedLanguage(_token!, language);
+    notifyListeners();
   }
 
   Future<bool> changeEmail(String newValue) async {

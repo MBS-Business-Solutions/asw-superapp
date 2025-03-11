@@ -65,7 +65,6 @@ class NumPadWidget extends StatelessWidget {
         shape: const CircleBorder(),
         side: BorderSide(width: 1.0, color: Theme.of(context).highlightColor),
         fixedSize: Size.fromRadius(_buttonSize),
-        foregroundColor: Colors.white,
       ),
       child: Text(number, style: Theme.of(context).textTheme.headlineSmall),
     );
@@ -78,7 +77,6 @@ class NumPadWidget extends StatelessWidget {
         shape: const CircleBorder(),
         side: const BorderSide(color: Colors.transparent),
         fixedSize: Size.fromRadius(_buttonSize),
-        foregroundColor: Colors.white,
       ),
       child: child,
     );

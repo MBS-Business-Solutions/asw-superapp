@@ -23,14 +23,20 @@ const Color mDarkBodyTextColor = Color(0xFFFFFFFF);
 const Color mDarkDisplayTextColor = Color(0xFFBABABA);
 const Color mDarkBackgroundTextField = Color(0xFF2E2E2E);
 const Color mDarkCardBackgroundColor = Color(0xFF2E2E2E);
+const Color mDarkOutlinedButtonColor = Color(0xFFFFFFFF);
+const Color mDarkOutlinedBackgroundColor = Color(0x00000000);
+const Color mDarkOutlinedTextColor = Color(0xFFFFFFFF);
 
-const Color mLightBackgroundColor = Color(0xFFF5F5F5);
+const Color mLightBackgroundColor = Color(0xFFF9F9F9);
 const Color mLightBackgroundBottomBar = Color(0xF0FFFFFF);
 const Color mLightBottomBarTextColor = Color(0xFFBABABA);
 const Color mLightBodyTextColor = Color(0xFF444444);
 const Color mLightDisplayTextColor = Color(0xFF444444);
 const Color mLightBackgroundTextField = Color(0xFFE0E0E0);
 const Color mLightCardBackgroundColor = Color(0xFFD5D5D5);
+const Color mLightOutlinedButtonColor = Color(0xFF444444);
+const Color mLightOutlinedBackgroundColor = Color(0x00000000);
+const Color mLightOutlinedTextColor = Color(0xFF444444);
 
 const Color mGoldenGradientStart = Color(0xFFA48346);
 const Color mGoldenGradientEnd = Color(0xFFEBCE98);

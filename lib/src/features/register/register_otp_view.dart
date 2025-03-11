@@ -104,7 +104,7 @@ class _RegisterVerifyOtpViewState extends State<RegisterVerifyOtpView> {
                           Text(
                             AppLocalizations.of(context)!.otpInstruction(
                               refCode!.isLoginWithEmail ? 'email' : 'mobile',
-                              refCode!.isLoginWithEmail ? refCode!.sendTo : StringUtil.phoneFormatter(refCode!.sendTo),
+                              refCode!.isLoginWithEmail ? refCode!.sendTo : StringUtil.phoneFormatter(refCode!.sendTo, hiddenChar: 'X'),
                               refCode!.refCode,
                             ),
                             style: Theme.of(context).textTheme.bodyMedium,
@@ -123,10 +123,10 @@ class _RegisterVerifyOtpViewState extends State<RegisterVerifyOtpView> {
                                     TextSpan(
                                       children: [
                                         TextSpan(text: AppLocalizations.of(context)!.otpRequestCountdownPrefix),
-                                        TextSpan(text: ' '),
+                                        const TextSpan(text: ' '),
                                         TextSpan(
                                           text: AppLocalizations.of(context)!.otpRequestCountdown(_start),
-                                          style: TextStyle(color: mPrimaryMatColor),
+                                          style: const TextStyle(color: mPrimaryMatColor),
                                         ),
                                       ],
                                     ),

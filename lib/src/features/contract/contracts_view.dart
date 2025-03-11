@@ -39,7 +39,7 @@ class _ContractsViewState extends State<ContractsView> {
   }
 
   void _initialLoad() async {
-    final contracts = await context.read<ContractProvider>().fetchContracts();
+    final contracts = await context.read<ContractProvider>().fetchContracts(null);
 
     if (contracts.isNotEmpty) {
       setState(() {
@@ -159,7 +159,7 @@ class _ContractsViewState extends State<ContractsView> {
         child: Row(
           children: [
             IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.chevron_left,
                 // color: mDarkBodyTextColor,
               ),
@@ -194,9 +194,6 @@ class _ContractsViewState extends State<ContractsView> {
                                       builder: (context) => ContractDetailView(
                                             contractId: _selectedContract!.contractId,
                                           ))),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: mDarkBodyTextColor,
-                              ),
                               icon: const Icon(Icons.dock_sharp),
                               label: Text(AppLocalizations.of(context)!.contractsViewContract),
                             ),

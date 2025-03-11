@@ -30,7 +30,7 @@ class ChangeLanguangeView extends StatelessWidget {
               onTap: () async {
                 if (selectedLocale == supportedLocale) return;
                 selectedLocale = supportedLocale;
-                await context.read<SettingsController>().updateLocale(supportedLocale);
+                await context.read<SettingsController>().updateLocale(context, supportedLocale);
                 // if (context.mounted) Navigator.pop(context);
               },
               trailing: selectedLocale == supportedLocale ? const Icon(Icons.language) : null,

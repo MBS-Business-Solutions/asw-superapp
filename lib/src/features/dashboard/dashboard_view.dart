@@ -4,7 +4,6 @@ import 'package:AssetWise/src/features/dashboard/widgets/main/dashboard_main_vie
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';

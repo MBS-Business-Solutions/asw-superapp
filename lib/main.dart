@@ -45,33 +45,27 @@ void main() async {
     ),
     ChangeNotifierProxyProvider<UserProvider, SettingsController>(
       create: (context) => settingsController,
-      update: (context, userProvider, previous) =>
-          previous!..updateUserProvider(userProvider),
+      update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
     ),
     ProxyProvider<UserProvider, FirebaseMessagingProvider>(
       create: (context) => FirebaseMessagingProvider(),
-      update: (context, userProvider, previous) =>
-          previous!..updateUserProvider(userProvider),
+      update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
     ),
     ProxyProvider<UserProvider, RegisterProvider>(
       create: (context) => RegisterProvider(),
-      update: (context, userProvider, previous) =>
-          previous!..updateUserProvider(userProvider),
+      update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
     ),
     ProxyProvider<UserProvider, ContractProvider>(
       create: (context) => ContractProvider(),
-      update: (context, userProvider, previous) =>
-          previous!..updateUserProvider(userProvider),
+      update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
     ),
     ChangeNotifierProxyProvider<UserProvider, NotificationItemProvider>(
       create: (context) => NotificationItemProvider(),
-      update: (context, userProvider, previous) =>
-          previous!..updateUserProvider(userProvider),
+      update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
     ),
     ProxyProvider<UserProvider, VerifyOtpProvider>(
       create: (context) => VerifyOtpProvider(),
-      update: (context, userProvider, previous) =>
-          previous!..updateUserProvider(userProvider),
+      update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
     )
   ], child: MyApp(settingsController: settingsController)));
 }
@@ -89,6 +83,22 @@ Future<void> initIsar() async {
     [NotificationItemSchema],
     directory: dir.path,
   );
+}
+
+Future<void> reloadIsar([String? userId]) async {
+  final dir = await getApplicationDocumentsDirectory();
+  await isar.close();
+  isar = await Isar.open(
+    [NotificationItemSchema],
+    directory: dir.path,
+    name: userId ?? 'assetwise',
+  );
+
+  if (userId == null) {
+    await isar.writeTxn(() async {
+      await isar.clear();
+    });
+  }
 }
 
 // class MyHttpOverrides extends HttpOverrides {

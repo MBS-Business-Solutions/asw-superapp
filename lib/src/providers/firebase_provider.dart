@@ -1,10 +1,5 @@
-import 'package:AssetWise/main.dart';
-import 'package:AssetWise/src/features/dashboard/dashboard_view.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
-import 'package:AssetWise/src/services/aw_user_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
 class FirebaseMessagingProvider {
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;

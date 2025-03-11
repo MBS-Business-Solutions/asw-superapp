@@ -1,4 +1,5 @@
 import 'package:AssetWise/src/providers/user_provider.dart';
+import 'package:AssetWise/src/services/aw_header_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -46,6 +47,7 @@ class SettingsController with ChangeNotifier {
     ));
 
     _locale = await _settingsService.locale();
+    currentLanguage = _locale.languageCode;
     _selectedLocale = SupportedLocales.values.firstWhere((element) => element.locale == _locale.languageCode);
     // Important! Inform listeners a change has occurred.
     notifyListeners();
@@ -73,9 +75,10 @@ class SettingsController with ChangeNotifier {
     await _settingsService.updateThemeMode(newThemeMode);
   }
 
-  Future<void> updateLocale(SupportedLocales newLocale) async {
+  Future<void> updateLocale(BuildContext? context, SupportedLocales newLocale) async {
     _selectedLocale = newLocale;
     _locale = Locale(_selectedLocale.locale);
+    currentLanguage = _selectedLocale.locale;
     await _settingsService.updateLocale(_locale);
     await _userProvider!.setPreferedLanguage(_selectedLocale.locale.toUpperCase());
     notifyListeners();

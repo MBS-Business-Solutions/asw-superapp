@@ -1,8 +1,11 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/services/aw_contract_service.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ReceiptViewFile extends StatefulWidget {
@@ -17,6 +20,7 @@ class ReceiptViewFile extends StatefulWidget {
 class _ReceiptViewFileState extends State<ReceiptViewFile> {
   late final WebViewController _controller;
   bool _isLoading = true;
+  bool _isDownloading = false;
 
   @override
   void initState() {
@@ -58,11 +62,10 @@ class _ReceiptViewFileState extends State<ReceiptViewFile> {
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mDefaultPadding),
-                    child: FilledButton(
-                        onPressed: () {
-                          const url = 'https://superapp-api.azurewebsites.net/mobile/contracts/SO-EQC019-19040123/payments/RV-EQC019-19100156/download';
-                        },
-                        child: Text(
+                    child: FilledButton.icon(
+                        onPressed: _isDownloading ? null : () => _downloadReceiptFile(),
+                        icon: _isDownloading ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator()) : null,
+                        label: Text(
                           AppLocalizations.of(context)!.receiptViewFileDownload,
                         )),
                   ),
@@ -73,5 +76,29 @@ class _ReceiptViewFileState extends State<ReceiptViewFile> {
         ),
       ),
     );
+  }
+
+  Future<void> _downloadReceiptFile() async {
+    setState(() {
+      _isDownloading = true;
+    });
+    // ดาวน์โหลดไฟล์ PDF
+    final filePath = await context.read<ContractProvider>().downloadReceipt(widget.contractNumber, widget.receiptNumber, widget.receiptNumber);
+    if (filePath != null) {
+      // เปิดไฟล์ PDF และให้ผู้ใช้เลือกแอป
+
+      await Share.shareXFiles([XFile(filePath)]);
+      //await OpenFile.open(filePath);
+    } else {
+      // แจ้งเตือนเมื่อไม่สามารถดาวน์โหลดไฟล์ได้
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          AppLocalizations.of(context)!.errorUnableToProcess,
+        ),
+      ));
+    }
+    setState(() {
+      _isDownloading = false;
+    });
   }
 }

@@ -24,7 +24,7 @@ class _MyAssetsViewState extends State<MyAssetsView> {
   late Future<List<Contract>?> _contractsFuture;
   @override
   void initState() {
-    _contractsFuture = context.read<ContractProvider>().fetchContracts();
+    _contractsFuture = context.read<ContractProvider>().fetchContracts(context);
     super.initState();
   }
 
@@ -261,7 +261,7 @@ class _MyAssetsViewState extends State<MyAssetsView> {
 
   void _refreshData() {
     setState(() {
-      _contractsFuture = context.read<ContractProvider>().fetchContracts();
+      _contractsFuture = context.read<ContractProvider>().fetchContracts(context);
     });
   }
 }

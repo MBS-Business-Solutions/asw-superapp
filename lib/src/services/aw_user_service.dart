@@ -1,5 +1,6 @@
 import 'package:AssetWise/src/consts/url_const.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
+import 'package:AssetWise/src/services/aw_header_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -8,9 +9,7 @@ class AwUserService {
   Future<UserToken?> login(String userId) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/resident'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+      headers: getHeader(),
       body: jsonEncode(<String, String>{"customer_id": userId}),
     );
 
@@ -31,9 +30,7 @@ class AwUserService {
   Future<UserToken?> loginNewUser({required String type, required String phone, required String email, required String firstName, required String lastName}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/person'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+      headers: getHeader(),
       body: jsonEncode(<String, String>{
         "type": type,
         "phone": phone,
@@ -60,10 +57,7 @@ class AwUserService {
   static Future<bool> submitConsents(String token, String consentId, Map<String, bool> consents) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/consent/submit'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
+      headers: getHeader(token: token),
       body: jsonEncode(<String, dynamic>{
         "consent_id": consentId,
         "items": consents.entries
@@ -91,10 +85,7 @@ class AwUserService {
     final response = await http
         .post(
           Uri.parse('$BASE_URL/mobile/setting/language'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer $token',
-          },
+          headers: getHeader(token: token),
           body: jsonEncode(<String, String>{"language": language}),
         )
         .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
@@ -113,14 +104,11 @@ class AwUserService {
     return false;
   }
 
-  static Future<bool> updateFCMToken(String userToken, String fcmToken) async {
+  static Future<bool> updateFCMToken(String language, String userToken, String fcmToken) async {
     final response = await http
         .post(
           Uri.parse('$BASE_URL/auth/fcm'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer $userToken',
-          },
+          headers: getHeader(token: userToken),
           body: jsonEncode(<String, String>{"token": fcmToken}),
         )
         .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
@@ -143,10 +131,7 @@ class AwUserService {
     final response = await http
         .post(
           Uri.parse('$BASE_URL/mobile/setting/change-email'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer $userToken',
-          },
+          headers: getHeader(token: userToken),
           body: jsonEncode(<String, String>{"email": newValue}),
         )
         .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
@@ -169,10 +154,7 @@ class AwUserService {
     final response = await http
         .post(
           Uri.parse('$BASE_URL/mobile/setting/change-phone'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer $userToken',
-          },
+          headers: getHeader(token: userToken),
           body: jsonEncode(<String, String>{"phone": newValue}),
         )
         .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
@@ -192,13 +174,12 @@ class AwUserService {
   }
 
   static Future<UserInformation?> getUserInformation(String userToken) async {
-    final response = await http.get(
-      Uri.parse('$BASE_URL/mobile/home/me'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $userToken',
-      },
-    ).timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+    final response = await http
+        .get(
+          Uri.parse('$BASE_URL/mobile/home/me'),
+          headers: getHeader(token: userToken),
+        )
+        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       try {
@@ -215,14 +196,12 @@ class AwUserService {
   }
 
   static Future<List<PersonalConsent>> fetchPersonalConsents(String userToken, {String? language}) async {
-    final response = await http.get(
-      Uri.parse('$BASE_URL/mobile/setting/consent'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $userToken',
-        'Content-Language': language ?? 'th',
-      },
-    ).timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+    final response = await http
+        .get(
+          Uri.parse('$BASE_URL/mobile/setting/consent'),
+          headers: getHeader(token: userToken),
+        )
+        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       try {
@@ -240,14 +219,12 @@ class AwUserService {
   }
 
   static Future<PersonalConsentDetail?> fetchPersonalConsentDetail(String userToken, String consentId, {String? language}) async {
-    final response = await http.get(
-      Uri.parse('$BASE_URL/mobile/setting/consent/$consentId'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $userToken',
-        'Content-Language': language ?? 'th',
-      },
-    ).timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+    final response = await http
+        .get(
+          Uri.parse('$BASE_URL/mobile/setting/consent/$consentId'),
+          headers: getHeader(token: userToken),
+        )
+        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       try {
@@ -267,10 +244,7 @@ class AwUserService {
     final response = await http
         .post(
           Uri.parse('$BASE_URL/mobile/setting/consent/$consentId'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer $userToken',
-          },
+          headers: getHeader(token: userToken),
           body: jsonEncode({
             "is_given": consentGiven,
           }),
@@ -292,14 +266,12 @@ class AwUserService {
   }
 
   static Future<List<AboutItem>> fetchAboutItems(String userToken, {String? language}) async {
-    final response = await http.get(
-      Uri.parse('$BASE_URL/mobile/setting/about'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $userToken',
-        'Content-Language': language ?? 'th',
-      },
-    ).timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+    final response = await http
+        .get(
+          Uri.parse('$BASE_URL/mobile/setting/about'),
+          headers: getHeader(token: userToken),
+        )
+        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       try {
@@ -317,14 +289,12 @@ class AwUserService {
   }
 
   static Future<AboutItemDetail?> fetchAboutItemDetail(String userToken, String consentId, {String? language}) async {
-    final response = await http.get(
-      Uri.parse('$BASE_URL/mobile/setting/about/$consentId'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $userToken',
-        'Content-Language': language ?? 'th',
-      },
-    ).timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+    final response = await http
+        .get(
+          Uri.parse('$BASE_URL/mobile/setting/about/$consentId'),
+          headers: getHeader(token: userToken),
+        )
+        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       try {
@@ -340,13 +310,10 @@ class AwUserService {
     return null;
   }
 
-  static Future<bool> logout(String userToken) async {
+  static Future<bool> logout(String userToken, String? language) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/logout'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $userToken',
-      },
+      headers: getHeader(token: userToken),
     );
 
     if (response.statusCode >= 200 && response.statusCode < 300) {

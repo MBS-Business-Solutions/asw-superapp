@@ -16,6 +16,7 @@ import 'package:AssetWise/src/features/verify_otp/otp_request_view.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/models/aw_otp_model.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/utils/string_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/cupertino.dart';
@@ -328,16 +329,19 @@ class _ProfileViewState extends State<ProfileView> {
                     onPressed: () {
                       Navigator.pop(context, true);
                     },
-                    style: FilledButton.styleFrom(backgroundColor: mGreyBackgroundColor),
-                    child: Text(AppLocalizations.of(context)!.logoutConfirmationOKButton, style: const TextStyle(color: mRedColor)),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: CommonUtil.colorTheme(context, darkColor: mGreyBackgroundColor, lightColor: mLightCardBackgroundColor),
+                    ),
+                    child: Text(AppLocalizations.of(context)!.logoutConfirmationOKButton,
+                        style: TextStyle(
+                          color: CommonUtil.colorTheme(context, darkColor: mRedColor, lightColor: mBrightRedColor),
+                        )),
                   ),
                   const SizedBox(height: mDefaultPadding),
                   OutlinedButton(
-                      onPressed: () => Navigator.pop(context, false),
-                      child: Text(
-                        AppLocalizations.of(context)!.actionButtonCancel,
-                        style: const TextStyle(color: Colors.white),
-                      )),
+                    onPressed: () => Navigator.pop(context, false),
+                    child: Text(AppLocalizations.of(context)!.actionButtonCancel),
+                  ),
                 ],
               ),
             ),
@@ -355,35 +359,43 @@ class _ProfileViewState extends State<ProfileView> {
     final result = await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
-          title: Text(
-            AppLocalizations.of(context)!.logoutConfirmationTitle,
-            style: Theme.of(context).textTheme.labelLarge,
+        final brightness = Theme.of(context).brightness;
+
+        return CupertinoTheme(
+          data: CupertinoThemeData(
+            brightness: brightness,
           ),
-          content: Padding(
-            padding: const EdgeInsets.symmetric(vertical: mDefaultPadding),
-            child: Text(
-              AppLocalizations.of(context)!.logoutConfirmationMessage('${_userInformation?.firstName ?? ''} ${_userInformation?.lastName ?? ''}'),
-              style: Theme.of(context).textTheme.labelMedium,
+          child: CupertinoAlertDialog(
+            title: Text(
+              AppLocalizations.of(context)!.logoutConfirmationTitle,
+              style: Theme.of(context).textTheme.labelLarge,
             ),
-          ),
-          actions: <Widget>[
-            TextButton(
+            content: Padding(
+              padding: const EdgeInsets.symmetric(vertical: mDefaultPadding),
               child: Text(
-                AppLocalizations.of(context)!.logoutConfirmationOKButton,
-                style: const TextStyle(color: mRedColor),
+                AppLocalizations.of(context)!.logoutConfirmationMessage('${_userInformation?.firstName ?? ''} ${_userInformation?.lastName ?? ''}'),
+                style: Theme.of(context).textTheme.labelMedium,
               ),
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
             ),
-            TextButton(
-              child: Text(AppLocalizations.of(context)!.actionButtonCancel, style: const TextStyle(color: Colors.white)),
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-            ),
-          ],
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.logoutConfirmationOKButton,
+                  style: TextStyle(color: CommonUtil.colorTheme(context, darkColor: mRedColor, lightColor: mBrightRedColor)),
+                ),
+                onPressed: () {
+                  Navigator.pop(context, true);
+                },
+              ),
+              TextButton(
+                child: Text(AppLocalizations.of(context)!.actionButtonCancel,
+                    style: TextStyle(color: CommonUtil.colorTheme(context, darkColor: mDarkDisplayTextColor, lightColor: mLightDisplayTextColor))),
+                onPressed: () {
+                  Navigator.pop(context, false);
+                },
+              ),
+            ],
+          ),
         );
       },
     );

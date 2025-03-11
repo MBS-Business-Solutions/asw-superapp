@@ -1,4 +1,3 @@
-import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/verify_otp/verify_otp_view.dart';
 import 'package:AssetWise/src/models/aw_otp_model.dart';
@@ -41,12 +40,12 @@ class _RegisterBuyerRequestViewState extends State<RegisterBuyerRequestView> {
                   AppLocalizations.of(context)!.registerBuyerHeader,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-                SizedBox(height: mMediumPadding),
+                const SizedBox(height: mMediumPadding),
                 Text(
                   AppLocalizations.of(context)!.registerBuyerInstruction,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                SizedBox(height: mDefaultPadding),
+                const SizedBox(height: mDefaultPadding),
                 AwTextFormField(
                   controller: _idCardController,
                   label: AppLocalizations.of(context)!.registerBuyerIdentifier,
@@ -57,7 +56,7 @@ class _RegisterBuyerRequestViewState extends State<RegisterBuyerRequestView> {
                     return null;
                   },
                 ),
-                SizedBox(height: mDefaultPadding),
+                const SizedBox(height: mDefaultPadding),
                 FilledButton(
                   onPressed: () => _registerBuyer(),
                   child: Text(AppLocalizations.of(context)!.registerBuyerRegister),

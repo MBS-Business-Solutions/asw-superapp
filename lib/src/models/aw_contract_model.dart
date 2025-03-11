@@ -264,9 +264,9 @@ class ContractProject {
 class PaymentGatewayResponse {
   final String status;
   final int code;
-  final String message;
-  final DateTime timestamp;
-  final String path;
+  final String? message;
+  final DateTime? timestamp;
+  final String? path;
   final String? paymentUrl;
 
   PaymentGatewayResponse({
@@ -283,7 +283,7 @@ class PaymentGatewayResponse {
       status: json['status'],
       code: json['code'],
       message: json['message'],
-      timestamp: DateTime.parse(json['timestamp']),
+      timestamp: DateTime.tryParse(json['timestamp'] ?? ''),
       path: json['path'],
       paymentUrl: json['data']?['payment_url'],
     );
@@ -293,9 +293,9 @@ class PaymentGatewayResponse {
 class QRResponse {
   final String status;
   final int code;
-  final String message;
-  final DateTime timestamp;
-  final String path;
+  final String? message;
+  final DateTime? timestamp;
+  final String? path;
   final String? qrCode;
 
   QRResponse({
@@ -312,7 +312,7 @@ class QRResponse {
       status: json['status'],
       code: json['code'],
       message: json['message'],
-      timestamp: DateTime.parse(json['timestamp']),
+      timestamp: DateTime.tryParse(json['timestamp'] ?? ''),
       path: json['path'],
       qrCode: json['data']?['qr_code'],
     );

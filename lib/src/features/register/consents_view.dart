@@ -173,7 +173,7 @@ class _ConsentsViewState extends State<ConsentsView> {
     for (final item in consent.items) {
       _userConsents[item.id] = true;
     }
-    _validateForm(consent);
+    //_validateForm(consent);
     _submitConsents(consent);
   }
 

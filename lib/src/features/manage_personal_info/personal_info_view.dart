@@ -47,12 +47,12 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
               children: [
                 Container(
                   color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor),
-                  padding: EdgeInsets.all(mDefaultPadding),
+                  padding: const EdgeInsets.all(mDefaultPadding),
                   child: Text(widget.personalConsent.name),
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.all(mMediumPadding),
+                    padding: const EdgeInsets.all(mMediumPadding),
                     child: SingleChildScrollView(
                       child: Html(
                         data: '''<b>${widget.personalConsent.name}</b>

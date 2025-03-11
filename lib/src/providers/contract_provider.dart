@@ -2,6 +2,7 @@ import 'package:AssetWise/src/models/aw_common_model.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/services/aw_contract_service.dart';
+import 'package:flutter/material.dart';
 
 class ContractProvider {
   late List<Contract> _contracts;
@@ -12,9 +13,9 @@ class ContractProvider {
     _userProvider = userProvider;
   }
 
-  Future<List<Contract>> fetchContracts() async {
+  Future<List<Contract>> fetchContracts(BuildContext? context) async {
     if (_userProvider == null) return [];
-    _contracts = await AwContractService.fetchContracts(_userProvider!.token!);
+    _contracts = await AwContractService.fetchContracts(token: _userProvider!.token!);
     _contracts.sort((a, b) => a.isDefault ? -1 : 1);
     return _contracts;
   }
@@ -26,36 +27,32 @@ class ContractProvider {
 
   Future<OverdueDetail?> fetchOverdueDetail(String contractId) async {
     if (_userProvider == null) return null;
-    return AwContractService.fetchOverdueDetail(_userProvider!.token!, contractId);
+    return AwContractService.fetchOverdueDetail(token: _userProvider!.token!, contractId: contractId);
   }
 
   Future<List<PaymentDetail>?> fetchPaymentsByYear(String contractId, int year) async {
     if (_userProvider == null) return [];
-    return AwContractService.fetchPaymentsByYear(_userProvider!.token!, contractId, year);
-    // return [
-    //   PaymentDetail.fromJson({"date": "2024-11-29", "amount": 5000, "type": "Cash", "status": "รอยืนยันเงิน", "receipt_number": "RV-106C001-24110002"}),
-    //   PaymentDetail.fromJson({"date": "2024-11-29", "amount": 9999, "type": "QR PromptPay", "status": "ชำระแล้ว", "receipt_number": "RV-EQC019-19100156"}),
-    // ];
+    return AwContractService.fetchPaymentsByYear(token: _userProvider!.token!, contractId: contractId, year: year);
   }
 
   Future<ReceiptDetail?> getReceiptDetail(String contractNumber, String receiptNumber) async {
     if (_userProvider == null) return null;
-    return AwContractService.fetchReceiptDetail(_userProvider!.token!, contractNumber, receiptNumber);
+    return AwContractService.fetchReceiptDetail(token: _userProvider!.token!, contractId: contractNumber, receiptNumber: receiptNumber);
   }
 
   Future<List<DownPaymentDetail>?> fetchDownPayments(String contractId) async {
     if (_userProvider == null) return [];
-    return AwContractService.fetchTerms(_userProvider!.token!, contractId);
+    return AwContractService.fetchTerms(token: _userProvider!.token!, contractId: contractId);
   }
 
   Future<List<DownPaymentTermDue>?> fetchDownPaymentTermDues(String contractId) async {
     if (_userProvider == null) return [];
-    return AwContractService.fetchDownPaymentDues(_userProvider!.token!, contractId);
+    return AwContractService.fetchDownPaymentDues(token: _userProvider!.token!, contractId: contractId);
   }
 
   Future<QRResponse?> getQRPaymentCode({required String contractId, double amount = 0}) async {
     if (_userProvider == null) return null;
-    return AwContractService.getQRPaymentCode(_userProvider!.token!, contractId: contractId, amount: amount);
+    return AwContractService.getQRPaymentCode(token: _userProvider!.token!, contractId: contractId, amount: amount);
   }
 
   Future<PaymentGatewayResponse?> getPaymentGatewayURL({required Contract contract, double amount = 0, String? detail, required String email}) async {
@@ -65,23 +62,29 @@ class ContractProvider {
   Future<String?> downloadContract(String contractId, String filename) async {
     if (_userProvider == null) return null;
     final url = AwContractService.getContractURL(contractId);
-    return AwContractService.downloadFile(_userProvider!.token!, url, filename);
+    return AwContractService.downloadFile(token: _userProvider!.token!, url: url, fileName: filename);
+  }
+
+  Future<String?> downloadReceipt(String contractId, String receiptNumber, String filename) async {
+    if (_userProvider == null) return null;
+    final url = AwContractService.getReceiptURL(contractId, receiptNumber);
+    return AwContractService.downloadFile(token: _userProvider!.token!, url: url, fileName: filename);
   }
 
   Future<bool> setDefaultContract(String unitId) async {
     if (_userProvider == null) return false;
-    final result = await AwContractService.setDefaultContract(_userProvider!.token!, unitId);
+    final result = await AwContractService.setDefaultContract(token: _userProvider!.token!, unitId: unitId);
     return result;
   }
 
   Future<ServiceResponse?> removeContract(String unitId) async {
     if (_userProvider == null) return null;
-    final result = await AwContractService.removeContract(_userProvider!.token!, unitId);
+    final result = await AwContractService.removeContract(token: _userProvider!.token!, unitId: unitId);
     return result;
   }
 
-  Future<List<ContractProject>> fetchProjects() async {
+  Future<List<ContractProject>> fetchProjects(BuildContext? context) async {
     if (_userProvider == null) return [];
-    return AwContractService.fetchProjects(_userProvider!.token!);
+    return AwContractService.fetchProjects(token: _userProvider!.token!);
   }
 }

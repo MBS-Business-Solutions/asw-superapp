@@ -3,7 +3,6 @@ import 'package:AssetWise/src/features/profile/widgets/email_change_success.dart
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/aw_textformfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
@@ -90,7 +89,6 @@ class _EmailNewValueViewState extends State<EmailNewValueView> {
               builder: (context) => const EmailChangeSuccess(),
             ));
       } else {
-        // TODO: Show error message
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(AppLocalizations.of(context)!.errorUnableToProcess),
         ));

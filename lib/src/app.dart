@@ -2,8 +2,9 @@ import 'dart:ui';
 
 import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/consts/colors_const.dart';
-import 'package:AssetWise/src/consts/themes_const.dart';
 import 'package:AssetWise/src/0_test/ui_showcase_screen.dart';
+import 'package:AssetWise/src/consts/themes_dark_const.dart';
+import 'package:AssetWise/src/consts/themes_light_const.dart';
 import 'package:AssetWise/src/features/about_assetwise/about_asswise_view.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/features/contract/down_history_view.dart';

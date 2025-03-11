@@ -1,17 +1,15 @@
 import 'dart:convert';
 import 'package:AssetWise/src/consts/url_const.dart';
 import 'package:AssetWise/src/models/aw_notification_model.dart';
+import 'package:AssetWise/src/services/aw_header_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class AwNotificationItemService {
-  static Future<List<NotificationItem>> fetchNotificationItems(String token, {String? lastItemDate, String? language}) async {
+  static Future<List<NotificationItem>> fetchNotificationItems(String token, {String? lastItemDate}) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/notifications${lastItemDate == null ? '' : '?cursor=$lastItemDate'}'),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Language': language ?? 'th',
-      },
+      headers: getHeader(token: token),
     );
 
     try {
