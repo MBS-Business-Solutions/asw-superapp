@@ -7,13 +7,13 @@ import 'package:http/http.dart' as http;
 
 class AwOtpService {
   static Future<OTPRef?> sendOTPForReLogin({required String token, required OTPRequest request}) async {
-    final body = jsonEncode(<String, dynamic>{
+    final body = {
       "type": request.userType, // 'resident' | 'person'
       "otp_type": request.channel, // 'phone' | 'email'
       "id_card4": request.idCard4,
       "phone": request.phone,
       "email": request.email,
-    });
+    };
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/login'),
       headers: getPostHeader(token: token),
@@ -37,9 +37,9 @@ class AwOtpService {
   }
 
   static Future<OTPRef?> sendOTPForValidateUser({required String token, required OTPRequest request}) async {
-    final body = jsonEncode({
+    final body = {
       "id_card": request.sendTo,
-    });
+    };
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/buyer-check'),
       headers: getPostHeader(token: token),
@@ -61,11 +61,11 @@ class AwOtpService {
   }
 
   static Future<OTPRef?> sendOTPForChangePin({required String token, required OTPRequest request}) async {
-    final body = jsonEncode({
+    final body = {
       "type": request.channel,
       "phone": request.phone,
       "email": request.email,
-    });
+    };
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/change-pin'),
       headers: getPostHeader(token: token),
@@ -86,11 +86,11 @@ class AwOtpService {
   }
 
   static Future<OTPRef?> sendOTPForUnitAdd({required String token, required String projectCode, required String unitNumber, required String last4Id}) async {
-    final body = jsonEncode({
+    final body = {
       "project_code": projectCode,
       "unit_number": unitNumber,
       "id_card4": last4Id,
-    });
+    };
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/unit-add'),
       headers: getPostHeader(token: token),

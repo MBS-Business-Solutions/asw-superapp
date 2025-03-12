@@ -10,8 +10,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ConsentsView extends StatefulWidget {
-  const ConsentsView({super.key});
+  const ConsentsView({super.key, this.consentUpdated = false});
   static const String routeName = '/consents';
+  final bool consentUpdated;
   @override
   State<ConsentsView> createState() => _ConsentsViewState();
 }
@@ -180,7 +181,12 @@ class _ConsentsViewState extends State<ConsentsView> {
   void _submitConsents(Consent consent) async {
     final result = await context.read<UserProvider>().submitConsents(consent.id, _userConsents);
     if (result && mounted) {
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const SetPinView()), (route) => route.isFirst);
+      if (widget.consentUpdated) {
+        // goto main page
+        Navigator.popUntil(context, (route) => route.isFirst);
+      } else {
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const SetPinView()), (route) => route.isFirst);
+      }
     }
   }
 }

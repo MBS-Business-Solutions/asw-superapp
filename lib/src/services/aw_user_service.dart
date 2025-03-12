@@ -55,7 +55,7 @@ class AwUserService {
   }
 
   static Future<bool> submitConsents(String token, String consentId, Map<String, bool> consents) async {
-    final body = jsonEncode(<String, dynamic>{
+    final body = {
       "consent_id": consentId,
       "items": consents.entries
           .map((entry) => {
@@ -63,11 +63,11 @@ class AwUserService {
                 "checked": entry.value,
               })
           .toList(),
-    });
+    };
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/consent/submit'),
       headers: getPostHeader(token: token),
-      body: body,
+      body: jsonEncode(body),
     );
 
     if (response.statusCode >= 200 && response.statusCode < 300) {

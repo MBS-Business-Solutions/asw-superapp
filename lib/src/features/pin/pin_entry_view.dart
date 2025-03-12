@@ -164,7 +164,7 @@ class _PinEntryViewState extends State<PinEntryView> {
     );
     if (otpValidationResult as bool? ?? false) {
       // reset pin
-      Navigator.push(
+      await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const SetPinView(

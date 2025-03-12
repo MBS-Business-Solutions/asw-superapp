@@ -111,7 +111,22 @@ class _MyAppState extends State<MyApp> {
       }
     }
     if (mounted) {
-      context.read<NotificationItemProvider>().fetchNotificationItems();
+      final userProvider = context.read<UserProvider>();
+      if (userProvider.userInformation != null) {
+        final consentGave = userProvider.userInformation?.consent ?? false;
+        if (!consentGave) {
+          await Navigator.push(
+            navigatorKey.currentContext ?? context,
+            MaterialPageRoute(
+              builder: (context) => const ConsentsView(
+                consentUpdated: true,
+              ),
+              fullscreenDialog: true,
+            ),
+          );
+        }
+      }
+      await context.read<NotificationItemProvider>().fetchNotificationItems();
       setState(() => _showShield = false);
     }
   }
