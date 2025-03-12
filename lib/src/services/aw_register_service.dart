@@ -9,7 +9,7 @@ class AwRegisterService {
   static Future<bool> customerCheck({bool isByMobile = true, String? idCard4, required String phoneEmail, String? language}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/customer-check'),
-      headers: getHeader(),
+      headers: getPostHeader(),
       body: jsonEncode(<String, String>{
         "type": isByMobile ? "phone" : "email",
         if (idCard4 != null) "id_card4": idCard4,
@@ -32,7 +32,7 @@ class AwRegisterService {
   static Future<RegisterOTPRef?> sendOTPResident({bool isLoginWithEmail = false, required String idCard4, required String phoneEmail, String? language}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/request-resident-otp'),
-      headers: getHeader(),
+      headers: getPostHeader(),
       body: jsonEncode(<String, String>{
         "type": isLoginWithEmail ? 'email' : 'phone',
         "id_card4": idCard4,
@@ -57,7 +57,7 @@ class AwRegisterService {
   static Future<RegisterOTPVerifyResponse?> verifyOTPResident({required String transId, required String otp, String? language}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/verify-resident-otp'),
-      headers: getHeader(),
+      headers: getPostHeader(),
       body: jsonEncode(<String, String>{"trans_id": transId, "otp": otp}),
     );
 
@@ -78,7 +78,7 @@ class AwRegisterService {
   static Future<RegisterOTPRef?> sendOTPNonResident({bool isLoginWithEmail = false, required String phoneEmail, String? language}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/request-person-otp'),
-      headers: getHeader(),
+      headers: getPostHeader(),
       body: jsonEncode(<String, String>{
         "type": isLoginWithEmail ? 'email' : 'phone',
         if (isLoginWithEmail) "email": phoneEmail else "phone": phoneEmail,
@@ -102,7 +102,7 @@ class AwRegisterService {
   static Future<RegisterOTPVerifyResponse?> verifyOTPNonResident({required String transId, required String otp, String? language}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/verify-person-otp'),
-      headers: getHeader(),
+      headers: getPostHeader(),
       body: jsonEncode(<String, String>{"trans_id": transId, "otp": otp}),
     );
 

@@ -192,18 +192,18 @@ class AwContractService {
 
   static Future<PaymentGatewayResponse?> getPaymentGatewayURL({required String token, required Contract contract, double amount = 0, String? detail, required String email}) async {
     final formatNumber = NumberFormat('####.00');
-    final body = {
+    final body = jsonEncode(<String, String>{
       'payment_type': '9',
       'contract_id': contract.contractId,
       'contract_number': contract.contractNumber ?? '',
       'total': formatNumber.format(amount),
       'customer_email': email,
       'detail': detail ?? '',
-    };
+    });
     final response = await http.post(
       Uri.parse('$BASE_URL/payment/link'),
       body: body,
-      headers: getHeader(token: token),
+      headers: getPostHeader(token: token),
     );
 
     try {
@@ -269,12 +269,12 @@ class AwContractService {
   }
 
   static Future<bool> setDefaultContract({required String token, required String unitId}) async {
-    final body = {
+    final body = jsonEncode(<String, String>{
       'unit_id': unitId,
-    };
+    });
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/units/$unitId/default'),
-      headers: getHeader(token: token),
+      headers: getPostHeader(token: token),
       body: body,
     );
 
@@ -290,12 +290,12 @@ class AwContractService {
   }
 
   static Future<ServiceResponse?> removeContract({required String token, required String unitId}) async {
-    final body = {
+    final body = jsonEncode(<String, String>{
       'unit_id': unitId,
-    };
+    });
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/units/$unitId/remove'),
-      headers: getHeader(token: token),
+      headers: getPostHeader(token: token),
       body: body,
     );
 

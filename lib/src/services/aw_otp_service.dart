@@ -7,16 +7,16 @@ import 'package:http/http.dart' as http;
 
 class AwOtpService {
   static Future<OTPRef?> sendOTPForReLogin({required String token, required OTPRequest request}) async {
-    final body = {
+    final body = jsonEncode(<String, dynamic>{
       "type": request.userType, // 'resident' | 'person'
       "otp_type": request.channel, // 'phone' | 'email'
       "id_card4": request.idCard4,
       "phone": request.phone,
       "email": request.email,
-    };
+    });
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/login'),
-      headers: getHeader(token: token),
+      headers: getPostHeader(token: token),
       body: jsonEncode(body),
     );
 
@@ -37,12 +37,12 @@ class AwOtpService {
   }
 
   static Future<OTPRef?> sendOTPForValidateUser({required String token, required OTPRequest request}) async {
-    final body = {
+    final body = jsonEncode({
       "id_card": request.sendTo,
-    };
+    });
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/buyer-check'),
-      headers: getHeader(token: token),
+      headers: getPostHeader(token: token),
       body: jsonEncode(body),
     );
 
@@ -61,14 +61,14 @@ class AwOtpService {
   }
 
   static Future<OTPRef?> sendOTPForChangePin({required String token, required OTPRequest request}) async {
-    final body = {
+    final body = jsonEncode({
       "type": request.channel,
       "phone": request.phone,
       "email": request.email,
-    };
+    });
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/change-pin'),
-      headers: getHeader(token: token),
+      headers: getPostHeader(token: token),
       body: jsonEncode(body),
     );
     if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -86,10 +86,14 @@ class AwOtpService {
   }
 
   static Future<OTPRef?> sendOTPForUnitAdd({required String token, required String projectCode, required String unitNumber, required String last4Id}) async {
-    final body = {"project_code": projectCode, "unit_number": unitNumber, "id_card4": last4Id};
+    final body = jsonEncode({
+      "project_code": projectCode,
+      "unit_number": unitNumber,
+      "id_card4": last4Id,
+    });
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/unit-add'),
-      headers: getHeader(token: token),
+      headers: getPostHeader(token: token),
       body: jsonEncode(body),
     );
     Map<String, dynamic> jsonResponse = json.decode(response.body);
@@ -103,7 +107,7 @@ class AwOtpService {
   static Future<OTPVerifyResponse?> verifyOTPForLogin({required String token, required String transId, required String otp}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/verify-login'),
-      headers: getHeader(token: token),
+      headers: getPostHeader(token: token),
       body: jsonEncode({
         "trans_id": transId,
         "otp": otp,
@@ -127,7 +131,7 @@ class AwOtpService {
   static Future<OTPVerifyResponse?> verifyOTPForValidateUser({required String token, required String transId, required String otp}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/verify-buyer-otp'),
-      headers: getHeader(token: token),
+      headers: getPostHeader(token: token),
       body: jsonEncode({
         "trans_id": transId,
         "otp": otp,
@@ -151,7 +155,7 @@ class AwOtpService {
   static Future<OTPVerifyResponse?> verifyOTPForChangePin({required String token, required String transId, required String otp}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/verify-change-pin'),
-      headers: getHeader(token: token),
+      headers: getPostHeader(token: token),
       body: jsonEncode({
         "trans_id": transId,
         "otp": otp,
@@ -175,7 +179,7 @@ class AwOtpService {
   static Future<OTPAddUnitResponse?> verifyOTPForAddUnit({required String token, required String transId, required String otp}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/verify-unit-add'),
-      headers: getHeader(token: token),
+      headers: getPostHeader(token: token),
       body: jsonEncode({
         "trans_id": transId,
         "otp": otp,
