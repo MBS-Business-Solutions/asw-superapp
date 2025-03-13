@@ -105,7 +105,7 @@ class AwUserService {
     return false;
   }
 
-  static Future<bool> updateFCMToken(String language, String userToken, String fcmToken) async {
+  static Future<bool> updateFCMToken(String userToken, String fcmToken) async {
     final response = await http
         .post(
           Uri.parse('$BASE_URL/auth/fcm'),
@@ -178,7 +178,7 @@ class AwUserService {
     final response = await http
         .get(
           Uri.parse('$BASE_URL/mobile/home/me'),
-          headers: getPostHeader(token: userToken),
+          headers: getHeader(token: userToken),
         )
         .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
 
@@ -200,7 +200,7 @@ class AwUserService {
     final response = await http
         .get(
           Uri.parse('$BASE_URL/mobile/setting/consent'),
-          headers: getPostHeader(token: userToken),
+          headers: getHeader(token: userToken),
         )
         .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
 
@@ -223,7 +223,7 @@ class AwUserService {
     final response = await http
         .get(
           Uri.parse('$BASE_URL/mobile/setting/consent/$consentId'),
-          headers: getPostHeader(token: userToken),
+          headers: getHeader(token: userToken),
         )
         .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
 
@@ -270,7 +270,7 @@ class AwUserService {
     final response = await http
         .get(
           Uri.parse('$BASE_URL/mobile/setting/about'),
-          headers: getPostHeader(token: userToken),
+          headers: getHeader(token: userToken),
         )
         .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
 
@@ -293,7 +293,7 @@ class AwUserService {
     final response = await http
         .get(
           Uri.parse('$BASE_URL/mobile/setting/about/$consentId'),
-          headers: getPostHeader(token: userToken),
+          headers: getHeader(token: userToken),
         )
         .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
 

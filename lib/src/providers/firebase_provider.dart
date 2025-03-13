@@ -1,5 +1,9 @@
+import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
+import 'package:AssetWise/src/services/aw_user_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class FirebaseMessagingProvider {
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
@@ -41,9 +45,9 @@ class FirebaseMessagingProvider {
     subscribeToTopic('ALERTS');
     subscribeToTopic('SYSTEMS');
 
-    // if (kDebugMode) {
-    //   print('Token: $_fcmToken');
-    // }
+    if (kDebugMode) {
+      print('Token: $_fcmToken');
+    }
     _messaging.onTokenRefresh.listen((token) => _updateToken(token));
     // // Get token
     // String? token = await _messaging.getToken();
@@ -53,22 +57,22 @@ class FirebaseMessagingProvider {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message: ${message.notification?.title}');
       // Alert the message to the user
-      // showDialog(
-      //   context: navigatorKey.currentState!.context,
-      //   builder: (context) => AlertDialog(
-      //     title: const Text('New Notification'),
-      //     content: Text(message.notification?.body ?? 'No message body'),
-      //     actions: [
-      //       TextButton(
-      //         onPressed: () {
-      //           Navigator.of(context).pop();
-      //           // Navigator.of(context).pushNamed(DashboardView.routeName);
-      //         },
-      //         child: const Text('OK'),
-      //       ),
-      //     ],
-      //   ),
-      // );
+      showDialog(
+        context: navigatorKey.currentState!.context,
+        builder: (context) => AlertDialog(
+          title: const Text('New Notification'),
+          content: Text(message.notification?.body ?? 'No message body'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                // Navigator.of(context).pushNamed(DashboardView.routeName);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
       // Handle the message here
     });
   }
@@ -89,9 +93,9 @@ class FirebaseMessagingProvider {
     _fcmToken = token;
     if (_userProvider?.token == null || _fcmToken == null) return;
 
-    //await AwUserService.updateFCMToken(_userProvider!.token!, _fcmToken!);
-    // if (kDebugMode) {
-    //   print('FCM Token updated');
-    // }
+    await AwUserService.updateFCMToken(_userProvider!.token!, _fcmToken!);
+    if (kDebugMode) {
+      print('FCM Token updated');
+    }
   }
 }
