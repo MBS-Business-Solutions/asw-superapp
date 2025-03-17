@@ -2,6 +2,7 @@ import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/models/aw_notification_model.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/services/aw_notification_item_service.dart';
+import 'package:app_badge_plus/app_badge_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 
@@ -42,6 +43,7 @@ class NotificationItemProvider with ChangeNotifier {
 
   Future<void> fetchNotificationItems() async {
     if (_userProvider == null || _userProvider?.token == null) return;
+    _notificationItems.sort((a, b) => a.timeStamp.compareTo(b.timeStamp));
     final notificationFromServer = await AwNotificationItemService.fetchNotificationItems(
       _userProvider!.token!,
       lastItemDate: _notificationItems.isNotEmpty ? _notificationItems.last.timeStamp : null,
@@ -56,6 +58,27 @@ class NotificationItemProvider with ChangeNotifier {
     _reload();
     _reCount();
     notifyListeners();
+  }
+
+  static Future<int> fetchNotificationItemsForBackground() async {
+    final userProvider = UserProvider();
+    await userProvider.initApp();
+    if (userProvider.token == null) return 0;
+
+    final list = isar.notificationItems.where().findAllSync()..sort((a, b) => a.timeStamp.compareTo(b.timeStamp));
+    final lastItem = list.isNotEmpty ? list.last : null;
+    final notificationFromServer = await AwNotificationItemService.fetchNotificationItems(
+      userProvider.token!,
+      lastItemDate: lastItem?.timeStamp,
+    );
+    await isar.writeTxn(() async {
+      for (final item in notificationFromServer) {
+        await isar.notificationItems.put(item);
+      }
+    });
+
+    final result = isar.notificationItems.where().findAllSync();
+    return result.where((element) => !element.isRead).length;
   }
 
   Future<void> markAsRead({String? id}) async {
@@ -86,6 +109,7 @@ class NotificationItemProvider with ChangeNotifier {
     if (isar.isOpen) {
       _notificationItems.clear();
       _notificationItems.addAll(isar.notificationItems.where().findAllSync());
+      _notificationItems.sort((a, b) => a.timeStamp.compareTo(b.timeStamp));
     }
   }
 
@@ -95,6 +119,8 @@ class NotificationItemProvider with ChangeNotifier {
     _unreadPromotionCount = _notificationItems.where((element) => element.type == 'promotion' && !element.isRead).length;
     _unreadHotDealCount = _notificationItems.where((element) => element.type == 'hotdeal' && !element.isRead).length;
     _unreadNewsCount = _notificationItems.where((element) => element.type == 'news' && !element.isRead).length;
+
+    AppBadgePlus.updateBadge(_unreadAllCount);
   }
 
   void _resetCount() {

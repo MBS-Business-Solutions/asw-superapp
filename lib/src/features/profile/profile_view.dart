@@ -12,9 +12,7 @@ import 'package:AssetWise/src/features/profile/widgets/email_old_value_view.dart
 import 'package:AssetWise/src/features/profile/widgets/phone_old_value_view.dart';
 import 'package:AssetWise/src/features/register_buyer/register_buyer_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
-import 'package:AssetWise/src/features/verify_otp/otp_request_view.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
-import 'package:AssetWise/src/models/aw_otp_model.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/utils/string_util.dart';
@@ -129,14 +127,14 @@ class _ProfileViewState extends State<ProfileView> {
                           // change phone number
                           ListTile(
                             title: Text(AppLocalizations.of(context)!.profilePhoneNumber),
-                            subtitle: Text(_userInformation?.phone ?? '-'),
+                            subtitle: Text(_userInformation?.phone != null ? StringUtil.phoneFormatter(_userInformation!.phone, hiddenChar: 'x') : '-'),
                             trailing: const Icon(Icons.chevron_right),
                             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PhoneOldValueView())),
                           ),
                           // change email
                           ListTile(
                             title: Text(AppLocalizations.of(context)!.profileEmail),
-                            subtitle: Text(_userInformation?.email ?? '-'),
+                            subtitle: Text(StringUtil.markHiddenEmail(_userInformation?.email ?? '-')),
                             trailing: const Icon(Icons.chevron_right),
                             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const EmailOldValueView())),
                           ),
@@ -164,13 +162,13 @@ class _ProfileViewState extends State<ProfileView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                            child: Text(
-                              AppLocalizations.of(context)!.profileLanguage,
-                              style: Theme.of(context).textTheme.titleSmall,
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                          //   child: Text(
+                          //     AppLocalizations.of(context)!.profileLanguage,
+                          //     style: Theme.of(context).textTheme.titleSmall,
+                          //   ),
+                          // ),
                           ListTile(
                             title: Text(AppLocalizations.of(context)!.profileChangeLanguage),
                             trailing: const Icon(Icons.chevron_right),
@@ -187,6 +185,7 @@ class _ProfileViewState extends State<ProfileView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // heading
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                             child: Text(
@@ -194,16 +193,19 @@ class _ProfileViewState extends State<ProfileView> {
                               style: Theme.of(context).textTheme.titleSmall,
                             ),
                           ),
+                          // จัดการข้อมูลส่วนตัว
                           ListTile(
                             title: Text(AppLocalizations.of(context)!.profilePersonalInfo),
                             trailing: const Icon(Icons.chevron_right),
                             onTap: () => _managePersonalInfo(),
                           ),
+                          // เปลี่ยน PIN
                           ListTile(
                             title: Text(AppLocalizations.of(context)!.profilePin),
                             trailing: const Icon(Icons.chevron_right),
                             onTap: () => _changePinNewPin(),
                           ),
+                          // ลบบัญชี
                           ListTile(
                             title: Text(AppLocalizations.of(context)!.profileDeleteAccount),
                             trailing: const Icon(Icons.chevron_right),
@@ -222,20 +224,20 @@ class _ProfileViewState extends State<ProfileView> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Container(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                            child: Text(
-                              AppLocalizations.of(context)!.profileAuthen,
-                              style: Theme.of(context).textTheme.titleSmall,
+                    if (!Platform.isIOS)
+                      Container(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                              child: Text(
+                                AppLocalizations.of(context)!.profileAuthen,
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
                             ),
-                          ),
-                          // iOS ไม่อนุญาตให้ปิดแอป
-                          if (!Platform.isIOS)
+                            // iOS ไม่อนุญาตให้ปิดแอป
                             ListTile(
                               title: Text(AppLocalizations.of(context)!.profileExit),
                               trailing: const Icon(Icons.chevron_right),
@@ -243,25 +245,26 @@ class _ProfileViewState extends State<ProfileView> {
                                 _showCloseAppConfirmation();
                               },
                             ),
-                          ListTile(
-                            title: Text(AppLocalizations.of(context)!.profileLogout),
-                            trailing: const Icon(
-                              Icons.logout,
-                              color: mRedColor,
-                            ),
-                            onTap: () {
-                              _showLogoutBottomSheet();
-                              // _userProvider.logout();
-                              // ScaffoldMessenger.of(context).showSnackBar(
-                              //   const SnackBar(
-                              //     content: Text('Logout success'),
-                              //   ),
-                              // );
-                            },
-                          ),
-                        ],
+                            // ออกจากระบบ
+                            // ListTile(
+                            //   title: Text(AppLocalizations.of(context)!.profileLogout),
+                            //   trailing: const Icon(
+                            //     Icons.logout,
+                            //     color: mRedColor,
+                            //   ),
+                            //   onTap: () {
+                            //     _showLogoutBottomSheet();
+                            //     // _userProvider.logout();
+                            //     // ScaffoldMessenger.of(context).showSnackBar(
+                            //     //   const SnackBar(
+                            //     //     content: Text('Logout success'),
+                            //     //   ),
+                            //     // );
+                            //   },
+                            // ),
+                          ],
+                        ),
                       ),
-                    ),
                   ],
                 );
               }),
@@ -279,18 +282,18 @@ class _ProfileViewState extends State<ProfileView> {
       // already set pin, change pin
       final pinVerify = await Navigator.pushNamed(context, PinEntryView.routeName, arguments: {'isBackable': true}) as bool?;
       if (pinVerify ?? false) {
-        final otpValidationResult = await Navigator.pushNamed(
-          context,
-          OTPRequestView.routeName,
-          arguments: {
-            'forAction': AppLocalizations.of(context)!.otpRequestActionResetPin,
-            'otpFor': OTPFor.changePin,
-          },
-        );
-        if (otpValidationResult as bool? ?? false) {
-          // reset pin
-          Navigator.pushNamed(context, SetPinView.routeName, arguments: {'skipable': true});
-        }
+        // final otpValidationResult = await Navigator.pushNamed(
+        //   context,
+        //   OTPRequestView.routeName,
+        //   arguments: {
+        //     'forAction': AppLocalizations.of(context)!.otpRequestActionResetPin,
+        //     'otpFor': OTPFor.changePin,
+        //   },
+        // );
+        // if (otpValidationResult as bool? ?? false) {
+        // reset pin
+        Navigator.pushNamed(context, SetPinView.routeName, arguments: {'skipable': true});
+        // }
       }
     } else {
       // first time set pin

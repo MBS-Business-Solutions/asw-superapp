@@ -6,6 +6,8 @@ import 'package:AssetWise/src/providers/register_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/providers/verify_otp_provider.dart';
 import 'package:AssetWise/src/providers/firebase_provider.dart';
+import 'package:app_badge_plus/app_badge_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
@@ -75,6 +77,22 @@ Future<void> initializeFirebase() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+}
+
+// ✅ Top-Level Function ที่อยู่นอก main()
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await initIsar();
+  final count = await NotificationItemProvider.fetchNotificationItemsForBackground();
+
+  if (await AppBadgePlus.isSupported()) {
+    print("✅ Badge Supported ($count)");
+    await AppBadgePlus.updateBadge(count);
+    print('🏷️ Badge Updated');
+  } else {
+    print("❌ Badge Not Supported");
+  }
 }
 
 Future<void> initIsar() async {

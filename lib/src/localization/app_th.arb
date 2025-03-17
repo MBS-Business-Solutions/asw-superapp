@@ -90,6 +90,7 @@
   "registerNext": "ถัดไป",
   "registerInvalidData": "กรุณากรอกข้อมูลให้ครบถ้วน",
   "registerInvalidResident": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน",
+  "registerInvalidUser": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับ เบอร์มือถือ/อีเมล ที่ลงทะเบียน",
   "registerError": "ไม่สามารถทำงานได้ กรุณาลองใหม่อีกครั้ง",
   "otpTitle": "กรอก OTP",
   "otpRequestAgain": "ขอรหัสอีกครั้ง",
@@ -164,7 +165,7 @@
   },
   "setPinSkipInstruction" :"คุณสามารถข้ามขั้นตอนนี้ได้\nโดยระบบจะขอ OTP เพื่อยืนยันตัวตนทุกครั้งที่เข้าสู่ระบบในอนาคต",
   "setPinSkip": "ข้าม",
-  "setPinError": "รหัส PIN ไม่ตรงกัน กรุณาตั้งรหัสอีกครั้ง",
+  "setPinError": "กรุณา เริ่มต้น ตั้งรหัส PIN ใหม่อีกครั้ง",
 
   "changeLanguageTitle": "เปลี่ยนภาษา",
   "changeLanguageCurrentLang": "ภาษาที่ใช้ปัจจุบัน",
@@ -335,6 +336,7 @@
   "otpRequestInvalidData": "กรุณากรอกข้อมูลให้ครบถ้วน",
   "otpRequestInvalidMobile": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน",
   "otpRequestInvalidEmail": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน",
+  "otpRequestInvalidUser": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับ เบอร์มือถือ/อีเมล ที่ลงทะเบียน",
 
   "logoutConfirmationTitle": "ต้องการออกจากระบบใช่หรือไม่",
   "logoutConfirmationMessage": "คุณจะออกจากระบบของ {userName}", 

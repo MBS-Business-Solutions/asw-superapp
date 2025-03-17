@@ -30,6 +30,7 @@ import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/providers/firebase_provider.dart';
 import 'package:AssetWise/src/splash/splash_view.dart';
+import 'package:app_badge_plus/app_badge_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -65,51 +66,11 @@ class _MyAppState extends State<MyApp> {
         _afterResumed();
       }
     });
-    // AppLifecycleListener(
-    //   onStateChange: (AppLifecycleState state) {
-    //     if (state == AppLifecycleState.inactive) {
-    //       // ใช้ addPostFrameCallback เพื่อให้ UI มีโอกาสอัปเดตก่อนแอปไป Background
-    //       SchedulerBinding.instance.addPostFrameCallback((_) {
-    //         if (mounted) {
-    //           setState(() => _showShield = true);
-    //         }
-    //       });
-    //     } else if (state == AppLifecycleState.resumed) {
-    //       _afterResumed();
-    //     }
-    //   },
-    // );
+
+    context.read<FirebaseMessagingProvider>().initialize();
   }
 
   Future<void> _afterResumed() async {
-    if (!_showPinEntry) {
-      if (context.read<UserProvider>().shouldValidatePin) {
-        _showPinEntry = true;
-        await Navigator.push(
-          navigatorKey.currentContext ?? context,
-          MaterialPageRoute(
-            builder: (context) => const PinEntryView(),
-            fullscreenDialog: true,
-          ),
-        );
-        _showPinEntry = false;
-      } else if (context.read<UserProvider>().shouldValidateOTP) {
-        _showPinEntry = true;
-        await Navigator.push(
-          navigatorKey.currentContext ?? context,
-          MaterialPageRoute(
-            builder: (context) => OTPRequestView(
-              otpFor: OTPFor.reLogin,
-              forAction: AppLocalizations.of(context)!.otpRequestActionReLogin,
-              isBackable: false,
-              canLoginAsResident: true,
-            ),
-            fullscreenDialog: true,
-          ),
-        );
-        _showPinEntry = false;
-      }
-    }
     if (mounted) {
       final userProvider = context.read<UserProvider>();
       if (userProvider.userInformation != null) {
@@ -137,7 +98,6 @@ class _MyAppState extends State<MyApp> {
       SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent, statusBarBrightness: Theme.of(context).brightness),
     );
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    context.read<FirebaseMessagingProvider>().initialize();
 
     return MaterialApp(
       navigatorKey: navigatorKey,

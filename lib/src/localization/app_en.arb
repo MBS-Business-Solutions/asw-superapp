@@ -90,6 +90,7 @@
   "registerNext": "Next",
   "registerInvalidData": "Please check your input.",
   "registerInvalidResident": "Please enter your ID card number to match your registered mobile number.",
+  "registerInvalidUser": "Please enter your ID card number to match your registered mobile number/email address.",
   "registerError": "Unable to process. Please try again.",
   "otpTitle": "Enter OTP",
   "otpRequestIsResident": "Existing customer",
@@ -164,7 +165,7 @@
   },
   "setPinSkipInstruction" :"You can skip this step.\nHowever, the system will require you to verify your identity with an OTP every time you log in",
   "setPinSkip": "Skip",
-  "setPinError": "PIN codes do not match. Please set your PIN again.",
+  "setPinError": "Please start setting a new PIN code again.",
 
   "changeLanguageTitle": "Change Language",
   "changeLanguageCurrentLang": "Current Language",
@@ -334,7 +335,8 @@
   "otpRequestNext": "Next",
   "otpRequestInvalidData": "กรุณากรอกข้อมูลให้ครบถ้วน",
   "otpRequestInvalidMobile": "Please enter your ID card number to match your registered mobile number.",
-  "otpRequestInvalidEmail": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน",
+  "otpRequestInvalidEmail": "Please enter your ID card number to match your registered email address.",
+  "otpRequestInvalidUser": "Please enter your ID card number to match your registered mobile number/email address.",
 
   "logoutConfirmationTitle": "Do you want to log out?",
   "logoutConfirmationMessage": "You are about to log out of {userName}", 

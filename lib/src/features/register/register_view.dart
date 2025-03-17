@@ -242,7 +242,7 @@ class _RegisterViewState extends State<RegisterView> {
         if (!isValidResident) {
           // Show error message
           setState(() {
-            _showError = AppLocalizations.of(context)!.registerInvalidResident;
+            _showError = AppLocalizations.of(context)!.registerInvalidUser;
           });
         } else {
           final ref = await context.read<RegisterProvider>().requestOTPResident(

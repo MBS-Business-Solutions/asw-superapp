@@ -22,6 +22,7 @@ class _ConsentsViewState extends State<ConsentsView> {
   final Map<String, bool> _userConsents = {};
   late Future<Consent?> _futureConsentData;
   bool _canSubmit = false;
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -32,49 +33,62 @@ class _ConsentsViewState extends State<ConsentsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _scrollController.animateTo(
+              _scrollController.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 800),
+              curve: Curves.easeOut,
+            );
+          },
+          child: Icon(Icons.arrow_downward),
+        ),
         body: Stack(children: [
-      const AssetWiseBG(),
-      FutureBuilder(
-          future: _futureConsentData,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            final consent = snapshot.data!;
-            return Theme(
-              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-              child: SafeArea(
-                  child: ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Html(
-                      data: consent.content,
-                    ),
-                  ),
-                  for (final consentItem in consent.items) ..._buildConsentSection(consent, consentItem),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    width: double.infinity,
+          const AssetWiseBG(),
+          FutureBuilder(
+              future: _futureConsentData,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final consent = snapshot.data!;
+                return Theme(
+                  data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                  child: SafeArea(
+                      child: SingleChildScrollView(
+                    controller: _scrollController,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        OutlinedButton(
-                          onPressed: _canSubmit ? () => _submitConsents(consent) : null,
-                          child: Text(AppLocalizations.of(context)!.consentAgreeNext),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Html(
+                            data: consent.content,
+                          ),
                         ),
-                        FilledButton(
-                          onPressed: () => _acceptAllConsents(consent),
-                          child: Text(AppLocalizations.of(context)!.consentAgreeAll),
-                        ),
+                        for (final consentItem in consent.items) ..._buildConsentSection(consent, consentItem),
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          width: double.infinity,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              OutlinedButton(
+                                onPressed: _canSubmit ? () => _submitConsents(consent) : null,
+                                child: Text(AppLocalizations.of(context)!.consentAgreeNext),
+                              ),
+                              FilledButton(
+                                onPressed: () => _acceptAllConsents(consent),
+                                child: Text(AppLocalizations.of(context)!.consentAgreeAll),
+                              ),
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                  )
-                ],
-              )),
-            );
-          }),
-    ]));
+                  )),
+                );
+              }),
+        ]));
   }
 
   List<Widget> _buildConsentSection(Consent consent, ConsentItem consentItem) {

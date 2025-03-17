@@ -1,6 +1,7 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/profile/widgets/email_new_value_view.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
+import 'package:AssetWise/src/utils/string_util.dart';
 import 'package:AssetWise/src/widgets/aw_textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -34,7 +35,7 @@ class EmailOldValueView extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: mDefaultPadding),
                 child: AwTextFormField(
                   label: AppLocalizations.of(context)!.emailOldValueTextLabel,
-                  initialValue: oldValue,
+                  initialValue: StringUtil.markHiddenEmail(oldValue),
                   isEditable: false,
                 ),
               ),
