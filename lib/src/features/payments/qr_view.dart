@@ -194,11 +194,7 @@ class QRView extends StatelessWidget {
                             ),
                             child: Text(AppLocalizations.of(context)!.qrViewPromptPayDownload),
                           ),
-                          FilledButton(
-                              onPressed: () {
-                                Navigator.popUntil(context, ModalRoute.withName(ContractsView.routeName));
-                              },
-                              child: Text(AppLocalizations.of(context)!.qrViewPromptPayDone)),
+                          FilledButton(onPressed: () => _doneTap(context), child: Text(AppLocalizations.of(context)!.qrViewPromptPayDone)),
                         ],
                       )),
                     ),
@@ -208,6 +204,10 @@ class QRView extends StatelessWidget {
             );
           }),
     );
+  }
+
+  void _doneTap(BuildContext context) {
+    Navigator.popUntil(context, (route) => route.isFirst || route.settings.name == ContractsView.routeName);
   }
 
   Future<void> _saveImage(BuildContext context, WidgetsToImageController controller) async {

@@ -62,11 +62,20 @@ class RegisterOTPVerifyResponse {
   final String? phone;
   final String? email;
   final String? idCard;
+  final bool? isResident;
 
-  RegisterOTPVerifyResponse({this.id, this.phone, this.firstName, this.lastName, this.email, this.idCard});
+  RegisterOTPVerifyResponse({this.id, this.phone, this.firstName, this.lastName, this.email, this.idCard, this.isResident});
 
   factory RegisterOTPVerifyResponse.fromJson(Map<String, dynamic> json) {
-    return RegisterOTPVerifyResponse(id: json['id'], phone: json['phone'], firstName: json['first_name'], lastName: json['last_name'], email: json['email'], idCard: json['id_card']);
+    return RegisterOTPVerifyResponse(
+      id: json['id'],
+      phone: json['phone'],
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      email: json['email'],
+      idCard: json['id_card'],
+      isResident: json['is_resident'],
+    );
   }
 }
 

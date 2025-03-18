@@ -65,11 +65,15 @@ class _PaymentGatewayViewState extends State<PaymentGatewayView> {
           leading: const SizedBox(),
           actions: [
             IconButton(
-              onPressed: () => Navigator.popUntil(context, ModalRoute.withName(ContractsView.routeName)),
+              onPressed: () => _doneTap(context),
               icon: const Icon(Icons.close),
             )
           ],
         ),
         body: WebViewWidget(controller: _controller));
+  }
+
+  void _doneTap(BuildContext context) {
+    Navigator.popUntil(context, (route) => route.isFirst || route.settings.name == ContractsView.routeName);
   }
 }

@@ -1,10 +1,16 @@
 import 'package:AssetWise/main.dart';
+import 'package:AssetWise/src/features/notifications/notifications_view.dart';
+import 'package:AssetWise/src/features/payments/payment_channels_view.dart';
+import 'package:AssetWise/src/features/profile/profile_view.dart';
+import 'package:AssetWise/src/models/aw_contract_model.dart';
+import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/services/aw_user_service.dart';
 import 'package:app_badge_plus/app_badge_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FirebaseMessagingProvider {
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
@@ -55,27 +61,51 @@ class FirebaseMessagingProvider {
     // print('Firebase Messaging Token: $token');
 
     // Handle incoming messages
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message: ${message.notification?.title}');
-      // Alert the message to the user
-      showDialog(
-        context: navigatorKey.currentState!.context,
-        builder: (context) => AlertDialog(
-          title: const Text('New Notification'),
-          content: Text(message.notification?.body ?? 'No message body'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                // Navigator.of(context).pushNamed(DashboardView.routeName);
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-      // Handle the message here
-    });
+    FirebaseMessaging.onMessage.listen(_handleOnMessage);
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleOnMessageOpenedApp);
+  }
+
+  void _handleOnMessage(RemoteMessage message) {
+    print('Got a message: ${message.notification?.title}');
+    // Alert the message to the user
+    showDialog(
+      context: navigatorKey.currentState!.context,
+      builder: (context) => AlertDialog(
+        title: const Text('New Notification'),
+        content: Text(message.notification?.body ?? 'No message body'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              // Navigator.of(context).pushNamed(DashboardView.routeName);
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+    // Handle the message here
+  }
+
+  void _handleOnMessageOpenedApp(RemoteMessage message) async {
+    print('A new onMessageOpenedApp event was published!');
+    print(navigatorKey.currentState);
+    final data = message.data;
+    if (data['contract_id'] != null) {
+      final contractId = data['contract_id'];
+      // find contract
+      final context = navigatorKey.currentState!.context;
+      final contracts = await context.read<ContractProvider>().fetchContracts(context);
+      final contract = contracts.firstWhere((element) => element.contractId == contractId);
+      final overdueDetail = await context.read<ContractProvider>().fetchOverdueDetail(contractId);
+
+      navigatorKey.currentState!.push(MaterialPageRoute(
+          builder: (context) => PaymentChannelsView(
+                contract: contract,
+                overdueDetail: overdueDetail,
+              )));
+    }
+    // Handle the message()));
   }
 
   Future<void> subscribeToTopic(String topic) async {

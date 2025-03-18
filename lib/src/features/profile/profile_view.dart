@@ -36,6 +36,7 @@ class _ProfileViewState extends State<ProfileView> {
   UserInformation? _userInformation;
   late Future<UserInformation?> _userInformationFuture;
   late UserProvider _userProvider;
+  final scrollController = ScrollController();
 
   @override
   void initState() {
@@ -58,218 +59,234 @@ class _ProfileViewState extends State<ProfileView> {
                   return const Center(child: CircularProgressIndicator());
                 }
                 _userInformation = snapshot.data;
-                return ListView(
+                return Column(
                   children: [
-                    Stack(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mMediumPadding),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                radius: 32,
-                                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                                child: const Icon(Icons.person),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                  child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context)!.profileNameFormat(
-                                      StringUtil.capitalize(_userInformation?.firstName),
-                                      StringUtil.capitalize(_userInformation?.lastName),
-                                    ),
-                                    style: Theme.of(context).textTheme.headlineSmall,
-                                  ),
-                                  if (_userInformation?.code?.isNotEmpty ?? false) Text('ID : ${_userInformation?.code ?? ''}', style: Theme.of(context).textTheme.bodySmall),
-                                  if (!(_userInformation?.isVerified ?? false)) FilledButton(onPressed: () => _registerBuyer(), child: Text(AppLocalizations.of(context)!.profileRegisterBuyer)),
-                                ],
-                              ))
-                            ],
-                          ),
-                        ),
-                        Positioned(
-                          right: mDefaultPadding,
-                          child: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close)),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    // โหมดสีเข้ม
-                    Container(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      child: SwitchListTile.adaptive(
-                        value: _isDarkMode,
-                        onChanged: (value) {
-                          context.read<SettingsController>().updateThemeMode(value ? ThemeMode.dark : ThemeMode.light);
-                        },
-                        title: Text(AppLocalizations.of(context)!.profileDarkMode),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    // ข้อมูลของฉัน
-                    Container(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                            child: Text(
-                              AppLocalizations.of(context)!.profileMyInfo,
-                              style: Theme.of(context).textTheme.titleSmall,
-                            ),
-                          ),
-                          // change phone number
-                          ListTile(
-                            title: Text(AppLocalizations.of(context)!.profilePhoneNumber),
-                            subtitle: Text(_userInformation?.phone != null ? StringUtil.phoneFormatter(_userInformation!.phone, hiddenChar: 'x') : '-'),
-                            trailing: const Icon(Icons.chevron_right),
-                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PhoneOldValueView())),
-                          ),
-                          // change email
-                          ListTile(
-                            title: Text(AppLocalizations.of(context)!.profileEmail),
-                            subtitle: Text(StringUtil.markHiddenEmail(_userInformation?.email ?? '-')),
-                            trailing: const Icon(Icons.chevron_right),
-                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const EmailOldValueView())),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    // บ้านของฉัน
-                    Container(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListTile(
-                            title: Text(AppLocalizations.of(context)!.profileMyAsset),
-                            trailing: const Icon(Icons.chevron_right),
-                            onTap: () => Navigator.pushNamed(context, MyAssetsView.routeName),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Padding(
-                          //   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                          //   child: Text(
-                          //     AppLocalizations.of(context)!.profileLanguage,
-                          //     style: Theme.of(context).textTheme.titleSmall,
-                          //   ),
-                          // ),
-                          ListTile(
-                            title: Text(AppLocalizations.of(context)!.profileChangeLanguage),
-                            trailing: const Icon(Icons.chevron_right),
-                            onTap: () {
-                              Navigator.of(context).pushNamed(ChangeLanguangeView.routeName);
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // heading
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                            child: Text(
-                              AppLocalizations.of(context)!.profileSettings,
-                              style: Theme.of(context).textTheme.titleSmall,
-                            ),
-                          ),
-                          // จัดการข้อมูลส่วนตัว
-                          ListTile(
-                            title: Text(AppLocalizations.of(context)!.profilePersonalInfo),
-                            trailing: const Icon(Icons.chevron_right),
-                            onTap: () => _managePersonalInfo(),
-                          ),
-                          // เปลี่ยน PIN
-                          ListTile(
-                            title: Text(AppLocalizations.of(context)!.profilePin),
-                            trailing: const Icon(Icons.chevron_right),
-                            onTap: () => _changePinNewPin(),
-                          ),
-                          // ลบบัญชี
-                          ListTile(
-                            title: Text(AppLocalizations.of(context)!.profileDeleteAccount),
-                            trailing: const Icon(Icons.chevron_right),
-                            onTap: () {},
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      child: ListTile(
-                        title: Text(AppLocalizations.of(context)!.profileAbout),
-                        trailing: const Icon(Icons.chevron_right),
-                        onTap: () => Navigator.pushNamed(context, AboutAsswiseView.routeName),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    if (!Platform.isIOS)
-                      Container(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                              child: Text(
-                                AppLocalizations.of(context)!.profileAuthen,
-                                style: Theme.of(context).textTheme.titleSmall,
-                              ),
-                            ),
-                            // iOS ไม่อนุญาตให้ปิดแอป
-                            ListTile(
-                              title: Text(AppLocalizations.of(context)!.profileExit),
-                              trailing: const Icon(Icons.chevron_right),
-                              onTap: () {
-                                _showCloseAppConfirmation();
-                              },
-                            ),
-                            // ออกจากระบบ
-                            // ListTile(
-                            //   title: Text(AppLocalizations.of(context)!.profileLogout),
-                            //   trailing: const Icon(
-                            //     Icons.logout,
-                            //     color: mRedColor,
-                            //   ),
-                            //   onTap: () {
-                            //     _showLogoutBottomSheet();
-                            //     // _userProvider.logout();
-                            //     // ScaffoldMessenger.of(context).showSnackBar(
-                            //     //   const SnackBar(
-                            //     //     content: Text('Logout success'),
-                            //     //   ),
-                            //     // );
-                            //   },
-                            // ),
-                          ],
-                        ),
-                      ),
+                    SizedBox(height: MediaQuery.of(context).padding.top),
+                    _buildHeader(context),
+                    _buildListView(context),
                   ],
                 );
               }),
         ],
       ),
+    );
+  }
+
+  Widget _buildListView(BuildContext context) {
+    return Expanded(
+      child: ListView(
+        controller: scrollController,
+        padding: EdgeInsets.only(top: 0, bottom: MediaQuery.of(context).padding.bottom),
+        children: [
+          // โหมดสีเข้ม
+          Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: SwitchListTile.adaptive(
+              value: _isDarkMode,
+              onChanged: (value) {
+                context.read<SettingsController>().updateThemeMode(value ? ThemeMode.dark : ThemeMode.light);
+              },
+              title: Text(AppLocalizations.of(context)!.profileDarkMode),
+            ),
+          ),
+          const SizedBox(height: 8),
+          // ข้อมูลของฉัน
+          Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  child: Text(
+                    AppLocalizations.of(context)!.profileMyInfo,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                ),
+                // change phone number
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.profilePhoneNumber),
+                  subtitle: Text(_userInformation?.phone != null ? StringUtil.phoneFormatter(_userInformation!.phone, hiddenChar: 'x') : '-'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PhoneOldValueView())),
+                ),
+                // change email
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.profileEmail),
+                  subtitle: Text(StringUtil.markHiddenEmail(_userInformation?.email ?? '-')),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const EmailOldValueView())),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+          // บ้านของฉัน
+          Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.profileMyAsset),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => Navigator.pushNamed(context, MyAssetsView.routeName),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                //   child: Text(
+                //     AppLocalizations.of(context)!.profileLanguage,
+                //     style: Theme.of(context).textTheme.titleSmall,
+                //   ),
+                // ),
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.profileChangeLanguage),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(ChangeLanguangeView.routeName);
+                  },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // heading
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  child: Text(
+                    AppLocalizations.of(context)!.profileSettings,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                ),
+                // จัดการข้อมูลส่วนตัว
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.profilePersonalInfo),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => _managePersonalInfo(),
+                ),
+                // เปลี่ยน PIN
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.profilePin),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => _changePinNewPin(),
+                ),
+                // ลบบัญชี
+                ListTile(
+                  title: Text(AppLocalizations.of(context)!.profileDeleteAccount),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: ListTile(
+              title: Text(AppLocalizations.of(context)!.profileAbout),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => Navigator.pushNamed(context, AboutAsswiseView.routeName),
+            ),
+          ),
+          const SizedBox(height: 8),
+          if (!Platform.isIOS)
+            Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                    child: Text(
+                      AppLocalizations.of(context)!.profileAuthen,
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                  ),
+                  // iOS ไม่อนุญาตให้ปิดแอป
+                  ListTile(
+                    title: Text(AppLocalizations.of(context)!.profileExit),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () {
+                      _showCloseAppConfirmation();
+                    },
+                  ),
+                  // ออกจากระบบ
+                  // ListTile(
+                  //   title: Text(AppLocalizations.of(context)!.profileLogout),
+                  //   trailing: const Icon(
+                  //     Icons.logout,
+                  //     color: mRedColor,
+                  //   ),
+                  //   onTap: () {
+                  //     _showLogoutBottomSheet();
+                  //     // _userProvider.logout();
+                  //     // ScaffoldMessenger.of(context).showSnackBar(
+                  //     //   const SnackBar(
+                  //     //     content: Text('Logout success'),
+                  //     //   ),
+                  //     // );
+                  //   },
+                  // ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mMediumPadding),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 32,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                child: const Icon(Icons.person),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.profileNameFormat(
+                      StringUtil.capitalize(_userInformation?.firstName),
+                      StringUtil.capitalize(_userInformation?.lastName),
+                    ),
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  if (_userInformation?.code?.isNotEmpty ?? false) Text('ID : ${_userInformation?.code ?? ''}', style: Theme.of(context).textTheme.bodySmall),
+                  if (!(_userInformation?.isVerified ?? false)) FilledButton(onPressed: () => _registerBuyer(), child: Text(AppLocalizations.of(context)!.profileRegisterBuyer)),
+                ],
+              ))
+            ],
+          ),
+        ),
+        Positioned(
+          right: mDefaultPadding,
+          child: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close)),
+        ),
+      ],
     );
   }
 
