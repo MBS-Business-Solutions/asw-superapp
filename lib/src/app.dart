@@ -66,11 +66,23 @@ class _MyAppState extends State<MyApp> {
         _afterResumed();
       }
     });
-
     context.read<FirebaseMessagingProvider>().initialize();
   }
 
   Future<void> _afterResumed() async {
+    if (!_showPinEntry) {
+      if (context.read<UserProvider>().shouldValidatePin) {
+        _showPinEntry = true;
+        await Navigator.push(
+          navigatorKey.currentContext ?? context,
+          MaterialPageRoute(
+            builder: (context) => const PinEntryView(),
+            fullscreenDialog: true,
+          ),
+        );
+        _showPinEntry = false;
+      }
+    }
     if (mounted) {
       final userProvider = context.read<UserProvider>();
       if (userProvider.userInformation != null) {

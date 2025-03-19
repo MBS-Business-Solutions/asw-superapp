@@ -92,10 +92,14 @@ class DashboardMainView extends StatelessWidget {
           projects: dashboardProvider.suggestProjects,
         ),
         SliverToBoxAdapter(
-          child: SizedBox(
-            height: MediaQuery.of(context).padding.bottom + 84 + mDefaultPadding,
+            child: Consumer<UserProvider>(
+          builder: (context, userProvider, child) => SizedBox(
+            height: !userProvider.isAuthenticated ? 0 : mDefaultPadding,
           ),
-        )
+        )),
+        SliverToBoxAdapter(
+          child: SizedBox(height: MediaQuery.of(context).padding.bottom),
+        ),
       ],
     );
   }

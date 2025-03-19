@@ -124,7 +124,11 @@ class _BottomBarState extends State<BottomBar> {
                   height: 80,
                   child: InkWell(
                     onTap: () {
-                      widget.onTabChanged?.call(BottomTab.chat);
+                      if (_currentTab == BottomTab.chat) return;
+                      setState(() {
+                        _currentTab = BottomTab.chat;
+                        widget.onTabChanged?.call(BottomTab.chat);
+                      });
                     },
                     child: Column(
                       mainAxisSize: MainAxisSize.min,

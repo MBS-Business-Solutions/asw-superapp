@@ -59,5 +59,6 @@ const Color mRedColor = Color(0xFFF2846D);
 const Color mBrightRedColor = Color(0xFFFF0000);
 const Color mGreenColor = Color(0xFF139F4B);
 
-const Color mTileWarnColor = Color(0xFF431E16);
+const Color mTileWarnDarkColor = Color(0xFF431E16);
+const Color mTileWarnLightColor = Color(0xFFFFF4F1);
 const Color mAssetWiseLogoColor = Color(0xFF123f6d);

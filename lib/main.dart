@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:AssetWise/src/models/aw_notification_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
@@ -25,7 +27,7 @@ void main() async {
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
   // if (kDebugMode) {
-  //   HttpOverrides.global = MyHttpOverrides();
+  HttpOverrides.global = MyHttpOverrides();
   // }
   final settingsController = SettingsController(SettingsService());
 
@@ -70,6 +72,13 @@ void main() async {
       update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
     )
   ], child: MyApp(settingsController: settingsController)));
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  }
 }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

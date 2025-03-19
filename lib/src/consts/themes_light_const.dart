@@ -1,5 +1,7 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/themes_const.dart';
+import 'package:AssetWise/src/features/notifications/notification_item_theme.dart';
+import 'package:AssetWise/src/models/aw_notification_model.dart';
 import 'package:AssetWise/src/theme_extensions/bottom_bar_theme.dart';
 import 'package:AssetWise/src/theme_extensions/hotmenu_theme.dart';
 import 'package:flutter/material.dart';
@@ -81,6 +83,22 @@ final ThemeData mLightTheme = ThemeData(
           offset: Offset(0, 4),
         ),
       ],
-    )
+    ),
+    NotificationItemTileTheme(
+      unreadBackgroundColor: mTileWarnLightColor,
+      unreadHeaderTextColor: mRedColor,
+      readHeaderTextColor: mRedColor,
+      unreadTextColor: mLightBodyTextColor,
+      readTextColor: mLightBodyTextColor,
+      timeTextColor: mLightBodyTextColor,
+      paymentIconColor: Colors.white,
+      paymentIconBackgroundColor: mRedColor,
+      promotionIconColor: Colors.white,
+      promotionIconBackgroundColor: mRedColor,
+      hotDealIconColor: Colors.white,
+      hotDealIconBackgroundColor: mRedColor,
+      newsIconColor: Colors.white,
+      newsIconBackgroundColor: mRedColor,
+    ),
   ],
 );

@@ -75,6 +75,8 @@ class _DashboardViewState extends State<DashboardView> {
                           break;
                         case BottomTab.calendar:
                           break;
+                        case BottomTab.chat:
+                          break;
                         default:
                           break;
                       }
