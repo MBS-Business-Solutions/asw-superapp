@@ -1,7 +1,6 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/themes_const.dart';
 import 'package:AssetWise/src/features/notifications/notification_item_theme.dart';
-import 'package:AssetWise/src/models/aw_notification_model.dart';
 import 'package:AssetWise/src/theme_extensions/bottom_bar_theme.dart';
 import 'package:AssetWise/src/theme_extensions/hotmenu_theme.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +32,14 @@ final ThemeData mLightTheme = ThemeData(
       foregroundColor: mLightOutlinedTextColor,
     ),
   ),
+  switchTheme: SwitchThemeData(trackColor: WidgetStateProperty.resolveWith((states) {
+    if (states.contains(WidgetState.disabled)) {
+      return mLightGreyColor;
+    } else if (states.contains(WidgetState.selected)) {
+      return mPrimaryMatColor;
+    }
+    return mLightGreyColor;
+  })),
   filledButtonTheme: FilledButtonThemeData(
     style: FilledButton.styleFrom(
       backgroundColor: mPrimaryMatColor,

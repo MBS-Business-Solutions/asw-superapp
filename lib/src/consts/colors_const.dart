@@ -27,7 +27,7 @@ const Color mDarkOutlinedButtonColor = Color(0xFFFFFFFF);
 const Color mDarkOutlinedBackgroundColor = Color(0x00000000);
 const Color mDarkOutlinedTextColor = Color(0xFFFFFFFF);
 
-const Color mLightBackgroundColor = Color(0xFFF9F9F9);
+const Color mLightBackgroundColor = Color(0xFFFFFFFF);
 const Color mLightBackgroundBottomBar = Color(0xF0FFFFFF);
 const Color mLightBottomBarTextColor = Color(0xFFBABABA);
 const Color mLightBodyTextColor = Color(0xFF444444);
@@ -52,6 +52,7 @@ const Color mLightPaidBGColor = Color(0xFFE5F4F3);
 const Color mLightUnPaidColor = Color(0xFFA48346);
 const Color mLightUnPaidBGColor = Color(0xFFFFEAD4);
 
+const Color mLightGreyColor = Color(0xFF909090);
 const Color mGreyColor = Color(0xFF787878);
 const Color mGreyBackgroundColor = Color(0xFF444444);
 

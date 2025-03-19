@@ -78,6 +78,9 @@
   "bottomBarMenu": "Menu",
   "bottomBarCalendar": "*ปฏิทิน*",
 
+  "registerUserName": "Enter your mobile number or email address",
+  "registerUserNameHint": "Enter your mobile phone number or email to apply for membership.",
+  "registerUserNameLabel": "Mobile Number/email",
   "registerMobileLabel": "Mobile Number",
   "registerMobile": "Enter your mobile number",
   "registerMobileHint": "Provide your mobile number to register as a member",

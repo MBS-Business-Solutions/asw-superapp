@@ -20,7 +20,6 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   bool _isResident = false;
-  bool _emailForm = false;
   String? _showError;
   bool _isLoading = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -62,15 +61,17 @@ class _RegisterViewState extends State<RegisterView> {
                               ),
                             ),
                             Text(
-                              _emailForm ? AppLocalizations.of(context)!.registerEMail : AppLocalizations.of(context)!.registerMobile,
+                              AppLocalizations.of(context)!.registerUserName,
                               style: Theme.of(context).textTheme.titleLarge,
+                              textAlign: TextAlign.center,
                             ),
                             const SizedBox(
                               height: 4,
                             ),
                             Text(
-                              _emailForm ? AppLocalizations.of(context)!.registerEMailHint : AppLocalizations.of(context)!.registerMobileHint,
+                              AppLocalizations.of(context)!.registerUserNameHint,
                               style: Theme.of(context).textTheme.bodyMedium,
+                              textAlign: TextAlign.center,
                             ),
                             const SizedBox(
                               height: 4,
@@ -100,21 +101,10 @@ class _RegisterViewState extends State<RegisterView> {
                                 ],
                               ),
                             ),
-                            SwitchListTile.adaptive(
-                              contentPadding: EdgeInsets.zero,
-                              value: _emailForm,
-                              onChanged: (value) {
-                                setState(() {
-                                  FocusScope.of(context).unfocus();
-                                  _emailForm = value;
-                                });
-                              },
-                              title: Text(AppLocalizations.of(context)!.registerLoginByEmail),
-                            ),
                             const SizedBox(
                               height: 16,
                             ),
-                            _emailForm ? _buildEmailForm() : _buildMobileForm(),
+                            _buildMobileForm(),
                             const SizedBox(
                               height: 8,
                             ),
@@ -171,7 +161,7 @@ class _RegisterViewState extends State<RegisterView> {
     return Column(children: [
       AwTextFormField(
         controller: _mobileController,
-        label: AppLocalizations.of(context)!.registerMobileLabel,
+        label: AppLocalizations.of(context)!.registerUserNameLabel,
         keyboardType: TextInputType.phone,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         maxLength: 10,
@@ -231,11 +221,11 @@ class _RegisterViewState extends State<RegisterView> {
         });
         return;
       }
-      final sendTo = _emailForm ? _emailController.text : _mobileController.text;
+      final sendTo = _mobileController.text;
       if (_isResident) {
         // Validate customer
         bool isValidResident = await AwRegisterService.customerCheck(
-          isByMobile: !_emailForm,
+          isByMobile: true,
           idCard4: _idCardController.text,
           phoneEmail: sendTo,
         );
@@ -249,7 +239,7 @@ class _RegisterViewState extends State<RegisterView> {
                 idCard4: _idCardController.text,
                 email: _emailController.text,
                 phone: _mobileController.text,
-                isLoginWithEmail: _emailForm,
+                isLoginWithEmail: false,
               );
           if (ref != null && mounted) {
             _registerProcess();
@@ -264,7 +254,7 @@ class _RegisterViewState extends State<RegisterView> {
         final ref = await context.read<RegisterProvider>().requestOTPNonResident(
               email: _emailController.text,
               phone: _mobileController.text,
-              isLoginWithEmail: _emailForm,
+              isLoginWithEmail: false,
             );
         if (ref != null && mounted) {
           _registerProcess();

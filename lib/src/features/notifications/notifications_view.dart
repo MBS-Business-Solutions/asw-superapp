@@ -1,16 +1,12 @@
-import 'dart:convert';
 
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
-import 'package:AssetWise/src/features/contract/contracts_view.dart';
-import 'package:AssetWise/src/features/notifications/notification_item_theme.dart';
 import 'package:AssetWise/src/features/notifications/notification_item_tile.dart';
 import 'package:AssetWise/src/models/aw_notification_model.dart';
 import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/hot_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

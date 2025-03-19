@@ -96,11 +96,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   final count = await NotificationItemProvider.fetchNotificationItemsForBackground();
 
   if (await AppBadgePlus.isSupported()) {
-    print("✅ Badge Supported ($count)");
     await AppBadgePlus.updateBadge(count);
-    print('🏷️ Badge Updated');
-  } else {
-    print("❌ Badge Not Supported");
   }
 }
 

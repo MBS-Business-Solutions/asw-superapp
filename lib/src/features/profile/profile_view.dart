@@ -259,8 +259,15 @@ class _ProfileViewState extends State<ProfileView> {
             children: [
               CircleAvatar(
                 radius: 32,
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                child: const Icon(Icons.person),
+                backgroundColor: CommonUtil.colorTheme(
+                  context,
+                  darkColor: mDarkBackgroundColor,
+                  lightColor: mLightCardBackgroundColor,
+                ),
+                child: const Icon(
+                  Icons.person_outline_sharp,
+                  size: 40,
+                ),
               ),
               const SizedBox(width: 16),
               Expanded(

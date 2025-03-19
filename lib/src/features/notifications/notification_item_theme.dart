@@ -33,6 +33,7 @@ class NotificationItemTileTheme extends ThemeExtension<NotificationItemTileTheme
     required this.newsIconBackgroundColor,
   });
 
+  @override
   NotificationItemTileTheme copyWith({
     Color? unreadBackgroundColor,
     Color? unreadHeaderTextColor,

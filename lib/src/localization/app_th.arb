@@ -78,6 +78,9 @@
   "bottomBarMenu": "เมนู",
   "bottomBarCalendar": "ปฏิทิน",
 
+  "registerUserName": "กรอกเบอร์มือถือหรือ E-mail",
+  "registerUserNameHint": "ระบุเบอร์มือถือหรือ E-mail ของท่าน เพื่อทำการสมัครสมาชิก",
+  "registerUserNameLabel": "เบอร์มือถือ/E-mail",
   "registerMobileLabel": "เบอร์มือถือ",
   "registerMobile": "กรอกเบอร์มือถือ",
   "registerMobileHint": "ระบุเบอร์มือถือของท่าน เพื่อทำการสมัครสมาชิก",

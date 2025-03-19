@@ -41,7 +41,7 @@ class _ConsentsViewState extends State<ConsentsView> {
               curve: Curves.easeOut,
             );
           },
-          child: Icon(Icons.arrow_downward),
+          child: const Icon(Icons.arrow_downward),
         ),
         body: Stack(children: [
           const AssetWiseBG(),

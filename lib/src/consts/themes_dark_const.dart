@@ -31,6 +31,14 @@ final ThemeData mDarkTheme = ThemeData(
       foregroundColor: mDarkOutlinedTextColor,
     ),
   ),
+  switchTheme: SwitchThemeData(trackColor: WidgetStateProperty.resolveWith((states) {
+    if (states.contains(WidgetState.disabled)) {
+      return mLightGreyColor;
+    } else if (states.contains(WidgetState.selected)) {
+      return mPrimaryMatColor;
+    }
+    return mLightGreyColor;
+  })),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: mDarkBackgroundColor,
