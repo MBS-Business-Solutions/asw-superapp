@@ -110,14 +110,10 @@
       }
     }
   },
-  "otpInstruction": "Enter the 6 digits sent to your {sendtoType, select, email {email\n{sendto}} other {mobile number\n{sendto}}} REF : {refCode}",
+  "otpInstruction": "Enter the 6 digits sent to\n{sendto} REF : {refCode}",
   "@otpInstruction": {
     "description": "OTP confirmation message by selecting the type of sending (email or mobile number)",
     "placeholders": {
-      "sendtoType": {
-        "type": "String",
-        "example": "email"
-      },
       "sendto": {
         "type": "String",
         "example": "user@example.com"

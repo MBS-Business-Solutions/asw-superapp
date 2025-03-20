@@ -6,14 +6,13 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class AwRegisterService {
-  static Future<bool> customerCheck({bool isByMobile = true, String? idCard4, required String phoneEmail, String? language}) async {
+  static Future<bool> customerCheck({String? idCard4, required String userName, String? language}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/customer-check'),
       headers: getPostHeader(),
       body: jsonEncode(<String, String>{
-        "type": isByMobile ? "phone" : "email",
         if (idCard4 != null) "id_card4": idCard4,
-        if (isByMobile) "phone": phoneEmail else "email": phoneEmail,
+        "username": userName,
       }),
     );
 
@@ -29,14 +28,13 @@ class AwRegisterService {
     return false;
   }
 
-  static Future<RegisterOTPRef?> sendOTPResident({bool isLoginWithEmail = false, required String idCard4, required String phoneEmail, String? language}) async {
+  static Future<RegisterOTPRef?> sendOTPResident({required String idCard4, required String userName, String? language}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/request-resident-otp'),
       headers: getPostHeader(),
       body: jsonEncode(<String, String>{
-        "type": isLoginWithEmail ? 'email' : 'phone',
         "id_card4": idCard4,
-        if (isLoginWithEmail) "email": phoneEmail else "phone": phoneEmail,
+        "username": userName,
       }),
     );
 
@@ -44,7 +42,7 @@ class AwRegisterService {
       try {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == 'success') {
-          return RegisterOTPRef.fromJson(jsonResponse['data'], sendTo: phoneEmail, isLoginWithEmail: isLoginWithEmail, idCard: idCard4);
+          return RegisterOTPRef.fromJson(jsonResponse['data'], sendTo: userName, idCard: idCard4);
         }
       } catch (e) {
         if (kDebugMode) print(e);
@@ -75,13 +73,12 @@ class AwRegisterService {
     return null;
   }
 
-  static Future<RegisterOTPRef?> sendOTPNonResident({bool isLoginWithEmail = false, required String phoneEmail, String? language}) async {
+  static Future<RegisterOTPRef?> sendOTPNonResident({required String userName, String? language}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/request-person-otp'),
       headers: getPostHeader(),
       body: jsonEncode(<String, String>{
-        "type": isLoginWithEmail ? 'email' : 'phone',
-        if (isLoginWithEmail) "email": phoneEmail else "phone": phoneEmail,
+        "username": userName,
       }),
     );
 
@@ -89,7 +86,7 @@ class AwRegisterService {
       try {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == 'success') {
-          return RegisterOTPRef.fromJson(jsonResponse['data'], sendTo: phoneEmail, isLoginWithEmail: isLoginWithEmail);
+          return RegisterOTPRef.fromJson(jsonResponse['data'], sendTo: userName);
         }
       } catch (e) {
         if (kDebugMode) print(e);

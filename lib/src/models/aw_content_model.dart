@@ -25,31 +25,30 @@ class ImageContent {
 }
 
 class RegisterOTPRef {
-  final bool isLoginWithEmail;
   final String? idCard;
   final String sendTo;
   final String transId;
   final String refCode;
+  final String identifier;
 
   RegisterOTPRef({
-    required this.isLoginWithEmail,
     this.idCard,
     required this.transId,
     required this.refCode,
     required this.sendTo,
+    required this.identifier,
   });
 
   factory RegisterOTPRef.fromJson(
     Map<String, dynamic> json, {
     String? idCard,
     required String sendTo,
-    required bool isLoginWithEmail,
   }) {
     return RegisterOTPRef(
       transId: json['trans_id'],
       refCode: json['ref_code'],
+      identifier: json['identifier'],
       sendTo: sendTo,
-      isLoginWithEmail: isLoginWithEmail,
       idCard: idCard,
     );
   }

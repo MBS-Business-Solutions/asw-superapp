@@ -24,9 +24,8 @@ class _RegisterViewState extends State<RegisterView> {
   bool _isLoading = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _mobileController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _idCardController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -160,12 +159,9 @@ class _RegisterViewState extends State<RegisterView> {
   Widget _buildMobileForm() {
     return Column(children: [
       AwTextFormField(
-        controller: _mobileController,
+        controller: _userNameController,
         label: AppLocalizations.of(context)!.registerUserNameLabel,
-        keyboardType: TextInputType.phone,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        maxLength: 10,
-        validator: (value) => value?.length != 10 ? AppLocalizations.of(context)!.registerInvalidData : null,
+        validator: (value) => (value?.isEmpty ?? true) ? AppLocalizations.of(context)!.registerInvalidData : null,
       ),
       if (_isResident) ...[
         const SizedBox(
@@ -178,30 +174,6 @@ class _RegisterViewState extends State<RegisterView> {
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           validator: (value) => value?.length != 4 ? AppLocalizations.of(context)!.registerInvalidData : null,
           maxLength: 4,
-        ),
-      ]
-    ]);
-  }
-
-  Widget _buildEmailForm() {
-    return Column(children: [
-      AwTextFormField(
-        controller: _emailController,
-        label: AppLocalizations.of(context)!.registerEMailLabel,
-        keyboardType: TextInputType.emailAddress,
-        validator: (value) => !value!.contains('@') ? AppLocalizations.of(context)!.registerInvalidData : null,
-      ),
-      if (_isResident) ...[
-        const SizedBox(
-          height: 24,
-        ),
-        AwTextFormField(
-          controller: _idCardController,
-          label: AppLocalizations.of(context)!.registerLast4Digits,
-          keyboardType: const TextInputType.numberWithOptions(decimal: false, signed: false),
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          maxLength: 4,
-          validator: (value) => value?.length != 4 ? AppLocalizations.of(context)!.registerInvalidData : null,
         ),
       ]
     ]);
@@ -221,13 +193,12 @@ class _RegisterViewState extends State<RegisterView> {
         });
         return;
       }
-      final sendTo = _mobileController.text;
+      final sendTo = _userNameController.text;
       if (_isResident) {
         // Validate customer
         bool isValidResident = await AwRegisterService.customerCheck(
-          isByMobile: true,
           idCard4: _idCardController.text,
-          phoneEmail: sendTo,
+          userName: sendTo,
         );
         if (!isValidResident) {
           // Show error message
@@ -237,9 +208,7 @@ class _RegisterViewState extends State<RegisterView> {
         } else {
           final ref = await context.read<RegisterProvider>().requestOTPResident(
                 idCard4: _idCardController.text,
-                email: _emailController.text,
-                phone: _mobileController.text,
-                isLoginWithEmail: false,
+                userName: _userNameController.text,
               );
           if (ref != null && mounted) {
             _registerProcess();
@@ -252,9 +221,7 @@ class _RegisterViewState extends State<RegisterView> {
         }
       } else {
         final ref = await context.read<RegisterProvider>().requestOTPNonResident(
-              email: _emailController.text,
-              phone: _mobileController.text,
-              isLoginWithEmail: false,
+              userName: _userNameController.text,
             );
         if (ref != null && mounted) {
           _registerProcess();

@@ -110,14 +110,10 @@
       }
     }
   },
-  "otpInstruction": "ระบุตัวเลข 6 หลักที่ถูกส่งไปยัง{sendtoType, select, email {อีเมล\n{sendto}} other {\n{sendto}}} รหัสอ้างอิง : {refCode}",
+  "otpInstruction": "ระบุตัวเลข 6 หลักที่ถูกส่งไปยัง\n{sendto} รหัสอ้างอิง : {refCode}",
   "@otpInstruction": {
     "description": "ข้อความยืนยันรหัส OTP โดยเลือกตามประเภทการส่ง (อีเมลหรือเบอร์โทรศัพท์)",
     "placeholders": {
-      "sendtoType": {
-        "type": "String",
-        "example": "email"
-      },
       "sendto": {
         "type": "String",
         "example": "user@example.com"

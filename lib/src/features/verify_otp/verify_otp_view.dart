@@ -4,7 +4,6 @@ import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/models/aw_otp_model.dart';
 import 'package:AssetWise/src/providers/verify_otp_provider.dart';
-import 'package:AssetWise/src/utils/string_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:AssetWise/src/widgets/otp_input.dart';
@@ -103,8 +102,7 @@ class _VerifyOTPViewState extends State<VerifyOTPView> {
                           if (_otpRef != null)
                             Text(
                               AppLocalizations.of(context)!.otpInstruction(
-                                otpRequest!.channel == 'email' ? 'email' : 'mobile',
-                                otpRequest.channel == 'email' ? otpRequest.email! : StringUtil.phoneFormatter(otpRequest.phone!, hiddenChar: 'X'),
+                                _otpRef!.identifier!,
                                 _otpRef!.refCode!,
                               ),
                               style: Theme.of(context).textTheme.bodyMedium,

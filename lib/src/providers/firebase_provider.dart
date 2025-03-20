@@ -16,12 +16,12 @@ class FirebaseMessagingProvider {
   String? _apnsToken;
   String? get apnsToken => _apnsToken;
 
-  void updateUserProvider(UserProvider userProvider) {
+  void updateUserProvider(UserProvider userProvider) async {
     _userProvider = userProvider;
+    _getFCMTokens();
   }
 
-  Future<void> initialize() async {
-    // Request permission for notifications
+  Future<NotificationSettings> _requestPermission() async {
     NotificationSettings settings = await _messaging.requestPermission(
       alert: true,
       announcement: false,
@@ -40,9 +40,19 @@ class FirebaseMessagingProvider {
       print('User declined or has not yet granted permission');
     }
 
+    return settings;
+  }
+
+  Future<void> _getFCMTokens() async {
     _apnsToken = await _messaging.getAPNSToken();
     _fcmToken = await _messaging.getToken();
     _updateToken(_fcmToken);
+  }
+
+  Future<void> initialize() async {
+    // Request permission for notifications
+    await _requestPermission();
+    await _getFCMTokens();
 
     subscribeToTopic('NEWS');
     subscribeToTopic('ALERTS');

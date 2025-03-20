@@ -26,6 +26,8 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
   final lastNameController = TextEditingController();
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
+  var isPhoneEmpty = false;
+  var isEmailEmpty = false;
 
   @override
   void initState() {
@@ -34,8 +36,12 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
     if (verifyOTPResponse != null) {
       firstNameController.text = verifyOTPResponse.firstName ?? '';
       lastNameController.text = verifyOTPResponse.lastName ?? '';
-      phoneController.text = registerProvider.phone ?? verifyOTPResponse.phone ?? '';
-      emailController.text = registerProvider.email ?? verifyOTPResponse.email ?? '';
+
+      phoneController.text = verifyOTPResponse.phone ?? '';
+      emailController.text = verifyOTPResponse.email ?? '';
+
+      isPhoneEmpty = phoneController.text.isEmpty;
+      isEmailEmpty = emailController.text.isEmpty;
     }
     super.initState();
   }
@@ -45,7 +51,6 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
     final registerProvider = context.read<RegisterProvider>();
     final verifyOTPResponse = registerProvider.verifyOTPResponse;
     final isEditable = !registerProvider.isResident;
-    final isLoginWithEmail = registerProvider.isLoginWithEmail;
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -110,7 +115,7 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
                               },
                             ),
                           ),
-                          if (isLoginWithEmail)
+                          if (registerProvider.isResident || isEditable)
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 8.0),
                               child: AwTextFormField(
@@ -127,7 +132,7 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
                                 },
                               ),
                             ),
-                          if (!isLoginWithEmail)
+                          if (registerProvider.isResident || isEditable)
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 8.0),
                               child: AwTextFormField(
@@ -185,7 +190,7 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
     if (!registerProvider.isResident) {
       if (_formKey.currentState!.validate()) {
         if (await context.read<UserProvider>().loginNewUser(
-              type: registerProvider.isLoginWithEmail ? 'email' : 'phone',
+              type: '-',
               firstName: firstNameController.text,
               lastName: lastNameController.text,
               phone: phoneController.text,
