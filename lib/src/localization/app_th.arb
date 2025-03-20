@@ -351,7 +351,7 @@
   "emailOldValueTextLabel": "E-mail",
   "emailOldValueAction": "เปลี่ยน E-mail",
   "emailNewValueTitle": "ระบุ E-mail ใหม่",
-  "emailNewValueInstructions": "หากต้องการเปลี่ยนแปลงเบอร์มือถือ กรุณากดส่งคำขอ เพื่อให้เจ้าหน้าที่ทำการติดต่อคุณในภายหลัง",
+  "emailNewValueInstructions": "หากต้องการเปลี่ยนแปลง E-mail กรุณากดส่งคำขอเพื่อให้เจ้าหน้าที่ทำการติดต่อคุณในภายหลัง",
   "emailNewValueTextLabel": "ระบุเบอร์ E-mail ใหม่",
   "emailNewValueAction": "ส่งคำขอเปลี่ยนแปลง E-mail",
   "emailChangeSuccessTitle": "ส่งข้อมูลสำเร็จ",

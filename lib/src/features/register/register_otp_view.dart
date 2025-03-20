@@ -101,7 +101,7 @@ class _RegisterVerifyOtpViewState extends State<RegisterVerifyOtpView> {
                             height: 4,
                           ),
                           Text(
-                            AppLocalizations.of(context)!.otpInstruction(refCode!.identifier, refCode!.refCode),
+                            AppLocalizations.of(context)!.otpInstruction(refCode!.identifier!, refCode!.refCode!),
                             style: Theme.of(context).textTheme.bodyMedium,
                             textAlign: TextAlign.center,
                           ),
@@ -180,7 +180,7 @@ class _RegisterVerifyOtpViewState extends State<RegisterVerifyOtpView> {
       refCode = await registerProvider.requestOTPNonResident();
     }
 
-    if (refCode != null) {
+    if (refCode?.status == 'success') {
       setState(() {
         otpController.text = '';
         _invalidOTP = false;

@@ -38,11 +38,13 @@ class AwRegisterService {
       }),
     );
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
+    if (response.statusCode >= 200 && response.statusCode < 500) {
       try {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == 'success') {
-          return RegisterOTPRef.fromJson(jsonResponse['data'], sendTo: userName, idCard: idCard4);
+          return RegisterOTPRef.fromJson(status: jsonResponse['status'], jsonResponse['data'], sendTo: userName, idCard: idCard4);
+        } else {
+          return RegisterOTPRef.fromJson(status: jsonResponse['status'], jsonResponse, sendTo: userName, idCard: idCard4);
         }
       } catch (e) {
         if (kDebugMode) print(e);
@@ -82,11 +84,13 @@ class AwRegisterService {
       }),
     );
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
+    if (response.statusCode >= 200 && response.statusCode < 500) {
       try {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == 'success') {
-          return RegisterOTPRef.fromJson(jsonResponse['data'], sendTo: userName);
+          return RegisterOTPRef.fromJson(status: jsonResponse['status'], jsonResponse['data'], sendTo: userName);
+        } else {
+          return RegisterOTPRef.fromJson(status: jsonResponse['status'], jsonResponse, sendTo: userName);
         }
       } catch (e) {
         if (kDebugMode) print(e);

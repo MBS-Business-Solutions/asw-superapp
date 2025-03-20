@@ -210,12 +210,12 @@ class _RegisterViewState extends State<RegisterView> {
                 idCard4: _idCardController.text,
                 userName: _userNameController.text,
               );
-          if (ref != null && mounted) {
+          if (ref?.status == 'success' && mounted) {
             _registerProcess();
           } else {
             // Show error message
             setState(() {
-              _showError = AppLocalizations.of(context)!.registerError;
+              _showError = ref?.message ?? AppLocalizations.of(context)!.registerError;
             });
           }
         }
@@ -223,12 +223,12 @@ class _RegisterViewState extends State<RegisterView> {
         final ref = await context.read<RegisterProvider>().requestOTPNonResident(
               userName: _userNameController.text,
             );
-        if (ref != null && mounted) {
+        if (ref != null && ref.status == 'success' && mounted) {
           _registerProcess();
         } else {
           // Show error message
           setState(() {
-            _showError = AppLocalizations.of(context)!.registerError;
+            _showError = ref?.message ?? AppLocalizations.of(context)!.registerError;
           });
         }
       }

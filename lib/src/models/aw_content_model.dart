@@ -25,29 +25,36 @@ class ImageContent {
 }
 
 class RegisterOTPRef {
+  final String status;
   final String? idCard;
-  final String sendTo;
-  final String transId;
-  final String refCode;
-  final String identifier;
+  final String? sendTo;
+  final String? transId;
+  final String? refCode;
+  final String? message;
+  final String? identifier;
 
   RegisterOTPRef({
     this.idCard,
+    required this.status,
     required this.transId,
     required this.refCode,
     required this.sendTo,
+    required this.message,
     required this.identifier,
   });
 
   factory RegisterOTPRef.fromJson(
     Map<String, dynamic> json, {
+    required String status,
     String? idCard,
     required String sendTo,
   }) {
     return RegisterOTPRef(
+      status: status,
       transId: json['trans_id'],
       refCode: json['ref_code'],
       identifier: json['identifier'],
+      message: json['message'],
       sendTo: sendTo,
       idCard: idCard,
     );

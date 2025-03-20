@@ -65,11 +65,26 @@ class _MyAppState extends State<MyApp> {
         _afterResumed();
       }
     });
+
+    AppLifecycleListener(
+      onStateChange: (AppLifecycleState state) {
+        if (state == AppLifecycleState.inactive) {
+          // ใช้ addPostFrameCallback เพื่อให้ UI มีโอกาสอัปเดตก่อนแอปไป Background
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              setState(() => _showShield = true);
+            }
+          });
+        } else if (state == AppLifecycleState.resumed) {
+          _afterResumed();
+        }
+      },
+    );
     context.read<FirebaseMessagingProvider>().initialize();
   }
 
-  Future<void> _afterResumed() async {
-    if (!_showPinEntry) {
+  Future<void> _afterResumed({bool skipPin = true}) async {
+    if (!_showPinEntry && !skipPin) {
       if (context.read<UserProvider>().shouldValidatePin) {
         _showPinEntry = true;
         await Navigator.push(

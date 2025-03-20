@@ -33,14 +33,14 @@ class RegisterProvider {
 
     _otpRef = await AwRegisterService.sendOTPResident(idCard4: _idCard4, userName: _sendTo);
     if (_otpRef != null) {
-      _refIdentifier = _otpRef!.identifier;
+      _refIdentifier = _otpRef!.identifier!;
     }
     return otpRef;
   }
 
   Future<RegisterOTPVerifyResponse?> verifyOTPResident(String otp) async {
     if (otpRef != null) {
-      _verifyOTPResponse = await AwRegisterService.verifyOTPResident(transId: otpRef!.transId, otp: otp);
+      _verifyOTPResponse = await AwRegisterService.verifyOTPResident(transId: otpRef!.transId!, otp: otp);
     }
     return verifyOTPResponse;
   }
@@ -58,7 +58,7 @@ class RegisterProvider {
 
   Future<RegisterOTPVerifyResponse?> verifyOTPNonResident(String otp) async {
     if (otpRef != null) {
-      _verifyOTPResponse = await AwRegisterService.verifyOTPNonResident(transId: otpRef!.transId, otp: otp);
+      _verifyOTPResponse = await AwRegisterService.verifyOTPNonResident(transId: otpRef!.transId!, otp: otp);
     }
     if (_verifyOTPResponse?.isResident ?? false) {
       _isResident = true;
