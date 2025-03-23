@@ -6,6 +6,7 @@ import 'package:AssetWise/src/features/payments/qr_view.dart';
 import 'package:AssetWise/src/features/payments/unable_to_payment_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/utils/date_formatter_util.dart';
 import 'package:AssetWise/src/utils/string_util.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +127,7 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
               child: Container(
                 padding: const EdgeInsets.only(left: mScreenEdgeInsetValue, right: mScreenEdgeInsetValue, top: 16, bottom: 8),
                 decoration: BoxDecoration(
-                  color: (Theme.of(context).brightness == Brightness.dark ? mDarkCardBackgroundColor : mLightCardBackgroundColor).withOpacity(0.8),
+                  color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor).withOpacity(0.8),
                   border: Border.all(color: Colors.white.withOpacity(0.2)),
                   borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
                 ),
@@ -146,8 +147,8 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
                               child: Container(
                                 margin: const EdgeInsets.only(left: mDefaultPadding),
                                 padding: const EdgeInsets.all(8),
-                                decoration: const BoxDecoration(
-                                  color: mGreyBackgroundColor,
+                                decoration: BoxDecoration(
+                                  color: CommonUtil.colorTheme(context, darkColor: mGreyBackgroundColor, lightColor: mLightBackgroundColor),
                                   borderRadius: BorderRadius.only(topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)),
                                 ),
                                 child: TextField(
@@ -187,8 +188,8 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
                             Container(
                               margin: const EdgeInsets.only(left: 2),
                               padding: const EdgeInsets.symmetric(horizontal: mMediumPadding),
-                              decoration: const BoxDecoration(
-                                color: mGreyBackgroundColor,
+                              decoration: BoxDecoration(
+                                color: CommonUtil.colorTheme(context, darkColor: mGreyBackgroundColor, lightColor: mLightBackgroundColor),
                                 borderRadius: BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4)),
                               ),
                               alignment: Alignment.center,

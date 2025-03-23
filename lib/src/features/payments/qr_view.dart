@@ -188,10 +188,15 @@ class QRView extends StatelessWidget {
                             onPressed: () {
                               _saveImage(context, controller);
                             },
-                            style: FilledButton.styleFrom(
-                              backgroundColor: mGreyBackgroundColor,
-                              foregroundColor: Colors.white,
-                            ),
+                            style: Theme.of(context).brightness == Brightness.dark
+                                ? FilledButton.styleFrom(
+                                    backgroundColor: mGreyBackgroundColor,
+                                    foregroundColor: Colors.white,
+                                  )
+                                : FilledButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    foregroundColor: mLightBodyTextColor,
+                                  ),
                             child: Text(AppLocalizations.of(context)!.qrViewPromptPayDownload),
                           ),
                           FilledButton(onPressed: () => _doneTap(context), child: Text(AppLocalizations.of(context)!.qrViewPromptPayDone)),
@@ -218,8 +223,8 @@ class QRView extends StatelessWidget {
       if (bytes != null) {
         await Gal.putImageBytes(bytes, name: DateTime.now().toString(), album: 'AssetWise');
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('QR Code saved to gallery'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.qrViewPromptSavedToGallery),
           ),
         );
       }

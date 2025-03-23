@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/features/notifications/notification_item_theme.dart';
+import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/models/aw_notification_model.dart';
 import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,8 @@ class NotificationItemTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<NotificationItemTileTheme>();
-    final timeFormatter = DateFormat('HH:mm');
+    final currentLocale = context.read<SettingsController>().supportedLocales;
+    final timeFormatter = DateFormat('HH:mm${currentLocale.locale == 'th' ? ' น.' : ''}');
     return ListTile(
       onTap: () async {
         // mark read

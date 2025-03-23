@@ -250,7 +250,7 @@
   "contractDetailRemainDownAmount": "คงเหลือ เงินดาวน์",
   "contractDetailRemainHousePayment": "คงเหลือค่าบ้านทั้งหมด",
   "contractDetailFreebiesTitle": "รายการของแถมและส่วนลด",
-  "contractDetailDownloadDoc": "ดาวน์โหลดเอกสารสัญญา",
+  "contractDetailDownloadDoc": "ดาวน์โหลดรายละเอียดสัญญา",
 
   "receiptViewTitle": "รายละเอียดใบเสร็จ",
   "receiptViewSuccess": "ทำรายการสำเร็จ",
@@ -289,6 +289,7 @@
   "qrViewPromptPayInstruction4": "4. กดยืนยัน",
   "qrViewPromptPayDownload": "ดาวน์โหลด QR Code",
   "qrViewPromptPayDone": "เสร็จสิ้น",
+  "qrViewPromptSavedToGallery": "บันทึก QR Code ลงในแกลเลอรี่ของคุณแล้ว",
 
   "pinEntryTitle": "ใส่รหัส PIN",
   "pinEntryInstruction": "ระบุรหัส PIN จำนวน {digits} หลักเพื่อใช้ในการเข้าสู่ระบบ",

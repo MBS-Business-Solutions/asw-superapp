@@ -65,6 +65,7 @@ class _OverduesViewState extends State<OverduesView> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
                 child: ListView.builder(
+                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 98),
                   itemBuilder: (context, index) {
                     if (downTermDues.isEmpty) return const SizedBox();
                     if (index == downTermDues.length) {

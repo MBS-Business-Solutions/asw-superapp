@@ -289,6 +289,7 @@
   "qrViewPromptPayInstruction4": "4. Confirm",
   "qrViewPromptPayDownload": "ดาวน์โหลด QR Code",
   "qrViewPromptPayDone": "เสร็จสิ้น",
+  "qrViewPromptSavedToGallery": "QR Code saved to gallery",
 
   "pinEntryTitle": "Enter PIN",
   "pinEntryInstruction": "Enter a {digits}-digit PIN to log in.",

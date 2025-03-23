@@ -43,6 +43,7 @@ class NotificationItemProvider with ChangeNotifier {
 
   Future<void> fetchNotificationItems() async {
     if (_userProvider == null || _userProvider?.token == null) return;
+    // sort by timestamp before fetch
     _notificationItems.sort((a, b) => a.timeStamp.compareTo(b.timeStamp));
     final notificationFromServer = await AwNotificationItemService.fetchNotificationItems(
       _userProvider!.token!,
@@ -109,7 +110,8 @@ class NotificationItemProvider with ChangeNotifier {
     if (isar.isOpen) {
       _notificationItems.clear();
       _notificationItems.addAll(isar.notificationItems.where().findAllSync());
-      _notificationItems.sort((a, b) => a.timeStamp.compareTo(b.timeStamp));
+      // sort desc
+      _notificationItems.sort((a, b) => b.timeStamp.compareTo(a.timeStamp));
     }
   }
 

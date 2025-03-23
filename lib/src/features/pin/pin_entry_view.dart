@@ -36,6 +36,9 @@ class _PinEntryViewState extends State<PinEntryView> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: widget.isBackable ?? false,
+      onPopInvokedWithResult: (didPop, result) {
+        print('****************************didPop: $didPop, result: $result');
+      },
       child: Scaffold(
         body: Stack(children: [
           const AssetWiseBG(),

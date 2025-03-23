@@ -70,7 +70,14 @@ class _ReceiptViewState extends State<ReceiptView> {
                                       color: CommonUtil.colorTheme(context, darkColor: mDarkPaidColor, lightColor: mLightPaidColor),
                                     )),
                             const SizedBox(height: mMediumPadding),
-                            Text(AppLocalizations.of(context)!.priceFormatDouble(receiptDetail.amount), style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white)),
+                            Text(AppLocalizations.of(context)!.priceFormatDouble(receiptDetail.amount),
+                                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                      color: CommonUtil.colorTheme(
+                                        context,
+                                        darkColor: mDarkBodyTextColor,
+                                        lightColor: mLightBodyTextColor,
+                                      ),
+                                    )),
                             const SizedBox(height: mMediumPadding),
                             Row(
                               mainAxisSize: MainAxisSize.min,
@@ -88,25 +95,41 @@ class _ReceiptViewState extends State<ReceiptView> {
                           children: [
                             Row(
                               children: [
-                                Expanded(child: Text(AppLocalizations.of(context)!.receiptViewPaymentType)),
+                                Expanded(
+                                    child: Text(
+                                  AppLocalizations.of(context)!.receiptViewPaymentType,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )),
                                 Text(receiptDetail.paymentType),
                               ],
                             ),
                             Row(
                               children: [
-                                Expanded(child: Text(AppLocalizations.of(context)!.receiptViewDate)),
+                                Expanded(
+                                    child: Text(
+                                  AppLocalizations.of(context)!.receiptViewDate,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )),
                                 Text(DateFormatterUtil.formatShortDate(context, receiptDetail.date)),
                               ],
                             ),
                             Row(
                               children: [
-                                Expanded(child: Text(AppLocalizations.of(context)!.receiptViewRef1)),
+                                Expanded(
+                                    child: Text(
+                                  AppLocalizations.of(context)!.receiptViewRef1,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )),
                                 Text(receiptDetail.ref1),
                               ],
                             ),
                             Row(
                               children: [
-                                Expanded(child: Text(AppLocalizations.of(context)!.receiptViewRef2)),
+                                Expanded(
+                                    child: Text(
+                                  AppLocalizations.of(context)!.receiptViewRef2,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )),
                                 Text(receiptDetail.ref2),
                               ],
                             ),
@@ -115,12 +138,20 @@ class _ReceiptViewState extends State<ReceiptView> {
                             ),
                             Row(
                               children: [
-                                Expanded(child: Text(AppLocalizations.of(context)!.receiptViewRemark)),
+                                Expanded(
+                                    child: Text(
+                                  AppLocalizations.of(context)!.receiptViewRemark,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )),
                               ],
                             ),
                             Row(
                               children: [
-                                Expanded(child: Text(AppLocalizations.of(context)!.receiptViewDue)),
+                                Expanded(
+                                    child: Text(
+                                  AppLocalizations.of(context)!.receiptViewDue,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )),
                                 Text(DateFormatterUtil.formatShortDate(context, receiptDetail.dueDate)),
                               ],
                             ),

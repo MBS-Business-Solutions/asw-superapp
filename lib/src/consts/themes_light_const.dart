@@ -43,7 +43,7 @@ final ThemeData mLightTheme = ThemeData(
   filledButtonTheme: FilledButtonThemeData(
     style: FilledButton.styleFrom(
       backgroundColor: mPrimaryMatColor,
-      disabledBackgroundColor: mGreyColor,
+      disabledBackgroundColor: mLightGreyColor,
     ),
   ),
   badgeTheme: const BadgeThemeData(

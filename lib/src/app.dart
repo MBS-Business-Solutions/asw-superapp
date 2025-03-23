@@ -54,7 +54,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _showShield = false;
   bool _showPinEntry = false;
 
   @override
@@ -68,14 +67,7 @@ class _MyAppState extends State<MyApp> {
 
     AppLifecycleListener(
       onStateChange: (AppLifecycleState state) {
-        if (state == AppLifecycleState.inactive) {
-          // ใช้ addPostFrameCallback เพื่อให้ UI มีโอกาสอัปเดตก่อนแอปไป Background
-          SchedulerBinding.instance.addPostFrameCallback((_) {
-            if (mounted) {
-              setState(() => _showShield = true);
-            }
-          });
-        } else if (state == AppLifecycleState.resumed) {
+        if (state == AppLifecycleState.resumed) {
           _afterResumed();
         }
       },
@@ -83,14 +75,16 @@ class _MyAppState extends State<MyApp> {
     context.read<FirebaseMessagingProvider>().initialize();
   }
 
-  Future<void> _afterResumed({bool skipPin = true}) async {
-    if (!_showPinEntry && !skipPin) {
+  Future<void> _afterResumed() async {
+    if (!_showPinEntry) {
       if (context.read<UserProvider>().shouldValidatePin) {
         _showPinEntry = true;
         await Navigator.push(
           navigatorKey.currentContext ?? context,
           MaterialPageRoute(
-            builder: (context) => const PinEntryView(),
+            builder: (context) => const PinEntryView(
+              isBackable: false,
+            ),
             fullscreenDialog: true,
           ),
         );
@@ -114,7 +108,6 @@ class _MyAppState extends State<MyApp> {
         }
       }
       await context.read<NotificationItemProvider>().fetchNotificationItems();
-      setState(() => _showShield = false);
     }
   }
 
@@ -125,151 +118,110 @@ class _MyAppState extends State<MyApp> {
     );
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('en', ''), // English, no country code
-        Locale('th', ''), // Thai, no country code
-      ],
-      locale: widget.settingsController.locale, // Set default locale to Thai
-      theme: mLightTheme,
-      darkTheme: mDarkTheme,
-      themeMode: widget.settingsController.themeMode,
-      home: Stack(
-        children: [
-          ListenableBuilder(
-            listenable: widget.settingsController,
-            builder: (BuildContext context, Widget? child) {
-              return MaterialApp(
-                // Providing a restorationScopeId allows the Navigator built by the
-                // MaterialApp to restore the navigation stack when a user leaves and
-                // returns to the app after it has been killed while running in the
-                // background.
-                // navigatorKey: navigatorKey,
+    return ListenableBuilder(
+      listenable: widget.settingsController,
+      builder: (BuildContext context, Widget? child) {
+        return MaterialApp(
+          navigatorKey: navigatorKey,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en', ''), // English, no country code
+            Locale('th', ''), // Thai, no country code
+          ],
+          locale: widget.settingsController.locale, // Set default locale to Thai
 
-                // Provide the generated AppLocalizations to the MaterialApp. This
-                // allows descendant Widgets to display the correct translations
-                // depending on the user's locale.
-                localizationsDelegates: const [
-                  AppLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales: const [
-                  Locale('en', ''), // English, no country code
-                  Locale('th', ''), // Thai, no country code
-                ],
-                locale: widget.settingsController.locale, // Set default locale to Thai
+          onGenerateTitle: (BuildContext context) => AppLocalizations.of(context)!.appTitle,
 
-                // Use AppLocalizations to configure the correct application title
-                // depending on the user's locale.
-                //
-                // The appTitle is defined in .arb files found in the localization
-                // directory.
-                onGenerateTitle: (BuildContext context) => AppLocalizations.of(context)!.appTitle,
-
-                // Define a light and dark color theme. Then, read the user's
-                // preferred ThemeMode (light, dark, or system default) from the
-                // SettingsController to display the correct theme.
-                theme: mLightTheme,
-                darkTheme: mDarkTheme,
-                themeMode: widget.settingsController.themeMode,
-
-                // Define a function to handle named routes in order to support
-                // Flutter web url navigation and deep linking.
-                onGenerateRoute: (RouteSettings routeSettings) {
-                  final routeMap = routeSettings.arguments as Map<String, dynamic>?;
-                  return MaterialPageRoute<dynamic>(
-                    settings: routeSettings,
-                    builder: (BuildContext context) {
-                      switch (routeSettings.name) {
-                        case UIShowcaseScreen.routeName:
-                          return UIShowcaseScreen(
-                            onSwitchToDarkMode: () => widget.settingsController.updateThemeMode(ThemeMode.dark),
-                            onSwitchToLightMode: () => widget.settingsController.updateThemeMode(ThemeMode.light),
-                          );
-                        case DashboardView.routeName:
-                          return DashboardView(controller: widget.settingsController);
-                        case ProfileView.routeName:
-                          return const ProfileView();
-                        case RegisterView.routeName:
-                          return const RegisterView();
-                        case RegisterUserDetailView.routeName:
-                          return const RegisterUserDetailView();
-                        case SetPinView.routeName:
-                          return SetPinView(skipable: routeMap?['skipable'] as bool?);
-                        case ConsentsView.routeName:
-                          return const ConsentsView();
-                        case ContractsView.routeName:
-                          return ContractsView(
-                            linkId: routeMap?['linkId'] as String?,
-                          );
-                        case DownHistoryView.routeName:
-                          return DownHistoryView(contractId: routeMap!['contractId'] as String);
-                        case ChangeLanguangeView.routeName:
-                          return const ChangeLanguangeView();
-                        case ReceiptView.routeName:
-                          return ReceiptView(
-                            contractNumber: routeMap!['contractNumber'] as String,
-                            receiptNumber: routeMap['receiptNumber'] as String,
-                          );
-                        case ReceiptViewFile.routeName:
-                          return ReceiptViewFile(
-                            contractNumber: routeMap!['contractNumber'] as String,
-                            receiptNumber: routeMap['receiptNumber'] as String,
-                          );
-                        case OverduesView.routeName:
-                          return OverduesView(contract: routeMap!['contract'] as Contract);
-                        case NotificationsView.routeName:
-                          return NotificationsView(
-                            selectedIndex: routeMap?['selectedIndex'] ?? 0,
-                          );
-                        case PaymentChannelsView.routeName:
-                          return PaymentChannelsView(
-                            contract: routeMap!['contract'] as Contract,
-                            overdueDetail: routeMap['overdueDetail'] as OverdueDetail?,
-                            amount: routeMap['amount'] as double?,
-                          );
-                        case QRView.routeName:
-                          return QRView(
-                            contract: routeMap!['contract'] as Contract,
-                            amount: routeMap['amount'] as double,
-                          );
-                        case PinEntryView.routeName:
-                          return PinEntryView(
-                            isBackable: routeMap?['isBackable'] as bool?,
-                          );
-                        case OTPRequestView.routeName:
-                          return OTPRequestView(
-                            forAction: routeMap?['forAction'] as String?,
-                            otpFor: routeMap?['otpFor'] as OTPFor,
-                          );
-                        case AboutAsswiseView.routeName:
-                          return const AboutAsswiseView();
-                        case MyAssetsView.routeName:
-                          return const MyAssetsView();
-                        case ManagePersonalInfoView.routeName:
-                          return const ManagePersonalInfoView();
-                        default:
-                          // return DashboardView(controller: settingsController);
-                          return const SplashView();
-                      }
-                    },
-                  );
-                },
-              );
-            },
-          ),
-          if (_showShield) _ShieldGuard(),
-        ],
-      ),
+          theme: mLightTheme,
+          darkTheme: mDarkTheme,
+          themeMode: widget.settingsController.themeMode,
+          onGenerateRoute: (RouteSettings routeSettings) {
+            final routeMap = routeSettings.arguments as Map<String, dynamic>?;
+            return MaterialPageRoute<dynamic>(
+              settings: routeSettings,
+              builder: (BuildContext context) {
+                switch (routeSettings.name) {
+                  case UIShowcaseScreen.routeName:
+                    return UIShowcaseScreen(
+                      onSwitchToDarkMode: () => widget.settingsController.updateThemeMode(ThemeMode.dark),
+                      onSwitchToLightMode: () => widget.settingsController.updateThemeMode(ThemeMode.light),
+                    );
+                  case DashboardView.routeName:
+                    return DashboardView(controller: widget.settingsController);
+                  case ProfileView.routeName:
+                    return const ProfileView();
+                  case RegisterView.routeName:
+                    return const RegisterView();
+                  case RegisterUserDetailView.routeName:
+                    return const RegisterUserDetailView();
+                  case SetPinView.routeName:
+                    return SetPinView(skipable: routeMap?['skipable'] as bool?);
+                  case ConsentsView.routeName:
+                    return const ConsentsView();
+                  case ContractsView.routeName:
+                    return ContractsView(
+                      linkId: routeMap?['linkId'] as String?,
+                    );
+                  case DownHistoryView.routeName:
+                    return DownHistoryView(contractId: routeMap!['contractId'] as String);
+                  case ChangeLanguangeView.routeName:
+                    return const ChangeLanguangeView();
+                  case ReceiptView.routeName:
+                    return ReceiptView(
+                      contractNumber: routeMap!['contractNumber'] as String,
+                      receiptNumber: routeMap['receiptNumber'] as String,
+                    );
+                  case ReceiptViewFile.routeName:
+                    return ReceiptViewFile(
+                      contractNumber: routeMap!['contractNumber'] as String,
+                      receiptNumber: routeMap['receiptNumber'] as String,
+                    );
+                  case OverduesView.routeName:
+                    return OverduesView(contract: routeMap!['contract'] as Contract);
+                  case NotificationsView.routeName:
+                    return NotificationsView(
+                      selectedIndex: routeMap?['selectedIndex'] ?? 0,
+                    );
+                  case PaymentChannelsView.routeName:
+                    return PaymentChannelsView(
+                      contract: routeMap!['contract'] as Contract,
+                      overdueDetail: routeMap['overdueDetail'] as OverdueDetail?,
+                      amount: routeMap['amount'] as double?,
+                    );
+                  case QRView.routeName:
+                    return QRView(
+                      contract: routeMap!['contract'] as Contract,
+                      amount: routeMap['amount'] as double,
+                    );
+                  case PinEntryView.routeName:
+                    return PinEntryView(
+                      isBackable: routeMap?['isBackable'] as bool?,
+                    );
+                  case OTPRequestView.routeName:
+                    return OTPRequestView(
+                      forAction: routeMap?['forAction'] as String?,
+                      otpFor: routeMap?['otpFor'] as OTPFor,
+                    );
+                  case AboutAsswiseView.routeName:
+                    return const AboutAsswiseView();
+                  case MyAssetsView.routeName:
+                    return const MyAssetsView();
+                  case ManagePersonalInfoView.routeName:
+                    return const ManagePersonalInfoView();
+                  default:
+                    // return DashboardView(controller: settingsController);
+                    return const SplashView();
+                }
+              },
+            );
+          },
+        );
+      },
     );
   }
 }

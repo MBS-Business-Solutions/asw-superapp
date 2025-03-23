@@ -188,6 +188,11 @@ class _ContractsViewState extends State<ContractsView> {
                     child: _contracts![_selectedIndex].isResident
                         ? Center(
                             child: OutlinedButton.icon(
+                              style: OutlinedButton.styleFrom(
+                                iconColor: Colors.white,
+                                foregroundColor: Colors.white,
+                                side: const BorderSide(color: Colors.white),
+                              ),
                               onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -195,7 +200,9 @@ class _ContractsViewState extends State<ContractsView> {
                                             contractId: _selectedContract!.contractId,
                                           ))),
                               icon: const Icon(Icons.dock_sharp),
-                              label: Text(AppLocalizations.of(context)!.contractsViewContract),
+                              label: Text(
+                                AppLocalizations.of(context)!.contractsViewContract,
+                              ),
                             ),
                           )
                         : const SizedBox(),
@@ -247,8 +254,9 @@ class _ContractsViewState extends State<ContractsView> {
                     margin: const EdgeInsets.only(top: 24),
                     padding: const EdgeInsets.only(top: 20, left: 16, right: 16, bottom: 0),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      border: Border.all(color: const Color(0xFF585858)),
+                      // Theme dark ขอเป็นสี mDarkBackgroundColor และ light ขอเป็นสี mLightCardBackgroundColor
+                      color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
+                      border: Border.all(color: CommonUtil.colorTheme(context, darkColor: Color(0xFF585858), lightColor: Colors.transparent)),
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(32),
                         topRight: Radius.circular(32),
@@ -257,7 +265,7 @@ class _ContractsViewState extends State<ContractsView> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.white.withOpacity(0.2),
+                          color: CommonUtil.colorTheme(context, darkColor: Colors.white.withOpacity(0.2), lightColor: Colors.transparent),
                           spreadRadius: 0,
                           blurRadius: 5,
                           offset: const Offset(0, -1),
@@ -351,9 +359,9 @@ class _ContractsViewState extends State<ContractsView> {
               Container(
                 padding: const EdgeInsets.only(left: 16, right: 4, top: 4, bottom: 4),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
+                  color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
                   borderRadius: const BorderRadius.all(Radius.circular(32)),
-                  border: Border.all(color: const Color(0xFF585858)),
+                  border: Border.all(color: CommonUtil.colorTheme(context, darkColor: Color(0xFF585858), lightColor: Colors.transparent)),
                 ),
                 child: DropdownButton<int>(
                   isDense: true,
