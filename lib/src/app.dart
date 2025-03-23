@@ -26,6 +26,7 @@ import 'package:AssetWise/src/features/register/user_detail_view.dart';
 import 'package:AssetWise/src/features/verify_otp/otp_request_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/models/aw_otp_model.dart';
+import 'package:AssetWise/src/providers/dashboard_provider.dart';
 import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/providers/firebase_provider.dart';
@@ -68,19 +69,20 @@ class _MyAppState extends State<MyApp> {
     AppLifecycleListener(
       onStateChange: (AppLifecycleState state) {
         if (state == AppLifecycleState.resumed) {
-          _afterResumed();
+          _afterResumed(isResumed: true);
         }
       },
     );
     context.read<FirebaseMessagingProvider>().initialize();
   }
 
-  Future<void> _afterResumed() async {
+  Future<void> _afterResumed({bool isResumed = false}) async {
+    final navContext = navigatorKey.currentContext ?? context;
     if (!_showPinEntry) {
-      if (context.read<UserProvider>().shouldValidatePin) {
+      if (navContext.read<UserProvider>().shouldValidatePin) {
         _showPinEntry = true;
         await Navigator.push(
-          navigatorKey.currentContext ?? context,
+          navContext,
           MaterialPageRoute(
             builder: (context) => const PinEntryView(
               isBackable: false,
@@ -91,13 +93,13 @@ class _MyAppState extends State<MyApp> {
         _showPinEntry = false;
       }
     }
-    if (mounted) {
-      final userProvider = context.read<UserProvider>();
+    if (navContext.mounted) {
+      final userProvider = navContext.read<UserProvider>();
       if (userProvider.userInformation != null) {
         final consentGave = userProvider.userInformation?.consent ?? false;
         if (!consentGave) {
           await Navigator.push(
-            navigatorKey.currentContext ?? context,
+            navContext,
             MaterialPageRoute(
               builder: (context) => const ConsentsView(
                 consentUpdated: true,
@@ -107,15 +109,28 @@ class _MyAppState extends State<MyApp> {
           );
         }
       }
-      await context.read<NotificationItemProvider>().fetchNotificationItems();
+      await navContext.read<NotificationItemProvider>().fetchNotificationItems();
+    }
+    if (navContext.mounted && !isResumed) {
+      await Future.wait([
+        Future.delayed(const Duration(seconds: 4)),
+        navContext.read<DashboardProvider>().reload(),
+      ]);
+      Navigator.pushReplacementNamed(navContext, DashboardView.routeName);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent, statusBarBrightness: Theme.of(context).brightness),
-    );
+    if (mounted) {
+      final brightness = Theme.of(context).brightness;
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.transparent,
+          statusBarBrightness: brightness == Brightness.dark ? Brightness.dark : Brightness.light,
+        ),
+      );
+    }
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     return ListenableBuilder(
@@ -146,11 +161,11 @@ class _MyAppState extends State<MyApp> {
               settings: routeSettings,
               builder: (BuildContext context) {
                 switch (routeSettings.name) {
-                  case UIShowcaseScreen.routeName:
-                    return UIShowcaseScreen(
-                      onSwitchToDarkMode: () => widget.settingsController.updateThemeMode(ThemeMode.dark),
-                      onSwitchToLightMode: () => widget.settingsController.updateThemeMode(ThemeMode.light),
-                    );
+                  // case UIShowcaseScreen.routeName:
+                  //   return UIShowcaseScreen(
+                  //     onSwitchToDarkMode: () => widget.settingsController.updateThemeMode(context, ThemeMode.dark),
+                  //     onSwitchToLightMode: () => widget.settingsController.updateThemeMode(context, ThemeMode.light),
+                  //   );
                   case DashboardView.routeName:
                     return DashboardView(controller: widget.settingsController);
                   case ProfileView.routeName:

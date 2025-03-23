@@ -55,7 +55,7 @@ class _ProfileViewState extends State<ProfileView> {
           Align(
               alignment: Alignment.topCenter,
               child: Container(
-                color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor),
+                color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
                 height: MediaQuery.of(context).padding.top,
               )),
           FutureBuilder(
@@ -86,7 +86,7 @@ class _ProfileViewState extends State<ProfileView> {
         children: [
           // โหมดสีเข้ม
           Container(
-            color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor),
+            color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
             child: SwitchListTile.adaptive(
               value: _isDarkMode,
               onChanged: (value) {
@@ -98,7 +98,7 @@ class _ProfileViewState extends State<ProfileView> {
           const SizedBox(height: mMediumPadding),
           // ข้อมูลของฉัน
           Container(
-            color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor),
+            color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -129,7 +129,7 @@ class _ProfileViewState extends State<ProfileView> {
           const SizedBox(height: mMediumPadding),
           // บ้านของฉัน
           Container(
-            color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor),
+            color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -143,7 +143,7 @@ class _ProfileViewState extends State<ProfileView> {
           ),
           const SizedBox(height: mMediumPadding),
           Container(
-            color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor),
+            color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -166,7 +166,7 @@ class _ProfileViewState extends State<ProfileView> {
           ),
           const SizedBox(height: mMediumPadding),
           Container(
-            color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor),
+            color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -201,7 +201,7 @@ class _ProfileViewState extends State<ProfileView> {
           ),
           const SizedBox(height: mMediumPadding),
           Container(
-            color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor),
+            color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
             child: ListTile(
               title: Text(AppLocalizations.of(context)!.profileAbout),
               trailing: const Icon(Icons.chevron_right),
@@ -211,7 +211,7 @@ class _ProfileViewState extends State<ProfileView> {
           const SizedBox(height: mMediumPadding),
           if (!Platform.isIOS)
             Container(
-              color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor),
+              color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -259,7 +259,7 @@ class _ProfileViewState extends State<ProfileView> {
     return Stack(
       children: [
         Container(
-          color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor),
+          color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
           padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mMediumPadding),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -268,7 +268,7 @@ class _ProfileViewState extends State<ProfileView> {
                 radius: 32,
                 backgroundColor: CommonUtil.colorTheme(
                   context,
-                  darkColor: mDarkBackgroundColor,
+                  darkColor: mDarkCardBackgroundColor,
                   lightColor: mLightGreyColor,
                 ),
                 child: const Icon(
@@ -342,7 +342,7 @@ class _ProfileViewState extends State<ProfileView> {
               topLeft: Radius.circular(32),
               topRight: Radius.circular(32),
             ),
-            color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor),
+            color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
           ),
           child: SafeArea(
             child: Padding(

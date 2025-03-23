@@ -140,7 +140,7 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
                           children: [
                             Text(
                               AppLocalizations.of(context)!.paymentChannelViewTotalAmount,
-                              style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mBrightPrimaryColor),
+                              style: Theme.of(context).textTheme.titleMedium!.copyWith(color: CommonUtil.colorTheme(context, darkColor: mBrightPrimaryColor, lightColor: mPrimaryMatColor)),
                             ),
                             Expanded(
                               flex: 2,
@@ -181,7 +181,7 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
                                     border: InputBorder.none,
                                     isDense: true,
                                   ),
-                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(color: mBrightPrimaryColor),
+                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(color: CommonUtil.colorTheme(context, darkColor: mBrightPrimaryColor, lightColor: mPrimaryMatColor)),
                                 ),
                               ),
                             ),

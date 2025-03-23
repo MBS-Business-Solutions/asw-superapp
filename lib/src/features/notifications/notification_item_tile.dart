@@ -65,7 +65,11 @@ class NotificationItemTile extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(color: notificationItem.isRead ? theme.readTextColor : theme.unreadTextColor),
                 ),
-                Text(timeFormatter.format(notificationItem.createAt), style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: theme.timeTextColor)),
+                Text(timeFormatter.format(notificationItem.createAt),
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: theme.timeTextColor,
+                          fontWeight: FontWeight.bold,
+                        )),
               ],
             ),
           ),
