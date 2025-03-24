@@ -60,9 +60,10 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        _afterResumed();
+        await _appInit();
+        await _afterResumed();
       }
     });
 
@@ -76,7 +77,8 @@ class _MyAppState extends State<MyApp> {
     context.read<FirebaseMessagingProvider>().initialize();
   }
 
-  Future<void> _afterResumed({bool isResumed = false}) async {
+  // เมื่อเปิดแอป ให้เช็ก pin แล้วตามด้วย consent
+  Future<void> _appInit() async {
     final navContext = navigatorKey.currentContext ?? context;
     if (!_showPinEntry) {
       if (navContext.read<UserProvider>().shouldValidatePin) {
@@ -109,8 +111,14 @@ class _MyAppState extends State<MyApp> {
           );
         }
       }
-      await navContext.read<NotificationItemProvider>().fetchNotificationItems();
     }
+  }
+
+  // เมื่อแอปถูก resume ให้ดึงข้อมูล notification และ จะเปิด Dashboard เฉพาะเข้ามาครั้งแรก (isResumed = false สั่งต่อ appInit)
+  // เมื่อ resume หน้าที่เปิดค้างจะไม่เปลี่ยน
+  Future<void> _afterResumed({bool isResumed = false}) async {
+    final navContext = navigatorKey.currentContext ?? context;
+    await navContext.read<NotificationItemProvider>().fetchNotificationItems();
     if (navContext.mounted && !isResumed) {
       await Future.wait([
         Future.delayed(const Duration(seconds: 4)),
