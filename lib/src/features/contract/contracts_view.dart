@@ -253,25 +253,7 @@ class _ContractsViewState extends State<ContractsView> {
                 : Container(
                     margin: const EdgeInsets.only(top: 24),
                     padding: const EdgeInsets.only(top: 20, left: 16, right: 16, bottom: 0),
-                    decoration: BoxDecoration(
-                      // Theme dark ขอเป็นสี mDarkBackgroundColor และ light ขอเป็นสี mLightCardBackgroundColor
-                      color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
-                      border: Border.all(color: CommonUtil.colorTheme(context, darkColor: Color(0xFF585858), lightColor: Colors.transparent)),
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(32),
-                        topRight: Radius.circular(32),
-                        bottomLeft: Radius.circular(12),
-                        bottomRight: Radius.circular(12),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: CommonUtil.colorTheme(context, darkColor: Colors.white.withOpacity(0.2), lightColor: Colors.transparent),
-                          spreadRadius: 0,
-                          blurRadius: 5,
-                          offset: const Offset(0, -1),
-                        ),
-                      ],
-                    ),
+                    decoration: buildCardDecoration(context),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -361,7 +343,7 @@ class _ContractsViewState extends State<ContractsView> {
                 decoration: BoxDecoration(
                   color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
                   borderRadius: const BorderRadius.all(Radius.circular(32)),
-                  border: Border.all(color: CommonUtil.colorTheme(context, darkColor: Color(0xFF585858), lightColor: Colors.transparent)),
+                  border: Border.all(color: CommonUtil.colorTheme(context, darkColor: Color(0xFF585858), lightColor: Colors.black.withOpacity(0.1))),
                 ),
                 child: DropdownButton<int>(
                   isDense: true,

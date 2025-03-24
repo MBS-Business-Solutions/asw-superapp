@@ -1,6 +1,7 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
+import 'package:AssetWise/src/features/notifications/notifications_view.dart';
 import 'package:AssetWise/src/features/payments/payment_gateway_view.dart';
 import 'package:AssetWise/src/features/payments/qr_view.dart';
 import 'package:AssetWise/src/features/payments/unable_to_payment_view.dart';
@@ -56,7 +57,17 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
           children: [
             ListView(children: [
               Container(
-                color: Theme.of(context).brightness == Brightness.dark ? mDarkCardBackgroundColor : mLightCardBackgroundColor,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).brightness == Brightness.dark ? mDarkCardBackgroundColor : mLightCardBackgroundColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: CommonUtil.colorTheme(context, darkColor: Colors.transparent, lightColor: Colors.black.withOpacity(0.1)),
+                      spreadRadius: 0,
+                      blurRadius: 5,
+                      offset: const Offset(0, -1),
+                    ),
+                  ],
+                ),
                 child: ListTile(
                     onTap: () => setState(() {
                           _paymentChannel = 'card';
@@ -64,7 +75,10 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(AppLocalizations.of(context)!.paymentChannelViewCreditChannel),
+                        Text(
+                          AppLocalizations.of(context)!.paymentChannelViewCreditChannel,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                         Row(
                           children: [
                             Radio(
@@ -93,7 +107,17 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
                 height: mMediumPadding,
               ),
               Container(
-                color: Theme.of(context).brightness == Brightness.dark ? mDarkCardBackgroundColor : mLightCardBackgroundColor,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).brightness == Brightness.dark ? mDarkCardBackgroundColor : mLightCardBackgroundColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: CommonUtil.colorTheme(context, darkColor: Colors.transparent, lightColor: Colors.black.withOpacity(0.1)),
+                      spreadRadius: 0,
+                      blurRadius: 5,
+                      offset: const Offset(0, -1),
+                    ),
+                  ],
+                ),
                 child: ListTile(
                     onTap: () => setState(() {
                           _paymentChannel = 'qr';
@@ -101,7 +125,10 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(AppLocalizations.of(context)!.paymentChannelViewQRChannel),
+                        Text(
+                          AppLocalizations.of(context)!.paymentChannelViewQRChannel,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                         Row(
                           children: [
                             Radio(
@@ -127,9 +154,17 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
               child: Container(
                 padding: const EdgeInsets.only(left: mScreenEdgeInsetValue, right: mScreenEdgeInsetValue, top: 16, bottom: 8),
                 decoration: BoxDecoration(
-                  color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor).withOpacity(0.8),
+                  color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor),
                   border: Border.all(color: Colors.white.withOpacity(0.2)),
                   borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: CommonUtil.colorTheme(context, darkColor: Colors.transparent, lightColor: Colors.black.withOpacity(0.1)),
+                      spreadRadius: 0,
+                      blurRadius: 5,
+                      offset: const Offset(0, -1),
+                    ),
+                  ],
                 ),
                 child: SafeArea(
                   child: Column(
@@ -251,10 +286,11 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-              builder: (context) => UnableToPaymentView(
-                    reason: qrResponse?.message ?? AppLocalizations.of(context)!.errorUnableToProcess,
-                  )),
-          ModalRoute.withName(ContractsView.routeName),
+            builder: (context) => UnableToPaymentView(
+              reason: qrResponse?.message ?? AppLocalizations.of(context)!.errorUnableToProcess,
+            ),
+          ),
+          (route) => route.isFirst || route.settings.name == ContractsView.routeName || route.settings.name == NotificationsView.routeName,
         );
       } else {
         Navigator.push(

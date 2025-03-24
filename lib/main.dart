@@ -27,7 +27,8 @@ void main() async {
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
   // if (kDebugMode) {
-  HttpOverrides.global = MyHttpOverrides();
+  // In case Cert chain is not valid, apply this code below
+  // HttpOverrides.global = MyHttpOverrides();
   // }
   final settingsController = SettingsController(SettingsService());
 

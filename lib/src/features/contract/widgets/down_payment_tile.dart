@@ -20,19 +20,7 @@ class DownPaymentTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        border: Border.all(color: const Color(0xFF585858)),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.white.withOpacity(0.2),
-            spreadRadius: 0,
-            blurRadius: 5,
-            offset: const Offset(0, -1),
-          ),
-        ],
-      ),
+      decoration: buildItemCardDecoration(context),
       child: Material(
         color: Colors.transparent,
         child: ListTile(
@@ -87,7 +75,12 @@ class DownPaymentTile extends StatelessWidget {
                       ),
                       Text(
                         payment.receiptNumber,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                color: CommonUtil.colorTheme(
+                              context,
+                              darkColor: mDarkBodyTextColor,
+                              lightColor: mLightBodyTextColor,
+                            )),
                       ),
                     ],
                   ),

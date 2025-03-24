@@ -1,4 +1,5 @@
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
+import 'package:AssetWise/src/features/notifications/notifications_view.dart';
 import 'package:AssetWise/src/features/payments/unable_to_payment_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
@@ -49,7 +50,7 @@ class _PaymentGatewayViewState extends State<PaymentGatewayView> {
             builder: (context) => UnableToPaymentView(
                   reason: reason ?? AppLocalizations.of(context)!.errorUnableToProcess,
                 )),
-        ModalRoute.withName(ContractsView.routeName),
+        (route) => route.isFirst || route.settings.name == ContractsView.routeName || route.settings.name == NotificationsView.routeName,
       );
       return;
     }
@@ -74,6 +75,6 @@ class _PaymentGatewayViewState extends State<PaymentGatewayView> {
   }
 
   void _doneTap(BuildContext context) {
-    Navigator.popUntil(context, (route) => route.isFirst || route.settings.name == ContractsView.routeName);
+    Navigator.popUntil(context, (route) => route.isFirst || route.settings.name == ContractsView.routeName || route.settings.name == NotificationsView.routeName);
   }
 }

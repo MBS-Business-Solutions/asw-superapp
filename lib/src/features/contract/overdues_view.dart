@@ -123,11 +123,7 @@ class _OverduesViewState extends State<OverduesView> {
               right: 0,
               child: Container(
                 padding: const EdgeInsets.only(left: mScreenEdgeInsetValue, right: mScreenEdgeInsetValue, top: 16, bottom: 8),
-                decoration: BoxDecoration(
-                  color: (Theme.of(context).brightness == Brightness.dark ? mDarkCardBackgroundColor : mLightCardBackgroundColor).withOpacity(0.8),
-                  border: Border.all(color: Colors.white.withOpacity(0.2)),
-                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
-                ),
+                decoration: buildBottomCardDecoration(context),
                 child: SafeArea(
                   child: FilledButton(
                     onPressed: _payAmount > 0

@@ -39,6 +39,7 @@ class DashboardMainView extends StatelessWidget {
             ),
           ),
         ),
+        // Banner carousel
         SliverToBoxAdapter(
           child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
@@ -59,6 +60,7 @@ class DashboardMainView extends StatelessWidget {
                 ],
               )),
         ),
+        // Notification section
         SliverToBoxAdapter(
           child: Consumer<UserProvider>(
             builder: (context, provider, child) {

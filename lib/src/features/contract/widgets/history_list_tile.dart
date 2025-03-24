@@ -16,19 +16,7 @@ class HistoryListTile extends StatelessWidget {
     final isWaiting = paymentDetail.status == 'รอยืนยันเงิน';
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
-        border: Border.all(color: CommonUtil.colorTheme(context, darkColor: Color(0xFF585858), lightColor: Colors.transparent)),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: CommonUtil.colorTheme(context, darkColor: Colors.white.withOpacity(0.2), lightColor: Colors.transparent),
-            spreadRadius: 0,
-            blurRadius: 5,
-            offset: const Offset(0, -1),
-          ),
-        ],
-      ),
+      decoration: buildItemCardDecoration(context),
       child: ListTile(
         contentPadding: const EdgeInsets.only(left: mDefaultPadding, right: mDefaultPadding),
         onTap: onTap,

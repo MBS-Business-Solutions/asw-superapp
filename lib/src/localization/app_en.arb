@@ -6,13 +6,13 @@
   },
   "actionButtonNext": "Next",
   "actionButtonCancel": "Cancel",
-  "errorUnableToProcess": "***ไม่สามารถใช้งานได้ กรุณาลองใหม่อีกครั้ง***",
-  "errorUnableToDownloadContract": "***ไม่สามารถดาวน์โหลดเอกสารสัญญาได้ กรุณาลองใหม่อีกครั้ง***",
+  "errorUnableToProcess": "Unavailable Please try again.",
+  "errorUnableToDownloadContract": "Unable to download contract documents Please try again.",
   "errorFieldRequired": "This field is required.",
   "errorNoData": "No data found.",
   "errorInvalidOTP": "Incorrect OTP number.",
   "errorInvalidPIN": "Please enter the PIN code correctly.",
-  "errorComingSoon": "ยังไม่เปิดใช้บริการ",
+  "errorComingSoon": "Service not yet available.",
   "bahtUnit": "baht",
   "priceFormat": "{price}",
   "@priceFormat": {
@@ -76,7 +76,7 @@
   "bottomBarService": "Services",
   "bottomBarChat": "Chat",
   "bottomBarMenu": "Menu",
-  "bottomBarCalendar": "*ปฏิทิน*",
+  "bottomBarCalendar": "Calendar",
 
   "registerUserName": "Enter your mobile number or email address",
   "registerUserNameHint": "Enter your mobile phone number or email to apply for membership.",
@@ -134,7 +134,7 @@
   "userDetailInvalidFirstName": "Please enter your first name correctly without using special characters.",
   "userDetailInvalidLastName": "Please enter your last name correctly without using special characters.",
   "userDetailInvalidEmail": "Please enter a valid E-mail address in the correct format.",
-  "userDetailInvalidPhone": "**กรุณากรอกเบอร์มือถือให้ครบ 10 หลัก**",
+  "userDetailInvalidPhone": "Please enter a 10-digit mobile number.",
 
   "consentAgree": "Accept",
   "consentDisagree": "Don't accept",
@@ -170,12 +170,12 @@
   "changeLanguageCurrentLang": "Current Language",
   "changeLanguageLanguage": "Language",
 
-  "dashboardMainSectionFavourite": "เมนูโปรด",
+  "dashboardMainSectionFavourite": "Favorite",
   "@dashboardMainSectionFavourite": {
     "description": "The title of the favourite section"
   },
-  "dashboardMainSectionFavouriteMore": "*เมนูทั้งหมด*",
-  "dashboardMainSectionNotification": "**การแจ้งเตือน**",
+  "dashboardMainSectionFavouriteMore": "All menus",
+  "dashboardMainSectionNotification": "Notification",
   "dashboardMainSectionRecommended": "Recommended projects",
   "dashboardMainSectionRecommendedDetail": "We are committed to designing homes. For the happiness of the people Taking into account lifestyle and the lifestyle of each person is different Allowing you to live your life the way you want.",
 
@@ -238,7 +238,7 @@
   "contractDetailContractValueTitle": "Contract Value",  
   "contractDetailBookingSellingPrice": "Selling Price",
   "contractDetailBookingDiscountPrice": "Discount",
-  "contractDetailBookingDiscountAtTransferPrice": "***ส่วนลด ณ วันโอน***",
+  "contractDetailBookingDiscountAtTransferPrice": "Discount on transfer date",
   "contractDetailBookingNetPrice": "Net Price",
   "contractDetailBookingAmount": "Booking",
   "contractDetailContractAmount": "Contract",
@@ -256,7 +256,7 @@
   "receiptViewSuccess": "Transaction Successful",
   "receiptViewPaymentType": "Payment Method",
   "receiptViewDate": "Transaction Date",
-  "receiptViewRef1": "**เลขที่รายการ**",
+  "receiptViewRef1": "Item number",
   "receiptViewRef2": "Reference Number",
   "receiptViewRemark": "Notes",
   "receiptViewDue": "Due Date",
@@ -273,7 +273,7 @@
 
   "paymentChannelViewPaymentTitle": "Payment",
   "paymentChannelViewCreditChannel": "Credit/Debit Card",
-  "paymentChannelViewQRChannel": "QR Promptpay",
+  "paymentChannelViewQRChannel": "QR Code",
   "paymentChannelViewTotalAmount": "Total Amount Due",
   "paymentChannelViewDue": "Due Date",
   "paymentChannelViewPayment": "Payment",
@@ -287,8 +287,8 @@
   "qrViewPromptPayInstruction2": "2. Scan the store's QR Code.",
   "qrViewPromptPayInstruction3": "3. Select your account, enter the amount, and tap \"Confirm\".",
   "qrViewPromptPayInstruction4": "4. Confirm",
-  "qrViewPromptPayDownload": "ดาวน์โหลด QR Code",
-  "qrViewPromptPayDone": "เสร็จสิ้น",
+  "qrViewPromptPayDownload": "Download QR Code",
+  "qrViewPromptPayDone": "Completed.",
   "qrViewPromptSavedToGallery": "QR Code saved to gallery",
 
   "pinEntryTitle": "Enter PIN",
@@ -327,13 +327,13 @@
     "placeholders": {
       "action": {
         "type": "String",
-        "example": "ทำการสมัครสมาชิก"
+        "example": "Apply for membership"
       }
     }
   },
   "otpRequestLoginByEmail": "Log in with Email",
   "otpRequestNext": "Next",
-  "otpRequestInvalidData": "กรุณากรอกข้อมูลให้ครบถ้วน",
+  "otpRequestInvalidData": "Please fill in all information completely.",
   "otpRequestInvalidMobile": "Please enter your ID card number to match your registered mobile number.",
   "otpRequestInvalidEmail": "Please enter your ID card number to match your registered email address.",
   "otpRequestInvalidUser": "Please enter your ID card number to match your registered mobile number/email address.",
@@ -419,9 +419,9 @@
   "addAssetProject": "Project*",
   "addAssetUnit": "Unit Number*",
   "addAssetLast4Id": "Last 4 digits of ID Card*",
-  "addAssetProjectRequired": "กรุณาระบุโครงการ",
-  "addAssetUnitRequired": "กรุณาระบุบ้านเลขที่",
-  "addAssetLast4IdRequired": "กรุณาระบุรหัสบัตรประชาชน 4 ตัวหลัง",
+  "addAssetProjectRequired": "Please specify the project.",
+  "addAssetUnitRequired": "Please specify your house number.",
+  "addAssetLast4IdRequired": "Please enter the last 4 digits of your national ID card number.",
 
 
   "managePersonalInfoTitle": "Manage Personal Information",
@@ -432,6 +432,6 @@
 
   "lastUpdated": "Last updated {date}",
 
-  "unableToPayHeading": "ไม่สามารถชำระเงินได้ในขณะนี้",
-  "unableToPayBack": "กลับไปหน้าสัญญา"
+  "unableToPayHeading": "Payment is not available at this time.",
+  "unableToPayBack": "Return to contract page"
 }

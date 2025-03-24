@@ -25,6 +25,7 @@ class _ReceiptViewFileState extends State<ReceiptViewFile> {
   @override
   void initState() {
     final url = AwContractService.getViewReceiptURL(widget.contractNumber, widget.receiptNumber);
+    // final url = "https://superapp-api.azurewebsites.net/";
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(NavigationDelegate(

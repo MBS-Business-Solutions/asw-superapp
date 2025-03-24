@@ -3,6 +3,7 @@ import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/utils/string_util.dart';
 import 'package:flutter/material.dart';
 import 'package:gal/gal.dart';
@@ -56,76 +57,9 @@ class QRView extends StatelessWidget {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(mDefaultPadding),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4),
-                                      color: Theme.of(context).brightness == Brightness.dark ? mDarkCardBackgroundColor : mLightCardBackgroundColor,
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(AppLocalizations.of(context)!.qrViewProject, style: Theme.of(context).textTheme.labelMedium),
-                                            const Spacer(),
-                                            Text(contract.projectName, style: Theme.of(context).textTheme.labelMedium!.copyWith(fontWeight: FontWeight.bold)),
-                                          ],
-                                        ),
-                                        const SizedBox(height: mMediumPadding),
-                                        Row(
-                                          children: [
-                                            Text(AppLocalizations.of(context)!.qrViewUnit, style: Theme.of(context).textTheme.labelMedium),
-                                            const Spacer(),
-                                            Text(contract.unitNumber, style: Theme.of(context).textTheme.labelMedium!.copyWith(fontWeight: FontWeight.bold)),
-                                          ],
-                                        ),
-                                        const SizedBox(height: mMediumPadding),
-                                        Row(
-                                          children: [
-                                            Text(AppLocalizations.of(context)!.qrViewTotal, style: Theme.of(context).textTheme.labelMedium),
-                                            const Spacer(),
-                                            Text(StringUtil.formatNumber(amount.toString()), style: Theme.of(context).textTheme.labelMedium!.copyWith(fontWeight: FontWeight.bold)),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
+                                  _buildProjectInfoCard(context),
                                   const SizedBox(height: mDefaultPadding * 2),
-                                  Container(
-                                    padding: const EdgeInsets.all(mDefaultPadding),
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                    alignment: Alignment.topCenter,
-                                    child: Column(
-                                      children: [
-                                        QrImageView(
-                                          size: MediaQuery.of(context).size.width * 0.6,
-                                          data: qrCode.qrCode!,
-                                          backgroundColor: Colors.white,
-                                        ),
-                                        const SizedBox(
-                                          height: mMediumPadding,
-                                        ),
-                                        Text(
-                                          AppLocalizations.of(context)!.qrViewTotal,
-                                          style: Theme.of(context).textTheme.labelMedium!.copyWith(color: Colors.black),
-                                        ),
-                                        const SizedBox(
-                                          height: mMediumPadding,
-                                        ),
-                                        Text(
-                                          StringUtil.formatNumber(amount.toString()),
-                                          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  _buildQRCard(context, qrCode),
                                 ],
                               ),
                             ),
@@ -175,27 +109,25 @@ class QRView extends StatelessWidget {
                     right: 0,
                     child: Container(
                       padding: const EdgeInsets.only(left: mScreenEdgeInsetValue, right: mScreenEdgeInsetValue, top: 16, bottom: 8),
-                      decoration: BoxDecoration(
-                        color: (Theme.of(context).brightness == Brightness.dark ? mDarkCardBackgroundColor : mLightCardBackgroundColor).withOpacity(0.8),
-                        border: Border.all(color: Colors.white.withOpacity(0.2)),
-                        borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
-                      ),
+                      decoration: buildBottomCardDecoration(context),
                       child: SafeArea(
                           child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          FilledButton.tonal(
+                          OutlinedButton(
                             onPressed: () {
                               _saveImage(context, controller);
                             },
                             style: Theme.of(context).brightness == Brightness.dark
-                                ? FilledButton.styleFrom(
+                                ? OutlinedButton.styleFrom(
                                     backgroundColor: mGreyBackgroundColor,
+                                    side: const BorderSide(color: Colors.transparent),
                                     foregroundColor: Colors.white,
                                   )
-                                : FilledButton.styleFrom(
+                                : OutlinedButton.styleFrom(
                                     backgroundColor: Colors.white,
-                                    foregroundColor: mLightBodyTextColor,
+                                    side: const BorderSide(color: mPrimaryMatColor),
+                                    foregroundColor: mPrimaryMatColor,
                                   ),
                             child: Text(AppLocalizations.of(context)!.qrViewPromptPayDownload),
                           ),
@@ -208,6 +140,97 @@ class QRView extends StatelessWidget {
               ),
             );
           }),
+    );
+  }
+
+  Container _buildQRCard(BuildContext context, QRResponse qrCode) {
+    return Container(
+      padding: const EdgeInsets.all(mDefaultPadding),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(4),
+        boxShadow: [
+          BoxShadow(
+            color: CommonUtil.colorTheme(context, darkColor: Colors.transparent, lightColor: Colors.black.withOpacity(0.1)),
+            spreadRadius: 0,
+            blurRadius: 5,
+            offset: const Offset(0, -1),
+          ),
+        ],
+      ),
+      alignment: Alignment.topCenter,
+      child: Column(
+        children: [
+          QrImageView(
+            size: MediaQuery.of(context).size.width * 0.6,
+            data: qrCode.qrCode!,
+            backgroundColor: Colors.white,
+          ),
+          const SizedBox(
+            height: mMediumPadding,
+          ),
+          Text(
+            AppLocalizations.of(context)!.qrViewTotal,
+            style: Theme.of(context).textTheme.labelMedium!.copyWith(color: Colors.black),
+          ),
+          const SizedBox(
+            height: mMediumPadding,
+          ),
+          Text(
+            StringUtil.formatNumber(amount.toString()),
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container _buildProjectInfoCard(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(mDefaultPadding),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        color: Theme.of(context).brightness == Brightness.dark ? mDarkCardBackgroundColor : mLightCardBackgroundColor,
+        boxShadow: [
+          BoxShadow(
+            color: CommonUtil.colorTheme(context, darkColor: Colors.transparent, lightColor: Colors.black.withOpacity(0.1)),
+            spreadRadius: 0,
+            blurRadius: 5,
+            offset: const Offset(0, -1),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(AppLocalizations.of(context)!.qrViewProject, style: Theme.of(context).textTheme.labelMedium),
+              const Spacer(),
+              Text(contract.projectName, style: Theme.of(context).textTheme.labelMedium!.copyWith(fontWeight: FontWeight.bold)),
+            ],
+          ),
+          const SizedBox(height: mMediumPadding),
+          Row(
+            children: [
+              Text(AppLocalizations.of(context)!.qrViewUnit, style: Theme.of(context).textTheme.labelMedium),
+              const Spacer(),
+              Text(contract.unitNumber, style: Theme.of(context).textTheme.labelMedium!.copyWith(fontWeight: FontWeight.bold)),
+            ],
+          ),
+          const SizedBox(height: mMediumPadding),
+          Row(
+            children: [
+              Text(AppLocalizations.of(context)!.qrViewTotal, style: Theme.of(context).textTheme.labelMedium),
+              const Spacer(),
+              Text(StringUtil.formatNumber(amount.toString()), style: Theme.of(context).textTheme.labelMedium!.copyWith(fontWeight: FontWeight.bold)),
+            ],
+          )
+        ],
+      ),
     );
   }
 

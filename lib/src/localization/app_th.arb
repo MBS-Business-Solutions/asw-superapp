@@ -273,7 +273,7 @@
 
   "paymentChannelViewPaymentTitle": "ชำระเงิน",
   "paymentChannelViewCreditChannel": "บัตรเครดิต/เดบิต",
-  "paymentChannelViewQRChannel": "QR Promptpay",
+  "paymentChannelViewQRChannel": "QR Code",
   "paymentChannelViewTotalAmount": "ยอดที่ต้องชำระ",
   "paymentChannelViewDue": "ชำระภายใน",
   "paymentChannelViewPayment": "ชำระเงิน",

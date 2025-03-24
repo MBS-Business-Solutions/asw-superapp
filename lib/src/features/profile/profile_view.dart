@@ -461,14 +461,19 @@ class _ProfileViewState extends State<ProfileView> {
             TextButton(
               child: Text(
                 AppLocalizations.of(context)!.closeAppConfirmationOKButton,
-                style: const TextStyle(color: mRedColor),
+                style: TextStyle(
+                  color: CommonUtil.colorTheme(context, darkColor: mRedColor, lightColor: mBrightRedColor),
+                ),
               ),
               onPressed: () {
                 Navigator.pop(context, true);
               },
             ),
             TextButton(
-              child: Text(AppLocalizations.of(context)!.actionButtonCancel, style: const TextStyle(color: Colors.white)),
+              child: Text(AppLocalizations.of(context)!.actionButtonCancel,
+                  style: TextStyle(
+                    color: CommonUtil.colorTheme(context, darkColor: mDarkBodyTextColor, lightColor: mLightBodyTextColor),
+                  )),
               onPressed: () {
                 Navigator.pop(context, false);
               },
