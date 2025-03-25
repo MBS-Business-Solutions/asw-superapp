@@ -175,7 +175,7 @@
     "description": "The title of the favourite section"
   },
   "dashboardMainSectionFavouriteMore": "All menus",
-  "dashboardMainSectionNotification": "Notification",
+  "dashboardMainSectionNotification": "Notifications",
   "dashboardMainSectionRecommended": "Recommended projects",
   "dashboardMainSectionRecommendedDetail": "We are committed to designing homes. For the happiness of the people Taking into account lifestyle and the lifestyle of each person is different Allowing you to live your life the way you want.",
 
@@ -288,7 +288,7 @@
   "qrViewPromptPayInstruction3": "3. Select your account, enter the amount, and tap \"Confirm\".",
   "qrViewPromptPayInstruction4": "4. Confirm",
   "qrViewPromptPayDownload": "Download QR Code",
-  "qrViewPromptPayDone": "Completed.",
+  "qrViewPromptPayDone": "Completed",
   "qrViewPromptSavedToGallery": "QR Code saved to gallery",
 
   "pinEntryTitle": "Enter PIN",
