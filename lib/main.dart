@@ -44,7 +44,7 @@ void main() async {
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
   runApp(MultiProvider(providers: [
-    Provider(create: (context) => DashboardProvider()),
+    ChangeNotifierProvider(create: (context) => DashboardProvider()),
     ChangeNotifierProvider(
       create: (context) => userProvider,
     ),

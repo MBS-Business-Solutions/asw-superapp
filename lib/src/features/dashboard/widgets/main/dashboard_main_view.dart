@@ -90,9 +90,7 @@ class DashboardMainView extends StatelessWidget {
             ),
           ),
         ),
-        SuggestAssets(
-          projects: dashboardProvider.suggestProjects,
-        ),
+        const SuggestAssets(),
         SliverToBoxAdapter(
             child: Consumer<UserProvider>(
           builder: (context, userProvider, child) => SizedBox(

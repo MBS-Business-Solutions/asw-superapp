@@ -179,6 +179,7 @@ class DownPaymentDetail {
   final int amount;
   final String status;
   final List<ShortPaymentDetail> payments;
+  final String? statusCode;
 
   DownPaymentDetail({
     required this.termCode,
@@ -187,6 +188,7 @@ class DownPaymentDetail {
     required this.amount,
     required this.status,
     required this.payments,
+    required this.statusCode,
   });
 
   factory DownPaymentDetail.fromJson(Map<String, dynamic> json) {
@@ -200,6 +202,7 @@ class DownPaymentDetail {
       amount: json['amount'],
       status: json['status'],
       payments: paymentList,
+      statusCode: json['status_code'],
     );
   }
 }

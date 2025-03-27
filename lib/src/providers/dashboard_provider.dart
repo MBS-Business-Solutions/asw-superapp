@@ -1,7 +1,8 @@
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/services/aw_content_service.dart';
+import 'package:flutter/material.dart';
 
-class DashboardProvider {
+class DashboardProvider with ChangeNotifier {
   List<ImageContent> _banners = [];
   List<ImageContent> get banners => _banners;
   List<Project> _suggestProjects = [];
@@ -12,6 +13,7 @@ class DashboardProvider {
       _fetchProjects(),
       _fetchBanners(),
     ]);
+    notifyListeners();
   }
 
   Future<void> _fetchProjects() async {

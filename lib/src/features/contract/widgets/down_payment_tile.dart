@@ -16,7 +16,7 @@ class DownPaymentTile extends StatelessWidget {
   final Function()? onTap;
   @override
   Widget build(BuildContext context) {
-    final isPaid = paymentDetail.status.isNotEmpty;
+    final isPaid = paymentDetail.statusCode == 'Complete';
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       clipBehavior: Clip.antiAlias,
@@ -46,7 +46,9 @@ class DownPaymentTile extends StatelessWidget {
                   if (paymentDetail.status.isNotEmpty)
                     Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark ? mDarkCardBackgroundColor : mLightCardBackgroundColor,
+                        color: isPaid
+                            ? CommonUtil.colorTheme(context, darkColor: mDarkPaidBGColor, lightColor: mLightPaidBGColor)
+                            : CommonUtil.colorTheme(context, darkColor: mDarkUnPaidBGColor, lightColor: mLightUnPaidBGColor),
                         borderRadius: BorderRadius.circular(99),
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
