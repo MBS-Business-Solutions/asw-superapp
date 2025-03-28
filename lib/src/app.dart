@@ -121,7 +121,7 @@ class _MyAppState extends State<MyApp> {
     await navContext.read<NotificationItemProvider>().fetchNotificationItems();
     if (navContext.mounted && !isResumed) {
       await Future.wait([
-        Future.delayed(const Duration(seconds: 4)),
+        Future.delayed(const Duration(seconds: 3)),
         navContext.read<DashboardProvider>().reload(),
       ]);
       Navigator.pushReplacementNamed(navContext, DashboardView.routeName);
