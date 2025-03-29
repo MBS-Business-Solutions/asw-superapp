@@ -1,4 +1,5 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -47,7 +48,7 @@ class _OtpInputState extends State<OtpInput> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).unfocus();
+        CommonUtil.dismissKeyboard(context);
         _focusNode.requestFocus();
       },
       child: Stack(

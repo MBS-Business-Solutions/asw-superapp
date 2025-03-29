@@ -6,6 +6,7 @@ import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/models/aw_otp_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/providers/verify_otp_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/aw_dropdownform.dart';
 import 'package:AssetWise/src/widgets/aw_textformfield.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class _AddAssetViewState extends State<AddAssetView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () => CommonUtil.dismissKeyboard(context),
       child: Form(
         key: _formKey,
         child: Scaffold(

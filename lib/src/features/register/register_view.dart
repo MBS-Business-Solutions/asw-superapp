@@ -2,6 +2,7 @@ import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/register/register_otp_view.dart';
 import 'package:AssetWise/src/providers/register_provider.dart';
 import 'package:AssetWise/src/services/aw_register_service.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:AssetWise/src/widgets/aw_textformfield.dart';
@@ -29,7 +30,7 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () => CommonUtil.dismissKeyboard(context),
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -77,7 +78,7 @@ class _RegisterViewState extends State<RegisterView> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                FocusScope.of(context).unfocus();
+                                CommonUtil.dismissKeyboard(context);
                                 setState(() {
                                   _isResident = !_isResident;
                                 });
@@ -87,7 +88,7 @@ class _RegisterViewState extends State<RegisterView> {
                                   Checkbox(
                                     value: _isResident,
                                     onChanged: (value) {
-                                      FocusScope.of(context).unfocus();
+                                      CommonUtil.dismissKeyboard(context);
                                       setState(() {
                                         _isResident = value!;
                                       });
@@ -180,7 +181,7 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   Future<void> _processToOTPForm() async {
-    FocusScope.of(context).unfocus();
+    CommonUtil.dismissKeyboard(context);
     setState(() {
       _isLoading = true;
       _showError = null;

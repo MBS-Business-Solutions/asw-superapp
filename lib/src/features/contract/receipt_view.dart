@@ -23,7 +23,7 @@ class _ReceiptViewState extends State<ReceiptView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () => CommonUtil.dismissKeyboard(context),
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(

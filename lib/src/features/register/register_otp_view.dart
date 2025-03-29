@@ -6,6 +6,7 @@ import 'package:AssetWise/src/features/register/register_view.dart';
 import 'package:AssetWise/src/features/register/user_detail_view.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/register_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:AssetWise/src/widgets/otp_input.dart';
@@ -66,7 +67,7 @@ class _RegisterVerifyOtpViewState extends State<RegisterVerifyOtpView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () => CommonUtil.dismissKeyboard(context),
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(

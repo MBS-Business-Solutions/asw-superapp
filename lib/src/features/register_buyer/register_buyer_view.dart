@@ -2,6 +2,7 @@ import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/verify_otp/verify_otp_view.dart';
 import 'package:AssetWise/src/models/aw_otp_model.dart';
 import 'package:AssetWise/src/providers/verify_otp_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/aw_textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -27,7 +28,7 @@ class _RegisterBuyerRequestViewState extends State<RegisterBuyerRequestView> {
       ),
       body: GestureDetector(
         onTap: () {
-          FocusScope.of(context).unfocus();
+          CommonUtil.dismissKeyboard(context);
         },
         child: Form(
           key: _formKey,
@@ -70,7 +71,7 @@ class _RegisterBuyerRequestViewState extends State<RegisterBuyerRequestView> {
   }
 
   Future<void> _registerBuyer() async {
-    FocusScope.of(context).unfocus();
+    CommonUtil.dismissKeyboard(context);
     if (_formKey.currentState!.validate()) {
       // request OTP
       final otpRef = await context.read<VerifyOtpProvider>().requestOTP(sendTo: _idCardController.text, action: OTPFor.validateUser);

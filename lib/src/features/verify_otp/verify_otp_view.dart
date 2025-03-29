@@ -4,6 +4,7 @@ import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/models/aw_otp_model.dart';
 import 'package:AssetWise/src/providers/verify_otp_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:AssetWise/src/widgets/otp_input.dart';
@@ -65,7 +66,7 @@ class _VerifyOTPViewState extends State<VerifyOTPView> {
   Widget build(BuildContext context) {
     final otpRequest = context.read<VerifyOtpProvider>().otpRequest;
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () => CommonUtil.dismissKeyboard(context),
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(

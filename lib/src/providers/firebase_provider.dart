@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:AssetWise/main.dart';
+import 'package:AssetWise/plugins.dart';
 import 'package:AssetWise/src/features/payments/payment_channels_view.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
@@ -6,6 +10,7 @@ import 'package:AssetWise/src/services/aw_user_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
 class FirebaseMessagingProvider {
@@ -39,7 +44,7 @@ class FirebaseMessagingProvider {
     } else {
       print('User declined or has not yet granted permission');
     }
-
+    await _requestLocalNotiPermissions();
     return settings;
   }
 
@@ -67,30 +72,34 @@ class FirebaseMessagingProvider {
     // print('Firebase Messaging Token: $token');
 
     // Handle incoming messages
-    FirebaseMessaging.onMessage.listen(_handleOnMessage);
+    FirebaseMessaging.onMessage.listen(_showLocalNotification);
     FirebaseMessaging.onMessageOpenedApp.listen(_handleOnMessageOpenedApp);
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveBackgroundNotificationResponse: _didReceiveNotificationResponse,
+      onDidReceiveNotificationResponse: _didReceiveNotificationResponse,
+    );
   }
 
-  void _handleOnMessage(RemoteMessage message) {
-    print('Got a message: ${message.notification?.title}');
-    // Alert the message to the user
-    showDialog(
-      context: navigatorKey.currentState!.context,
-      builder: (context) => AlertDialog(
-        title: const Text('New Notification'),
-        content: Text(message.notification?.body ?? 'No message body'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              // Navigator.of(context).pushNamed(DashboardView.routeName);
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-    // Handle the message here
+  static void _didReceiveNotificationResponse(NotificationResponse details) async {
+    print('Notification clicked: ${details.payload}');
+
+    final data = jsonDecode(details.payload ?? '{}');
+    if (data['contract_id'] != null) {
+      final contractId = data['contract_id'];
+      // find contract
+      final context = navigatorKey.currentState!.context;
+      final contracts = await context.read<ContractProvider>().fetchContracts(context);
+      final contract = contracts.firstWhere((element) => element.contractId == contractId);
+      final overdueDetail = await context.read<ContractProvider>().fetchOverdueDetail(contractId);
+
+      navigatorKey.currentState!.push(MaterialPageRoute(
+          builder: (context) => PaymentChannelsView(
+                contract: contract,
+                overdueDetail: overdueDetail,
+              )));
+    }
   }
 
   void _handleOnMessageOpenedApp(RemoteMessage message) async {
@@ -134,5 +143,42 @@ class FirebaseMessagingProvider {
     if (kDebugMode) {
       print('FCM Token updated');
     }
+  }
+
+  Future<void> _requestLocalNotiPermissions() async {
+    if (Platform.isIOS || Platform.isMacOS) {
+      await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+      await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<MacOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+    } else if (Platform.isAndroid) {
+      final AndroidFlutterLocalNotificationsPlugin? androidImplementation = flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+
+      final bool? grantedNotificationPermission = await androidImplementation?.requestNotificationsPermission();
+    }
+  }
+
+  Future<void> _showLocalNotification(RemoteMessage message) async {
+    const AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
+      'com.assetwise.customerportal',
+      'ASSETWISE_LOCAL_NOTIFICATIONS',
+      channelDescription: 'Show local notification',
+      importance: Importance.defaultImportance,
+      priority: Priority.high,
+    );
+    const NotificationDetails notificationDetails = NotificationDetails(android: androidNotificationDetails);
+    await flutterLocalNotificationsPlugin.show(
+      notificationId++,
+      message.notification?.title,
+      message.notification?.body,
+      notificationDetails,
+      payload: jsonEncode(message.data),
+    );
   }
 }

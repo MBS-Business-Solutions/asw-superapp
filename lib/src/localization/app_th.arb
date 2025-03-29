@@ -432,5 +432,7 @@
   "lastUpdated": "อัปเดตล่าสุด {date}",
 
   "unableToPayHeading": "ไม่สามารถชำระเงินได้ในขณะนี้",
-  "unableToPayBack": "กลับไปหน้าสัญญา"
+  "unableToPayBack": "กลับไปหน้าสัญญา",
+
+  "mapTitle": "แผนที่"
 }

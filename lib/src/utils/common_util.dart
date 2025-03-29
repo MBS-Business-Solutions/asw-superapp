@@ -19,4 +19,11 @@ class CommonUtil {
   static Color colorTheme(BuildContext context, {required Color darkColor, required Color lightColor}) {
     return Theme.of(context).brightness == Brightness.dark ? darkColor : lightColor;
   }
+
+  static void dismissKeyboard(BuildContext context) {
+    final FocusScopeNode currentScope = FocusScope.of(context);
+    if (!currentScope.hasPrimaryFocus && currentScope.hasFocus) {
+      FocusManager.instance.primaryFocus?.unfocus();
+    }
+  }
 }

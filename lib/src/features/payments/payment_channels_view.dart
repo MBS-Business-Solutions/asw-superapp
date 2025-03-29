@@ -46,7 +46,7 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () => CommonUtil.dismissKeyboard(context),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,

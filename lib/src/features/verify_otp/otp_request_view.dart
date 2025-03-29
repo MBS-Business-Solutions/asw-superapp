@@ -3,6 +3,7 @@ import 'package:AssetWise/src/features/verify_otp/verify_otp_view.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/models/aw_otp_model.dart';
 import 'package:AssetWise/src/providers/verify_otp_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:AssetWise/src/widgets/aw_textformfield.dart';
@@ -46,7 +47,7 @@ class _OTPRequestViewState extends State<OTPRequestView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () => CommonUtil.dismissKeyboard(context),
       child: PopScope(
         canPop: widget.isBackable,
         child: Scaffold(
@@ -96,7 +97,7 @@ class _OTPRequestViewState extends State<OTPRequestView> {
                               if (widget.canLoginAsResident)
                                 GestureDetector(
                                   onTap: () {
-                                    FocusScope.of(context).unfocus();
+                                    CommonUtil.dismissKeyboard(context);
                                     setState(() {
                                       _isResident = !_isResident;
                                     });
@@ -106,7 +107,7 @@ class _OTPRequestViewState extends State<OTPRequestView> {
                                       Checkbox(
                                         value: _isResident,
                                         onChanged: (value) {
-                                          FocusScope.of(context).unfocus();
+                                          CommonUtil.dismissKeyboard(context);
                                           setState(() {
                                             _isResident = value!;
                                           });
@@ -124,7 +125,7 @@ class _OTPRequestViewState extends State<OTPRequestView> {
                                 value: _emailForm,
                                 onChanged: (value) {
                                   setState(() {
-                                    FocusScope.of(context).unfocus();
+                                    CommonUtil.dismissKeyboard(context);
                                     _emailForm = value;
                                   });
                                 },

@@ -1,14 +1,11 @@
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/aw_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 
 class UIShowcaseScreen extends StatefulWidget {
-  const UIShowcaseScreen(
-      {super.key,
-      required this.onSwitchToDarkMode,
-      required this.onSwitchToLightMode,
-      this.widgets});
+  const UIShowcaseScreen({super.key, required this.onSwitchToDarkMode, required this.onSwitchToLightMode, this.widgets});
   static const String routeName = '/ui-showcase';
   final Function onSwitchToDarkMode;
   final Function onSwitchToLightMode;
@@ -23,7 +20,7 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () => CommonUtil.dismissKeyboard(context),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('UI Showcase'),
@@ -43,8 +40,7 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
             SvgPicture.asset(
               height: 300,
               'assets/images/ASW_Logo_Rac_dark-bg.svg',
-              colorFilter:
-                  const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
               alignment: Alignment.centerLeft,
             ),
             ListTile(
@@ -56,10 +52,7 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
               },
               trailing: const Icon(Icons.arrow_forward_ios),
             ),
-            SwitchListTile.adaptive(
-                value: value,
-                onChanged: (v) => setState(() => value = v),
-                title: const Text('Switch')),
+            SwitchListTile.adaptive(value: value, onChanged: (v) => setState(() => value = v), title: const Text('Switch')),
             ..._textfieldShowcase(context),
             ..._buttonsShowcase(context),
             ..._iconButtonShowcase(context),
@@ -142,8 +135,7 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             FilledButton(onPressed: () {}, child: const Text('FilledButton')),
-            FilledButton.tonal(
-                onPressed: () {}, child: const Text('FilledButton.tonal')),
+            FilledButton.tonal(onPressed: () {}, child: const Text('FilledButton.tonal')),
             const FilledButton(onPressed: null, child: Text('Disabled')),
           ],
         ),
@@ -182,9 +174,7 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
                 Expanded(
                   child: Column(
                     children: [
-                      IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.add_a_photo_rounded)),
+                      IconButton(onPressed: () {}, icon: const Icon(Icons.add_a_photo_rounded)),
                       const Text('IconButton'),
                     ],
                   ),
@@ -192,9 +182,7 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
                 const Expanded(
                   child: Column(
                     children: [
-                      IconButton(
-                          onPressed: null,
-                          icon: Icon(Icons.add_a_photo_rounded)),
+                      IconButton(onPressed: null, icon: Icon(Icons.add_a_photo_rounded)),
                       Text('Disabled'),
                     ],
                   ),
@@ -206,9 +194,7 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
                 Expanded(
                   child: Column(
                     children: [
-                      IconButton.filled(
-                          onPressed: () {},
-                          icon: const Icon(Icons.add_a_photo_rounded)),
+                      IconButton.filled(onPressed: () {}, icon: const Icon(Icons.add_a_photo_rounded)),
                       const Text('IconButton.filled'),
                     ],
                   ),
@@ -216,9 +202,7 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
                 const Expanded(
                   child: Column(
                     children: [
-                      IconButton.filled(
-                          onPressed: null,
-                          icon: Icon(Icons.add_a_photo_rounded)),
+                      IconButton.filled(onPressed: null, icon: Icon(Icons.add_a_photo_rounded)),
                       Text('Disabled'),
                     ],
                   ),
@@ -230,9 +214,7 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
                 Expanded(
                   child: Column(
                     children: [
-                      IconButton.filledTonal(
-                          onPressed: () {},
-                          icon: const Icon(Icons.add_a_photo_rounded)),
+                      IconButton.filledTonal(onPressed: () {}, icon: const Icon(Icons.add_a_photo_rounded)),
                       const Text('IconButton.filled'),
                     ],
                   ),
@@ -240,9 +222,7 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
                 const Expanded(
                   child: Column(
                     children: [
-                      IconButton.filledTonal(
-                          onPressed: null,
-                          icon: Icon(Icons.add_a_photo_rounded)),
+                      IconButton.filledTonal(onPressed: null, icon: Icon(Icons.add_a_photo_rounded)),
                       Text('Disabled'),
                     ],
                   ),
@@ -254,9 +234,7 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
                 Expanded(
                   child: Column(
                     children: [
-                      IconButton.outlined(
-                          onPressed: () {},
-                          icon: const Icon(Icons.add_a_photo_rounded)),
+                      IconButton.outlined(onPressed: () {}, icon: const Icon(Icons.add_a_photo_rounded)),
                       const Text('IconButton.filled'),
                     ],
                   ),
@@ -264,9 +242,7 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
                 const Expanded(
                   child: Column(
                     children: [
-                      IconButton.outlined(
-                          onPressed: null,
-                          icon: Icon(Icons.add_a_photo_rounded)),
+                      IconButton.outlined(onPressed: null, icon: Icon(Icons.add_a_photo_rounded)),
                       Text('Disabled'),
                     ],
                   ),
@@ -293,8 +269,7 @@ class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
 class TextShowCases extends StatelessWidget {
   const TextShowCases({super.key});
   final String shortText = 'ABC ทั้งที่ 12';
-  final String longText =
-      '''ASW คว้าเรตติ้ง “AA” หุ้นยั่งยืน SET ESG Ratings ปี 2567 พร้อม CGR 5 ดาว ระดับ “ดีเลิศ” 3 ปีซ้อน ตอกย้ำองค์กรยั่งยืนตามหลักบรรษัทภิบาล''';
+  final String longText = '''ASW คว้าเรตติ้ง “AA” หุ้นยั่งยืน SET ESG Ratings ปี 2567 พร้อม CGR 5 ดาว ระดับ “ดีเลิศ” 3 ปีซ้อน ตอกย้ำองค์กรยั่งยืนตามหลักบรรษัทภิบาล''';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -303,136 +278,108 @@ class TextShowCases extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('displayLarge',
-                style: Theme.of(context).textTheme.titleLarge),
+            child: Text('displayLarge', style: Theme.of(context).textTheme.titleLarge),
           ),
           ListTile(
-            title: Text(shortText,
-                style: Theme.of(context).textTheme.displayLarge),
+            title: Text(shortText, style: Theme.of(context).textTheme.displayLarge),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('displayMedium',
-                style: Theme.of(context).textTheme.titleLarge),
+            child: Text('displayMedium', style: Theme.of(context).textTheme.titleLarge),
           ),
           ListTile(
-            title: Text(shortText,
-                style: Theme.of(context).textTheme.displayMedium),
+            title: Text(shortText, style: Theme.of(context).textTheme.displayMedium),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('displaySmall',
-                style: Theme.of(context).textTheme.titleLarge),
+            child: Text('displaySmall', style: Theme.of(context).textTheme.titleLarge),
           ),
           ListTile(
-            title: Text(shortText,
-                style: Theme.of(context).textTheme.displaySmall),
+            title: Text(shortText, style: Theme.of(context).textTheme.displaySmall),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('headlineLarge',
-                style: Theme.of(context).textTheme.titleLarge),
+            child: Text('headlineLarge', style: Theme.of(context).textTheme.titleLarge),
           ),
           ListTile(
-            title: Text(shortText,
-                style: Theme.of(context).textTheme.headlineLarge),
+            title: Text(shortText, style: Theme.of(context).textTheme.headlineLarge),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('headlineMedium',
-                style: Theme.of(context).textTheme.titleLarge),
+            child: Text('headlineMedium', style: Theme.of(context).textTheme.titleLarge),
           ),
           ListTile(
-            title: Text(shortText,
-                style: Theme.of(context).textTheme.headlineMedium),
+            title: Text(shortText, style: Theme.of(context).textTheme.headlineMedium),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('headlineSmall',
-                style: Theme.of(context).textTheme.titleLarge),
+            child: Text('headlineSmall', style: Theme.of(context).textTheme.titleLarge),
           ),
           ListTile(
-            title: Text(shortText,
-                style: Theme.of(context).textTheme.headlineSmall),
+            title: Text(shortText, style: Theme.of(context).textTheme.headlineSmall),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('titleLarge',
-                style: Theme.of(context).textTheme.titleLarge),
+            child: Text('titleLarge', style: Theme.of(context).textTheme.titleLarge),
           ),
           ListTile(
-            title:
-                Text(shortText, style: Theme.of(context).textTheme.titleLarge),
+            title: Text(shortText, style: Theme.of(context).textTheme.titleLarge),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('titleMedium',
-                style: Theme.of(context).textTheme.titleLarge),
+            child: Text('titleMedium', style: Theme.of(context).textTheme.titleLarge),
           ),
           ListTile(
-            title:
-                Text(shortText, style: Theme.of(context).textTheme.titleMedium),
+            title: Text(shortText, style: Theme.of(context).textTheme.titleMedium),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('titleSmall',
-                style: Theme.of(context).textTheme.titleLarge),
+            child: Text('titleSmall', style: Theme.of(context).textTheme.titleLarge),
           ),
           ListTile(
-            title:
-                Text(shortText, style: Theme.of(context).textTheme.titleSmall),
+            title: Text(shortText, style: Theme.of(context).textTheme.titleSmall),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('bodyLarge',
-                style: Theme.of(context).textTheme.titleLarge),
+            child: Text('bodyLarge', style: Theme.of(context).textTheme.titleLarge),
           ),
           ListTile(
             title: Text(longText, style: Theme.of(context).textTheme.bodyLarge),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('bodyMedium',
-                style: Theme.of(context).textTheme.titleLarge),
+            child: Text('bodyMedium', style: Theme.of(context).textTheme.titleLarge),
           ),
           ListTile(
-            title:
-                Text(longText, style: Theme.of(context).textTheme.bodyMedium),
+            title: Text(longText, style: Theme.of(context).textTheme.bodyMedium),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('bodySmall',
-                style: Theme.of(context).textTheme.titleLarge),
+            child: Text('bodySmall', style: Theme.of(context).textTheme.titleLarge),
           ),
           ListTile(
             title: Text(longText, style: Theme.of(context).textTheme.bodySmall),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('labelLarge',
-                style: Theme.of(context).textTheme.titleLarge),
+            child: Text('labelLarge', style: Theme.of(context).textTheme.titleLarge),
           ),
           ListTile(
-            title:
-                Text(shortText, style: Theme.of(context).textTheme.labelLarge),
+            title: Text(shortText, style: Theme.of(context).textTheme.labelLarge),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('labelMedium',
-                style: Theme.of(context).textTheme.titleLarge),
+            child: Text('labelMedium', style: Theme.of(context).textTheme.titleLarge),
           ),
           ListTile(
-            title:
-                Text(shortText, style: Theme.of(context).textTheme.labelMedium),
+            title: Text(shortText, style: Theme.of(context).textTheme.labelMedium),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('labelSmall',
-                style: Theme.of(context).textTheme.titleLarge),
+            child: Text('labelSmall', style: Theme.of(context).textTheme.titleLarge),
           ),
           ListTile(
-            title:
-                Text(shortText, style: Theme.of(context).textTheme.labelSmall),
+            title: Text(shortText, style: Theme.of(context).textTheme.labelSmall),
           ),
         ],
       ),

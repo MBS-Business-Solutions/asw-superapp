@@ -1,4 +1,5 @@
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
+import 'package:AssetWise/src/features/find_projects/map_search_view.dart';
 import 'package:AssetWise/src/features/pin/pin_entry_view.dart';
 import 'package:AssetWise/src/features/profile/profile_view.dart';
 import 'package:AssetWise/src/features/notifications/notifications_view.dart';
@@ -28,11 +29,6 @@ class HomeActionButtons extends StatelessWidget {
         }
         return Row(
           children: [
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TestGoogleMap()));
-                },
-                icon: const Icon(Icons.home)),
             Consumer<NotificationItemProvider>(
               builder: (context, provider, child) => IconButton(
                   onPressed: () {

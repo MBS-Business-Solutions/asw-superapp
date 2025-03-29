@@ -433,5 +433,7 @@
   "lastUpdated": "Last updated {date}",
 
   "unableToPayHeading": "Payment is not available at this time.",
-  "unableToPayBack": "Return to contract page"
+  "unableToPayBack": "Return to contract page",
+
+  "mapTitle": "แผนที่"
 }

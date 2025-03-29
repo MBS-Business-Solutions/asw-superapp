@@ -1,5 +1,6 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:flutter/material.dart';
 
 class AwDropdownform<T> extends StatefulWidget {
@@ -46,7 +47,7 @@ class _AwDropdownformState<T> extends State<AwDropdownform> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).unfocus();
+        CommonUtil.dismissKeyboard(context);
       },
       child: Container(
         width: double.infinity,

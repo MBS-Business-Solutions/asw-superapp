@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:AssetWise/plugins.dart';
 import 'package:AssetWise/src/models/aw_notification_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
@@ -40,6 +41,7 @@ void main() async {
 
   final userProvider = UserProvider();
   await userProvider.initApp();
+
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
