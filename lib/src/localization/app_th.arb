@@ -138,7 +138,7 @@
 
   "consentAgree": "ยินยอม",
   "consentDisagree": "ไม่ยินยอม",
-  "consentAgreeNext": "ยินยอม",
+  "consentAgreeNext": "ยืนยัน",
   "consentAgreeAll": "ยินยอมทั้งหมด",
 
   "setPinSetPin": "ตั้งรหัส PIN จำนวน {digits} หลัก",
