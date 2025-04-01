@@ -34,7 +34,7 @@
             android:value="2" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD2iC76wz9zoIXWe_tr-Cr_zbbvIGRvkh0" />
+            android:value="AIzaSyCK1gEIQk-wjD8n-t0v9jp3A8dyoao-dbI" />
     </application>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
                  android:maxSdkVersion="29" />
