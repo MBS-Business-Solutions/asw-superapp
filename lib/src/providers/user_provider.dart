@@ -30,8 +30,6 @@ class UserProvider with ChangeNotifier {
 
   UserInformation? _userInformation;
   UserInformation? get userInformation => _userInformation;
-  String? _userId;
-  String? get userId => _userId;
 
   UserProvider({String? token, bool? isMember}) {
     _token = token;
@@ -44,14 +42,12 @@ class UserProvider with ChangeNotifier {
     final tokenResponse = await AwUserService().login(userId);
     if (tokenResponse != null) {
       _token = tokenResponse.token;
-      _userId = userId;
       // _userInformation = tokenResponse.userInformation;
       await fetchUserInformation();
 
       await Future.wait([
         secureStorage.delete(key: 'LOGOUT'),
         secureStorage.write(key: 'SESSION_TOKEN', value: _token),
-        secureStorage.write(key: 'USER_ID', value: _userId),
       ]);
       await reloadIsar(_userInformation?.code);
       notifyListeners();
@@ -88,7 +84,6 @@ class UserProvider with ChangeNotifier {
   Future<void> logout() async {
     _token = null;
     _isPinSet = false;
-    _userId = null;
     _userInformation = null;
     if (token != null) await AwUserService.logout(_token!, _language);
     await secureStorage.deleteAll();
@@ -128,8 +123,7 @@ class UserProvider with ChangeNotifier {
       print('Token: $_token');
     }
     _isPinSet = await secureStorage.read(key: 'PIN') != null;
-    _userId = await secureStorage.read(key: 'USER_ID');
-    if (_userId != null && _token != null) {
+    if (_token != null) {
       // fetch last updated user information
       await fetchUserInformation();
     } else {

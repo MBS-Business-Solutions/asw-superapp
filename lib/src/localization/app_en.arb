@@ -162,7 +162,7 @@
       }
     }
   },
-  "setPinSkipInstruction" :"You can skip this step.\nHowever, the system will require you to verify your identity with an OTP every time you log in",
+  "setPinSkipInstruction" :"You can skip this step.\nYou will be able to access the system without having to enter a PIN.",
   "setPinSkip": "Skip",
   "setPinError": "Please start setting a new PIN code again.",
 

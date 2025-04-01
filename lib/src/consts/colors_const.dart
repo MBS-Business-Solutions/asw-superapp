@@ -16,7 +16,8 @@ const MaterialColor mPrimaryMatColor = MaterialColor(
   },
 );
 
-const Color mDarkBackgroundColor = Color(0xFF1D1D1D);
+const Color mDarkBackgroundDimColor = Color(0xFF1D1D1D);
+const Color mDarkBackgroundColor = Color(0xFF000000);
 const Color mDarkBackgroundBottomBar = Color(0xE5262626);
 const Color mDarkBottomBarTextColor = Color(0xFFDEDEDE);
 const Color mDarkBodyTextColor = Color(0xFFFFFFFF);
@@ -27,6 +28,7 @@ const Color mDarkOutlinedButtonColor = Color(0xFFFFFFFF);
 const Color mDarkOutlinedBackgroundColor = Color(0x00000000);
 const Color mDarkOutlinedTextColor = Color(0xFFFFFFFF);
 
+const Color mLightBackgroundDimColor = Color(0xFFF9F9F9);
 const Color mLightBackgroundColor = Color(0xFFF9F9F9);
 const Color mLightBackgroundBottomBar = Color(0xF0FFFFFF);
 const Color mLightBottomBarTextColor = Color(0xFFBABABA);

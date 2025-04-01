@@ -17,6 +17,7 @@ class DownPaymentTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isPaid = paymentDetail.statusCode == 'Complete';
+    final isPartialPaid = paymentDetail.statusCode == 'Partial';
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       clipBehavior: Clip.antiAlias,
@@ -62,7 +63,7 @@ class DownPaymentTile extends StatelessWidget {
                     )
                 ],
               ),
-              if (isPaid) ...[
+              if (isPaid || isPartialPaid) ...[
                 for (final payment in paymentDetail.payments)
                   Row(
                     children: [
