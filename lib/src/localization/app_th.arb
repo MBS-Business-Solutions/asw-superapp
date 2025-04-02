@@ -391,6 +391,7 @@
   "registerBuyerInstruction": "กรุณายืนยันตัวตนของคุณด้วยเลขประจำตัวประชาชนหรือหมายเลข Passport เพื่อความปลอดภัย",
   "registerBuyerIdentifier": "เลขประจำตัวประชาชน / Passport No.",
   "registerBuyerRegister": "ลงทะเบียน",
+  "registerBuyerInvalidId": "กรุณากรอกเลขบัตรประชาชนให้ครบถ้วน 13 หลัก",
 
   "myAssetTitle": "บ้านของฉัน",
   "myAssetSum": " {count, plural, =0{} =1{1 หลัง} other{{count} หลัง}}",
