@@ -162,7 +162,7 @@
       }
     }
   },
-  "setPinSkipInstruction" :"You can skip this step.\nHowever, the system will require you to verify your identity with an OTP every time you log in",
+  "setPinSkipInstruction" :"You can skip this step.\nYou will be able to access the system without having to enter a PIN.",
   "setPinSkip": "Skip",
   "setPinError": "Please start setting a new PIN code again.",
 
@@ -391,6 +391,7 @@
   "registerBuyerInstruction": "Please verify your identity with your National ID number or Passport number for security purposes.",
   "registerBuyerIdentifier": "National ID / Passport No.",
   "registerBuyerRegister": "Register",
+  "registerBuyerInvalidId": "Please fill in your ID card number completely, 13 digits",
 
   "myAssetTitle": "My Home",
   "myAssetSum": " {count, plural, =0{} =1{1 Unit} other{{count} Unit}}",

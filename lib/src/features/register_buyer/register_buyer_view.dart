@@ -49,6 +49,7 @@ class _RegisterBuyerRequestViewState extends State<RegisterBuyerRequestView> {
                 AwTextFormField(
                   controller: _idCardController,
                   label: AppLocalizations.of(context)!.registerBuyerIdentifier,
+                  maxLength: 13,
                   validator: (value) {
                     if (value?.isEmpty ?? false) {
                       return AppLocalizations.of(context)!.errorFieldRequired;

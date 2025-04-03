@@ -1,5 +1,7 @@
+import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/features/manage_personal_info/personal_info_view.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,7 +16,7 @@ class ManagePersonalInfoView extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundDimColor, lightColor: mLightBackgroundDimColor),
         title: Text(AppLocalizations.of(context)!.managePersonalInfoTitle),
         centerTitle: true,
       ),
@@ -31,7 +33,7 @@ class ManagePersonalInfoView extends StatelessWidget {
                 final list = snapshot.data!;
                 return ListView.builder(
                   itemBuilder: (context, index) => Container(
-                    color: Theme.of(context).scaffoldBackgroundColor,
+                    color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundDimColor, lightColor: mLightBackgroundDimColor),
                     child: ListTile(
                       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PersonalInfoView(personalConsent: list[index]))),
                       title: Text(list[index].name),

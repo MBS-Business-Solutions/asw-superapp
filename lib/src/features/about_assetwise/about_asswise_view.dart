@@ -3,6 +3,7 @@ import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/about_assetwise/about_policy_view.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,7 +20,7 @@ class AboutAsswiseView extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundDimColor, lightColor: mLightBackgroundDimColor),
         title: Text(AppLocalizations.of(context)!.aboutAssetWiseTitle),
         centerTitle: true,
       ),
@@ -32,7 +33,7 @@ class AboutAsswiseView extends StatelessWidget {
                 SliverPadding(padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 50)),
                 SliverToBoxAdapter(
                   child: Container(
-                    color: Theme.of(context).scaffoldBackgroundColor,
+                    color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundDimColor, lightColor: mLightBackgroundDimColor),
                     padding: const EdgeInsets.only(bottom: mDefaultPadding * 2),
                     child: Column(
                       children: [
@@ -78,7 +79,7 @@ class AboutAsswiseView extends StatelessWidget {
                       return SliverList.builder(
                         itemBuilder: (context, index) {
                           return Container(
-                            color: Theme.of(context).scaffoldBackgroundColor,
+                            color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundDimColor, lightColor: mLightBackgroundDimColor),
                             child: ListTile(
                               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AboutPolicyView(aboutItem: list[index]))),
                               title: Text(list[index].name),
