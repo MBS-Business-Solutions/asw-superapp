@@ -7,16 +7,21 @@ class HotMenuWidget extends StatelessWidget {
   const HotMenuWidget({
     super.key,
     required this.titleText,
-    required this.iconAsset,
+    this.iconAsset,
     this.badgeCount = 0,
     this.highlight = false,
     this.onTap,
-  });
+    this.showAdd,
+  }) : assert(
+          showAdd != null || badgeCount == 0,
+          'showAdd must be null when badgeCount is greater than 0',
+        );
 
   final String titleText;
-  final String iconAsset;
+  final String? iconAsset;
   final int badgeCount;
   final bool highlight;
+  final bool? showAdd;
   final Function()? onTap;
 
   @override
@@ -58,25 +63,31 @@ class HotMenuWidget extends StatelessWidget {
                   child: Badge.count(
                     count: badgeCount,
                     isLabelVisible: badgeCount > 0,
-                    child: SvgPicture.asset(
-                      iconAsset,
-                      colorFilter: ColorFilter.mode(
-                        theme?.iconColor ?? mPrimaryMatColor,
-                        BlendMode.srcIn,
-                      ),
-                    ),
+                    child: iconAsset == null
+                        ? const SizedBox()
+                        : SvgPicture.asset(
+                            iconAsset!,
+                            colorFilter: ColorFilter.mode(
+                              theme?.iconColor ?? mPrimaryMatColor,
+                              BlendMode.srcIn,
+                            ),
+                          ),
                   ),
                 ),
               ),
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            titleText,
-            style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                  color: highlight ? mBrightPrimaryColor : (theme?.textColor ?? Colors.white),
-                ),
-          )
+          if (titleText.isNotEmpty)
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                titleText,
+                style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                      color: highlight ? mBrightPrimaryColor : (theme?.textColor ?? Colors.white),
+                    ),
+              ),
+            )
         ],
       ),
     );

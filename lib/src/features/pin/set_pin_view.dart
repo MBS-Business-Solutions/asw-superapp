@@ -129,6 +129,16 @@ class _SetPinViewState extends State<SetPinView> {
             ],
           ),
         ),
+        Positioned(
+          right: mScreenEdgeInsetValue,
+          top: MediaQuery.of(context).padding.top + 16,
+          child: IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () {
+              Navigator.pop(context, false);
+            },
+          ),
+        ),
         if (_showSkip)
           Positioned(
             bottom: 0,

@@ -1,7 +1,7 @@
-import 'package:AssetWise/plugins.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/home_action_button/home_action_button.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/main/notification_section.dart';
 import 'package:AssetWise/src/features/find_projects/map_search_view.dart';
+import 'package:AssetWise/src/features/hot_menues/hot_menues_config_view.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
@@ -10,7 +10,6 @@ import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/widgets/aw_carousel.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/suggest_assets/suggest_asset.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
 class DashboardMainView extends StatelessWidget {
@@ -63,15 +62,24 @@ class DashboardMainView extends StatelessWidget {
                 ],
               )),
         ),
-        // Notification section
+        // Notification sections
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.only(left: mScreenEdgeInsetValue, right: mScreenEdgeInsetValue, top: mMediumPadding),
-            child: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(MapSearchView.routeName);
-                },
-                icon: const Icon(Icons.home)),
+            child: Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(MapSearchView.routeName);
+                    },
+                    icon: const Icon(Icons.location_on)),
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(HotMenuesConfigView.routeName);
+                    },
+                    icon: const Icon(Icons.menu_book)),
+              ],
+            ),
           ),
         ),
         SliverToBoxAdapter(

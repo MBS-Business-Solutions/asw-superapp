@@ -2,7 +2,6 @@ import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/register/register_otp_view.dart';
 import 'package:AssetWise/src/providers/register_provider.dart';
 import 'package:AssetWise/src/services/aw_register_service.dart';
-import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:AssetWise/src/widgets/aw_textformfield.dart';
@@ -20,7 +19,6 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  bool _isResident = false;
   String? _showError;
   bool _isLoading = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -30,7 +28,7 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => CommonUtil.dismissKeyboard(context),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -75,31 +73,6 @@ class _RegisterViewState extends State<RegisterView> {
                             ),
                             const SizedBox(
                               height: 4,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                CommonUtil.dismissKeyboard(context);
-                                setState(() {
-                                  _isResident = !_isResident;
-                                });
-                              },
-                              child: Row(
-                                children: [
-                                  Checkbox(
-                                    value: _isResident,
-                                    onChanged: (value) {
-                                      CommonUtil.dismissKeyboard(context);
-                                      setState(() {
-                                        _isResident = value!;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    AppLocalizations.of(context)!.registerIsResident,
-                                    style: Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                ],
-                              ),
                             ),
                             const SizedBox(
                               height: 16,
@@ -164,24 +137,11 @@ class _RegisterViewState extends State<RegisterView> {
         label: AppLocalizations.of(context)!.registerUserNameLabel,
         validator: (value) => (value?.isEmpty ?? true) ? AppLocalizations.of(context)!.registerInvalidData : null,
       ),
-      if (_isResident) ...[
-        const SizedBox(
-          height: 24,
-        ),
-        AwTextFormField(
-          controller: _idCardController,
-          label: AppLocalizations.of(context)!.registerLast4Digits,
-          keyboardType: const TextInputType.numberWithOptions(decimal: false, signed: false),
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          validator: (value) => value?.length != 4 ? AppLocalizations.of(context)!.registerInvalidData : null,
-          maxLength: 4,
-        ),
-      ]
     ]);
   }
 
   Future<void> _processToOTPForm() async {
-    CommonUtil.dismissKeyboard(context);
+    FocusScope.of(context).unfocus();
     setState(() {
       _isLoading = true;
       _showError = null;
@@ -194,44 +154,16 @@ class _RegisterViewState extends State<RegisterView> {
         });
         return;
       }
-      final sendTo = _userNameController.text;
-      if (_isResident) {
-        // Validate customer
-        bool isValidResident = await AwRegisterService.customerCheck(
-          idCard4: _idCardController.text,
-          userName: sendTo,
-        );
-        if (!isValidResident) {
-          // Show error message
-          setState(() {
-            _showError = AppLocalizations.of(context)!.registerInvalidUser;
-          });
-        } else {
-          final ref = await context.read<RegisterProvider>().requestOTPResident(
-                idCard4: _idCardController.text,
-                userName: _userNameController.text,
-              );
-          if (ref?.status == 'success' && mounted) {
-            _registerProcess();
-          } else {
-            // Show error message
-            setState(() {
-              _showError = ref?.message ?? AppLocalizations.of(context)!.registerError;
-            });
-          }
-        }
+      final ref = await context.read<RegisterProvider>().requestOTPNonResident(
+            userName: _userNameController.text,
+          );
+      if (ref != null && ref.status == 'success' && mounted) {
+        _registerProcess();
       } else {
-        final ref = await context.read<RegisterProvider>().requestOTPNonResident(
-              userName: _userNameController.text,
-            );
-        if (ref != null && ref.status == 'success' && mounted) {
-          _registerProcess();
-        } else {
-          // Show error message
-          setState(() {
-            _showError = ref?.message ?? AppLocalizations.of(context)!.registerError;
-          });
-        }
+        // Show error message
+        setState(() {
+          _showError = ref?.message ?? AppLocalizations.of(context)!.registerError;
+        });
       }
     } finally {
       setState(() {

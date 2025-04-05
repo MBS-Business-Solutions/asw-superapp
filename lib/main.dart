@@ -4,6 +4,7 @@ import 'package:AssetWise/plugins.dart';
 import 'package:AssetWise/src/models/aw_notification_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
+import 'package:AssetWise/src/providers/hot_menu_provider.dart';
 import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:AssetWise/src/providers/register_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
@@ -73,7 +74,8 @@ void main() async {
     ProxyProvider<UserProvider, VerifyOtpProvider>(
       create: (context) => VerifyOtpProvider(),
       update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
-    )
+    ),
+    ChangeNotifierProvider(create: (context) => HotMenuProvider()),
   ], child: MyApp(settingsController: settingsController)));
 }
 

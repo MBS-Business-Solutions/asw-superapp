@@ -50,6 +50,7 @@ class _RegisterBuyerRequestViewState extends State<RegisterBuyerRequestView> {
                 AwTextFormField(
                   controller: _idCardController,
                   label: AppLocalizations.of(context)!.registerBuyerIdentifier,
+                  maxLength: 13,
                   validator: (value) {
                     if (value?.isEmpty ?? false) {
                       return AppLocalizations.of(context)!.errorFieldRequired;
@@ -75,8 +76,8 @@ class _RegisterBuyerRequestViewState extends State<RegisterBuyerRequestView> {
     if (_formKey.currentState!.validate()) {
       // request OTP
       final otpRef = await context.read<VerifyOtpProvider>().requestOTP(sendTo: _idCardController.text, action: OTPFor.validateUser);
-      if (otpRef == null && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.errorUnableToProcess)));
+      if (otpRef?.success != 'success' && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(otpRef?.message ?? AppLocalizations.of(context)!.errorUnableToProcess)));
         return;
       }
       final otpResult = await Navigator.push(

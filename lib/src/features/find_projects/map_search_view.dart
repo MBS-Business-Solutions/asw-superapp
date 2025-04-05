@@ -110,14 +110,6 @@ class _MapSearchViewState extends State<MapSearchView> {
         body: Stack(
           children: [
             _buildGoogleMap(),
-            Positioned.fill(
-                child: IgnorePointer(
-              child: Image.asset(
-                'assets/images/Background.png',
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.topCenter,
-              ),
-            )),
             Align(
               alignment: Alignment.topCenter,
               child: _buildAppBar(),
@@ -170,7 +162,7 @@ class _MapSearchViewState extends State<MapSearchView> {
               ],
             ),
             const SizedBox(
-              height: mDefaultPadding,
+              height: mSmallPadding,
             ),
             Row(
               children: [

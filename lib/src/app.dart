@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/consts/colors_const.dart';
-import 'package:AssetWise/src/0_test/ui_showcase_screen.dart';
 import 'package:AssetWise/src/consts/themes_dark_const.dart';
 import 'package:AssetWise/src/consts/themes_light_const.dart';
 import 'package:AssetWise/src/features/about_assetwise/about_asswise_view.dart';
@@ -13,6 +12,7 @@ import 'package:AssetWise/src/features/contract/receipt_view.dart';
 import 'package:AssetWise/src/features/contract/receipt_view_file.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/change_languange_view.dart';
 import 'package:AssetWise/src/features/find_projects/map_search_view.dart';
+import 'package:AssetWise/src/features/hot_menues/hot_menues_config_view.dart';
 import 'package:AssetWise/src/features/manage_personal_info/manage_personal_info_view.dart';
 import 'package:AssetWise/src/features/my_assets/my_assets_view.dart';
 import 'package:AssetWise/src/features/notifications/notifications_view.dart';
@@ -239,6 +239,8 @@ class _MyAppState extends State<MyApp> {
                     return const ManagePersonalInfoView();
                   case MapSearchView.routeName:
                     return const MapSearchView();
+                  case HotMenuesConfigView.routeName:
+                    return const HotMenuesConfigView();
                   default:
                     // return DashboardView(controller: settingsController);
                     return const SplashView();
