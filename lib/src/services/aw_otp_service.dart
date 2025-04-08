@@ -69,12 +69,10 @@ class AwOtpService {
       headers: getPostHeader(token: token),
       body: jsonEncode(body),
     );
-    if (response.statusCode >= 200 && response.statusCode < 300) {
+    if (response.statusCode >= 200 && response.statusCode < 500) {
       try {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == 'success') {
-          return OTPRef.fromJson(jsonResponse);
-        }
+        return OTPRef.fromJson(jsonResponse);
       } catch (e) {
         if (kDebugMode) print(e);
       }
