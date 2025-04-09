@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/constants.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
@@ -6,6 +8,7 @@ import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/hot_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:reorderables/reorderables.dart';
 
 class HotMenuesConfigView extends StatefulWidget {
   const HotMenuesConfigView({super.key});
@@ -105,53 +108,81 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
       ),
       Consumer<HotMenuProvider>(builder: (context, provider, child) {
         final selectedMenues = provider.selectedHotMenu;
-        return SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue - 16),
-          sliver: SliverGrid(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: mHotMenuRow,
-            ),
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                if (index >= selectedMenues.length) {
-                  return const HotMenuWidget(
-                    titleText: '',
-                  );
-                }
-                final menu = selectedMenues[index];
-                return Center(
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      HotMenuWidget(
-                        titleText: menu.titleTextTh,
-                        iconAsset: menu.iconAsset,
-                        onTap: !isEditing
-                            ? null
-                            : () {
-                                provider.removeHotMenu(menu.id).catchError((error) {});
-                              },
-                        showAdd: isEditing,
-                        badgeCount: 0,
-                      ),
-                      if (isEditing)
-                        Positioned(
-                          top: -4,
-                          right: -4,
-                          child: Container(
-                            width: 16,
-                            height: 16,
-                            padding: const EdgeInsets.all(1),
-                            decoration: const BoxDecoration(shape: BoxShape.circle, color: mDeleteRedColor),
-                            child: const FittedBox(fit: BoxFit.contain, child: Icon(Icons.remove)),
-                          ),
-                        )
-                    ],
+        return SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: mMediumPadding),
+            child: LayoutBuilder(builder: (context, constraint) {
+              final itemWidth = constraint.maxWidth / mHotMenuRow;
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: selectedMenues.length,
+                    child: ReorderableWrap(
+                      enableReorder: isEditing,
+                      children: selectedMenues.map(
+                        (e) {
+                          return SizedBox(
+                            width: itemWidth,
+                            child: Center(
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  HotMenuWidget(
+                                    titleText: e.titleTextTh,
+                                    iconAsset: e.iconAsset,
+                                    onTap: !isEditing
+                                        ? null
+                                        : () {
+                                            provider.removeHotMenu(e.id).catchError((error) {});
+                                          },
+                                    showAdd: isEditing,
+                                    badgeCount: 0,
+                                  ),
+                                  if (isEditing)
+                                    Positioned(
+                                      top: -4,
+                                      right: -4,
+                                      child: IgnorePointer(
+                                        child: Container(
+                                          width: 16,
+                                          height: 16,
+                                          padding: const EdgeInsets.all(1),
+                                          decoration: const BoxDecoration(shape: BoxShape.circle, color: mDeleteRedColor),
+                                          child: const FittedBox(fit: BoxFit.contain, child: Icon(Icons.remove)),
+                                        ),
+                                      ),
+                                    )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ).toList(),
+                      onReorder: (oldIndex, newIndex) {
+                        provider.reorder(oldIndex, newIndex);
+                      },
+                    ),
                   ),
-                );
-              },
-              childCount: mHotMenuRow,
-            ),
+                  Expanded(
+                    flex: mHotMenuRow - selectedMenues.length,
+                    child: ReorderableWrap(
+                      enableReorder: false,
+                      onReorder: (oldIndex, newIndex) {},
+                      children: [
+                        for (var i = 0; i < mHotMenuRow - selectedMenues.length; i++)
+                          SizedBox(
+                            width: itemWidth,
+                            child: HotMenuWidget(
+                              titleText: '',
+                            ),
+                          ),
+                      ],
+                    ),
+                  )
+                ],
+              );
+            }),
           ),
         );
       })
@@ -184,46 +215,58 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
         padding: EdgeInsets.symmetric(vertical: mMediumPadding),
       ),
       Consumer<HotMenuProvider>(builder: (context, provider, child) {
-        return SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue - 16),
-          sliver: SliverGrid.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: mHotMenuRow),
-            itemBuilder: (context, index) {
-              final menu = provider.availableHotMenu[index];
-              return Center(
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    HotMenuWidget(
-                      titleText: menu.titleTextTh,
-                      iconAsset: menu.iconAsset,
-                      onTap: !isEditing
-                          ? null
-                          : () {
-                              if (provider.canAddMenu) {
-                                provider.addHotMenu(menu.id).catchError((error) {});
-                              }
-                            },
-                      showAdd: isEditing,
-                      badgeCount: 0,
-                    ),
-                    if (isEditing)
-                      Positioned(
-                        top: -4,
-                        right: -4,
-                        child: Container(
-                          width: 16,
-                          height: 16,
-                          padding: const EdgeInsets.all(1),
-                          decoration: const BoxDecoration(shape: BoxShape.circle, color: mAddGreenColor),
-                          child: const FittedBox(fit: BoxFit.contain, child: Icon(Icons.add)),
+        return SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: mMediumPadding),
+            child: LayoutBuilder(builder: (context, constraint) {
+              final itemWidth = constraint.maxWidth / mHotMenuRow;
+              return ReorderableWrap(
+                enableReorder: false,
+                alignment: WrapAlignment.start,
+                children: provider.availableHotMenu.map(
+                  (menu) {
+                    return SizedBox(
+                      width: itemWidth,
+                      child: Center(
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            HotMenuWidget(
+                              titleText: menu.titleTextTh,
+                              iconAsset: menu.iconAsset,
+                              onTap: !isEditing
+                                  ? null
+                                  : () {
+                                      if (provider.canAddMenu) {
+                                        provider.addHotMenu(menu.id).catchError((error) {});
+                                      }
+                                    },
+                              showAdd: isEditing,
+                              badgeCount: 0,
+                            ),
+                            if (isEditing && provider.canAddMenu)
+                              Positioned(
+                                top: -4,
+                                right: -4,
+                                child: IgnorePointer(
+                                  child: Container(
+                                    width: 16,
+                                    height: 16,
+                                    padding: const EdgeInsets.all(1),
+                                    decoration: const BoxDecoration(shape: BoxShape.circle, color: mAddGreenColor),
+                                    child: const FittedBox(fit: BoxFit.contain, child: Icon(Icons.add)),
+                                  ),
+                                ),
+                              )
+                          ],
                         ),
-                      )
-                  ],
-                ),
+                      ),
+                    );
+                  },
+                ).toList(),
+                onReorder: (oldIndex, newIndex) {},
               );
-            },
-            itemCount: provider.availableHotMenu.length,
+            }),
           ),
         );
       })

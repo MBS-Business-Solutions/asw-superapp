@@ -62,4 +62,13 @@ class HotMenuProvider with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setStringList('selectedHotMenu', _selectedHotMenu.map((item) => item.id).toList());
   }
+
+  Future<void> reorder(int oldIndex, int newIndex) async {
+    newIndex--;
+
+    final item = _selectedHotMenu.removeAt(oldIndex);
+    _selectedHotMenu.insert(newIndex + 1, item);
+    await _saveConfig();
+    notifyListeners();
+  }
 }

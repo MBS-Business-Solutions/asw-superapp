@@ -38,6 +38,7 @@ dependencies:
   path_provider: ^2.1.5
   provider: ^6.1.2
   qr_flutter: ^4.1.0
+  reorderables: ^0.6.0
   share_plus: ^10.1.4
   shared_preferences: ^2.3.5
   webview_flutter: ^4.10.0
