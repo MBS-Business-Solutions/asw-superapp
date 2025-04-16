@@ -1,7 +1,7 @@
+import 'package:AssetWise/src/features/hot_menues/fav_hot_menues/fav_hot_menues.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/home_action_button/home_action_button.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/main/notification_section.dart';
 import 'package:AssetWise/src/features/find_projects/map_search_view.dart';
-import 'package:AssetWise/src/features/hot_menues/hot_menues_config_view.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
@@ -73,11 +73,6 @@ class DashboardMainView extends StatelessWidget {
                       Navigator.of(context).pushNamed(MapSearchView.routeName);
                     },
                     icon: const Icon(Icons.location_on)),
-                IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(HotMenuesConfigView.routeName);
-                    },
-                    icon: const Icon(Icons.menu_book)),
               ],
             ),
           ),
@@ -91,6 +86,12 @@ class DashboardMainView extends StatelessWidget {
                 child: DashboardNotificationSection(),
               );
             },
+          ),
+        ),
+        const SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.only(left: mScreenEdgeInsetValue, right: mScreenEdgeInsetValue, bottom: 24),
+            child: FavHotMenues(),
           ),
         ),
         SliverToBoxAdapter(

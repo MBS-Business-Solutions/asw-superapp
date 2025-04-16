@@ -436,5 +436,15 @@
   "unableToPayHeading": "Payment is not available at this time.",
   "unableToPayBack": "Return to contract page",
 
-  "mapTitle": "แผนที่"
+  "mapTitle": "แผนที่",
+
+  "projectsTitle": "โครงการ",
+  "projectsSearchHint": "ค้นหาชื่อโครงการ",
+  "projectsSeeOnMap": "ดูแผนที่",
+  "projectsFilterTitle": "ตัวกรอง",
+  "projectsBrands": "แบรนด์",
+  "projectsLocations": "ทำเล",
+  "projectsClearFilter": "ล้างตัวกรอง",
+  "projectsFilter": "กรอง",
+  "projectsSearch": "ค้นหา"
 }

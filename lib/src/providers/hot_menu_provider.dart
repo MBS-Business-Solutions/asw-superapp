@@ -10,7 +10,7 @@ class HotMenuProvider with ChangeNotifier {
   List<HotMenuItem> get selectedHotMenu => _selectedHotMenu;
   List<HotMenuItem> _availableHotMenu = [];
   List<HotMenuItem> get availableHotMenu => _availableHotMenu;
-  bool get canAddMenu => _selectedHotMenu.length < mHotMenuRow - 1;
+  bool get canAddMenu => _selectedHotMenu.length < mHotMenuRow;
 
   HotMenuProvider() {
     init();
@@ -42,7 +42,7 @@ class HotMenuProvider with ChangeNotifier {
   }
 
   Future<void> addHotMenu(String id) async {
-    if (_selectedHotMenu.length >= mHotMenuRow - 1) {
+    if (_selectedHotMenu.length >= mHotMenuRow) {
       throw Exception('Maximum of mHotMenuRow hot menus can be selected.');
     }
     _selectedHotMenu.add(_allHotMenu[id]!);

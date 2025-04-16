@@ -12,10 +12,7 @@ class HotMenuWidget extends StatelessWidget {
     this.highlight = false,
     this.onTap,
     this.showAdd,
-  }) : assert(
-          showAdd != null || badgeCount == 0,
-          'showAdd must be null when badgeCount is greater than 0',
-        );
+  });
 
   final String titleText;
   final String? iconAsset;

@@ -21,6 +21,7 @@ import 'package:AssetWise/src/features/payments/qr_view.dart';
 import 'package:AssetWise/src/features/pin/pin_entry_view.dart';
 import 'package:AssetWise/src/features/pin/set_pin_view.dart';
 import 'package:AssetWise/src/features/profile/profile_view.dart';
+import 'package:AssetWise/src/features/projects/projects_view.dart';
 import 'package:AssetWise/src/features/register/consents_view.dart';
 import 'package:AssetWise/src/features/register/register_view.dart';
 import 'package:AssetWise/src/features/register/user_detail_view.dart';
@@ -241,6 +242,8 @@ class _MyAppState extends State<MyApp> {
                     return const MapSearchView();
                   case HotMenuesConfigView.routeName:
                     return const HotMenuesConfigView();
+                  case ProjectsView.routeName:
+                    return const ProjectsView();
                   default:
                     // return DashboardView(controller: settingsController);
                     return const SplashView();

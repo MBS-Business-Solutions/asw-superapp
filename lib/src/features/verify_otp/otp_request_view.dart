@@ -239,7 +239,7 @@ class _OTPRequestViewState extends State<OTPRequestView> {
   }
 
   Future<void> _processToOTPForm(BuildContext ctx) async {
-    FocusScope.of(ctx).unfocus();
+    CommonUtil.dismissKeyboard(context);
     setState(() {
       _isLoading = true;
       _showError = null;

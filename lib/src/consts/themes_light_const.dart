@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 final ThemeData mLightTheme = ThemeData(
   brightness: Brightness.light,
+  appBarTheme: AppBarTheme(titleTextStyle: mTextTheme.titleSmall),
   actionIconTheme: ActionIconThemeData(
     backButtonIconBuilder: (context) => const Icon(
       Icons.arrow_back_ios,

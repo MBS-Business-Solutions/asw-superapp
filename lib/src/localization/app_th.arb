@@ -435,5 +435,15 @@
   "unableToPayHeading": "ไม่สามารถชำระเงินได้ในขณะนี้",
   "unableToPayBack": "กลับไปหน้าสัญญา",
 
-  "mapTitle": "แผนที่"
+  "mapTitle": "แผนที่",
+
+  "projectsTitle": "โครงการ",
+  "projectsSearchHint": "ค้นหาชื่อโครงการ",
+  "projectsSeeOnMap": "ดูแผนที่",
+  "projectsFilterTitle": "ตัวกรอง",
+  "projectsBrands": "แบรนด์",
+  "projectsLocations": "ทำเล",
+  "projectsClearFilter": "ล้างตัวกรอง",
+  "projectsFilter": "กรอง",
+  "projectsSearch": "ค้นหา"
 }
