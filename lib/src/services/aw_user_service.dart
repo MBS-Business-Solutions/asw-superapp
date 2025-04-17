@@ -1,4 +1,5 @@
 import 'package:AssetWise/src/consts/url_const.dart';
+import 'package:AssetWise/src/models/aw_common_model.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/services/aw_header_util.dart';
 import 'package:flutter/foundation.dart';
@@ -329,5 +330,25 @@ class AwUserService {
     }
     if (kDebugMode) print(response);
     return false;
+  }
+
+  static Future<MyQRResponse?> fetchMyQR(String userToken) async {
+    final response = await http
+        .get(
+          Uri.parse('$BASE_URL/mobile/my-qr'),
+          headers: getHeader(token: userToken),
+        )
+        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+
+    if (response.statusCode >= 200 && response.statusCode < 500) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        return MyQRResponse.fromJson(jsonResponse);
+      } catch (e) {
+        if (kDebugMode) print(e);
+        return null;
+      }
+    }
+    if (kDebugMode) print(response);
   }
 }

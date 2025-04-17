@@ -90,7 +90,7 @@ class DashboardMainView extends StatelessWidget {
         ),
         const SliverToBoxAdapter(
           child: Padding(
-            padding: EdgeInsets.only(left: mScreenEdgeInsetValue, right: mScreenEdgeInsetValue, bottom: 24),
+            padding: EdgeInsets.all(mScreenEdgeInsetValue),
             child: FavHotMenues(),
           ),
         ),

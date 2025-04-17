@@ -24,54 +24,7 @@ class _ProjectsViewState extends State<ProjectsView> {
           const AssetWiseBG(),
           Scaffold(
             key: _scaffoldKey,
-            endDrawer: Drawer(
-              child: SafeArea(
-                child: Column(
-                  children: [
-                    Expanded(child: Text('xx')),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: mDefaultPadding,
-                        ),
-                        Expanded(
-                          child: FilledButton(
-                            onPressed: () {},
-                            child: Text(
-                              AppLocalizations.of(context)!.projectsClearFilter,
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  fontWeight: FontWeight.normal,
-                                  color: CommonUtil.colorTheme(
-                                    context,
-                                    darkColor: Colors.white,
-                                    lightColor: mPrimaryMatColor,
-                                  )),
-                            ),
-                            style: FilledButton.styleFrom(
-                              backgroundColor: CommonUtil.colorTheme(context, darkColor: mGreyBackgroundColor, lightColor: mLightCardBackgroundColor),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: mDefaultPadding,
-                        ),
-                        Expanded(
-                          child: FilledButton(
-                              onPressed: () {},
-                              child: Text(
-                                AppLocalizations.of(context)!.projectsSearch,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.normal),
-                              )),
-                        ),
-                        SizedBox(
-                          width: mDefaultPadding,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
+            endDrawer: _buildEndDrawer(context),
             backgroundColor: Colors.transparent,
             appBar: AppBar(
               title: Text(AppLocalizations.of(context)!.projectsTitle),
@@ -117,6 +70,57 @@ class _ProjectsViewState extends State<ProjectsView> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Drawer _buildEndDrawer(BuildContext context) {
+    return Drawer(
+      child: SafeArea(
+        child: Column(
+          children: [
+            Expanded(child: Text('xx')),
+            Row(
+              children: [
+                SizedBox(
+                  width: mDefaultPadding,
+                ),
+                Expanded(
+                  child: FilledButton(
+                    onPressed: () {},
+                    child: Text(
+                      AppLocalizations.of(context)!.projectsClearFilter,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.normal,
+                          color: CommonUtil.colorTheme(
+                            context,
+                            darkColor: Colors.white,
+                            lightColor: mPrimaryMatColor,
+                          )),
+                    ),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: CommonUtil.colorTheme(context, darkColor: mGreyBackgroundColor, lightColor: mLightCardBackgroundColor),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: mDefaultPadding,
+                ),
+                Expanded(
+                  child: FilledButton(
+                      onPressed: () {},
+                      child: Text(
+                        AppLocalizations.of(context)!.projectsSearch,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.normal),
+                      )),
+                ),
+                SizedBox(
+                  width: mDefaultPadding,
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

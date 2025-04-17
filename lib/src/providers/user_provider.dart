@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:AssetWise/main.dart';
+import 'package:AssetWise/src/models/aw_common_model.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/services/aw_user_service.dart';
 import 'package:flutter/foundation.dart';
@@ -202,5 +203,10 @@ class UserProvider with ChangeNotifier {
   Future<AboutItemDetail?> fetchAboutItemDetail(String consentId) async {
     if (token == null) return null;
     return await AwUserService.fetchAboutItemDetail(_token!, consentId, language: userInformation?.language);
+  }
+
+  Future<MyQRResponse?> fetchMyQR() async {
+    if (token == null) return null;
+    return await AwUserService.fetchMyQR(_token!);
   }
 }

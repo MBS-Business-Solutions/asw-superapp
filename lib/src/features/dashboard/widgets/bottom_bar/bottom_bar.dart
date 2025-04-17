@@ -159,7 +159,7 @@ class _BottomBarState extends State<BottomBar> {
                         ),
                         Text(
                           AppLocalizations.of(context)!.bottomBarChat,
-                          style: Theme.of(context).textTheme.bodySmall!.copyWith(color: mPrimaryMatColor),
+                          style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.chat ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
                         ),
                       ],
                     ),
@@ -170,22 +170,22 @@ class _BottomBarState extends State<BottomBar> {
                 flex: widget.normalFlex,
                 child: InkWell(
                   onTap: () {
-                    if (_currentTab == BottomTab.menu) return;
+                    if (_currentTab == BottomTab.privilege) return;
 
                     setState(() {
-                      _currentTab = BottomTab.menu;
-                      widget.onTabChanged?.call(BottomTab.menu);
+                      _currentTab = BottomTab.privilege;
+                      widget.onTabChanged?.call(BottomTab.privilege);
                     });
                   },
                   child: Column(
                     children: [
                       Icon(
-                        Icons.info_outline,
-                        color: _currentTab == BottomTab.menu ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor,
+                        Icons.local_activity_outlined,
+                        color: _currentTab == BottomTab.privilege ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor,
                       ),
                       Text(
-                        AppLocalizations.of(context)!.bottomBarMenu,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.menu ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
+                        AppLocalizations.of(context)!.bottomPrivilege,
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.privilege ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
                       ),
                     ],
                   ),
@@ -195,22 +195,18 @@ class _BottomBarState extends State<BottomBar> {
                 flex: widget.normalFlex,
                 child: InkWell(
                   onTap: () {
-                    if (_currentTab == BottomTab.calendar) return;
-
-                    setState(() {
-                      _currentTab = BottomTab.calendar;
-                      widget.onTabChanged?.call(BottomTab.calendar);
-                    });
+                    // ไม่ต้อง Set สถานะ _currentTab เพราะว่า My QR เปิดเป็นหน้าต่างใหม่
+                    widget.onTabChanged?.call(BottomTab.myqr);
                   },
                   child: Column(
                     children: [
                       Icon(
-                        Icons.calendar_month_sharp,
-                        color: _currentTab == BottomTab.calendar ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor,
+                        Icons.qr_code_2,
+                        color: _currentTab == BottomTab.myqr ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor,
                       ),
                       Text(
-                        AppLocalizations.of(context)!.bottomBarCalendar,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.calendar ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
+                        AppLocalizations.of(context)!.bottomMyQR,
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.myqr ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
                       ),
                     ],
                   ),
@@ -228,6 +224,6 @@ enum BottomTab {
   home,
   service,
   chat,
-  menu,
-  calendar,
+  privilege,
+  myqr,
 }

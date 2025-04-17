@@ -1,6 +1,7 @@
 import 'package:AssetWise/src/features/dashboard/widgets/campaign/campaign_pop.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/bottom_bar/bottom_bar.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/main/dashboard_main_view.dart';
+import 'package:AssetWise/src/features/my_qr/my_qr_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
@@ -63,17 +64,22 @@ class _DashboardViewState extends State<DashboardView> {
                     normalFlex: 4,
                     expandedFlex: 5,
                     onTabChanged: (tab) {
-                      setState(() {
-                        _currentTab = tab;
-                      });
+                      if (tab == BottomTab.myqr) {
+                        // Check if the user is authenticated before navigating to My QR page
+                        Navigator.pushNamed(context, MyQrView.routeName);
+                      } else {
+                        setState(() {
+                          _currentTab = tab;
+                        });
+                      }
                       switch (tab) {
                         case BottomTab.home:
                           break;
                         case BottomTab.service:
                           break;
-                        case BottomTab.menu:
+                        case BottomTab.privilege:
                           break;
-                        case BottomTab.calendar:
+                        case BottomTab.myqr:
                           break;
                         case BottomTab.chat:
                           break;

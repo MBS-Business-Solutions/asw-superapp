@@ -278,3 +278,69 @@ class AboutItemDetail {
     );
   }
 }
+
+class PromotionBanner {
+  int id;
+  String image;
+
+  PromotionBanner({required this.id, required this.image});
+
+  factory PromotionBanner.fromJson(Map<String, dynamic> json) {
+    return PromotionBanner(
+      id: json['id'],
+      image: json['image'],
+    );
+  }
+}
+
+class PromotionItem {
+  final int id;
+  final String image;
+  final String title;
+  final String description;
+
+  PromotionItem({
+    required this.id,
+    required this.image,
+    required this.title,
+    required this.description,
+  });
+
+  factory PromotionItem.fromJson(Map<String, dynamic> json) {
+    return PromotionItem(
+      id: json['id'],
+      image: json['image'],
+      title: json['title'],
+      description: json['description'],
+    );
+  }
+}
+
+class PromotionItemDetail {
+  final int id;
+  final String name;
+  final DateTime date;
+  final String image;
+  final String content;
+  final String url;
+
+  PromotionItemDetail({
+    required this.id,
+    required this.name,
+    required this.date,
+    required this.image,
+    required this.content,
+    required this.url,
+  });
+
+  factory PromotionItemDetail.fromJson(Map<String, dynamic> json) {
+    return PromotionItemDetail(
+      id: json['id'],
+      name: json['name'],
+      date: DateTime.parse(json['date']),
+      image: json['image'],
+      content: json['content'],
+      url: json['url'],
+    );
+  }
+}

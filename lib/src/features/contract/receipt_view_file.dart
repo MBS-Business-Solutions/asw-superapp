@@ -86,10 +86,15 @@ class _ReceiptViewFileState extends State<ReceiptViewFile> {
     });
     // ดาวน์โหลดไฟล์ PDF
     final filePath = await context.read<ContractProvider>().downloadReceipt(widget.contractNumber, widget.receiptNumber, widget.receiptNumber);
+
+    final box = context.findRenderObject() as RenderBox?;
     if (filePath != null) {
       // เปิดไฟล์ PDF และให้ผู้ใช้เลือกแอป
 
-      await Share.shareXFiles([XFile(filePath)]);
+      await Share.shareXFiles(
+        [XFile(filePath)],
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+      );
       //await OpenFile.open(filePath);
     } else {
       // แจ้งเตือนเมื่อไม่สามารถดาวน์โหลดไฟล์ได้

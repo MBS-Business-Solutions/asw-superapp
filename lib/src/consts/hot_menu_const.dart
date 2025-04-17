@@ -9,7 +9,7 @@ const mHotMenuConfig = {
     'titleText_en': 'Promotion',
     'titleText_th': 'โปรโมชั่น',
     'iconAsset': 'assets/icons/Campaign.svg',
-    'link': '/notifications-and-news',
+    'link': '/promotions',
   },
   'favorite': {
     'titleText_en': 'Favorite',

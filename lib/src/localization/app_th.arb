@@ -77,6 +77,8 @@
   "bottomBarChat": "แชท",
   "bottomBarMenu": "เมนู",
   "bottomBarCalendar": "ปฏิทิน",
+  "bottomPrivilege": "สิทธิพิเศษ",
+  "bottomMyQR": "QR ของฉัน",
 
   "registerUserName": "กรอกเบอร์มือถือหรือ E-mail",
   "registerUserNameHint": "ระบุเบอร์มือถือหรือ E-mail ของท่าน เพื่อทำการสมัครสมาชิก",
@@ -445,5 +447,26 @@
   "projectsLocations": "ทำเล",
   "projectsClearFilter": "ล้างตัวกรอง",
   "projectsFilter": "กรอง",
-  "projectsSearch": "ค้นหา"
+  "projectsSearch": "ค้นหา",
+
+  "myQRTitle": "QR ของฉัน",
+  "myQRDescription": "QR สำหรับใช้ยืนยันตัวตนรับสิทธิต่าง ๆ",
+  "myQRRefCode": "รหัสอ้างอิง : {refCode}",
+  "myQRScanQR": "สแกน QR",
+  "myQRShare": "แชร์",
+  "myQRSave": "บันทึก",
+  "myQRSaveCompleted": "บันทึกสำเร็จ",
+
+  "promotionsTitle": "โปรโมชั่น",
+  "promotionsSearchHint": "ค้นหาโปรโมชั่น",
+  "promotionsInterest": "สนใจโปรโมชั่นนี้",
+  "promotionsNameField": "ชื่อ",
+  "promotionsLastNameField": "นามสกุล",
+  "promotionsPhoneField": "เบอร์โทร",  
+  "promotionsEmailField": "อีเมล",
+  "promotionsPriceRange": "ช่วงราคาที่สนใจ",
+  "promotionsPurpose": "วัตถุประสงค์การซื้อ",
+  "promotionsRegister": "ลงทะเบียน",
+  "promotionsRegisterSuccess": "ส่งข้อมูลสำเร็จ",
+  "promotionsBackToPromotions": "กลับสู่หน้าโปรโมชั่น"
 }
