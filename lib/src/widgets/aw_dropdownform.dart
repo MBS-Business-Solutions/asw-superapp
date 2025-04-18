@@ -17,7 +17,7 @@ class AwDropdownform<T> extends StatefulWidget {
   });
   final String? label;
   final bool isEditable;
-  final String? initialValue;
+  final T? initialValue;
   final String? Function(dynamic value)? validator;
   final T Function(BuildContext context, int index) itemBuilder;
   final Widget Function(BuildContext context, int index) titleBuilder;
@@ -55,7 +55,11 @@ class _AwDropdownformState<T> extends State<AwDropdownform> {
         decoration: BoxDecoration(
           color: Theme.of(context).brightness == Brightness.dark ? mDarkBackgroundTextField : mLightBackgroundTextField,
           borderRadius: BorderRadius.circular(8),
-          border: _isError ? Border.all(color: mRedColor) : null,
+          border: _isError
+              ? Border.all(color: mRedColor)
+              : Theme.of(context).brightness == Brightness.dark
+                  ? null
+                  : Border.all(color: mLightBorderTextFieldColor),
         ),
         child: Stack(
           children: [
@@ -70,6 +74,7 @@ class _AwDropdownformState<T> extends State<AwDropdownform> {
                 errorStyle: Theme.of(context).textTheme.bodySmall!.copyWith(color: mRedColor),
               ),
               icon: const Icon(Icons.keyboard_arrow_down),
+              value: widget.initialValue,
               style: Theme.of(context).textTheme.labelMedium,
               items: _buildItems(),
               onChanged: (T? newValue) => widget.onChanged?.call(newValue),

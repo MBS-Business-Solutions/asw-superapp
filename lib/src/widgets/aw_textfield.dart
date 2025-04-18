@@ -26,7 +26,11 @@ class AwTextField extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.dark ? mDarkBackgroundTextField : mLightBackgroundTextField,
         borderRadius: BorderRadius.circular(8),
-        border: isError ? Border.all(color: mRedColor) : null,
+        border: isError
+            ? Border.all(color: mRedColor)
+            : Theme.of(context).brightness == Brightness.dark
+                ? null
+                : Border.all(color: mLightBorderTextFieldColor),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

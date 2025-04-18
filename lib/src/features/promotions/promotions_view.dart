@@ -67,6 +67,7 @@ class _PromotionsViewState extends State<PromotionsView> {
                 padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
                 child: Column(
                   children: [
+                    const SizedBox(height: mDefaultPadding),
                     Container(
                       decoration: BoxDecoration(
                         color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightBackgroundColor),

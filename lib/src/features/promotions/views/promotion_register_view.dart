@@ -1,15 +1,67 @@
-import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/promotions/views/promotion_register_done.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
+import 'package:AssetWise/src/providers/promotion_provider.dart';
+import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
+import 'package:AssetWise/src/widgets/aw_dropdownform.dart';
 import 'package:AssetWise/src/widgets/aw_textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
-class PromotionRegisterView extends StatelessWidget {
+class PromotionRegisterView extends StatefulWidget {
   const PromotionRegisterView({super.key, required this.promotionItemDetail});
   final PromotionItemDetail promotionItemDetail;
+
+  @override
+  State<PromotionRegisterView> createState() => _PromotionRegisterViewState();
+}
+
+class _PromotionRegisterViewState extends State<PromotionRegisterView> {
+  final _nameTextController = TextEditingController();
+  final _lastNameTextController = TextEditingController();
+  final _phoneTextController = TextEditingController();
+  final _emailTextController = TextEditingController();
+  final _priceRangeKeyValues = <KeyValue>[];
+  int? _selectedPriceRangeKeyValue;
+  final _purposeKeyValues = <KeyValue>[];
+  int? _selectedPurposeKeyValue;
+
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initForm();
+    });
+    super.initState();
+  }
+
+  Future<void> _initForm() async {
+    final userProvider = context.read<UserProvider>();
+    if (userProvider.isAuthenticated) {
+      _nameTextController.text = userProvider.userInformation?.firstName ?? '';
+      _lastNameTextController.text = userProvider.userInformation?.lastName ?? '';
+      _phoneTextController.text = userProvider.userInformation?.phone ?? '';
+      _emailTextController.text = userProvider.userInformation?.email ?? '';
+    }
+
+    final promotionProvider = context.read<PromotionProvider>();
+    await promotionProvider.fetchPromotionPriceRanges().then((value) {
+      if (value.status == 'success') {
+        _priceRangeKeyValues.addAll(value.data ?? []);
+        _selectedPriceRangeKeyValue = _priceRangeKeyValues.first.id;
+      }
+    });
+    await promotionProvider.fetchPurposes().then((value) {
+      if (value.status == 'success') {
+        _purposeKeyValues.addAll(value.data ?? []);
+        _selectedPurposeKeyValue = _purposeKeyValues.first.id;
+      }
+    });
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,75 +75,98 @@ class PromotionRegisterView extends StatelessWidget {
               Navigator.of(context).pop();
             },
           ),
-          title: Text(promotionItemDetail.name),
+          title: Text(widget.promotionItemDetail.name),
           centerTitle: true,
           backgroundColor: Colors.transparent,
         ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(left: mScreenEdgeInsetValue, right: mScreenEdgeInsetValue, top: mScreenEdgeInsetValue),
-            child: Column(
-              children: [
-                AwTextFormField(
-                  label: AppLocalizations.of(context)!.promotionsNameField,
-                ),
-                const SizedBox(height: mScreenEdgeInsetValue),
-                AwTextFormField(
-                  label: AppLocalizations.of(context)!.promotionsLastNameField,
-                ),
-                const SizedBox(height: mScreenEdgeInsetValue),
-                AwTextFormField(
-                  label: AppLocalizations.of(context)!.promotionsPhoneField,
-                ),
-                const SizedBox(height: mScreenEdgeInsetValue),
-                AwTextFormField(
-                  label: AppLocalizations.of(context)!.promotionsEmailField,
-                ),
-                const SizedBox(height: mScreenEdgeInsetValue),
-                Container(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).brightness == Brightness.dark ? mDarkBackgroundTextField : mLightBackgroundTextField,
-                    borderRadius: BorderRadius.circular(8),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  // Name
+                  AwTextFormField(
+                    controller: _nameTextController,
+                    label: AppLocalizations.of(context)!.promotionsNameField,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return AppLocalizations.of(context)!.errorFieldRequired;
+                      }
+                      return null;
+                    },
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.promotionsPriceRange,
-                        style: Theme.of(context).textTheme.labelMedium,
-                      ),
-                    ],
+                  const SizedBox(height: mScreenEdgeInsetValue),
+                  // Last Name
+                  AwTextFormField(
+                    controller: _lastNameTextController,
+                    label: AppLocalizations.of(context)!.promotionsLastNameField,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return AppLocalizations.of(context)!.errorFieldRequired;
+                      }
+                      return null;
+                    },
                   ),
-                ),
-                const SizedBox(height: mScreenEdgeInsetValue),
-                Container(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).brightness == Brightness.dark ? mDarkBackgroundTextField : mLightBackgroundTextField,
-                    borderRadius: BorderRadius.circular(8),
+                  const SizedBox(height: mScreenEdgeInsetValue),
+                  // Phone
+                  AwTextFormField(
+                    controller: _phoneTextController,
+                    label: AppLocalizations.of(context)!.promotionsPhoneField,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return AppLocalizations.of(context)!.errorFieldRequired;
+                      }
+                      return null;
+                    },
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.promotionsPurpose,
-                        style: Theme.of(context).textTheme.labelMedium,
-                      ),
-                    ],
+                  const SizedBox(height: mScreenEdgeInsetValue),
+                  // Email
+                  AwTextFormField(
+                    controller: _emailTextController,
+                    label: AppLocalizations.of(context)!.promotionsEmailField,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return AppLocalizations.of(context)!.errorFieldRequired;
+                      }
+                      return null;
+                    },
                   ),
-                ),
-                const SizedBox(height: mScreenEdgeInsetValue),
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    onPressed: () => _register(context),
-                    child: Text(AppLocalizations.of(context)!.promotionsRegister),
+                  const SizedBox(height: mScreenEdgeInsetValue),
+                  // Price Range
+                  AwDropdownform<int>(
+                    initialValue: _selectedPriceRangeKeyValue,
+                    itemBuilder: (context, index) => _priceRangeKeyValues[index].id,
+                    titleBuilder: (context, index) => Text(_priceRangeKeyValues[index].value, style: Theme.of(context).textTheme.bodyLarge),
+                    itemCount: _priceRangeKeyValues.length,
+                    label: AppLocalizations.of(context)!.promotionsPriceRange,
+                    onChanged: (dynamic priceId) {
+                      _selectedPriceRangeKeyValue = priceId;
+                    },
                   ),
-                ),
-              ],
+                  const SizedBox(height: mScreenEdgeInsetValue),
+                  // Purpose
+                  AwDropdownform<int>(
+                    initialValue: _selectedPurposeKeyValue,
+                    itemBuilder: (context, index) => _purposeKeyValues[index].id,
+                    titleBuilder: (context, index) => Text(_purposeKeyValues[index].value, style: Theme.of(context).textTheme.bodyLarge),
+                    itemCount: _purposeKeyValues.length,
+                    label: AppLocalizations.of(context)!.promotionsPurpose,
+                    onChanged: (dynamic purposeId) {
+                      _selectedPriceRangeKeyValue = purposeId;
+                    },
+                  ),
+                  const SizedBox(height: mScreenEdgeInsetValue),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton(
+                      onPressed: () => _register(context),
+                      child: Text(AppLocalizations.of(context)!.promotionsRegister),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -99,8 +174,29 @@ class PromotionRegisterView extends StatelessWidget {
     );
   }
 
-  void _register(BuildContext context) {
+  Future<void> _register(BuildContext context) async {
     CommonUtil.dismissKeyboard(context);
+    if (_formKey.currentState == null || !_formKey.currentState!.validate()) {
+      return;
+    }
+    final promotionProvider = context.read<PromotionProvider>();
+    final registerResult = await promotionProvider.registerInterestPromotion(
+      promotionId: widget.promotionItemDetail.id,
+      firstName: _nameTextController.text,
+      lastName: _lastNameTextController.text,
+      phone: _phoneTextController.text,
+      email: _emailTextController.text,
+      priceInterest: _priceRangeKeyValues.firstWhere((element) => element.id == _selectedPriceRangeKeyValue).value,
+      objectiveInterest: _purposeKeyValues.firstWhere((element) => element.id == _selectedPurposeKeyValue).value,
+    );
+    if (registerResult.status == 'error') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          registerResult.message ?? AppLocalizations.of(context)!.errorUnableToProcess,
+        ),
+      ));
+      return;
+    }
     Navigator.push(context, MaterialPageRoute(builder: (context) => const PromotionRegisterDone()));
   }
 }

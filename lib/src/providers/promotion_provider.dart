@@ -14,4 +14,32 @@ class PromotionProvider {
   Future<ServiceResponseWithData<PromotionItemDetail>> fetchPromotionDetail(int id) async {
     return AWContentService.fetchPromotionDetail(id);
   }
+
+  Future<ServiceResponseWithData<List<KeyValue>>> fetchPromotionPriceRanges() async {
+    return AWContentService.fetchPriceRanges();
+  }
+
+  Future<ServiceResponseWithData<List<KeyValue>>> fetchPurposes() async {
+    return AWContentService.fetchPurposes();
+  }
+
+  Future<ServiceResponse> registerInterestPromotion({
+    required int promotionId,
+    required String firstName,
+    required String lastName,
+    required String phone,
+    required String email,
+    required String priceInterest,
+    required String objectiveInterest,
+  }) async {
+    return AWContentService.registerInterestPromotion(
+      promotionId: promotionId,
+      firstName: firstName,
+      lastName: lastName,
+      phone: phone,
+      email: email,
+      priceInterest: priceInterest,
+      objectiveInterest: objectiveInterest,
+    );
+  }
 }

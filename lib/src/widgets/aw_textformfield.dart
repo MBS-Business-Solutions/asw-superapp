@@ -37,7 +37,11 @@ class _AwTextFormFieldState extends State<AwTextFormField> {
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.dark ? mDarkBackgroundTextField : mLightBackgroundTextField,
         borderRadius: BorderRadius.circular(8),
-        border: _isError ? Border.all(color: mRedColor) : null,
+        border: _isError
+            ? Border.all(color: mRedColor)
+            : Theme.of(context).brightness == Brightness.dark
+                ? null
+                : Border.all(color: mLightBorderTextFieldColor),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

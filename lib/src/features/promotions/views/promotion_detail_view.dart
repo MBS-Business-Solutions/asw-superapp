@@ -77,11 +77,10 @@ class _PromotionDetailViewState extends State<PromotionDetailView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(_promotionDetail!.name, style: Theme.of(context).textTheme.titleMedium),
-                          const SizedBox(height: mMediumPadding),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.access_time,
                                 color: mGreyColor,
                                 size: 12,
@@ -129,11 +128,12 @@ class _PromotionDetailViewState extends State<PromotionDetailView> {
                 child: Container(
                   alignment: Alignment.bottomCenter,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: CommonUtil.colorTheme(context, darkColor: Colors.white.withOpacity(0.2), lightColor: Colors.white),
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20.0),
                       topRight: Radius.circular(20.0),
                     ),
+                    boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mDefaultPadding),
                   child: SafeArea(
@@ -157,6 +157,7 @@ class _PromotionDetailViewState extends State<PromotionDetailView> {
                               color: CommonUtil.colorTheme(context, darkColor: mGreyColor, lightColor: mLightBackgroundDimColor),
                             ),
                             color: CommonUtil.colorTheme(context, darkColor: mLightOutlinedButtonColor, lightColor: mLightBackgroundDimColor),
+                            boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
                           ),
                           child: Transform(
                             alignment: Alignment.center,
@@ -164,6 +165,7 @@ class _PromotionDetailViewState extends State<PromotionDetailView> {
                             child: IconButton(
                               onPressed: _shareThis,
                               icon: const Icon(Icons.reply_sharp),
+                              color: CommonUtil.colorTheme(context, darkColor: mDarkBodyTextColor, lightColor: mPrimaryMatColor),
                             ),
                           ),
                         ),

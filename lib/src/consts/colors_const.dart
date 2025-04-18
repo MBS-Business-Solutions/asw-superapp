@@ -50,11 +50,12 @@ const Color mLightBackgroundBottomBar = Color(0xF0FFFFFF);
 const Color mLightBottomBarTextColor = Color(0xFFBABABA);
 const Color mLightBodyTextColor = Color(0xFF444444);
 const Color mLightDisplayTextColor = Color(0xFF444444);
-const Color mLightBackgroundTextField = Color(0xFFE0E0E0);
+const Color mLightBackgroundTextField = Color(0xFFFFFFFF);
 const Color mLightCardBackgroundColor = Color(0xFFFFFFFF);
 const Color mLightOutlinedButtonColor = Color(0xFF444444);
 const Color mLightOutlinedBackgroundColor = Color(0x00000000);
 const Color mLightOutlinedTextColor = Color(0xFF444444);
+const Color mLightBorderTextFieldColor = Color(0xFFDEDEDE);
 
 const Color mGoldenGradientStart = Color(0xFFA48346);
 const Color mGoldenGradientEnd = Color(0xFFEBCE98);

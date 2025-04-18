@@ -170,4 +170,101 @@ class AWContentService {
     if (kDebugMode) print(response);
     return ServiceResponseWithData<PromotionItemDetail>(status: 'error', message: 'Unknown error', data: null);
   }
+
+  static Future<ServiceResponseWithData<List<KeyValue>>> fetchPurposes() async {
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/project/objective-interest'),
+      headers: getHeader(),
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 500) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final result = ServiceResponseWithData.fromJson(
+          jsonResponse,
+          (json) {
+            List<dynamic>? data = jsonResponse['data'];
+            if (data == null) {
+              return <KeyValue>[];
+            }
+            return data.map((json) => KeyValue.fromJson(json)).toList();
+          },
+        );
+        return result;
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+      return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: e.toString(), data: null);
+    }
+
+    if (kDebugMode) print(response);
+    return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: 'Unknown error', data: null);
+  }
+
+  static Future<ServiceResponseWithData<List<KeyValue>>> fetchPriceRanges() async {
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/project/price-interest'),
+      headers: getHeader(),
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 500) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final result = ServiceResponseWithData.fromJson(
+          jsonResponse,
+          (json) {
+            List<dynamic>? data = jsonResponse['data'];
+            if (data == null) {
+              return <KeyValue>[];
+            }
+            return data.map((json) => KeyValue.fromJson(json)).toList();
+          },
+        );
+        return result;
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+      return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: e.toString(), data: null);
+    }
+
+    if (kDebugMode) print(response);
+    return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: 'Unknown error', data: null);
+  }
+
+  static Future<ServiceResponse> registerInterestPromotion({
+    required int promotionId,
+    required String firstName,
+    required String lastName,
+    required String phone,
+    required String email,
+    required String priceInterest,
+    required String objectiveInterest,
+  }) async {
+    final response = await http.post(
+      Uri.parse('$BASE_URL/mobile/register/interest'),
+      headers: getPostHeader(),
+      body: jsonEncode({
+        'ref_id': promotionId.toString(),
+        'first_name': firstName,
+        'last_name': lastName,
+        'phone': phone,
+        'email': email,
+        'price_interest': priceInterest,
+        'objective_interest': objectiveInterest,
+      }),
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 500) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        return ServiceResponse.fromJson(jsonResponse);
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+      return ServiceResponse(status: 'error', message: e.toString());
+    }
+
+    if (kDebugMode) print(response);
+    return ServiceResponse(status: 'error', message: 'Unknown error');
+  }
 }

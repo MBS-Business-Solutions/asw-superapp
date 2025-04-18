@@ -7,11 +7,15 @@ import 'package:flutter/material.dart';
 
 final ThemeData mLightTheme = ThemeData(
   brightness: Brightness.light,
-  appBarTheme: AppBarTheme(titleTextStyle: mTextTheme.titleSmall),
+  appBarTheme: AppBarTheme(
+    scrolledUnderElevation: 0,
+    titleTextStyle: mTextTheme.titleSmall!.copyWith(
+      color: mLightBodyTextColor,
+    ),
+  ),
   actionIconTheme: ActionIconThemeData(
     backButtonIconBuilder: (context) => const Icon(
       Icons.arrow_back_ios,
-      color: mPrimaryMatColor,
     ),
   ),
   scaffoldBackgroundColor: mLightBackgroundColor,
