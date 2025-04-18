@@ -4,23 +4,23 @@ import 'package:AssetWise/src/services/aw_content_service.dart';
 
 class PromotionProvider {
   Future<ServiceResponseWithData<List<PromotionBanner>>> fetchPromotionBanners() async {
-    return AWContentService.fetchPromotionBanners();
+    return AWContentService().fetchPromotionBanners();
   }
 
   Future<ServiceResponseWithData<List<PromotionItem>>> fetchPromotions() async {
-    return AWContentService.fetchPromotions();
+    return AWContentService().fetchPromotions();
   }
 
   Future<ServiceResponseWithData<PromotionItemDetail>> fetchPromotionDetail(int id) async {
-    return AWContentService.fetchPromotionDetail(id);
+    return AWContentService().fetchPromotionDetail(id);
   }
 
   Future<ServiceResponseWithData<List<KeyValue>>> fetchPromotionPriceRanges() async {
-    return AWContentService.fetchPriceRanges();
+    return AWContentService().fetchPriceRanges();
   }
 
   Future<ServiceResponseWithData<List<KeyValue>>> fetchPurposes() async {
-    return AWContentService.fetchPurposes();
+    return AWContentService().fetchPurposes();
   }
 
   Future<ServiceResponse> registerInterestPromotion({
@@ -32,7 +32,7 @@ class PromotionProvider {
     required String priceInterest,
     required String objectiveInterest,
   }) async {
-    return AWContentService.registerInterestPromotion(
+    return AWContentService().registerInterestPromotion(
       promotionId: promotionId,
       firstName: firstName,
       lastName: lastName,

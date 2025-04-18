@@ -63,6 +63,25 @@ final ThemeData mLightTheme = ThemeData(
   dividerTheme: DividerThemeData(
     color: Colors.grey.withOpacity(0.2),
   ),
+  checkboxTheme: CheckboxThemeData(
+    checkColor: WidgetStateColor.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return mLightBodyTextColor;
+      } else {
+        return mLightGreyColor;
+      }
+    }),
+    fillColor: WidgetStateColor.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return mBrightPrimaryColor;
+      } else {
+        return Colors.white;
+      }
+    }),
+    side: const BorderSide(
+      color: mGreyColor,
+    ),
+  ),
   extensions: const [
     BottomBarTheme(
       backgroundColor: mLightBackgroundBottomBar,

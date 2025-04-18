@@ -6,7 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class AwOtpService {
-  static Future<OTPRef?> sendOTPForReLogin({required String token, required OTPRequest request}) async {
+  AwOtpService._privateConstructor();
+  static final AwOtpService _instance = AwOtpService._privateConstructor();
+  factory AwOtpService() => _instance;
+
+  Future<OTPRef?> sendOTPForReLogin({required String token, required OTPRequest request}) async {
     final body = {
       "type": request.userType, // 'resident' | 'person'
       "otp_type": request.channel, // 'phone' | 'email'
@@ -36,7 +40,7 @@ class AwOtpService {
     return null;
   }
 
-  static Future<OTPRef?> sendOTPForValidateUser({required String token, required OTPRequest request}) async {
+  Future<OTPRef?> sendOTPForValidateUser({required String token, required OTPRequest request}) async {
     final body = {
       "id_card": request.sendTo,
     };
@@ -58,7 +62,7 @@ class AwOtpService {
     return null;
   }
 
-  static Future<OTPRef?> sendOTPForChangePin({required String token, required OTPRequest request}) async {
+  Future<OTPRef?> sendOTPForChangePin({required String token, required OTPRequest request}) async {
     final body = {
       "type": request.channel,
       "phone": request.phone,
@@ -81,7 +85,7 @@ class AwOtpService {
     return null;
   }
 
-  static Future<OTPRef?> sendOTPForUnitAdd({required String token, required String projectCode, required String unitNumber, required String last4Id}) async {
+  Future<OTPRef?> sendOTPForUnitAdd({required String token, required String projectCode, required String unitNumber, required String last4Id}) async {
     final body = {
       "project_code": projectCode,
       "unit_number": unitNumber,
@@ -100,7 +104,7 @@ class AwOtpService {
     return OTPRef.fromJson({"code": response.statusCode, "status": "fail", 'message': 'error'});
   }
 
-  static Future<OTPVerifyResponse?> verifyOTPForLogin({required String token, required String transId, required String otp}) async {
+  Future<OTPVerifyResponse?> verifyOTPForLogin({required String token, required String transId, required String otp}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/verify-login'),
       headers: getPostHeader(token: token),
@@ -124,7 +128,7 @@ class AwOtpService {
     return null;
   }
 
-  static Future<OTPVerifyResponse?> verifyOTPForValidateUser({required String token, required String transId, required String otp}) async {
+  Future<OTPVerifyResponse?> verifyOTPForValidateUser({required String token, required String transId, required String otp}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/verify-buyer-otp'),
       headers: getPostHeader(token: token),
@@ -148,7 +152,7 @@ class AwOtpService {
     return null;
   }
 
-  static Future<OTPVerifyResponse?> verifyOTPForChangePin({required String token, required String transId, required String otp}) async {
+  Future<OTPVerifyResponse?> verifyOTPForChangePin({required String token, required String transId, required String otp}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/verify-change-pin'),
       headers: getPostHeader(token: token),
@@ -172,7 +176,7 @@ class AwOtpService {
     return null;
   }
 
-  static Future<OTPAddUnitResponse?> verifyOTPForAddUnit({required String token, required String transId, required String otp}) async {
+  Future<OTPAddUnitResponse?> verifyOTPForAddUnit({required String token, required String transId, required String otp}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/verify-unit-add'),
       headers: getPostHeader(token: token),

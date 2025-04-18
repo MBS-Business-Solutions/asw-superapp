@@ -7,7 +7,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class AWContentService {
-  static Future<String> fetchLandingBackgroundURL() async {
+  AWContentService._privateConstructor();
+  static final AWContentService _instance = AWContentService._privateConstructor();
+  factory AWContentService() => _instance;
+
+  Future<String> fetchLandingBackgroundURL() async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/home/landing'),
       headers: getHeader(),
@@ -25,8 +29,7 @@ class AWContentService {
     return '';
   }
 
-  // สำหรับแสดงผลเป็น Pop-up ก่อนใช้งานหน้า Dashboard
-  static Future<List<ImageContent>> fetchCampaigns() async {
+  Future<List<ImageContent>> fetchCampaigns() async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/home/campaigns'),
       headers: getHeader(),
@@ -46,8 +49,7 @@ class AWContentService {
     return [];
   }
 
-  // สำหรับแสดงผลบนหน้า DashboardMainView
-  static Future<List<ImageContent>> fetchBanners() async {
+  Future<List<ImageContent>> fetchBanners() async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/home/banners'),
       headers: getHeader(),
@@ -66,7 +68,7 @@ class AWContentService {
     return [];
   }
 
-  static Future<List<Project>> fetchProjects() async {
+  Future<List<Project>> fetchProjects() async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/home/projects'),
       headers: getHeader(),
@@ -87,7 +89,7 @@ class AWContentService {
     return [];
   }
 
-  static Future<ServiceResponseWithData<List<PromotionBanner>>> fetchPromotionBanners() async {
+  Future<ServiceResponseWithData<List<PromotionBanner>>> fetchPromotionBanners() async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/promotion/banner'),
       headers: getHeader(),
@@ -117,7 +119,7 @@ class AWContentService {
     return ServiceResponseWithData<List<PromotionBanner>>(status: 'error', message: 'Unknown error', data: []);
   }
 
-  static Future<ServiceResponseWithData<List<PromotionItem>>> fetchPromotions() async {
+  Future<ServiceResponseWithData<List<PromotionItem>>> fetchPromotions() async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/promotion'),
       headers: getHeader(),
@@ -147,7 +149,7 @@ class AWContentService {
     return ServiceResponseWithData<List<PromotionItem>>(status: 'error', message: 'Unknown error', data: null);
   }
 
-  static Future<ServiceResponseWithData<PromotionItemDetail>> fetchPromotionDetail(int id) async {
+  Future<ServiceResponseWithData<PromotionItemDetail>> fetchPromotionDetail(int id) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/promotion/$id'),
       headers: getHeader(),
@@ -171,7 +173,7 @@ class AWContentService {
     return ServiceResponseWithData<PromotionItemDetail>(status: 'error', message: 'Unknown error', data: null);
   }
 
-  static Future<ServiceResponseWithData<List<KeyValue>>> fetchPurposes() async {
+  Future<ServiceResponseWithData<List<KeyValue>>> fetchPurposes() async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/project/objective-interest'),
       headers: getHeader(),
@@ -201,7 +203,7 @@ class AWContentService {
     return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: 'Unknown error', data: null);
   }
 
-  static Future<ServiceResponseWithData<List<KeyValue>>> fetchPriceRanges() async {
+  Future<ServiceResponseWithData<List<KeyValue>>> fetchPriceRanges() async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/project/price-interest'),
       headers: getHeader(),
@@ -231,7 +233,7 @@ class AWContentService {
     return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: 'Unknown error', data: null);
   }
 
-  static Future<ServiceResponse> registerInterestPromotion({
+  Future<ServiceResponse> registerInterestPromotion({
     required int promotionId,
     required String firstName,
     required String lastName,
@@ -258,6 +260,159 @@ class AWContentService {
       if (response.statusCode >= 200 && response.statusCode < 500) {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         return ServiceResponse.fromJson(jsonResponse);
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+      return ServiceResponse(status: 'error', message: e.toString());
+    }
+
+    if (kDebugMode) print(response);
+    return ServiceResponse(status: 'error', message: 'Unknown error');
+  }
+
+  Future<ServiceResponseWithData<List<KeyValue>>> fetchBrandsMasterData() async {
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/project/brands'),
+      headers: getHeader(),
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 500) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final result = ServiceResponseWithData.fromJson(
+          jsonResponse,
+          (json) {
+            List<dynamic>? data = jsonResponse['data'];
+            if (data == null) {
+              return <KeyValue>[];
+            }
+            return data.map((json) => KeyValue.fromJson(json)).toList();
+          },
+        );
+        return result;
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+      return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: e.toString(), data: null);
+    }
+
+    if (kDebugMode) print(response);
+    return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: 'Unknown error', data: null);
+  }
+
+  Future<ServiceResponseWithData<List<KeyValue>>> fetchLocationsMasterData() async {
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/project/locations'),
+      headers: getHeader(),
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 500) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final result = ServiceResponseWithData.fromJson(
+          jsonResponse,
+          (json) {
+            List<dynamic>? data = jsonResponse['data'];
+            if (data == null) {
+              return <KeyValue>[];
+            }
+            return data.map((json) => KeyValue.fromJson(json)).toList();
+          },
+        );
+        return result;
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+      return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: e.toString(), data: null);
+    }
+
+    if (kDebugMode) print(response);
+    return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: 'Unknown error', data: null);
+  }
+
+  Future<ServiceResponseWithData<List<ProjectSearchItem>>> searchProjects({
+    required String search,
+    required List<String> brandIds,
+    required List<String> locationIds,
+  }) async {
+    final body = jsonEncode({
+      'search': search,
+      'brand_id': brandIds,
+      'location_id': locationIds,
+    });
+    if (kDebugMode) print(body);
+    final response = await http.post(
+      Uri.parse('$BASE_URL/mobile/project/projects'),
+      headers: getPostHeader(),
+      body: body,
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 500) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final result = ServiceResponseWithData.fromJson(
+          jsonResponse,
+          (json) {
+            List<dynamic>? data = jsonResponse['data'];
+            if (data == null) {
+              return <ProjectSearchItem>[];
+            }
+            return data.map((json) => ProjectSearchItem.fromJson(json)).toList();
+          },
+        );
+        return result;
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+      return ServiceResponseWithData<List<ProjectSearchItem>>(status: 'error', message: e.toString(), data: null);
+    }
+
+    if (kDebugMode) print(response);
+    return ServiceResponseWithData<List<ProjectSearchItem>>(status: 'error', message: 'Unknown error', data: null);
+  }
+
+  Future<ServiceResponse> setFavoriteProject(int projectId, String token) async {
+    final body = jsonEncode({
+      'project_id': projectId,
+    });
+    if (kDebugMode) print(body);
+    final response = await http.post(
+      Uri.parse('$BASE_URL/mobile/project/set-favorite'),
+      headers: getPostHeader(token: token),
+      body: body,
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 500) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final result = ServiceResponse.fromJson(jsonResponse);
+        return result;
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+      return ServiceResponse(status: 'error', message: e.toString());
+    }
+
+    if (kDebugMode) print(response);
+    return ServiceResponse(status: 'error', message: 'Unknown error');
+  }
+
+  Future<ServiceResponse> unsetFavoriteProject(int projectId, String token) async {
+    final body = jsonEncode({
+      'project_id': projectId,
+    });
+    if (kDebugMode) print(body);
+    final response = await http.post(
+      Uri.parse('$BASE_URL/mobile/project/unset-favorite'),
+      headers: getPostHeader(token: token),
+      body: body,
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 500) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final result = ServiceResponse.fromJson(jsonResponse);
+        return result;
       }
     } catch (e) {
       if (kDebugMode) print(e);

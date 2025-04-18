@@ -86,7 +86,7 @@ class UserProvider with ChangeNotifier {
     _token = null;
     _isPinSet = false;
     _userInformation = null;
-    if (token != null) await AwUserService.logout(_token!, _language);
+    if (token != null) await AwUserService().logout(_token!, _language);
     await secureStorage.deleteAll();
     // await isar.writeTxn(() async {
     //   await isar.clear();
@@ -138,7 +138,7 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<bool> submitConsents(String consentId, Map<String, bool> consents) async {
-    final response = await AwUserService.submitConsents(_token!, consentId, consents);
+    final response = await AwUserService().submitConsents(_token!, consentId, consents);
     return response;
   }
 
@@ -155,24 +155,24 @@ class UserProvider with ChangeNotifier {
   Future<void> setPreferedLanguage(String language) async {
     if (token == null) return;
     _language = language;
-    await AwUserService.setPreferedLanguage(_token!, language);
+    await AwUserService().setPreferedLanguage(_token!, language);
     notifyListeners();
   }
 
   Future<bool> changeEmail(String newValue) async {
     if (token == null) return false;
-    return await AwUserService.changeEmail(_token!, newValue);
+    return await AwUserService().changeEmail(_token!, newValue);
   }
 
   Future<bool> changePhone(String newValue) async {
     if (token == null) return false;
 
-    return await AwUserService.changePhone(_token!, newValue);
+    return await AwUserService().changePhone(_token!, newValue);
   }
 
   Future<UserInformation?> fetchUserInformation() async {
     if (token == null) return null;
-    final userInformation = await AwUserService.getUserInformation(_token!);
+    final userInformation = await AwUserService().getUserInformation(_token!);
     if (userInformation != null) {
       _userInformation = userInformation;
       await secureStorage.write(key: 'USER_INFO', value: _userInformation!.toJson());
@@ -182,31 +182,31 @@ class UserProvider with ChangeNotifier {
 
   Future<List<PersonalConsent>> fetchPersonalConsents() async {
     if (token == null) return [];
-    return await AwUserService.fetchPersonalConsents(_token!, language: userInformation?.language);
+    return await AwUserService().fetchPersonalConsents(_token!, language: userInformation?.language);
   }
 
   Future<PersonalConsentDetail?> fetchPersonalConsentDetail(String consentId) async {
     if (token == null) return null;
-    return await AwUserService.fetchPersonalConsentDetail(_token!, consentId, language: userInformation?.language);
+    return await AwUserService().fetchPersonalConsentDetail(_token!, consentId, language: userInformation?.language);
   }
 
   Future<bool> submitConsent(String consentId, bool value) async {
     if (token == null) return false;
-    return await AwUserService.submitPersonalConsent(_token!, consentId, value);
+    return await AwUserService().submitPersonalConsent(_token!, consentId, value);
   }
 
   Future<List<AboutItem>> fetchAboutItems() async {
     if (token == null) return [];
-    return await AwUserService.fetchAboutItems(_token!, language: userInformation?.language);
+    return await AwUserService().fetchAboutItems(_token!, language: userInformation?.language);
   }
 
   Future<AboutItemDetail?> fetchAboutItemDetail(String consentId) async {
     if (token == null) return null;
-    return await AwUserService.fetchAboutItemDetail(_token!, consentId, language: userInformation?.language);
+    return await AwUserService().fetchAboutItemDetail(_token!, consentId, language: userInformation?.language);
   }
 
   Future<MyQRResponse?> fetchMyQR() async {
     if (token == null) return null;
-    return await AwUserService.fetchMyQR(_token!);
+    return await AwUserService().fetchMyQR(_token!);
   }
 }

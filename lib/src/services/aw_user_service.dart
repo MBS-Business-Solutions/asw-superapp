@@ -7,6 +7,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class AwUserService {
+  AwUserService._privateConstructor();
+  static final AwUserService _instance = AwUserService._privateConstructor();
+  factory AwUserService() => _instance;
+
   Future<UserToken?> login(String userId) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/resident'),
@@ -55,7 +59,7 @@ class AwUserService {
     return null;
   }
 
-  static Future<bool> submitConsents(String token, String consentId, Map<String, bool> consents) async {
+  Future<bool> submitConsents(String token, String consentId, Map<String, bool> consents) async {
     final body = {
       "consent_id": consentId,
       "items": consents.entries
@@ -83,7 +87,7 @@ class AwUserService {
     return false;
   }
 
-  static Future<bool> setPreferedLanguage(String token, String language) async {
+  Future<bool> setPreferedLanguage(String token, String language) async {
     final response = await http
         .post(
           Uri.parse('$BASE_URL/mobile/setting/language'),
@@ -106,7 +110,7 @@ class AwUserService {
     return false;
   }
 
-  static Future<bool> updateFCMToken(String userToken, String fcmToken) async {
+  Future<bool> updateFCMToken(String userToken, String fcmToken) async {
     final response = await http
         .post(
           Uri.parse('$BASE_URL/auth/fcm'),
@@ -129,7 +133,7 @@ class AwUserService {
     return false;
   }
 
-  static Future<bool> changeEmail(String userToken, String newValue) async {
+  Future<bool> changeEmail(String userToken, String newValue) async {
     final response = await http
         .post(
           Uri.parse('$BASE_URL/mobile/setting/change-email'),
@@ -152,7 +156,7 @@ class AwUserService {
     return false;
   }
 
-  static Future<bool> changePhone(String userToken, String newValue) async {
+  Future<bool> changePhone(String userToken, String newValue) async {
     final response = await http
         .post(
           Uri.parse('$BASE_URL/mobile/setting/change-phone'),
@@ -175,7 +179,7 @@ class AwUserService {
     return false;
   }
 
-  static Future<UserInformation?> getUserInformation(String userToken) async {
+  Future<UserInformation?> getUserInformation(String userToken) async {
     final response = await http
         .get(
           Uri.parse('$BASE_URL/mobile/home/me'),
@@ -197,7 +201,7 @@ class AwUserService {
     return null;
   }
 
-  static Future<List<PersonalConsent>> fetchPersonalConsents(String userToken, {String? language}) async {
+  Future<List<PersonalConsent>> fetchPersonalConsents(String userToken, {String? language}) async {
     final response = await http
         .get(
           Uri.parse('$BASE_URL/mobile/setting/consent'),
@@ -220,7 +224,7 @@ class AwUserService {
     return [];
   }
 
-  static Future<PersonalConsentDetail?> fetchPersonalConsentDetail(String userToken, String consentId, {String? language}) async {
+  Future<PersonalConsentDetail?> fetchPersonalConsentDetail(String userToken, String consentId, {String? language}) async {
     final response = await http
         .get(
           Uri.parse('$BASE_URL/mobile/setting/consent/$consentId'),
@@ -242,7 +246,7 @@ class AwUserService {
     return null;
   }
 
-  static Future<bool> submitPersonalConsent(String userToken, String consentId, bool consentGiven) async {
+  Future<bool> submitPersonalConsent(String userToken, String consentId, bool consentGiven) async {
     final response = await http
         .post(
           Uri.parse('$BASE_URL/mobile/setting/consent/$consentId'),
@@ -267,7 +271,7 @@ class AwUserService {
     return false;
   }
 
-  static Future<List<AboutItem>> fetchAboutItems(String userToken, {String? language}) async {
+  Future<List<AboutItem>> fetchAboutItems(String userToken, {String? language}) async {
     final response = await http
         .get(
           Uri.parse('$BASE_URL/mobile/setting/about'),
@@ -290,7 +294,7 @@ class AwUserService {
     return [];
   }
 
-  static Future<AboutItemDetail?> fetchAboutItemDetail(String userToken, String consentId, {String? language}) async {
+  Future<AboutItemDetail?> fetchAboutItemDetail(String userToken, String consentId, {String? language}) async {
     final response = await http
         .get(
           Uri.parse('$BASE_URL/mobile/setting/about/$consentId'),
@@ -312,7 +316,7 @@ class AwUserService {
     return null;
   }
 
-  static Future<bool> logout(String userToken, String? language) async {
+  Future<bool> logout(String userToken, String? language) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/setting/logout'),
       headers: getPostHeader(token: userToken),
@@ -332,7 +336,7 @@ class AwUserService {
     return false;
   }
 
-  static Future<MyQRResponse?> fetchMyQR(String userToken) async {
+  Future<MyQRResponse?> fetchMyQR(String userToken) async {
     final response = await http
         .get(
           Uri.parse('$BASE_URL/mobile/my-qr'),

@@ -10,7 +10,7 @@ class SplashView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-          future: AWContentService.fetchLandingBackgroundURL(),
+          future: AWContentService().fetchLandingBackgroundURL(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
               return const Center(

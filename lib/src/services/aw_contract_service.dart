@@ -12,7 +12,11 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 class AwContractService {
-  static Future<List<Contract>> fetchContracts({required String token}) async {
+  AwContractService._privateConstructor();
+  static final AwContractService _instance = AwContractService._privateConstructor();
+  factory AwContractService() => _instance;
+
+  Future<List<Contract>> fetchContracts({required String token}) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts'),
       headers: getHeader(token: token),
@@ -31,7 +35,7 @@ class AwContractService {
     return [];
   }
 
-  static Future<ContractDetail?> fetchContractDetail(String token, String contractId) async {
+  Future<ContractDetail?> fetchContractDetail(String token, String contractId) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId'),
       headers: getHeader(token: token),
@@ -51,7 +55,7 @@ class AwContractService {
     return null;
   }
 
-  static Future<List<String>> fetchFreebies({required String token, required String contractId}) async {
+  Future<List<String>> fetchFreebies({required String token, required String contractId}) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/promotions'),
       headers: getHeader(token: token),
@@ -70,7 +74,7 @@ class AwContractService {
     return [];
   }
 
-  static Future<List<PaymentDetail>?> fetchPaymentsByYear({required String token, required String contractId, required int year}) async {
+  Future<List<PaymentDetail>?> fetchPaymentsByYear({required String token, required String contractId, required int year}) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/payments?year=$year'),
       headers: getHeader(token: token),
@@ -89,7 +93,7 @@ class AwContractService {
     return null;
   }
 
-  static Future<OverdueDetail?> fetchOverdueDetail({required String token, required String contractId}) async {
+  Future<OverdueDetail?> fetchOverdueDetail({required String token, required String contractId}) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/overdue'),
       headers: getHeader(token: token),
@@ -107,7 +111,7 @@ class AwContractService {
     return null;
   }
 
-  static Future<ReceiptDetail?> fetchReceiptDetail({required String token, required String contractId, required String receiptNumber}) async {
+  Future<ReceiptDetail?> fetchReceiptDetail({required String token, required String contractId, required String receiptNumber}) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/payments/$receiptNumber'),
       headers: getHeader(token: token),
@@ -125,7 +129,7 @@ class AwContractService {
     return null;
   }
 
-  static Future<List<DownPaymentDetail>> fetchTerms({required String token, required String contractId}) async {
+  Future<List<DownPaymentDetail>> fetchTerms({required String token, required String contractId}) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/terms'),
       headers: getHeader(token: token),
@@ -144,7 +148,7 @@ class AwContractService {
     return [];
   }
 
-  static Future<List<DownPaymentTermDue>> fetchDownPaymentDues({required String token, required String contractId}) async {
+  Future<List<DownPaymentTermDue>> fetchDownPaymentDues({required String token, required String contractId}) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/terms-due'),
       headers: getHeader(token: token),
@@ -163,15 +167,15 @@ class AwContractService {
     return [];
   }
 
-  static String getViewReceiptURL(String contractId, String receiptNumber) {
+  String getViewReceiptURL(String contractId, String receiptNumber) {
     return '$BASE_URL/mobile/contracts/$contractId/payments/$receiptNumber/view';
   }
 
-  static String getReceiptURL(String contractId, String receiptNumber) {
+  String getReceiptURL(String contractId, String receiptNumber) {
     return '$BASE_URL/mobile/contracts/$contractId/payments/$receiptNumber/download';
   }
 
-  static Future<QRResponse?> getQRPaymentCode({required String token, required String contractId, double amount = 0, String? language}) async {
+  Future<QRResponse?> getQRPaymentCode({required String token, required String contractId, double amount = 0, String? language}) async {
     final formatNumber = NumberFormat('####.00');
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/qr-code?amount=${formatNumber.format(amount)}'),
@@ -190,7 +194,7 @@ class AwContractService {
     return null;
   }
 
-  static Future<PaymentGatewayResponse?> getPaymentGatewayURL({required String token, required Contract contract, double amount = 0, String? detail, required String email}) async {
+  Future<PaymentGatewayResponse?> getPaymentGatewayURL({required String token, required Contract contract, double amount = 0, String? detail, required String email}) async {
     final formatNumber = NumberFormat('####.00');
     final body = {
       'payment_type': '9',
@@ -218,7 +222,7 @@ class AwContractService {
     return null;
   }
 
-  static Future<String?> downloadFile({required String token, required String url, required String fileName}) async {
+  Future<String?> downloadFile({required String token, required String url, required String fileName}) async {
     final response = await http.get(
       Uri.parse(url),
       headers: getHeader(token: token),
@@ -246,11 +250,11 @@ class AwContractService {
     return null;
   }
 
-  static String getContractURL(String contractId) {
+  String getContractURL(String contractId) {
     return '$BASE_URL/mobile/contracts/$contractId/download';
   }
 
-  static Future<String> _prepareDownloadDirectory() async {
+  Future<String> _prepareDownloadDirectory() async {
     final directory = await getApplicationDocumentsDirectory();
     final downloadDirectory = Directory("${directory.path}/downloads");
     if (!await downloadDirectory.exists()) {
@@ -268,7 +272,7 @@ class AwContractService {
     return downloadDirectory.path;
   }
 
-  static Future<bool> setDefaultContract({required String token, required String unitId}) async {
+  Future<bool> setDefaultContract({required String token, required String unitId}) async {
     final body = {
       'unit_id': unitId,
     };
@@ -289,7 +293,7 @@ class AwContractService {
     return false;
   }
 
-  static Future<ServiceResponse?> removeContract({required String token, required String unitId}) async {
+  Future<ServiceResponse?> removeContract({required String token, required String unitId}) async {
     final body = {
       'unit_id': unitId,
     };
@@ -308,7 +312,7 @@ class AwContractService {
     return null;
   }
 
-  static Future<List<ContractProject>> fetchProjects({required String token}) async {
+  Future<List<ContractProject>> fetchProjects({required String token}) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/setting/projects'),
       headers: getHeader(token: token),

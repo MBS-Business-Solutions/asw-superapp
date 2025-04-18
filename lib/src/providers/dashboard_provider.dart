@@ -17,10 +17,10 @@ class DashboardProvider with ChangeNotifier {
   }
 
   Future<void> _fetchProjects() async {
-    _suggestProjects = await AWContentService.fetchProjects();
+    _suggestProjects = await AWContentService().fetchProjects();
   }
 
   Future<void> _fetchBanners() async {
-    _banners = await AWContentService.fetchBanners();
+    _banners = await AWContentService().fetchBanners();
   }
 }

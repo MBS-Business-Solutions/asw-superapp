@@ -1,5 +1,6 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/promotions/views/promotion_register_done.dart';
+import 'package:AssetWise/src/models/aw_common_model.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/promotion_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';

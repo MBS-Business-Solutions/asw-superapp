@@ -139,7 +139,7 @@ class FirebaseMessagingProvider {
     _fcmToken = token;
     if (_userProvider?.token == null || _fcmToken == null) return;
 
-    await AwUserService.updateFCMToken(_userProvider!.token!, _fcmToken!);
+    await AwUserService().updateFCMToken(_userProvider!.token!, _fcmToken!);
     if (kDebugMode) {
       print('FCM Token updated');
     }

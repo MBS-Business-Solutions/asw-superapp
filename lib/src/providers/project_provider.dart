@@ -1,0 +1,113 @@
+import 'package:AssetWise/src/models/aw_common_model.dart';
+import 'package:AssetWise/src/models/aw_content_model.dart';
+import 'package:AssetWise/src/providers/user_provider.dart';
+import 'package:AssetWise/src/services/aw_content_service.dart';
+import 'package:flutter/material.dart';
+
+class ProjectProvider with ChangeNotifier {
+  UserProvider? _userProvider;
+
+  bool get isFiltering => _searchText.isNotEmpty || _selectedBrands.isNotEmpty || _selectedLocations.isNotEmpty;
+
+  final _searchResults = <ProjectSearchItem>[];
+  List<ProjectSearchItem> get searchResults => _searchResults;
+  final List<KeyValue> _brands = [];
+  List<KeyValue> get brands => _brands;
+  final List<KeyValue> _locations = [];
+  List<KeyValue> get locations => _locations;
+  String _searchText = '';
+  String get searchText => _searchText;
+  final Set<int> _selectedBrands = {};
+  Set<int> get selectedBrands => _selectedBrands;
+  final Set<int> _selectedLocations = {};
+  Set<int> get selectedLocations => _selectedLocations;
+
+  Future<void> initSearchForm() async {
+    // clear search filters
+    _searchText = '';
+    _selectedBrands.clear();
+    _selectedLocations.clear();
+    // load master data
+    final brandsResponse = await AWContentService().fetchBrandsMasterData();
+    if (brandsResponse.status == 'success') {
+      _brands.clear();
+      _brands.addAll(brandsResponse.data!);
+    }
+    final locationsResponse = await AWContentService().fetchLocationsMasterData();
+    if (locationsResponse.status == 'success') {
+      _locations.clear();
+      _locations.addAll(locationsResponse.data!);
+    }
+    // load projects
+    await _search();
+    notifyListeners();
+  }
+
+  void selectLocation(int id) {
+    if (_selectedLocations.contains(id)) {
+      _selectedLocations.remove(id);
+    } else {
+      _selectedLocations.add(id);
+    }
+    notifyListeners();
+  }
+
+  void selectBrand(int id) {
+    if (_selectedBrands.contains(id)) {
+      _selectedBrands.remove(id);
+    } else {
+      _selectedBrands.add(id);
+    }
+    notifyListeners();
+  }
+
+  Future<void> clearFilter() async {
+    _searchText = '';
+    _selectedBrands.clear();
+    _selectedLocations.clear();
+    await _search();
+    notifyListeners();
+  }
+
+  void updateUserProvider(UserProvider userProvider) {
+    _userProvider = userProvider;
+  }
+
+  Future<void> applySearchFilter() async {
+    await _search();
+    notifyListeners();
+  }
+
+  Future<String?> setFavorite(
+    int id,
+    bool fav,
+  ) async {
+    if (_userProvider == null) return null;
+    ServiceResponse? response;
+    if (fav) {
+      response = await AWContentService().setFavoriteProject(id, _userProvider!.token!);
+    } else {
+      response = await AWContentService().unsetFavoriteProject(id, _userProvider!.token!);
+    }
+
+    if (response.status == 'success') {
+      _searchResults.firstWhere((element) => element.id == id).isFavorite = fav;
+    } else {
+      return response.message ?? 'Error';
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> _search() async {
+    final projectsResponse = await AWContentService().searchProjects(
+      search: _searchText,
+      brandIds: _selectedBrands.map((e) => e.toString()).toList(),
+      locationIds: _selectedLocations.map((e) => e.toString()).toList(),
+    );
+    if (projectsResponse.status == 'success') {
+      _searchResults.clear();
+      _searchResults.addAll(projectsResponse.data!);
+    }
+  }
+}

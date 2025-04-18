@@ -6,6 +6,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class AwRegisterService {
+  AwRegisterService._privateConstructor();
+  static final AwRegisterService _instance = AwRegisterService._privateConstructor();
+  factory AwRegisterService() => _instance;
+
   static Future<bool> customerCheck({String? idCard4, required String userName, String? language}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/customer-check'),

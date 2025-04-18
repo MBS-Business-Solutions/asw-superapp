@@ -63,3 +63,17 @@ class ServiceResponseWithData<T> extends ServiceResponse {
     );
   }
 }
+
+class KeyValue {
+  final int id;
+  final String value;
+
+  KeyValue({required this.id, required this.value});
+
+  factory KeyValue.fromJson(Map<String, dynamic> json) {
+    return KeyValue(
+      id: json['id'],
+      value: json['value'] ?? json['name'],
+    );
+  }
+}

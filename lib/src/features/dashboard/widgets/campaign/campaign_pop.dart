@@ -107,7 +107,7 @@ class _CampaignPopState extends State<CampaignPop> {
       if (nextShow < DateTime.now().millisecondsSinceEpoch) {
         final nextShow = DateTime.now().add(const Duration(hours: 1)).millisecondsSinceEpoch;
         shared.setInt('CAMPAIGN_POP_NEXT_SHOW', nextShow);
-        campaigns = await AWContentService.fetchCampaigns();
+        campaigns = await AWContentService().fetchCampaigns();
         if (campaigns.isNotEmpty) {
           preloadImages();
           setState(() {

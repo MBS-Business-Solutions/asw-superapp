@@ -6,7 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class AwNotificationItemService {
-  static Future<List<NotificationItem>> fetchNotificationItems(String token, {String? lastItemDate}) async {
+  AwNotificationItemService._privateConstructor();
+  static final AwNotificationItemService _instance = AwNotificationItemService._privateConstructor();
+  factory AwNotificationItemService() => _instance;
+
+  Future<List<NotificationItem>> fetchNotificationItems(String token, {String? lastItemDate}) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/notifications${lastItemDate == null ? '' : '?cursor=$lastItemDate'}'),
       headers: getHeader(token: token),

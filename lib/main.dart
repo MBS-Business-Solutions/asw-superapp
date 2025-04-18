@@ -6,6 +6,7 @@ import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
 import 'package:AssetWise/src/providers/hot_menu_provider.dart';
 import 'package:AssetWise/src/providers/notification_item_provider.dart';
+import 'package:AssetWise/src/providers/project_provider.dart';
 import 'package:AssetWise/src/providers/promotion_provider.dart';
 import 'package:AssetWise/src/providers/register_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
@@ -78,6 +79,10 @@ void main() async {
     ),
     ChangeNotifierProvider(create: (context) => HotMenuProvider()),
     Provider(create: (context) => PromotionProvider()),
+    ChangeNotifierProxyProvider<UserProvider, ProjectProvider>(
+      create: (context) => ProjectProvider(),
+      update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
+    ),
   ], child: MyApp(settingsController: settingsController)));
 }
 

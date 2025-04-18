@@ -45,7 +45,7 @@ class NotificationItemProvider with ChangeNotifier {
     if (_userProvider == null || _userProvider?.token == null) return;
     // sort by timestamp before fetch
     _notificationItems.sort((a, b) => a.timeStamp.compareTo(b.timeStamp));
-    final notificationFromServer = await AwNotificationItemService.fetchNotificationItems(
+    final notificationFromServer = await AwNotificationItemService().fetchNotificationItems(
       _userProvider!.token!,
       lastItemDate: _notificationItems.isNotEmpty ? _notificationItems.last.timeStamp : null,
     );
@@ -68,7 +68,7 @@ class NotificationItemProvider with ChangeNotifier {
 
     final list = isar.notificationItems.where().findAllSync()..sort((a, b) => a.timeStamp.compareTo(b.timeStamp));
     final lastItem = list.isNotEmpty ? list.last : null;
-    final notificationFromServer = await AwNotificationItemService.fetchNotificationItems(
+    final notificationFromServer = await AwNotificationItemService().fetchNotificationItems(
       userProvider.token!,
       lastItemDate: lastItem?.timeStamp,
     );

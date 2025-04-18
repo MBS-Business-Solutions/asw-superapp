@@ -345,16 +345,51 @@ class PromotionItemDetail {
   }
 }
 
-class KeyValue {
+class ProjectSearchItem {
   final int id;
-  final String value;
+  final String name;
+  final String image;
+  final String status;
+  final String textPrice;
+  bool isFavorite;
 
-  KeyValue({required this.id, required this.value});
+  ProjectSearchItem({
+    required this.id,
+    required this.name,
+    required this.image,
+    required this.status,
+    required this.textPrice,
+    required this.isFavorite,
+  });
 
-  factory KeyValue.fromJson(Map<String, dynamic> json) {
-    return KeyValue(
+  factory ProjectSearchItem.fromJson(Map<String, dynamic> json) {
+    return ProjectSearchItem(
       id: json['id'],
-      value: json['value'],
+      name: json['name'],
+      image: json['image'],
+      status: json['status'],
+      textPrice: json['text_price'],
+      isFavorite: json['is_favorite'],
+    );
+  }
+}
+
+class ProjectFilterStatus {
+  final String code;
+  final String nameTh;
+  final String nameEn;
+
+  ProjectFilterStatus({
+    required this.code,
+    required this.nameTh,
+    required this.nameEn,
+  });
+
+  factory ProjectFilterStatus.fromJson(Map<String, dynamic> json) {
+    return ProjectFilterStatus(
+      code: json['code'],
+      nameTh: json['name_th'],
+      nameEn: json['name_en'],
     );
   }
 }
