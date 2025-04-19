@@ -93,7 +93,7 @@ class _PromotionsViewState extends State<PromotionsView> {
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                           hintText: AppLocalizations.of(context)!.promotionsSearchHint,
-                          hintStyle: Theme.of(context).textTheme.bodyMedium,
+                          hintStyle: Theme.of(context).textTheme.bodyLarge,
                           suffixIcon: const Icon(Icons.search),
                           border: InputBorder.none,
                         ),

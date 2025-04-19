@@ -3,9 +3,9 @@ import 'dart:math';
 
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/projects/widget/filter_drawer_widget.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/utils/googlemap_util.dart';
-import 'package:AssetWise/src/widgets/aw_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -64,49 +64,7 @@ class _MapSearchViewState extends State<MapSearchView> {
       child: Scaffold(
         key: _scaffoldKey,
         extendBody: true,
-        endDrawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text(
-                  'Drawer Header',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(Icons.message),
-                title: Text('Messages'),
-                onTap: () {
-                  // ทำสิ่งที่คุณต้องการเมื่อแตะที่ Messages
-                  Navigator.pop(context); // ปิด Drawer
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.account_circle),
-                title: Text('Profile'),
-                onTap: () {
-                  // ทำสิ่งที่คุณต้องการเมื่อแตะที่ Profile
-                  Navigator.pop(context); // ปิด Drawer
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('Settings'),
-                onTap: () {
-                  // ทำสิ่งที่คุณต้องการเมื่อแตะที่ Settings
-                  Navigator.pop(context); // ปิด Drawer
-                },
-              ),
-            ],
-          ),
-        ),
+        endDrawer: const FilterDrawerWidget(),
         body: Stack(
           children: [
             _buildGoogleMap(),

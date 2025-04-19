@@ -21,7 +21,10 @@ class PromotionRegisterDone extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SvgPicture.asset('assets/images/AW_01.svg'),
+                  if (Theme.of(context).brightness == Brightness.dark)
+                    SvgPicture.asset('assets/images/AW_01.svg', width: MediaQuery.of(context).size.width * 0.6)
+                  else
+                    SvgPicture.asset('assets/images/AW_01_light.svg', width: MediaQuery.of(context).size.width * 0.6),
                   const SizedBox(height: mScreenEdgeInsetValue),
                   Text(
                     AppLocalizations.of(context)!.promotionsRegisterSuccess,

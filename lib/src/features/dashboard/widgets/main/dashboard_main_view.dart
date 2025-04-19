@@ -64,20 +64,6 @@ class DashboardMainView extends StatelessWidget {
         ),
         // Notification sections
         SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.only(left: mScreenEdgeInsetValue, right: mScreenEdgeInsetValue, top: mMediumPadding),
-            child: Row(
-              children: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(MapSearchView.routeName);
-                    },
-                    icon: const Icon(Icons.location_on)),
-              ],
-            ),
-          ),
-        ),
-        SliverToBoxAdapter(
           child: Consumer<UserProvider>(
             builder: (context, provider, child) {
               if (!provider.isAuthenticated) return const SizedBox();

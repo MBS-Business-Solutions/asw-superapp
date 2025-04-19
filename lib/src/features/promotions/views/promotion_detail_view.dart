@@ -128,10 +128,13 @@ class _PromotionDetailViewState extends State<PromotionDetailView> {
                 child: Container(
                   alignment: Alignment.bottomCenter,
                   decoration: BoxDecoration(
-                    color: CommonUtil.colorTheme(context, darkColor: Colors.white.withOpacity(0.2), lightColor: Colors.white),
+                    color: CommonUtil.colorTheme(context, darkColor: const Color(0xEE262626), lightColor: Colors.white),
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20.0),
                       topRight: Radius.circular(20.0),
+                    ),
+                    border: Border.all(
+                      color: CommonUtil.colorTheme(context, darkColor: Colors.white24, lightColor: mLightBackgroundColor),
                     ),
                     boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
                   ),

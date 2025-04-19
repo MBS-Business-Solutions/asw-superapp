@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 
 class ProjectProvider with ChangeNotifier {
   UserProvider? _userProvider;
-
-  bool get isFiltering => _searchText.isNotEmpty || _selectedBrands.isNotEmpty || _selectedLocations.isNotEmpty;
+  bool _isFiltering = false;
+  bool get isFiltering => _isFiltering;
 
   final _searchResults = <ProjectSearchItem>[];
   List<ProjectSearchItem> get searchResults => _searchResults;
@@ -15,12 +15,16 @@ class ProjectProvider with ChangeNotifier {
   List<KeyValue> get brands => _brands;
   final List<KeyValue> _locations = [];
   List<KeyValue> get locations => _locations;
+  final List<ProjectFilterStatus> _projectStatus = [];
+  List<ProjectFilterStatus> get projectStatus => _projectStatus;
   String _searchText = '';
   String get searchText => _searchText;
   final Set<int> _selectedBrands = {};
   Set<int> get selectedBrands => _selectedBrands;
   final Set<int> _selectedLocations = {};
   Set<int> get selectedLocations => _selectedLocations;
+  String _selectedStatus = '';
+  String get selectedStatus => _selectedStatus;
 
   Future<void> initSearchForm() async {
     // clear search filters
@@ -37,6 +41,11 @@ class ProjectProvider with ChangeNotifier {
     if (locationsResponse.status == 'success') {
       _locations.clear();
       _locations.addAll(locationsResponse.data!);
+    }
+    final projectStatusResponse = await AWContentService().fetchProjectStatusMasterData();
+    if (projectStatusResponse.status == 'success') {
+      _projectStatus.clear();
+      _projectStatus.addAll(projectStatusResponse.data!);
     }
     // load projects
     await _search();
@@ -61,10 +70,23 @@ class ProjectProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setSearchText(String text) async {
+    _searchText = text;
+    await _search();
+    notifyListeners();
+  }
+
+  void setProjectStatus(String status) async {
+    _selectedStatus = status;
+    await _search();
+    notifyListeners();
+  }
+
   Future<void> clearFilter() async {
     _searchText = '';
     _selectedBrands.clear();
     _selectedLocations.clear();
+    _selectedStatus = '';
     await _search();
     notifyListeners();
   }
@@ -97,6 +119,7 @@ class ProjectProvider with ChangeNotifier {
     }
 
     notifyListeners();
+    return null;
   }
 
   Future<void> _search() async {
@@ -104,8 +127,10 @@ class ProjectProvider with ChangeNotifier {
       search: _searchText,
       brandIds: _selectedBrands.map((e) => e.toString()).toList(),
       locationIds: _selectedLocations.map((e) => e.toString()).toList(),
+      status: _selectedStatus.isEmpty ? (_projectStatus.firstOrNull?.code ?? '') : _selectedStatus,
     );
     if (projectsResponse.status == 'success') {
+      _isFiltering = _searchText.isNotEmpty || _selectedBrands.isNotEmpty || _selectedLocations.isNotEmpty || _selectedStatus.isNotEmpty;
       _searchResults.clear();
       _searchResults.addAll(projectsResponse.data!);
     }

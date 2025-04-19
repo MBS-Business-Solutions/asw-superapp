@@ -330,15 +330,47 @@ class AWContentService {
     return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: 'Unknown error', data: null);
   }
 
+  Future<ServiceResponseWithData<List<ProjectFilterStatus>>> fetchProjectStatusMasterData() async {
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/project/status'),
+      headers: getHeader(),
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 500) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final result = ServiceResponseWithData.fromJson(
+          jsonResponse,
+          (json) {
+            List<dynamic>? data = jsonResponse['data'];
+            if (data == null) {
+              return <ProjectFilterStatus>[];
+            }
+            return data.map((json) => ProjectFilterStatus.fromJson(json)).toList();
+          },
+        );
+        return result;
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+      return ServiceResponseWithData<List<ProjectFilterStatus>>(status: 'error', message: e.toString(), data: null);
+    }
+
+    if (kDebugMode) print(response);
+    return ServiceResponseWithData<List<ProjectFilterStatus>>(status: 'error', message: 'Unknown error', data: null);
+  }
+
   Future<ServiceResponseWithData<List<ProjectSearchItem>>> searchProjects({
     required String search,
     required List<String> brandIds,
     required List<String> locationIds,
+    required String status,
   }) async {
     final body = jsonEncode({
       'search': search,
       'brand_id': brandIds,
       'location_id': locationIds,
+      'status': status,
     });
     if (kDebugMode) print(body);
     final response = await http.post(

@@ -38,35 +38,35 @@ class _CheckOutlineButtonState extends State<CheckOutlineButton> {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = isChecked ? mPrimaryMatColor : CommonUtil.colorTheme(context, darkColor: mDarkBodyTextColor, lightColor: mLightBodyTextColor);
-    final backgroundColor = isChecked ? null : CommonUtil.colorTheme(context, darkColor: mGreyBackgroundColor, lightColor: mLightCardBackgroundColor);
-    final borderColor = isChecked ? mPrimaryMatColor : null;
-    final iconColor = isChecked ? mPrimaryMatColor : CommonUtil.colorTheme(context, darkColor: mLightBorderTextFieldColor, lightColor: mLightBorderTextFieldColor);
+    final activeButtonStyle = OutlinedButton.styleFrom(
+      backgroundColor: CommonUtil.colorTheme(context, darkColor: mDarkFilterBackgroundColor, lightColor: Colors.white),
+      foregroundColor: CommonUtil.colorTheme(context, darkColor: mBrightPrimaryColor, lightColor: mBrightPrimaryColor),
+      textStyle: Theme.of(context).textTheme.labelMedium,
+      side: BorderSide(
+        color: CommonUtil.colorTheme(context, darkColor: mBrightPrimaryColor, lightColor: mBrightPrimaryColor),
+      ),
+    );
+    final inactiveButtonStyle = OutlinedButton.styleFrom(
+      backgroundColor: CommonUtil.colorTheme(context, darkColor: mDarkFilterBackgroundColor, lightColor: Colors.white),
+      foregroundColor: CommonUtil.colorTheme(context, darkColor: Colors.white, lightColor: mDarkGrey),
+      textStyle: Theme.of(context).textTheme.labelMedium,
+      side: BorderSide(
+        color: CommonUtil.colorTheme(context, darkColor: mGreyColor, lightColor: mDarkGrey),
+      ),
+    );
 
     return OutlinedButton.icon(
       onPressed: () => _onChanged(!isChecked),
       icon: isChecked
           ? Icon(
               Icons.check,
-              size: 16,
-              color: iconColor,
+              size: 18,
             )
           : null,
       label: Text(
         widget.title,
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: textColor,
-            ),
       ),
-      style: OutlinedButton.styleFrom(
-        side: isChecked
-            ? BorderSide(
-                color: borderColor!,
-              )
-            : null,
-        backgroundColor: backgroundColor,
-        foregroundColor: iconColor,
-      ),
+      style: isChecked ? activeButtonStyle : inactiveButtonStyle,
     );
   }
 
