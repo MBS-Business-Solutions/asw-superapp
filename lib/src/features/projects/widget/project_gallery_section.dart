@@ -1,0 +1,48 @@
+import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/models/aw_content_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+class ProjectGallerySection extends StatelessWidget {
+  const ProjectGallerySection({super.key, required this.galleryItem});
+  final List<GalleryItem> galleryItem;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+          child: Text(
+            AppLocalizations.of(context)!.projectDetailGalleryTitle,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        ),
+        const SizedBox(height: mSmallPadding),
+        SizedBox(
+          height: 184,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            separatorBuilder: (_, __) => const SizedBox(width: mDefaultPadding),
+            padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+            itemBuilder: (context, index) {
+              return Container(
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Image.network(galleryItem[index].thumbnailImage, fit: BoxFit.cover),
+                ),
+              );
+            },
+            itemCount: galleryItem.length,
+            shrinkWrap: true,
+          ),
+        ),
+      ],
+    );
+  }
+}

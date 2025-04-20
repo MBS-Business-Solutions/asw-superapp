@@ -135,4 +135,9 @@ class ProjectProvider with ChangeNotifier {
       _searchResults.addAll(projectsResponse.data!);
     }
   }
+
+  Future<ServiceResponseWithData<ProjectDetail>> fetchProjectDetail(int id) async {
+    final projectsResponse = await AWContentService().fetchProjectDetail(id);
+    return projectsResponse;
+  }
 }

@@ -1,6 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// Google fonts มีบั๊กไม่สามรถปรับ fontWeight โดย copyWith ได้
+//https://github.com/material-foundation/google-fonts-flutter/issues/141
+
+final TextTheme mTabBarTextTheme = TextTheme(
+  titleLarge: GoogleFonts.notoSansThai(
+    fontSize: 16,
+    fontWeight: FontWeight.normal,
+  ),
+  titleMedium: GoogleFonts.notoSansThai(
+    fontSize: 14,
+    fontWeight: FontWeight.normal,
+  ),
+  titleSmall: GoogleFonts.notoSansThai(
+    fontSize: 12,
+    fontWeight: FontWeight.normal,
+  ),
+);
+
 final TextTheme mTextTheme = TextTheme(
   titleLarge: GoogleFonts.notoSansThai(
     fontSize: 20,

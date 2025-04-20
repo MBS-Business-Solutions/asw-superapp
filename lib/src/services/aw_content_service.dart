@@ -454,4 +454,28 @@ class AWContentService {
     if (kDebugMode) print(response);
     return ServiceResponse(status: 'error', message: 'Unknown error');
   }
+
+  Future<ServiceResponseWithData<ProjectDetail>> fetchProjectDetail(int id) async {
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/project/$id'),
+      headers: getHeader(),
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 500) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final result = ServiceResponseWithData.fromJson(
+          jsonResponse,
+          (json) => ProjectDetail.fromJson(json),
+        );
+        return result;
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+      return ServiceResponseWithData<ProjectDetail>(status: 'error', message: e.toString(), data: null);
+    }
+
+    if (kDebugMode) print(response);
+    return ServiceResponseWithData<ProjectDetail>(status: 'error', message: 'Unknown error', data: null);
+  }
 }
