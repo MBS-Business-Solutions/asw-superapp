@@ -1,14 +1,14 @@
-import 'dart:math';
-
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/constants.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/providers/hot_menu_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/hot_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reorderables/reorderables.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HotMenuesConfigView extends StatefulWidget {
   const HotMenuesConfigView({super.key});
@@ -52,9 +52,9 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
   }
 
   Widget _buildAppBar() {
-    return const SliverAppBar(
+    return SliverAppBar(
       backgroundColor: Colors.transparent,
-      title: Text('เมนูทั้งหมด'),
+      title: Text(AppLocalizations.of(context)!.hotMenesConfigTitle),
       centerTitle: true,
       floating: true,
       pinned: true,
@@ -69,7 +69,7 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
           child: Row(
             children: [
               Text(
-                'เมนูโปรด',
+                AppLocalizations.of(context)!.hotMenesConfigFavourite,
                 style: Theme.of(context).textTheme.labelLarge!.copyWith(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
@@ -79,7 +79,7 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
               TextButton(
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,
-                  foregroundColor: mSecondaryMatColor,
+                  foregroundColor: CommonUtil.colorTheme(context, darkColor: mSecondaryColor, lightColor: mSecondaryDarkerColor),
                   textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
@@ -90,10 +90,10 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
                     isEditing = !isEditing;
                   });
                 },
-                child: const Row(
+                child: Row(
                   children: [
                     Text(
-                      'ตั้งค่า',
+                      AppLocalizations.of(context)!.hotMenesConfigSetting,
                     ),
                     Icon(Icons.settings_outlined),
                   ],
@@ -136,7 +136,6 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
                                         : () {
                                             provider.removeHotMenu(e.id).catchError((error) {});
                                           },
-                                    showAdd: isEditing,
                                     badgeCount: 0,
                                   ),
                                   if (isEditing)
@@ -149,7 +148,7 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
                                           height: 16,
                                           padding: const EdgeInsets.all(1),
                                           decoration: const BoxDecoration(shape: BoxShape.circle, color: mDeleteRedColor),
-                                          child: const FittedBox(fit: BoxFit.contain, child: Icon(Icons.remove)),
+                                          child: const FittedBox(fit: BoxFit.contain, child: Icon(Icons.remove, color: Colors.white)),
                                         ),
                                       ),
                                     )
@@ -199,7 +198,7 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
               Row(
                 children: [
                   Text(
-                    'เมนูอื่นๆ',
+                    AppLocalizations.of(context)!.hotMenesConfigOthers,
                     style: Theme.of(context).textTheme.labelLarge!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
@@ -241,7 +240,6 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
                                         provider.addHotMenu(menu.id).catchError((error) {});
                                       }
                                     },
-                              showAdd: isEditing,
                               badgeCount: 0,
                             ),
                             if (isEditing && provider.canAddMenu)
@@ -254,7 +252,7 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
                                     height: 16,
                                     padding: const EdgeInsets.all(1),
                                     decoration: const BoxDecoration(shape: BoxShape.circle, color: mAddGreenColor),
-                                    child: const FittedBox(fit: BoxFit.contain, child: Icon(Icons.add)),
+                                    child: const FittedBox(fit: BoxFit.contain, child: Icon(Icons.add, color: Colors.white)),
                                   ),
                                 ),
                               )

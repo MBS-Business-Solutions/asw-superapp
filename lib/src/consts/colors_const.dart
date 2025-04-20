@@ -16,21 +16,8 @@ const MaterialColor mPrimaryMatColor = MaterialColor(
   },
 );
 
-const MaterialColor mSecondaryMatColor = MaterialColor(
-  0xFF79D9D6,
-  <int, Color>{
-    50: Color(0x0079D9D6),
-    100: Color(0x3379D9D6),
-    200: Color(0x4D79D9D6),
-    300: Color(0x6679D9D6),
-    400: Color(0x8079D9D6),
-    500: Color(0x9979D9D6),
-    600: Color(0xB379D9D6),
-    700: Color(0xCC79D9D6),
-    800: Color(0xE679D9D6),
-    900: Color(0xFF79D9D6),
-  },
-);
+const Color mSecondaryColor = Color(0xFF79D9D6);
+const Color mSecondaryDarkerColor = Color(0xFF0F8884);
 
 const Color mDarkBackgroundDimColor = Color(0xFF1D1D1D);
 const Color mDarkBackgroundColor = Color(0xFF000000);

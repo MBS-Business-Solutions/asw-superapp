@@ -98,7 +98,7 @@ final ThemeData mLightTheme = ThemeData(
       ),
     ),
     HotMenuTheme(
-      iconColor: Color(0xFF787878),
+      iconColor: Color(0xFFDAB269),
       textColor: Color(0xFF444444),
       borderColor: Colors.white10,
       backgroundGradient: LinearGradient(

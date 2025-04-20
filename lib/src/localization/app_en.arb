@@ -489,5 +489,10 @@
   "promotionsPurpose": "วัตถุประสงค์การซื้อ",
   "promotionsRegister": "ลงทะเบียน",
   "promotionsRegisterSuccess": "ส่งข้อมูลสำเร็จ",
-  "promotionsBackToPromotions": "กลับสู่หน้าโปรโมชั่น"
+  "promotionsBackToPromotions": "กลับสู่หน้าโปรโมชั่น",
+
+  "hotMenesConfigTitle": "เมนูทั้งหมด",
+  "hotMenesConfigFavourite": "เมนูโปรด",
+  "hotMenesConfigOthers": "เมนูอื่นๆ",
+  "hotMenesConfigSetting": "ตั้งค่า"
 }

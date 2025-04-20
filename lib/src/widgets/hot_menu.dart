@@ -11,14 +11,12 @@ class HotMenuWidget extends StatelessWidget {
     this.badgeCount = 0,
     this.highlight = false,
     this.onTap,
-    this.showAdd,
   });
 
   final String titleText;
   final String? iconAsset;
   final int badgeCount;
   final bool highlight;
-  final bool? showAdd;
   final Function()? onTap;
 
   @override
