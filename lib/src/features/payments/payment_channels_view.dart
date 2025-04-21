@@ -77,7 +77,7 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
                       children: [
                         Text(
                           AppLocalizations.of(context)!.paymentChannelViewCreditChannel,
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Row(
                           children: [
@@ -127,7 +127,7 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
                       children: [
                         Text(
                           AppLocalizations.of(context)!.paymentChannelViewQRChannel,
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Row(
                           children: [
@@ -184,7 +184,7 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   color: CommonUtil.colorTheme(context, darkColor: mGreyBackgroundColor, lightColor: mLightBackgroundColor),
-                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)),
+                                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)),
                                 ),
                                 child: TextField(
                                   controller: _amountController,
@@ -225,7 +225,7 @@ class _PaymentChannelsViewState extends State<PaymentChannelsView> {
                               padding: const EdgeInsets.symmetric(horizontal: mMediumPadding),
                               decoration: BoxDecoration(
                                 color: CommonUtil.colorTheme(context, darkColor: mGreyBackgroundColor, lightColor: mLightBackgroundColor),
-                                borderRadius: BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4)),
+                                borderRadius: const BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4)),
                               ),
                               alignment: Alignment.center,
                               child: Text(

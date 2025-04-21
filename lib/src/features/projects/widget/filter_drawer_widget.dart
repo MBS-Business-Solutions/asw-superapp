@@ -47,7 +47,7 @@ class FilterDrawerWidget extends StatelessWidget {
                 slivers: [
                   // Brand
                   SliverPadding(
-                    padding: EdgeInsets.all(mDefaultPadding),
+                    padding: const EdgeInsets.all(mDefaultPadding),
                     sliver: SliverToBoxAdapter(
                       child: Text(
                         AppLocalizations.of(context)!.projectsBrands,
@@ -66,7 +66,7 @@ class FilterDrawerWidget extends StatelessWidget {
                   ),
                   // Location
                   SliverPadding(
-                    padding: EdgeInsets.all(mDefaultPadding),
+                    padding: const EdgeInsets.all(mDefaultPadding),
                     sliver: SliverToBoxAdapter(
                       child: Text(
                         AppLocalizations.of(context)!.projectsLocations,
@@ -123,12 +123,15 @@ class FilterDrawerWidget extends StatelessWidget {
   Row _buildFilterButtons(BuildContext context) {
     return Row(
       children: [
-        SizedBox(
+        const SizedBox(
           width: mDefaultPadding,
         ),
         Expanded(
           child: FilledButton(
             onPressed: () => context.read<ProjectProvider>().clearFilter(),
+            style: FilledButton.styleFrom(
+              backgroundColor: CommonUtil.colorTheme(context, darkColor: mGreyBackgroundColor, lightColor: mLightCardBackgroundColor),
+            ),
             child: Text(
               AppLocalizations.of(context)!.projectsClearFilter,
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
@@ -138,12 +141,9 @@ class FilterDrawerWidget extends StatelessWidget {
                     lightColor: mPrimaryMatColor,
                   )),
             ),
-            style: FilledButton.styleFrom(
-              backgroundColor: CommonUtil.colorTheme(context, darkColor: mGreyBackgroundColor, lightColor: mLightCardBackgroundColor),
-            ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: mDefaultPadding,
         ),
         Expanded(
@@ -162,7 +162,7 @@ class FilterDrawerWidget extends StatelessWidget {
                     )),
               )),
         ),
-        SizedBox(
+        const SizedBox(
           width: mDefaultPadding,
         ),
       ],
@@ -173,7 +173,7 @@ class FilterDrawerWidget extends StatelessWidget {
     return Consumer<ProjectProvider>(builder: (context, provider, child) {
       final list = provider.brands;
       return SliverPadding(
-        padding: EdgeInsets.symmetric(horizontal: mDefaultPadding),
+        padding: const EdgeInsets.symmetric(horizontal: mDefaultPadding),
         sliver: SliverGrid(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
@@ -237,7 +237,7 @@ class FilterDrawerWidget extends StatelessWidget {
             },
             childCount: list.length,
           ),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             crossAxisSpacing: 4,
             mainAxisSpacing: mDefaultPadding * 2,

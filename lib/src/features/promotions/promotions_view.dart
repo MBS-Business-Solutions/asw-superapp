@@ -70,7 +70,7 @@ class _PromotionsViewState extends State<PromotionsView> {
                       decoration: BoxDecoration(
                         color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: Colors.white),
                         borderRadius: BorderRadius.circular(99),
-                        boxShadow: Theme.of(context).brightness == Brightness.dark ? [BoxShadow(color: Colors.white24, blurRadius: 10, spreadRadius: 1)] : null,
+                        boxShadow: Theme.of(context).brightness == Brightness.dark ? [const BoxShadow(color: Colors.white24, blurRadius: 10, spreadRadius: 1)] : null,
                       ),
                       child: TextField(
                         controller: _searchController,

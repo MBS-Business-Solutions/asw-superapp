@@ -343,7 +343,7 @@ class _ContractsViewState extends State<ContractsView> {
                 decoration: BoxDecoration(
                   color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
                   borderRadius: const BorderRadius.all(Radius.circular(32)),
-                  border: Border.all(color: CommonUtil.colorTheme(context, darkColor: Color(0xFF585858), lightColor: Colors.black.withOpacity(0.1))),
+                  border: Border.all(color: CommonUtil.colorTheme(context, darkColor: const Color(0xFF585858), lightColor: Colors.black.withOpacity(0.1))),
                 ),
                 child: DropdownButton<int>(
                   isDense: true,

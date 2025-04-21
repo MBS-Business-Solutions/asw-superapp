@@ -107,7 +107,7 @@ class MyQrView extends StatelessWidget {
                               width: 80,
                               child: Column(
                                 children: [
-                                  Icon(Icons.document_scanner_outlined),
+                                  const Icon(Icons.document_scanner_outlined),
                                   Text(AppLocalizations.of(context)!.myQRScanQR),
                                 ],
                               ),
@@ -124,7 +124,7 @@ class MyQrView extends StatelessWidget {
                                   Transform(
                                     alignment: Alignment.center,
                                     transform: Matrix4.identity()..scale(-1.0, 1.0, 1.0),
-                                    child: Icon(Icons.reply),
+                                    child: const Icon(Icons.reply),
                                   ),
                                   Text(AppLocalizations.of(context)!.myQRShare),
                                 ],
@@ -139,7 +139,7 @@ class MyQrView extends StatelessWidget {
                               width: 80,
                               child: Column(
                                 children: [
-                                  Icon(Icons.file_download_outlined),
+                                  const Icon(Icons.file_download_outlined),
                                   Text(AppLocalizations.of(context)!.myQRSave),
                                 ],
                               ),
@@ -178,7 +178,7 @@ class MyQrView extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   AppLocalizations.of(context)!.myQRSaveCompleted,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
               ],
             ),

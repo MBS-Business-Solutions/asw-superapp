@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:AssetWise/plugins.dart';
 import 'package:AssetWise/src/models/aw_notification_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';

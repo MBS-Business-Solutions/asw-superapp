@@ -25,7 +25,7 @@ class PromotionDetailView extends StatefulWidget {
 class _PromotionDetailViewState extends State<PromotionDetailView> {
   bool _isLoading = true;
   PromotionItemDetail? _promotionDetail;
-  DateFormat _dateFormat = DateFormat('dd MMM yy');
+  final DateFormat _dateFormat = DateFormat('dd MMM yy');
 
   @override
   void initState() {
@@ -136,7 +136,7 @@ class _PromotionDetailViewState extends State<PromotionDetailView> {
                     border: Border.all(
                       color: CommonUtil.colorTheme(context, darkColor: Colors.white24, lightColor: mLightBackgroundColor),
                     ),
-                    boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
+                    boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [const BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mDefaultPadding),
                   child: SafeArea(
@@ -160,7 +160,7 @@ class _PromotionDetailViewState extends State<PromotionDetailView> {
                               color: CommonUtil.colorTheme(context, darkColor: mGreyColor, lightColor: mLightBackgroundDimColor),
                             ),
                             color: CommonUtil.colorTheme(context, darkColor: mLightOutlinedButtonColor, lightColor: mLightBackgroundDimColor),
-                            boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
+                            boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [const BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
                           ),
                           child: Transform(
                             alignment: Alignment.center,

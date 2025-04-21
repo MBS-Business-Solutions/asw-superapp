@@ -98,7 +98,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                                 Expanded(
                                     child: Text(
                                   AppLocalizations.of(context)!.receiptViewPaymentType,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
                                 )),
                                 Text(receiptDetail.paymentType),
                               ],
@@ -108,7 +108,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                                 Expanded(
                                     child: Text(
                                   AppLocalizations.of(context)!.receiptViewDate,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
                                 )),
                                 Text(DateFormatterUtil.formatShortDate(context, receiptDetail.date)),
                               ],
@@ -118,7 +118,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                                 Expanded(
                                     child: Text(
                                   AppLocalizations.of(context)!.receiptViewRef1,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
                                 )),
                                 Text(receiptDetail.ref1),
                               ],
@@ -128,7 +128,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                                 Expanded(
                                     child: Text(
                                   AppLocalizations.of(context)!.receiptViewRef2,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
                                 )),
                                 Text(receiptDetail.ref2),
                               ],
@@ -141,7 +141,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                                 Expanded(
                                     child: Text(
                                   AppLocalizations.of(context)!.receiptViewRemark,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
                                 )),
                               ],
                             ),
@@ -150,7 +150,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                                 Expanded(
                                     child: Text(
                                   AppLocalizations.of(context)!.receiptViewDue,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
                                 )),
                                 Text(DateFormatterUtil.formatShortDate(context, receiptDetail.dueDate)),
                               ],

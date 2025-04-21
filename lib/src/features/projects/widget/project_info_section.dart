@@ -59,7 +59,7 @@ class ProjectInfoSection extends StatelessWidget {
                     AppLocalizations.of(context)!.projectDetailProgressTitle,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Text(
                     AppLocalizations.of(context)!.projectDetailProgressUpdated(DateFormatterUtil.formatShortNumberDate(context, projectDetail.progress.updateDated)),
                     style: Theme.of(context).textTheme.bodyMedium,
@@ -83,7 +83,7 @@ class ProjectInfoSection extends StatelessWidget {
                           Row(
                             children: [
                               Text(AppLocalizations.of(context)!.projectDetailProgressStructure),
-                              Spacer(),
+                              const Spacer(),
                               Text(
                                 '${(projectDetail.progress.construction * 100).toStringAsFixed(0)}%',
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -94,7 +94,7 @@ class ProjectInfoSection extends StatelessWidget {
                           Row(
                             children: [
                               Text(AppLocalizations.of(context)!.projectDetailProgressFinishing),
-                              Spacer(),
+                              const Spacer(),
                               Text(
                                 '${(projectDetail.progress.interior * 100).toStringAsFixed(0)}%',
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -105,7 +105,7 @@ class ProjectInfoSection extends StatelessWidget {
                           Row(
                             children: [
                               Text(AppLocalizations.of(context)!.projectDetailProgressComplete),
-                              Spacer(),
+                              const Spacer(),
                               Text(
                                 '${(projectDetail.progress.facilities * 100).toStringAsFixed(0)}%',
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -116,7 +116,7 @@ class ProjectInfoSection extends StatelessWidget {
                           Row(
                             children: [
                               Text(AppLocalizations.of(context)!.projectDetailProgressConstruction),
-                              Spacer(),
+                              const Spacer(),
                               Text(
                                 '${(projectDetail.progress.constructionPiles * 100).toStringAsFixed(0)}%',
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),

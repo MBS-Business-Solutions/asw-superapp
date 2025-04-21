@@ -113,7 +113,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                               controller: _tabController,
                               tabAlignment: TabAlignment.start,
                               isScrollable: true,
-                              dividerColor: CommonUtil.colorTheme(context, darkColor: Colors.white, lightColor: Color(0xFFDEDEDE)),
+                              dividerColor: CommonUtil.colorTheme(context, darkColor: Colors.white, lightColor: const Color(0xFFDEDEDE)),
                               dividerHeight: 2,
                               indicatorSize: TabBarIndicatorSize.tab,
                               indicatorWeight: 2,
@@ -173,8 +173,8 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                                       padding: const EdgeInsets.only(top: mDefaultPadding),
                                       child: LocationSection(location: projectDetail.location),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: mDefaultPadding),
+                                    const Padding(
+                                      padding: EdgeInsets.only(top: mDefaultPadding),
                                       child: ProjectNearbySection(),
                                     ),
                                     Padding(
@@ -221,7 +221,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
     if (context != null) {
       Scrollable.ensureVisible(
         context,
-        duration: Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
     }

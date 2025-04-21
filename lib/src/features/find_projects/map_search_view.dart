@@ -25,9 +25,9 @@ class _MapSearchViewState extends State<MapSearchView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _showResult = true;
   static final pinLocations = [
-    LatLng(13.7463, 100.5018), // Original pin
-    LatLng(13.7563, 100.5218), // ~10m north
-    LatLng(13.8663, 100.5018), // ~10m east
+    const LatLng(13.7463, 100.5018), // Original pin
+    const LatLng(13.7563, 100.5218), // ~10m north
+    const LatLng(13.8663, 100.5018), // ~10m east
   ];
 
   @override
@@ -132,9 +132,9 @@ class _MapSearchViewState extends State<MapSearchView> {
                     ),
                     child: TextField(
                       autofocus: false,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: mDefaultPadding),
-                        suffixIcon: const Icon(Icons.search),
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: mDefaultPadding),
+                        suffixIcon: Icon(Icons.search),
                         border: InputBorder.none,
                       ),
                       textInputAction: TextInputAction.search,
@@ -145,7 +145,7 @@ class _MapSearchViewState extends State<MapSearchView> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: mMediumPadding,
                 ),
                 Container(
@@ -158,7 +158,7 @@ class _MapSearchViewState extends State<MapSearchView> {
                       CommonUtil.dismissKeyboard(context);
                       _scaffoldKey.currentState?.openEndDrawer(); // Open the drawer when the button is pressed
                     },
-                    icon: Icon(Icons.filter_list, color: mGreyColor),
+                    icon: const Icon(Icons.filter_list, color: mGreyColor),
                   ),
                 ),
               ],
@@ -185,10 +185,10 @@ class _MapSearchViewState extends State<MapSearchView> {
                     barrierColor: Colors.transparent,
                     context: context,
                     builder: (context) => Container(
-                      padding: EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: Text(
                         'Location: ${location.latitude}, ${location.longitude}',
-                        style: TextStyle(fontSize: 16.0),
+                        style: const TextStyle(fontSize: 16.0),
                       ),
                     ),
                   );
@@ -227,11 +227,11 @@ class _MapSearchViewState extends State<MapSearchView> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: mDefaultPadding,
             ),
             Text('ผลการค้นหา : 3 รายการ', style: Theme.of(context).textTheme.labelMedium),
-            SizedBox(
+            const SizedBox(
               height: mSmallPadding,
             ),
             Expanded(
@@ -248,7 +248,7 @@ class _MapSearchViewState extends State<MapSearchView> {
                     title: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.access_time),
+                        const Icon(Icons.access_time),
                         const SizedBox(width: mDefaultPadding),
                         Expanded(
                           child: Column(
@@ -271,7 +271,7 @@ class _MapSearchViewState extends State<MapSearchView> {
                               ),
                               child: Transform.rotate(
                                 angle: pi, // Rotate 180 degrees
-                                child: Icon(
+                                child: const Icon(
                                   Icons.subdirectory_arrow_left_sharp,
                                   size: 15,
                                   color: mBrightPrimaryColor,

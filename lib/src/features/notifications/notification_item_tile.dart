@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:AssetWise/src/consts/foundation_const.dart';
-import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/features/notifications/notification_item_theme.dart';
 import 'package:AssetWise/src/features/payments/payment_channels_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';

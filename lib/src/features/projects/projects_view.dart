@@ -89,7 +89,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                       border: Border.all(
                         color: CommonUtil.colorTheme(context, darkColor: Colors.white24, lightColor: mLightBackgroundColor),
                       ),
-                      boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
+                      boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [const BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mDefaultPadding),
                     child: SafeArea(
@@ -123,7 +123,7 @@ class _ProjectsViewState extends State<ProjectsView> {
     return [
       if (projectProvider.isFiltering && projectProvider.searchResults.isNotEmpty)
         Padding(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             bottom: mDefaultPadding,
             left: mScreenEdgeInsetValue,
             right: mScreenEdgeInsetValue,
@@ -133,7 +133,7 @@ class _ProjectsViewState extends State<ProjectsView> {
       if (projectProvider.isFiltering && projectProvider.searchResults.isEmpty)
         Expanded(
           child: Padding(
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               bottom: mDefaultPadding,
               left: mScreenEdgeInsetValue,
               right: mScreenEdgeInsetValue,

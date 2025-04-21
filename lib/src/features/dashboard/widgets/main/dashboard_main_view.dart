@@ -1,7 +1,6 @@
 import 'package:AssetWise/src/features/hot_menues/fav_hot_menues/fav_hot_menues.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/home_action_button/home_action_button.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/main/notification_section.dart';
-import 'package:AssetWise/src/features/find_projects/map_search_view.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';

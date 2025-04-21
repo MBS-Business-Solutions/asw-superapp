@@ -22,7 +22,7 @@ BoxDecoration buildCardDecoration(BuildContext context) {
   return BoxDecoration(
     // Theme dark ขอเป็นสี mDarkBackgroundColor และ light ขอเป็นสี mLightCardBackgroundColor
     color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
-    border: Border.all(color: CommonUtil.colorTheme(context, darkColor: Color(0xFF585858), lightColor: Colors.transparent)),
+    border: Border.all(color: CommonUtil.colorTheme(context, darkColor: const Color(0xFF585858), lightColor: Colors.transparent)),
     borderRadius: const BorderRadius.only(
       topLeft: Radius.circular(32),
       topRight: Radius.circular(32),
@@ -36,7 +36,7 @@ BoxDecoration buildCardDecoration(BuildContext context) {
 BoxDecoration buildItemCardDecoration(BuildContext context) {
   return BoxDecoration(
     color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
-    border: Border.all(color: CommonUtil.colorTheme(context, darkColor: Color(0xFF585858), lightColor: Colors.transparent)),
+    border: Border.all(color: CommonUtil.colorTheme(context, darkColor: const Color(0xFF585858), lightColor: Colors.transparent)),
     borderRadius: BorderRadius.circular(16),
     boxShadow: _mCardShadow(context),
   );

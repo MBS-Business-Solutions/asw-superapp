@@ -58,7 +58,7 @@ class _CheckOutlineButtonState extends State<CheckOutlineButton> {
     return OutlinedButton.icon(
       onPressed: () => _onChanged(!isChecked),
       icon: isChecked
-          ? Icon(
+          ? const Icon(
               Icons.check,
               size: 18,
             )

@@ -70,10 +70,10 @@ class _CheckOutlineButtonState extends State<FilterOutlineButton> {
               constraints: BoxConstraints(minWidth: defaultButtonWidth),
               child: OutlinedButton(
                 onPressed: () => _onChanged(widget.filterStatus[index].code),
+                style: ((_selectedCode == null || _selectedCode!.isEmpty) && index == 0) || _selectedCode == widget.filterStatus[index].code ? activeButtonStyle : inactiveButtonStyle,
                 child: Text(
                   currentLanguage == 'th' ? widget.filterStatus[index].nameTh : widget.filterStatus[index].nameEn,
                 ),
-                style: ((_selectedCode == null || _selectedCode!.isEmpty) && index == 0) || _selectedCode == widget.filterStatus[index].code ? activeButtonStyle : inactiveButtonStyle,
               ),
             ),
             if (index != widget.filterStatus.length - 1) const SizedBox(width: mMediumPadding),

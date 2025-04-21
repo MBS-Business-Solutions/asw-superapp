@@ -95,7 +95,7 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
                     Text(
                       AppLocalizations.of(context)!.hotMenesConfigSetting,
                     ),
-                    Icon(Icons.settings_outlined),
+                    const Icon(Icons.settings_outlined),
                   ],
                 ),
               ),
@@ -172,7 +172,7 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
                         for (var i = 0; i < mHotMenuRow - selectedMenues.length; i++)
                           SizedBox(
                             width: itemWidth,
-                            child: HotMenuWidget(
+                            child: const HotMenuWidget(
                               titleText: '',
                             ),
                           ),

@@ -36,13 +36,13 @@ class GooglemapUtil {
   }
 
   static _calculateZoom(BuildContext context, LatLngBounds bounds, double zoomFactor) {
-    const double GLOBE_WIDTH = 256; // a magic number from Google Maps API
+    const double globeWidth = 256; // a magic number from Google Maps API
     double angle = max(
       bounds.northeast.longitude - bounds.southwest.longitude,
       bounds.northeast.latitude - bounds.southwest.latitude,
     );
 
-    return (log(MediaQuery.of(context).size.width * zoomFactor * 360 / GLOBE_WIDTH / angle) / log(2));
+    return (log(MediaQuery.of(context).size.width * zoomFactor * 360 / globeWidth / angle) / log(2));
   }
 
   static double calculateDistance(LatLng start, LatLng end) {

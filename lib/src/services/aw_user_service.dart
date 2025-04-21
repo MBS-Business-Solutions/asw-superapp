@@ -354,5 +354,6 @@ class AwUserService {
       }
     }
     if (kDebugMode) print(response);
+    return null;
   }
 }

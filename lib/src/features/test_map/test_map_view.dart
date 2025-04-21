@@ -15,9 +15,9 @@ class _TestGoogleMapState extends State<TestGoogleMap> {
   late CameraPosition _initialCameraPosition;
 
   static final pinLocations = [
-    LatLng(13.7463, 100.5018), // Original pin
-    LatLng(13.7563, 100.5018), // ~10m north
-    LatLng(13.8663, 100.5018), // ~10m east
+    const LatLng(13.7463, 100.5018), // Original pin
+    const LatLng(13.7563, 100.5018), // ~10m north
+    const LatLng(13.8663, 100.5018), // ~10m east
   ];
 
   static final CameraPosition _kInitialPosition = CameraPosition(
@@ -65,13 +65,13 @@ class _TestGoogleMapState extends State<TestGoogleMap> {
   }
 
   double _calculateZoom(LatLngBounds bounds) {
-    const double GLOBE_WIDTH = 256; // a magic number from Google Maps API
+    const double globeWidth = 256; // a magic number from Google Maps API
     double angle = max(
       bounds.northeast.longitude - bounds.southwest.longitude,
       bounds.northeast.latitude - bounds.southwest.latitude,
     );
 
-    return (log(MediaQuery.of(context).size.width * 0.6 * 360 / GLOBE_WIDTH / angle) / log(2));
+    return (log(MediaQuery.of(context).size.width * 0.6 * 360 / globeWidth / angle) / log(2));
   }
 
   @override
@@ -90,10 +90,10 @@ class _TestGoogleMapState extends State<TestGoogleMap> {
                         showModalBottomSheet(
                           context: context,
                           builder: (context) => Container(
-                            padding: EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.all(16.0),
                             child: Text(
                               'Location: ${location.latitude}, ${location.longitude}',
-                              style: TextStyle(fontSize: 16.0),
+                              style: const TextStyle(fontSize: 16.0),
                             ),
                           ),
                         );

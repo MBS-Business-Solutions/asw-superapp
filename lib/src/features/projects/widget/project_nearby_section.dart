@@ -10,7 +10,7 @@ class ProjectNearbySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+      padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -25,7 +25,7 @@ class ProjectNearbySection extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
             ),
-            child: AspectRatio(
+            child: const AspectRatio(
               aspectRatio: 4 / 3,
               child: Placeholder(),
             ),
@@ -37,9 +37,9 @@ class ProjectNearbySection extends StatelessWidget {
               child: Text.rich(
                 TextSpan(
                   children: [
-                    WidgetSpan(
+                    const WidgetSpan(
                       child: Padding(
-                        padding: const EdgeInsets.only(right: mMediumPadding),
+                        padding: EdgeInsets.only(right: mMediumPadding),
                         child: Icon(Icons.pin_drop_outlined),
                       ),
                     ),
