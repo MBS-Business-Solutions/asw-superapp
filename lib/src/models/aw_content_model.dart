@@ -566,3 +566,32 @@ class ProjectVideo {
     );
   }
 }
+
+class FavouriteProjectSearchItem {
+  final int id;
+  final String name;
+  final String image;
+  final String status;
+  final String textPrice;
+  bool isFavorite;
+
+  FavouriteProjectSearchItem({
+    required this.id,
+    required this.name,
+    required this.image,
+    required this.status,
+    required this.textPrice,
+    required this.isFavorite,
+  });
+
+  factory FavouriteProjectSearchItem.fromJson(Map<String, dynamic> json) {
+    return FavouriteProjectSearchItem(
+      id: json['id'],
+      name: json['name'],
+      image: json['image'],
+      status: json['status'],
+      textPrice: json['text_price'],
+      isFavorite: json['is_favorite'],
+    );
+  }
+}

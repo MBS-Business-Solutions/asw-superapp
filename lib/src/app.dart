@@ -11,6 +11,7 @@ import 'package:AssetWise/src/features/contract/overdues_view.dart';
 import 'package:AssetWise/src/features/contract/receipt_view.dart';
 import 'package:AssetWise/src/features/contract/receipt_view_file.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/change_languange_view.dart';
+import 'package:AssetWise/src/features/favourite_projects/favourite_projects_view.dart';
 import 'package:AssetWise/src/features/find_projects/map_search_view.dart';
 import 'package:AssetWise/src/features/hot_menues/hot_menues_config_view.dart';
 import 'package:AssetWise/src/features/manage_personal_info/manage_personal_info_view.dart';
@@ -255,6 +256,8 @@ class _MyAppState extends State<MyApp> {
                     return ProjectDetailView(
                       projectId: routeMap!['projectId'] as int,
                     );
+                  case FavouriteProjectsView.routeName:
+                    return const FavouriteProjectsView();
                   default:
                     // return DashboardView(controller: settingsController);
                     return const SplashView();

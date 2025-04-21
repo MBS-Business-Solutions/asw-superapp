@@ -233,8 +233,8 @@ class AWContentService {
     return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: 'Unknown error', data: null);
   }
 
-  Future<ServiceResponse> registerInterestPromotion({
-    required int promotionId,
+  Future<ServiceResponse> registerInterest({
+    required int refId,
     required String firstName,
     required String lastName,
     required String phone,
@@ -246,7 +246,7 @@ class AWContentService {
       Uri.parse('$BASE_URL/mobile/register/interest'),
       headers: getPostHeader(),
       body: jsonEncode({
-        'ref_id': promotionId.toString(),
+        'ref_id': refId.toString(),
         'first_name': firstName,
         'last_name': lastName,
         'phone': phone,
@@ -477,5 +477,35 @@ class AWContentService {
 
     if (kDebugMode) print(response);
     return ServiceResponseWithData<ProjectDetail>(status: 'error', message: 'Unknown error', data: null);
+  }
+
+  Future<ServiceResponseWithData<List<FavouriteProjectSearchItem>>> fetchFavouriteProjects() async {
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/project/favorite'),
+      headers: getHeader(),
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 500) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final result = ServiceResponseWithData.fromJson(
+          jsonResponse,
+          (json) {
+            List<dynamic>? data = jsonResponse['data'];
+            if (data == null) {
+              return <FavouriteProjectSearchItem>[];
+            }
+            return data.map((json) => FavouriteProjectSearchItem.fromJson(json)).toList();
+          },
+        );
+        return result;
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+      return ServiceResponseWithData<List<FavouriteProjectSearchItem>>(status: 'error', message: e.toString(), data: null);
+    }
+
+    if (kDebugMode) print(response);
+    return ServiceResponseWithData<List<FavouriteProjectSearchItem>>(status: 'error', message: 'Unknown error', data: null);
   }
 }

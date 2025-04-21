@@ -1,3 +1,5 @@
+// link จะโหลดใหม่ทุกครั้งที่เปิดแอปใหม่
+
 const mHotMenuConfig = {
   'project': {
     'titleText_en': 'Project',
@@ -15,7 +17,7 @@ const mHotMenuConfig = {
     'titleText_en': 'Favorite',
     'titleText_th': 'ชื่นชอบ',
     'iconAsset': 'assets/icons/Fav.svg',
-    'link': '/notifications-and-news',
+    'link': '/favourites',
   }
 };
 

@@ -26,7 +26,7 @@ class ProjectProvider with ChangeNotifier {
   String _selectedStatus = '';
   String get selectedStatus => _selectedStatus;
 
-  Future<void> initSearchForm() async {
+  Future<void> initSearchForm({bool isSearchProject = true}) async {
     // clear search filters
     _searchText = '';
     _selectedBrands.clear();
@@ -48,7 +48,9 @@ class ProjectProvider with ChangeNotifier {
       _projectStatus.addAll(projectStatusResponse.data!);
     }
     // load projects
-    await _search();
+    if (isSearchProject) {
+      await _search();
+    }
     notifyListeners();
   }
 
@@ -112,7 +114,9 @@ class ProjectProvider with ChangeNotifier {
       response = await AWContentService().unsetFavoriteProject(id, _userProvider!.token!);
     }
 
-    if (response.status == 'success') {
+    if (response.status == 'success' && _searchResults.isNotEmpty) {
+      // เฉพาะกรณีที่มีการค้นหาจากหน้า ProjectsView
+      // ให้ทำการอัปเดตข้อมูลใน _searchResults
       _searchResults.firstWhere((element) => element.id == id).isFavorite = fav;
     } else {
       return response.message ?? 'Error';
@@ -139,5 +143,38 @@ class ProjectProvider with ChangeNotifier {
   Future<ServiceResponseWithData<ProjectDetail>> fetchProjectDetail(int id) async {
     final projectsResponse = await AWContentService().fetchProjectDetail(id);
     return projectsResponse;
+  }
+
+  Future<ServiceResponseWithData<List<FavouriteProjectSearchItem>>> fetchFavouriteProjects() async {
+    final favouritesResponse = await AWContentService().fetchFavouriteProjects();
+    return favouritesResponse;
+  }
+
+  Future<ServiceResponse> registerInterestProject({
+    required int projectId,
+    required String firstName,
+    required String lastName,
+    required String phone,
+    required String email,
+    required String priceInterest,
+    required String objectiveInterest,
+  }) async {
+    return AWContentService().registerInterest(
+      refId: projectId,
+      firstName: firstName,
+      lastName: lastName,
+      phone: phone,
+      email: email,
+      priceInterest: priceInterest,
+      objectiveInterest: objectiveInterest,
+    );
+  }
+
+  Future<ServiceResponseWithData<List<KeyValue>>> fetchPromotionPriceRanges() async {
+    return AWContentService().fetchPriceRanges();
+  }
+
+  Future<ServiceResponseWithData<List<KeyValue>>> fetchPurposes() async {
+    return AWContentService().fetchPurposes();
   }
 }

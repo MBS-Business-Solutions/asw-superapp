@@ -25,9 +25,13 @@ class ProjectsView extends StatefulWidget {
 class _ProjectsViewState extends State<ProjectsView> {
   @override
   void initState() {
-    final provider = Provider.of<ProjectProvider>(context, listen: false);
-    provider.initSearchForm();
+    _initData();
     super.initState();
+  }
+
+  void _initData() async {
+    final provider = context.read<ProjectProvider>();
+    await provider.initSearchForm();
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -55,62 +59,66 @@ class _ProjectsViewState extends State<ProjectsView> {
               backgroundColor: Colors.transparent,
               actions: const [SizedBox()],
             ),
-            body: Stack(
-              children: [
-                Consumer<ProjectProvider>(builder: (context, projectProvider, child) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildSearchBar(context, projectProvider),
-                      const SizedBox(height: mMediumPadding),
-                      // Filter button
-                      FilterOutlineButton(
-                        filterStatus: projectProvider.projectStatus,
-                        selectedCode: projectProvider.selectedStatus,
-                        onChanged: (value) => projectProvider.setProjectStatus(value ?? ''),
-                      ),
-                      const SizedBox(height: mMediumPadding),
-                      ..._buildSearchResult(context, projectProvider, userProvider),
-                    ],
-                  );
-                }),
-                Positioned(
-                  bottom: 0, // Start off-screen when loading
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    alignment: Alignment.bottomCenter,
-                    decoration: BoxDecoration(
-                      color: CommonUtil.colorTheme(context, darkColor: const Color(0xEE262626), lightColor: Colors.white),
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20.0),
-                        topRight: Radius.circular(20.0),
-                      ),
-                      border: Border.all(
-                        color: CommonUtil.colorTheme(context, darkColor: Colors.white24, lightColor: mLightBackgroundColor),
-                      ),
-                      boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [const BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
+            body: Consumer<ProjectProvider>(
+              builder: (context, projectProvider, child) {
+                return Stack(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildSearchBar(context, projectProvider),
+                        const SizedBox(height: mMediumPadding),
+                        // Filter button
+                        FilterOutlineButton(
+                          filterStatus: projectProvider.projectStatus,
+                          selectedCode: projectProvider.selectedStatus,
+                          onChanged: (value) => projectProvider.setProjectStatus(value ?? ''),
+                        ),
+                        const SizedBox(height: mMediumPadding),
+                        ..._buildSearchResult(context, projectProvider, userProvider),
+                      ],
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mDefaultPadding),
-                    child: SafeArea(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: FilledButton(
-                              onPressed: () => Navigator.pushNamed(context, MapSearchView.routeName),
-                              child: Text(
-                                AppLocalizations.of(context)!.projectsSeeOnMap,
-                                style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
-                              ),
-                            ),
+                    AnimatedPositioned(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                      bottom: projectProvider.searchResults.isNotEmpty ? 0 : -100, // Start off-screen when loading
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        alignment: Alignment.bottomCenter,
+                        decoration: BoxDecoration(
+                          color: CommonUtil.colorTheme(context, darkColor: const Color(0xEE262626), lightColor: Colors.white),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
                           ),
-                        ],
+                          border: Border.all(
+                            color: CommonUtil.colorTheme(context, darkColor: Colors.white24, lightColor: mLightBackgroundColor),
+                          ),
+                          boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [const BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mDefaultPadding),
+                        child: SafeArea(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: FilledButton(
+                                  onPressed: () => Navigator.pushNamed(context, MapSearchView.routeName),
+                                  child: Text(
+                                    AppLocalizations.of(context)!.projectsSeeOnMap,
+                                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                )
-              ],
+                    )
+                  ],
+                );
+              },
             ),
           ),
         ],

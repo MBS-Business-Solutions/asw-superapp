@@ -32,8 +32,8 @@ class PromotionProvider {
     required String priceInterest,
     required String objectiveInterest,
   }) async {
-    return AWContentService().registerInterestPromotion(
-      promotionId: promotionId,
+    return AWContentService().registerInterest(
+      refId: promotionId,
       firstName: firstName,
       lastName: lastName,
       phone: phone,

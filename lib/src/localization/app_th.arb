@@ -468,6 +468,17 @@
   "projectDetailPlanTitle": "แปลนห้อง",
   "projectDetailGalleryTitle": "แกลเลอรี่",
   "projectDetailAdvertisementTitle": "ใบโฆษณา",
+  
+  "projectRegisterInterest": "สนใจโครงการนี้",
+  "projectRegisterNameField": "ชื่อ",
+  "projectRegisterLastNameField": "นามสกุล",
+  "projectRegisterPhoneField": "เบอร์โทร",  
+  "projectRegisterEmailField": "อีเมล",
+  "projectRegisterPriceRange": "ช่วงราคาที่สนใจ",
+  "projectRegisterPurpose": "วัตถุประสงค์การซื้อ",
+  "projectRegisterRegister": "ลงทะเบียน",
+  "projectRegisterRegisterSuccess": "ส่งข้อมูลสำเร็จ",
+  "projectRegisterBackToProject": "กลับสู่หน้าโครงการ",
 
   "myQRTitle": "QR ของฉัน",
   "myQRDescription": "QR สำหรับใช้ยืนยันตัวตนรับสิทธิต่าง ๆ",
@@ -493,5 +504,10 @@
   "hotMenesConfigTitle": "เมนูทั้งหมด",
   "hotMenesConfigFavourite": "เมนูโปรด",
   "hotMenesConfigOthers": "เมนูอื่นๆ",
-  "hotMenesConfigSetting": "ตั้งค่า"
+  "hotMenesConfigSetting": "ตั้งค่า",
+
+  "favouritesTitle": "รายการโปรด",
+  "favouritesSearchHint": "ค้นหาชื่อโครงการ",
+  "favouritesSearchNoResult": "ไม่พบผลการค้นหา",
+  "favouritesSearchTryAgain": "กรุณาลองใหม่อีกครั้ง"
 }
