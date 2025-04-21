@@ -1,11 +1,10 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
-import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProjectGallerySection extends StatelessWidget {
   const ProjectGallerySection({super.key, required this.galleryItem});
-  final List<GalleryItem> galleryItem;
+  final List<String> galleryItem;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class ProjectGallerySection extends StatelessWidget {
                 ),
                 child: AspectRatio(
                   aspectRatio: 1,
-                  child: Image.network(galleryItem[index].thumbnailImage, fit: BoxFit.cover),
+                  child: Image.network(galleryItem[index], fit: BoxFit.cover),
                 ),
               );
             },

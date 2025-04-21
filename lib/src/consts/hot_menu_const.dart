@@ -16,18 +16,11 @@ const mHotMenuConfig = {
     'titleText_th': 'ชื่นชอบ',
     'iconAsset': 'assets/icons/Fav.svg',
     'link': '/notifications-and-news',
-  },
-  'news': {
-    'titleText_en': 'News',
-    'titleText_th': 'ข่าวสาร',
-    'iconAsset': 'assets/icons/news.svg',
-    'link': '/notifications-and-news',
-  },
+  }
 };
 
 const mDefaultMenuConfig = [
   'project',
   'promotion',
   'favorite',
-  'news',
 ];

@@ -2,7 +2,6 @@ import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/find_projects/map_search_view.dart';
 import 'package:AssetWise/src/features/projects/views/project_detail_view.dart';
-import 'package:AssetWise/src/features/projects/widget/check_outline_button.dart';
 import 'package:AssetWise/src/features/projects/widget/filter_drawer_widget.dart';
 import 'package:AssetWise/src/features/projects/widget/filter_outline_button.dart';
 import 'package:AssetWise/src/features/projects/widget/project_item_widget.dart';
@@ -63,14 +62,14 @@ class _ProjectsViewState extends State<ProjectsView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildSearchBar(context, projectProvider),
-                      const SizedBox(height: mSmallPadding),
+                      const SizedBox(height: mMediumPadding),
                       // Filter button
                       FilterOutlineButton(
                         filterStatus: projectProvider.projectStatus,
                         selectedCode: projectProvider.selectedStatus,
                         onChanged: (value) => projectProvider.setProjectStatus(value ?? ''),
                       ),
-                      const SizedBox(height: mSmallPadding),
+                      const SizedBox(height: mMediumPadding),
                       ..._buildSearchResult(context, projectProvider, userProvider),
                     ],
                   );
@@ -171,7 +170,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
-                childAspectRatio: 0.7,
+                childAspectRatio: 0.67,
               ),
               itemBuilder: (context, index) {
                 return InkWell(
@@ -209,8 +208,13 @@ class _ProjectsViewState extends State<ProjectsView> {
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   hintText: AppLocalizations.of(context)!.projectsSearchHint,
-                  hintStyle: Theme.of(context).textTheme.bodyLarge,
-                  suffixIcon: const Icon(Icons.search),
+                  hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: CommonUtil.colorTheme(context, darkColor: mDarkBodyTextColor, lightColor: mGreyColor),
+                      ),
+                  suffixIcon: Icon(
+                    Icons.search,
+                    color: CommonUtil.colorTheme(context, darkColor: mDarkBodyTextColor, lightColor: const Color(0xFFBABABA)),
+                  ),
                   border: InputBorder.none,
                 ),
                 onChanged: (value) {

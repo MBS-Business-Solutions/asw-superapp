@@ -395,159 +395,174 @@ class ProjectFilterStatus {
 }
 
 class ProjectDetail {
-  final int id;
-  final ProjectInfo projectInfo;
+  final String profileImage;
+  final String name;
+  final String description;
+  final ProjectProgress progress;
   final ProjectLocation location;
-  final List<FloorPlan> floorPlan;
-  final List<GalleryItem> gallery;
-  final List<AdvertItem> advert;
-  final String video;
+  final List<ProjectNearbyLocation> nearbyLocations;
+  final List<ProjectPlan> plans;
+  final List<String> gallery;
+  final List<ProjectBrochure> brochures;
+  final List<ProjectVideo> videos;
 
   ProjectDetail({
-    required this.id,
-    required this.projectInfo,
+    required this.profileImage,
+    required this.name,
+    required this.description,
+    required this.progress,
     required this.location,
-    required this.floorPlan,
+    required this.nearbyLocations,
+    required this.plans,
     required this.gallery,
-    required this.advert,
-    required this.video,
+    required this.brochures,
+    required this.videos,
   });
 
   factory ProjectDetail.fromJson(Map<String, dynamic> json) {
     return ProjectDetail(
-      id: json['id'],
-      projectInfo: ProjectInfo.fromJson(json['project_info']),
-      location: ProjectLocation.fromJson(json['location']),
-      floorPlan: (json['floor_plan'] as List?)?.map((item) => FloorPlan.fromJson(item)).toList() ?? [],
-      gallery: (json['gallery'] as List?)?.map((item) => GalleryItem.fromJson(item)).toList() ?? [],
-      advert: (json['advert'] as List?)?.map((item) => AdvertItem.fromJson(item)).toList() ?? [],
-      video: json['video'],
-    );
-  }
-}
-
-class ProjectInfo {
-  final String name;
-  final String image;
-  final String status;
-  final String description;
-  final String lastUpdate;
-  final Progress progress;
-  final List<String> images;
-
-  ProjectInfo({
-    required this.name,
-    required this.image,
-    required this.status,
-    required this.description,
-    required this.lastUpdate,
-    required this.progress,
-    required this.images,
-  });
-
-  factory ProjectInfo.fromJson(Map<String, dynamic> json) {
-    return ProjectInfo(
+      profileImage: json['profileImage'],
       name: json['name'],
-      image: json['image'],
-      status: json['status'],
       description: json['description'],
-      lastUpdate: json['last_update'],
-      progress: Progress.fromJson(json['progress']),
-      images: (json['images'] as List?)?.map((item) => item['image'] as String).toList() ?? [],
+      progress: ProjectProgress.fromJson(json['progress']),
+      location: ProjectLocation.fromJson(json['location']),
+      nearbyLocations: (json['nearbyLocations'] as List).map((item) => ProjectNearbyLocation.fromJson(item)).toList(),
+      plans: (json['plans'] as List).map((item) => ProjectPlan.fromJson(item)).toList(),
+      gallery: List<String>.from(json['gallery']),
+      brochures: (json['brochures'] as List).map((item) => ProjectBrochure.fromJson(item)).toList(),
+      videos: (json['videos'] as List).map((item) => ProjectVideo.fromJson(item)).toList(),
     );
   }
 }
 
-class Progress {
-  final int percentage;
-  final int structure;
-  final int architecture;
-  final int installation;
-  final int foundation;
+class ProjectProgress {
+  final DateTime updateDated;
+  final double overall;
+  final double construction;
+  final double interior;
+  final double facilities;
+  final double constructionPiles;
+  final List<String> progressImages;
 
-  Progress({
-    required this.percentage,
-    required this.structure,
-    required this.architecture,
-    required this.installation,
-    required this.foundation,
+  ProjectProgress({
+    required this.updateDated,
+    required this.overall,
+    required this.construction,
+    required this.interior,
+    required this.facilities,
+    required this.constructionPiles,
+    required this.progressImages,
   });
 
-  factory Progress.fromJson(Map<String, dynamic> json) {
-    return Progress(
-      percentage: json['percentage'],
-      structure: json['structure'],
-      architecture: json['architecture'],
-      installation: json['installation'],
-      foundation: json['foundation'],
+  factory ProjectProgress.fromJson(Map<String, dynamic> json) {
+    return ProjectProgress(
+      updateDated: DateTime.parse(json['updateDated']),
+      overall: json['overall'],
+      construction: json['construction'],
+      interior: json['interior'],
+      facilities: json['facilities'],
+      constructionPiles: json['constructionPiles'],
+      progressImages: List<String>.from(json['progressImages']),
     );
   }
 }
 
 class ProjectLocation {
-  final double lat;
-  final double lng;
+  final double latitude;
+  final double longitude;
+  final String address;
+  final String mapUrl;
 
-  ProjectLocation({required this.lat, required this.lng});
+  ProjectLocation({
+    required this.latitude,
+    required this.longitude,
+    required this.address,
+    required this.mapUrl,
+  });
 
   factory ProjectLocation.fromJson(Map<String, dynamic> json) {
     return ProjectLocation(
-      lat: json['lat'],
-      lng: json['lng'],
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+      address: json['address'],
+      mapUrl: json['mapUrl'],
     );
   }
 }
 
-class FloorPlan {
-  final int unitId;
-  final String unitName;
+class ProjectNearbyLocation {
+  final String name;
+  final String image;
+  final String distance;
+  final String group;
+
+  ProjectNearbyLocation({
+    required this.name,
+    required this.image,
+    required this.distance,
+    required this.group,
+  });
+
+  factory ProjectNearbyLocation.fromJson(Map<String, dynamic> json) {
+    return ProjectNearbyLocation(
+      name: json['name'],
+      image: json['image'],
+      distance: json['distance'],
+      group: json['group'],
+    );
+  }
+}
+
+class ProjectPlan {
+  final String name;
   final String image;
 
-  FloorPlan({
-    required this.unitId,
-    required this.unitName,
+  ProjectPlan({
+    required this.name,
     required this.image,
   });
 
-  factory FloorPlan.fromJson(Map<String, dynamic> json) {
-    return FloorPlan(
-      unitId: json['unit_id'],
-      unitName: json['unit_name'],
+  factory ProjectPlan.fromJson(Map<String, dynamic> json) {
+    return ProjectPlan(
+      name: json['name'],
       image: json['image'],
     );
   }
 }
 
-class GalleryItem {
-  final String thumbnailImage;
-  final String mediumImage;
-
-  GalleryItem({
-    required this.thumbnailImage,
-    required this.mediumImage,
-  });
-
-  factory GalleryItem.fromJson(Map<String, dynamic> json) {
-    return GalleryItem(
-      thumbnailImage: json['thumbnail_image'],
-      mediumImage: json['medium_image'],
-    );
-  }
-}
-
-class AdvertItem {
-  final String image;
+class ProjectBrochure {
   final String title;
+  final String image;
+  final String url;
 
-  AdvertItem({
-    required this.image,
+  ProjectBrochure({
     required this.title,
+    required this.image,
+    required this.url,
   });
 
-  factory AdvertItem.fromJson(Map<String, dynamic> json) {
-    return AdvertItem(
-      image: json['image'],
+  factory ProjectBrochure.fromJson(Map<String, dynamic> json) {
+    return ProjectBrochure(
       title: json['title'],
+      image: json['image'],
+      url: json['url'],
+    );
+  }
+}
+
+class ProjectVideo {
+  final String title;
+  final String url;
+
+  ProjectVideo({
+    required this.title,
+    required this.url,
+  });
+
+  factory ProjectVideo.fromJson(Map<String, dynamic> json) {
+    return ProjectVideo(
+      title: json['title'],
+      url: json['url'],
     );
   }
 }

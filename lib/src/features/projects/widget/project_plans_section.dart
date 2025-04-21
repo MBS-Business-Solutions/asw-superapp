@@ -10,14 +10,14 @@ class ProjectPlansSection extends StatefulWidget {
     super.key,
     required this.floorPlan,
   });
-  final List<FloorPlan> floorPlan;
+  final List<ProjectPlan> floorPlan;
 
   @override
   State<ProjectPlansSection> createState() => _ProjectPlansSectionState();
 }
 
 class _ProjectPlansSectionState extends State<ProjectPlansSection> {
-  FloorPlan? selectedFloorPlan;
+  ProjectPlan? selectedFloorPlan;
 
   @override
   void initState() {
@@ -48,15 +48,15 @@ class _ProjectPlansSectionState extends State<ProjectPlansSection> {
               ),
             ),
             child: DropdownButtonHideUnderline(
-              child: DropdownButton<FloorPlan>(
+              child: DropdownButton<ProjectPlan>(
                 padding: EdgeInsets.zero,
                 isExpanded: true,
                 value: selectedFloorPlan,
                 items: widget.floorPlan.map((floorPlan) {
-                  return DropdownMenuItem<FloorPlan>(
+                  return DropdownMenuItem<ProjectPlan>(
                     value: floorPlan,
                     child: Text(
-                      floorPlan.unitName, // Assuming FloorPlan has a 'name' property
+                      floorPlan.name, // Assuming FloorPlan has a 'name' property
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   );

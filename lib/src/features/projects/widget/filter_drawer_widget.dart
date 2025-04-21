@@ -186,25 +186,21 @@ class FilterDrawerWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        width: 64,
-                        height: 64,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: CommonUtil.colorTheme(context, darkColor: Colors.white, lightColor: Colors.white),
-                          border: Border.all(
-                            color: CommonUtil.colorTheme(context, darkColor: mLightBorderTextFieldColor, lightColor: mLightBorderTextFieldColor),
-                            width: 1,
+                          clipBehavior: Clip.antiAlias,
+                          width: 64,
+                          height: 64,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: CommonUtil.colorTheme(context, darkColor: Colors.white, lightColor: Colors.white),
+                            border: Border.all(
+                              color: CommonUtil.colorTheme(context, darkColor: mLightBorderTextFieldColor, lightColor: mLightBorderTextFieldColor),
+                              width: 1,
+                            ),
                           ),
-                        ),
-                        child: Center(
-                          child: FittedBox(
-                            child: Text(list[index].value,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                      color: CommonUtil.colorTheme(context, darkColor: mDarkBodyTextColor, lightColor: mLightBodyTextColor),
-                                    )),
-                          ),
-                        ),
-                      ),
+                          child: Image.network(
+                            list[index].image!,
+                            fit: BoxFit.cover,
+                          )),
                       Row(
                         children: [
                           IgnorePointer(

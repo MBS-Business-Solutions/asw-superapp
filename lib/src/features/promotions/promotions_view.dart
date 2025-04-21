@@ -1,6 +1,5 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
-import 'package:AssetWise/src/features/dashboard/widgets/suggest_assets/widgets/suggest_item.dart';
 import 'package:AssetWise/src/features/promotions/views/promotion_detail_view.dart';
 import 'package:AssetWise/src/features/promotions/widgets/promotion_banner_widget.dart';
 import 'package:AssetWise/src/features/promotions/widgets/promotion_item_widget.dart';
@@ -8,7 +7,6 @@ import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/promotion_provider.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
-import 'package:AssetWise/src/widgets/aw_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -70,7 +68,7 @@ class _PromotionsViewState extends State<PromotionsView> {
                     const SizedBox(height: mDefaultPadding),
                     Container(
                       decoration: BoxDecoration(
-                        color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightBackgroundColor),
+                        color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: Colors.white),
                         borderRadius: BorderRadius.circular(99),
                         boxShadow: Theme.of(context).brightness == Brightness.dark ? [BoxShadow(color: Colors.white24, blurRadius: 10, spreadRadius: 1)] : null,
                       ),

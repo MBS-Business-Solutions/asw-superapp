@@ -3,15 +3,16 @@ import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/projects/widget/progress_indicator_widget.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
+import 'package:AssetWise/src/utils/date_formatter_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProjectInfoSection extends StatelessWidget {
   const ProjectInfoSection({
     super.key,
-    required this.projectInfo,
+    required this.projectDetail,
   });
-  final ProjectInfo projectInfo;
+  final ProjectDetail projectDetail;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class ProjectInfoSection extends StatelessWidget {
                   ),
                   width: double.infinity,
                   child: Image.network(
-                    projectInfo.image,
+                    projectDetail.profileImage,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -40,12 +41,12 @@ class ProjectInfoSection extends StatelessWidget {
               const SizedBox(height: mDefaultPadding),
               // ชื่อโปรเจก
               Text(
-                projectInfo.name,
+                projectDetail.name,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               // Description
               Text(
-                projectInfo.description,
+                projectDetail.description,
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: CommonUtil.colorTheme(context, darkColor: mDarkBodyTextColor, lightColor: mGreyColor),
                     ),
@@ -60,7 +61,7 @@ class ProjectInfoSection extends StatelessWidget {
                   ),
                   Spacer(),
                   Text(
-                    AppLocalizations.of(context)!.projectDetailProgressUpdated(projectInfo.lastUpdate),
+                    AppLocalizations.of(context)!.projectDetailProgressUpdated(DateFormatterUtil.formatShortNumberDate(context, projectDetail.progress.updateDated)),
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
@@ -70,7 +71,7 @@ class ProjectInfoSection extends StatelessWidget {
                 child: Row(
                   children: [
                     ProgressIndicatorWidget(
-                      progress: projectInfo.progress.percentage / 100,
+                      progress: projectDetail.progress.overall,
                       label: AppLocalizations.of(context)!.projectDetailProgressTitle,
                     ),
                     const SizedBox(width: mDefaultPadding * 2),
@@ -84,7 +85,7 @@ class ProjectInfoSection extends StatelessWidget {
                               Text(AppLocalizations.of(context)!.projectDetailProgressStructure),
                               Spacer(),
                               Text(
-                                '${projectInfo.progress.structure}%',
+                                '${(projectDetail.progress.construction * 100).toStringAsFixed(0)}%',
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -95,7 +96,7 @@ class ProjectInfoSection extends StatelessWidget {
                               Text(AppLocalizations.of(context)!.projectDetailProgressFinishing),
                               Spacer(),
                               Text(
-                                '${projectInfo.progress.architecture}%',
+                                '${(projectDetail.progress.interior * 100).toStringAsFixed(0)}%',
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -106,7 +107,7 @@ class ProjectInfoSection extends StatelessWidget {
                               Text(AppLocalizations.of(context)!.projectDetailProgressComplete),
                               Spacer(),
                               Text(
-                                '${projectInfo.progress.installation}%',
+                                '${(projectDetail.progress.facilities * 100).toStringAsFixed(0)}%',
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -117,7 +118,7 @@ class ProjectInfoSection extends StatelessWidget {
                               Text(AppLocalizations.of(context)!.projectDetailProgressConstruction),
                               Spacer(),
                               Text(
-                                '${projectInfo.progress.foundation}%',
+                                '${(projectDetail.progress.constructionPiles * 100).toStringAsFixed(0)}%',
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -147,12 +148,12 @@ class ProjectInfoSection extends StatelessWidget {
                 child: AspectRatio(
                   aspectRatio: 1,
                   child: Container(
-                    child: Image.network(projectInfo.images[index], fit: BoxFit.cover),
+                    child: Image.network(projectDetail.progress.progressImages[index], fit: BoxFit.cover),
                   ),
                 ),
               );
             },
-            itemCount: projectInfo.images.length,
+            itemCount: projectDetail.progress.progressImages.length,
             shrinkWrap: true,
           ),
         ),

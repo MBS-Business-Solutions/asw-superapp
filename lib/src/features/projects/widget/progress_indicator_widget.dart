@@ -41,7 +41,7 @@ class _RoundedProgressPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    const double strokeWidth = 12.0;
+    const double strokeWidth = 10.0;
     final center = Offset(size.width / 2, size.height / 2);
     final radius = (size.width - strokeWidth) / 2;
 

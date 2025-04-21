@@ -166,7 +166,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                                     Padding(
                                       key: _detailSectionKey,
                                       padding: const EdgeInsets.only(top: mDefaultPadding),
-                                      child: ProjectInfoSection(projectInfo: projectDetail!.projectInfo),
+                                      child: ProjectInfoSection(projectDetail: projectDetail!),
                                     ),
                                     Padding(
                                       key: _mapSectionKey,
@@ -181,7 +181,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                                       key: _planSectionKey,
                                       padding: const EdgeInsets.only(top: mDefaultPadding),
                                       child: ProjectPlansSection(
-                                        floorPlan: projectDetail.floorPlan,
+                                        floorPlan: projectDetail.plans,
                                       ),
                                     ),
                                     Padding(
@@ -195,7 +195,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                                       key: _advertisementSectionKey,
                                       padding: const EdgeInsets.only(top: mDefaultPadding),
                                       child: ProjectAdvertisementSection(
-                                        advertisements: projectDetail.advert,
+                                        advertisements: projectDetail.brochures,
                                       ),
                                     ),
                                   ],

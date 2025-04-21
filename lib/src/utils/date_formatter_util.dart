@@ -8,6 +8,16 @@ class DateFormatterUtil {
     return context.read<SettingsController>().supportedLocales.locale;
   }
 
+  static String formatShortNumberDate(BuildContext context, DateTime? date, [String nullValue = '']) {
+    if (date == null) return nullValue;
+    final locale = _getAppLocale(context);
+    int year = date.year;
+    if (locale == 'th') {
+      year += 543;
+    }
+    return '${DateFormat('dd/MM', locale).format(date)}/${year % 100}';
+  }
+
   static String formatShortDate(BuildContext context, DateTime? date, [String nullValue = '']) {
     if (date == null) return nullValue;
     final locale = _getAppLocale(context);

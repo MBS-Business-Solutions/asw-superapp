@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProjectAdvertisementSection extends StatelessWidget {
   const ProjectAdvertisementSection({super.key, required this.advertisements});
-  final List<AdvertItem> advertisements;
+  final List<ProjectBrochure> advertisements;
 
   @override
   Widget build(BuildContext context) {

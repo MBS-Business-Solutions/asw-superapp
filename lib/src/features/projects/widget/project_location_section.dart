@@ -10,7 +10,7 @@ class LocationSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pinLocations = [LatLng(location.lat, location.lng)];
+    final pinLocations = [LatLng(location.latitude, location.longitude)];
     final initialCameraPosition = CameraPosition(
       target: pinLocations[0],
       zoom: 15,
