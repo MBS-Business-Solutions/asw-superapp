@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
@@ -82,7 +83,8 @@ class DashboardNotificationSection extends StatelessWidget {
     final unpaidList = context.watch<NotificationItemProvider>().paymentNotification.where((element) => !element.isRead).toList();
     final preferedLanguage = Localizations.localeOf(context).languageCode;
     final timeFormatter = DateFormat('HH:mm');
-    final result = List.generate(unpaidList.length, (index) {
+    // Cap only 3 items
+    final result = List.generate(min(3, unpaidList.length), (index) {
       final item = unpaidList[index];
       return Container(
         margin: const EdgeInsets.only(top: mDefaultPadding),
