@@ -1,6 +1,8 @@
+import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/services/aw_content_service.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashView extends StatelessWidget {
   const SplashView({super.key});
@@ -32,11 +34,16 @@ class SplashView extends StatelessWidget {
                       ),
                     ),
               child: Center(
-                child: AssetWiseLogo(
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  isWideLogo: false,
+                  child: SvgPicture.asset(
+                width: MediaQuery.of(context).size.width * 0.6,
+                'assets/images/1200x1200_navy.svg',
+                colorFilter: const ColorFilter.mode(
+                  Colors.white,
+                  BlendMode.srcIn,
                 ),
-              ),
+                alignment: Alignment.center,
+                fit: BoxFit.contain,
+              )),
             );
           }),
     );
