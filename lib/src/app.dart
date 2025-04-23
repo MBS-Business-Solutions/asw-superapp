@@ -26,6 +26,7 @@ import 'package:AssetWise/src/features/profile/profile_view.dart';
 import 'package:AssetWise/src/features/projects/projects_view.dart';
 import 'package:AssetWise/src/features/projects/views/project_detail_view.dart';
 import 'package:AssetWise/src/features/promotions/promotions_view.dart';
+import 'package:AssetWise/src/features/promotions/views/promotion_detail_view.dart';
 import 'package:AssetWise/src/features/register/consents_view.dart';
 import 'package:AssetWise/src/features/register/register_view.dart';
 import 'package:AssetWise/src/features/register/user_detail_view.dart';
@@ -252,6 +253,10 @@ class _MyAppState extends State<MyApp> {
                     return const MyQrView();
                   case PromotionsView.routeName:
                     return const PromotionsView();
+                  case PromotionDetailView.routeName:
+                    return PromotionDetailView(
+                      promotionId: routeMap!['promotionId'] as int,
+                    );
                   case ProjectDetailView.routeName:
                     return ProjectDetailView(
                       projectId: routeMap!['projectId'] as int,

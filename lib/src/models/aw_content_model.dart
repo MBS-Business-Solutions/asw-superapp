@@ -350,6 +350,7 @@ class ProjectSearchItem {
   final String name;
   final String image;
   final String status;
+  final String statusCode;
   final String textPrice;
   bool isFavorite;
 
@@ -358,6 +359,7 @@ class ProjectSearchItem {
     required this.name,
     required this.image,
     required this.status,
+    required this.statusCode,
     required this.textPrice,
     required this.isFavorite,
   });
@@ -368,6 +370,7 @@ class ProjectSearchItem {
       name: json['name'],
       image: json['image'],
       status: json['status'],
+      statusCode: json['status_code'],
       textPrice: json['text_price'],
       isFavorite: json['is_favorite'],
     );

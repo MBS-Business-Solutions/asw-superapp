@@ -1,7 +1,6 @@
-
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
-import 'package:AssetWise/src/features/notifications/notification_item_tile.dart';
+import 'package:AssetWise/src/features/notifications/widgets/notification_item_tile.dart';
 import 'package:AssetWise/src/models/aw_notification_model.dart';
 import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:AssetWise/src/utils/common_util.dart';

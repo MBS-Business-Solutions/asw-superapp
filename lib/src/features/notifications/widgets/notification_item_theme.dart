@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class NotificationItemTileTheme extends ThemeExtension<NotificationItemTileTheme> {
-  final Color unreadBackgroundColor;
-  final Color unreadHeaderTextColor;
+  final Color unreadPaymentBackgroundColor;
+  final Color unreadPaymentHeaderTextColor;
+  final Color unreadOtherBackgroundColor;
+  final Color unreadOtherHeaderTextColor;
   final Color readHeaderTextColor;
   final Color unreadTextColor;
   final Color readTextColor;
@@ -17,8 +19,10 @@ class NotificationItemTileTheme extends ThemeExtension<NotificationItemTileTheme
   final Color newsIconBackgroundColor;
 
   const NotificationItemTileTheme({
-    required this.unreadBackgroundColor,
-    required this.unreadHeaderTextColor,
+    required this.unreadPaymentBackgroundColor,
+    required this.unreadPaymentHeaderTextColor,
+    required this.unreadOtherBackgroundColor,
+    required this.unreadOtherHeaderTextColor,
     required this.readHeaderTextColor,
     required this.unreadTextColor,
     required this.readTextColor,
@@ -35,8 +39,10 @@ class NotificationItemTileTheme extends ThemeExtension<NotificationItemTileTheme
 
   @override
   NotificationItemTileTheme copyWith({
-    Color? unreadBackgroundColor,
-    Color? unreadHeaderTextColor,
+    Color? unreadPaymentBackgroundColor,
+    Color? unreadPaymentHeaderTextColor,
+    Color? unreadOtherBackgroundColor,
+    Color? unreadOtherHeaderTextColor,
     Color? readHeaderTextColor,
     Color? unreadTextColor,
     Color? readTextColor,
@@ -51,8 +57,10 @@ class NotificationItemTileTheme extends ThemeExtension<NotificationItemTileTheme
     Color? newsIconBackgroundColor,
   }) {
     return NotificationItemTileTheme(
-        unreadBackgroundColor: unreadBackgroundColor ?? this.unreadBackgroundColor,
-        unreadHeaderTextColor: unreadHeaderTextColor ?? this.unreadHeaderTextColor,
+        unreadPaymentBackgroundColor: unreadPaymentBackgroundColor ?? this.unreadPaymentBackgroundColor,
+        unreadPaymentHeaderTextColor: unreadPaymentHeaderTextColor ?? this.unreadPaymentHeaderTextColor,
+        unreadOtherBackgroundColor: unreadOtherBackgroundColor ?? this.unreadOtherBackgroundColor,
+        unreadOtherHeaderTextColor: unreadOtherHeaderTextColor ?? this.unreadOtherHeaderTextColor,
         readHeaderTextColor: readHeaderTextColor ?? this.readHeaderTextColor,
         unreadTextColor: unreadTextColor ?? this.unreadTextColor,
         readTextColor: readTextColor ?? this.readTextColor,
@@ -72,8 +80,10 @@ class NotificationItemTileTheme extends ThemeExtension<NotificationItemTileTheme
     if (other == null) return this;
     if (other is! NotificationItemTileTheme) return this;
     return NotificationItemTileTheme(
-      unreadBackgroundColor: Color.lerp(unreadBackgroundColor, other.unreadBackgroundColor, t)!,
-      unreadHeaderTextColor: Color.lerp(unreadHeaderTextColor, other.unreadHeaderTextColor, t)!,
+      unreadPaymentBackgroundColor: Color.lerp(unreadPaymentBackgroundColor, other.unreadPaymentBackgroundColor, t)!,
+      unreadPaymentHeaderTextColor: Color.lerp(unreadPaymentHeaderTextColor, other.unreadPaymentHeaderTextColor, t)!,
+      unreadOtherBackgroundColor: Color.lerp(unreadOtherBackgroundColor, other.unreadOtherBackgroundColor, t)!,
+      unreadOtherHeaderTextColor: Color.lerp(unreadOtherHeaderTextColor, other.unreadOtherHeaderTextColor, t)!,
       readHeaderTextColor: Color.lerp(readHeaderTextColor, other.readHeaderTextColor, t)!,
       unreadTextColor: Color.lerp(unreadTextColor, other.unreadTextColor, t)!,
       readTextColor: Color.lerp(readTextColor, other.readTextColor, t)!,

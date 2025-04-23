@@ -207,6 +207,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                                   advertisements: projectDetail.brochures,
                                 ),
                               ),
+                              SizedBox(height: MediaQuery.of(context).padding.bottom + 60),
                             ],
                           ),
                         )),

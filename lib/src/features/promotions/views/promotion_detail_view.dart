@@ -17,6 +17,7 @@ import 'package:share_plus/share_plus.dart';
 class PromotionDetailView extends StatefulWidget {
   const PromotionDetailView({super.key, required this.promotionId});
   final int promotionId;
+  static const String routeName = '/promotion-detail-view';
 
   @override
   State<PromotionDetailView> createState() => _PromotionDetailViewState();

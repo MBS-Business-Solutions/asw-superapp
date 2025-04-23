@@ -1,6 +1,6 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/themes_const.dart';
-import 'package:AssetWise/src/features/notifications/notification_item_theme.dart';
+import 'package:AssetWise/src/features/notifications/widgets/notification_item_theme.dart';
 import 'package:AssetWise/src/theme_extensions/bottom_bar_theme.dart';
 import 'package:AssetWise/src/theme_extensions/hotmenu_theme.dart';
 import 'package:flutter/material.dart';
@@ -116,16 +116,18 @@ final ThemeData mLightTheme = ThemeData(
       ],
     ),
     NotificationItemTileTheme(
-      unreadBackgroundColor: mTileWarnLightColor,
-      unreadHeaderTextColor: mRedColor,
+      unreadPaymentBackgroundColor: mTileWarnLightColor,
+      unreadPaymentHeaderTextColor: mRedColor,
+      unreadOtherBackgroundColor: mTileWarnLightColor,
+      unreadOtherHeaderTextColor: mRedColor,
       readHeaderTextColor: mRedColor,
       unreadTextColor: mLightBodyTextColor,
       readTextColor: mLightBodyTextColor,
       timeTextColor: mLightBodyTextColor,
       paymentIconColor: Colors.white,
       paymentIconBackgroundColor: mRedColor,
-      promotionIconColor: Colors.white,
-      promotionIconBackgroundColor: mRedColor,
+      promotionIconColor: Color(0xFF139F4B),
+      promotionIconBackgroundColor: Color(0xFFE5F4F3),
       hotDealIconColor: Colors.white,
       hotDealIconBackgroundColor: mRedColor,
       newsIconColor: Colors.white,
