@@ -209,4 +209,9 @@ class UserProvider with ChangeNotifier {
     if (token == null) return null;
     return await AwUserService().fetchMyQR(_token!);
   }
+
+  Future<void> cleanUpKeyChain() async {
+    final secureStorageUnlock = FlutterSecureStorage();
+    await secureStorageUnlock.deleteAll();
+  }
 }

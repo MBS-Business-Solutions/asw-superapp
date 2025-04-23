@@ -224,6 +224,19 @@ class _ProfileViewState extends State<ProfileView> {
                       _showCloseAppConfirmation();
                     },
                   ),
+                  // ลบออกเมื่อไม่ใช้
+                  ListTile(
+                    title: Text('ลบ Keychain*'),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () async {
+                      await context.read<UserProvider>().cleanUpKeyChain();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('DONE'),
+                        ),
+                      );
+                    },
+                  ),
                   // ออกจากระบบ
                   // ListTile(
                   //   title: Text(AppLocalizations.of(context)!.profileLogout),
