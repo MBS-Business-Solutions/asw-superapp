@@ -3,62 +3,116 @@ import 'dart:math';
 
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/find_projects/widgets/map_search_result_widget.dart';
+import 'package:AssetWise/src/features/find_projects/widgets/pin_widget.dart';
 import 'package:AssetWise/src/features/projects/widget/filter_drawer_widget.dart';
+import 'package:AssetWise/src/features/projects/widget/filter_outline_button.dart';
+import 'package:AssetWise/src/models/aw_content_model.dart';
+import 'package:AssetWise/src/providers/project_provider.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/utils/googlemap_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class MapSearchView extends StatefulWidget {
-  const MapSearchView({super.key});
+  const MapSearchView({super.key, required this.textController});
   static const String routeName = '/map_search_view';
+  final TextEditingController textController; // Moved to the class level
 
   @override
   State<MapSearchView> createState() => _MapSearchViewState();
 }
 
 class _MapSearchViewState extends State<MapSearchView> {
-  late CameraPosition _initialCameraPosition;
+  List<ProjectSearchItem> _searchResults = []; // List to hold search results
+  CameraPosition? _initialCameraPosition;
   late StreamSubscription<bool> keyboardSubscription;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _showResult = true;
-  static final pinLocations = [
-    const LatLng(13.7463, 100.5018), // Original pin
-    const LatLng(13.7563, 100.5218), // ~10m north
-    const LatLng(13.8663, 100.5018), // ~10m east
-  ];
+  final Set<Marker> pinLocations = {};
+  late ProjectProvider _projectProvider;
+  GoogleMapController? _mapController;
 
+  ProjectSearchItem? _selectedProjectSearchItem; // Variable to hold the selected project search item
+  Position? _currentPosition; // Variable to hold the current position
   @override
   void initState() {
     super.initState();
     var keyboardVisibilityController = KeyboardVisibilityController();
-    // Query
-    print('Keyboard visibility direct query: ${keyboardVisibilityController.isVisible}');
-
     // Subscribe
     keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) {
       setState(() {
         _showResult = !visible; // Update the state based on keyboard visibility
       });
     });
+    _getCurrentPermission();
+  }
+
+  void _getCurrentPermission() async {
+    _currentPosition = await context.read<ProjectProvider>().getCurrentLocation();
+    setState(() {});
+  }
+
+  // first load after map init
+  void _initLocations() async {
+    setState(() {
+      _searchResults = _projectProvider.searchResults; // Get the initial search results
+      _updateMarker();
+      final newPosition = GooglemapUtil.calculateCameraPosition(context, _searchResults.map((location) => LatLng(location.lat, location.lng)).toList());
+      _mapController?.animateCamera(CameraUpdate.newCameraPosition(newPosition));
+    });
+
+    _projectProvider.addListener(_updateSearchResults);
   }
 
   @override
   void dispose() {
     keyboardSubscription.cancel(); // Cancel the subscription when the widget is disposed
     super.dispose();
+    _projectProvider.removeListener(_updateSearchResults);
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _initialCameraPosition = GooglemapUtil.calculateCameraPosition(context, pinLocations, zoomFactor: 0.6);
+  void _updateSearchResults() async {
+    _searchResults = _projectProvider.searchResults; // Update the search results
+    await _updateMarker();
+    setState(() {});
+  }
+
+  Future<void> _updateMarker() async {
+    pinLocations.clear(); // Clear previous markers
+    final locations = <LatLng>[];
+    for (final item in _searchResults) {
+      var icon = _projectProvider.pinBitmapNormal?[item.braindId];
+      if (item.id == _selectedProjectSearchItem?.id) {
+        icon = _projectProvider.pinBitmapSelected?[item.braindId]; // Use the selected bitmap for the marker
+      }
+
+      final location = LatLng(item.lat, item.lng); // Assuming e has latitude and longitude properties
+      locations.add(location);
+      final marker = Marker(
+        markerId: MarkerId(location.toString()),
+        position: location,
+        icon: icon ?? BitmapDescriptor.defaultMarker, // Use the first bitmap for the marker
+        onTap: () {
+          setState(() {
+            _selectedProjectSearchItem = item; // Update the selected project search item
+            _updateMarker();
+          });
+        },
+      );
+      pinLocations.add(marker); // Add the marker to the set
+    }
+    // final newPosition = GooglemapUtil.calculateCameraPosition(context, locations);
+    // _mapController?.animateCamera(CameraUpdate.newCameraPosition(newPosition));
   }
 
   @override
   Widget build(BuildContext context) {
+    _projectProvider = context.read<ProjectProvider>();
     return GestureDetector(
       onTap: () => CommonUtil.dismissKeyboard(context), // Dismiss the keyboard when tapping outside
       child: Scaffold(
@@ -72,10 +126,7 @@ class _MapSearchViewState extends State<MapSearchView> {
               alignment: Alignment.topCenter,
               child: _buildAppBar(),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: _buildBottomResultList(),
-            ),
+            _buildBottomResultList(),
           ],
         ),
       ),
@@ -83,9 +134,9 @@ class _MapSearchViewState extends State<MapSearchView> {
   }
 
   SafeArea _buildAppBar() {
+    final projectProvider = context.read<ProjectProvider>();
     return SafeArea(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: mScreenEdgeInsetValue, horizontal: mScreenEdgeInsetValue),
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -122,46 +173,16 @@ class _MapSearchViewState extends State<MapSearchView> {
             const SizedBox(
               height: mSmallPadding,
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor),
-                      borderRadius: BorderRadius.circular(50.0), // Stadium shape
-                    ),
-                    child: TextField(
-                      autofocus: false,
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: mDefaultPadding),
-                        suffixIcon: Icon(Icons.search),
-                        border: InputBorder.none,
-                      ),
-                      textInputAction: TextInputAction.search,
-                      onSubmitted: (value) {
-                        _doSearch(searchText: 'on submitted');
-                        CommonUtil.dismissKeyboard(context); // Dismiss the keyboard when search is submitted
-                      },
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: mMediumPadding,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor), // Background color of the circle
-                  ),
-                  child: IconButton(
-                    onPressed: () {
-                      CommonUtil.dismissKeyboard(context);
-                      _scaffoldKey.currentState?.openEndDrawer(); // Open the drawer when the button is pressed
-                    },
-                    icon: const Icon(Icons.filter_list, color: mGreyColor),
-                  ),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+              child: _buildSearchBar(context, context.read<ProjectProvider>()),
+            ),
+            const SizedBox(height: mMediumPadding),
+            // Filter button
+            FilterOutlineButton(
+              filterStatus: projectProvider.projectStatus,
+              selectedCode: projectProvider.selectedStatus,
+              onChanged: (value) => projectProvider.setProjectStatus(value ?? ''),
             ),
           ],
         ),
@@ -171,130 +192,91 @@ class _MapSearchViewState extends State<MapSearchView> {
 
   GoogleMap _buildGoogleMap() {
     return GoogleMap(
-      initialCameraPosition: _initialCameraPosition,
+      onMapCreated: (controller) {
+        _mapController = controller;
+        _initLocations();
+      },
+      initialCameraPosition: _initialCameraPosition ??
+          const CameraPosition(
+            target: LatLng(13.7563, 100.5018), // Default to Bangkok
+            zoom: 10,
+          ),
       onTap: (argument) {
         CommonUtil.dismissKeyboard(context); // Dismiss the keyboard when tapping on the map
       },
-      markers: pinLocations
-          .map((location) => Marker(
-                markerId: MarkerId(location.toString()),
-                position: location,
-                onTap: () {
-                  showModalBottomSheet(
-                    enableDrag: true,
-                    barrierColor: Colors.transparent,
-                    context: context,
-                    builder: (context) => Container(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        'Location: ${location.latitude}, ${location.longitude}',
-                        style: const TextStyle(fontSize: 16.0),
-                      ),
-                    ),
-                  );
-                },
-              ))
-          .toSet(),
+      markers: pinLocations,
     );
   }
 
   Widget _buildBottomResultList() {
-    return Offstage(
-      offstage: !_showResult,
-      child: Container(
-        decoration: BoxDecoration(
-          color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor).withOpacity(0.94),
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20.0),
-            topRight: Radius.circular(20.0),
-          ),
-        ),
-        height: MediaQuery.of(context).size.height * 0.30,
-        padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mDefaultPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: mSmallPadding),
-              child: Center(
-                child: Container(
-                  width: 32,
-                  height: 5,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(50.0), // Stadium shape
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: mDefaultPadding,
-            ),
-            Text('ผลการค้นหา : 3 รายการ', style: Theme.of(context).textTheme.labelMedium),
-            const SizedBox(
-              height: mSmallPadding,
-            ),
-            Expanded(
-              child: ListView.separated(
-                padding: EdgeInsets.only(top: 0, bottom: MediaQuery.of(context).padding.bottom),
-                itemCount: 10, // Replace with your actual data count
-                separatorBuilder: (context, index) => Divider(
-                  color: mGreyColor.withOpacity(0.2),
-                  height: 1,
-                ),
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Icon(Icons.access_time),
-                        const SizedBox(width: mDefaultPadding),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('ชื่อโครงการ $index', style: Theme.of(context).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.bold)),
-                              Text('ระยะทาง 10 กม.', style: Theme.of(context).textTheme.bodyMedium, maxLines: 2, overflow: TextOverflow.ellipsis),
-                              Text('โคงการใหม่ | เริ่มต้น 1.69 ล้านบาท', style: Theme.of(context).textTheme.bodySmall),
-                            ],
-                          ),
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              width: 32,
-                              height: 32,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white.withOpacity(0.3),
-                              ),
-                              child: Transform.rotate(
-                                angle: pi, // Rotate 180 degrees
-                                child: const Icon(
-                                  Icons.subdirectory_arrow_left_sharp,
-                                  size: 15,
-                                  color: mBrightPrimaryColor,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: mSmallPadding),
-                            Text('25.7 กม.', style: Theme.of(context).textTheme.labelSmall!.copyWith(color: mBrightPrimaryColor)),
-                          ],
-                        )
-                      ],
-                    ), // Replace with your actual data
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+    // final searchResult = context.watch<ProjectProvider>().searchResults;
+    // _initSearchResult(); // Initialize search results
+    final containerHeight = MediaQuery.of(context).size.height * 0.35;
+    return AnimatedPositioned(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      bottom: _showResult ? 0 : -containerHeight,
+      left: 0,
+      right: 0,
+      child: MapSearchResultWidget(
+        containerHeight: containerHeight,
+        currentPosition: _currentPosition,
+        selectedProjectSearchItem: _selectedProjectSearchItem,
+        onSelected: (value) {
+          setState(() {
+            _selectedProjectSearchItem = value; // Update the selected project search item
+            _updateMarker(); // Update the markers
+          });
+        },
       ),
     );
   }
 
-  void _doSearch({String? searchText}) {
-    print('do search with text: $searchText');
+  Widget _buildSearchBar(BuildContext context, ProjectProvider provider) {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: Colors.white),
+              borderRadius: BorderRadius.circular(99),
+              boxShadow: Theme.of(context).brightness == Brightness.dark ? const [BoxShadow(color: Colors.white24, blurRadius: 10, spreadRadius: 1)] : null,
+            ),
+            child: TextField(
+              controller: widget.textController,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                hintText: AppLocalizations.of(context)!.mapSearchHint,
+                hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: CommonUtil.colorTheme(context, darkColor: mDarkBodyTextColor, lightColor: mGreyColor),
+                    ),
+                suffixIcon: Icon(
+                  Icons.search,
+                  color: CommonUtil.colorTheme(context, darkColor: mDarkBodyTextColor, lightColor: const Color(0xFFBABABA)),
+                ),
+                border: InputBorder.none,
+              ),
+              onChanged: (value) {
+                provider.setSearchText(value);
+              },
+            ),
+          ),
+        ),
+        const SizedBox(width: mDefaultPadding),
+        Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: CommonUtil.colorTheme(context, darkColor: mDarkCardBackgroundColor, lightColor: mLightCardBackgroundColor), // Background color of the circle
+          ),
+          child: IconButton(
+            onPressed: () {
+              CommonUtil.dismissKeyboard(context);
+              _scaffoldKey.currentState?.openEndDrawer(); // Open the drawer when the button is pressed
+            },
+            icon: const Icon(Icons.filter_list, color: mGreyColor),
+          ),
+        ),
+      ],
+    );
   }
 }

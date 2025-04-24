@@ -76,15 +76,17 @@ class NotificationItemTile extends StatelessWidget {
   Container _icon(NotificationItem item, NotificationItemTileTheme? theme) {
     var iconColor = theme?.paymentIconColor;
     var iconBackgroundColor = theme?.paymentIconBackgroundColor;
-
+    var iconData = Icons.account_balance_wallet_outlined;
     switch (item.type) {
       case 'overdue':
       case 'remind':
         iconColor = theme?.paymentIconColor;
+        iconData = Icons.account_balance_wallet_outlined;
         iconBackgroundColor = theme?.paymentIconBackgroundColor;
         break;
       case 'promotion':
         iconColor = theme?.promotionIconColor;
+        iconData = Icons.campaign_outlined;
         iconBackgroundColor = theme?.promotionIconBackgroundColor;
         break;
       case 'hotdeal':
@@ -104,7 +106,7 @@ class NotificationItemTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(4),
         ),
         child: Icon(
-          Icons.account_balance_wallet_outlined,
+          iconData,
           color: iconColor,
         ));
   }

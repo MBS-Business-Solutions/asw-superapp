@@ -4,6 +4,7 @@ import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/consts/themes_const.dart';
 import 'package:AssetWise/src/features/projects/views/project_register_view.dart';
+import 'package:AssetWise/src/features/projects/widget/gallery_carousel_widget.dart';
 import 'package:AssetWise/src/features/projects/widget/project_advertisement_section.dart';
 import 'package:AssetWise/src/features/projects/widget/project_gallery_section.dart';
 import 'package:AssetWise/src/features/projects/widget/project_info_section.dart';
@@ -40,12 +41,13 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
   final _gallerySectionKey = GlobalKey();
   final _advertisementSectionKey = GlobalKey();
 
-  late final Future<ServiceResponseWithData<ProjectDetail>> _projectDetailFuture;
   bool _isLoading = true;
   bool _isError = false;
   ServiceResponseWithData<ProjectDetail>? _serviceResponse;
   late final ProjectDetail projectDetail;
-
+  bool _isShowGallery = false;
+  int _selectedImageIndex = 0;
+  List<String> _galleryImageUrls = [];
   @override
   void initState() {
     super.initState();
@@ -175,7 +177,10 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                               Padding(
                                 key: _detailSectionKey,
                                 padding: const EdgeInsets.only(top: mDefaultPadding),
-                                child: ProjectInfoSection(projectDetail: projectDetail!),
+                                child: ProjectInfoSection(
+                                  projectDetail: projectDetail,
+                                  onImageTap: _showImageGallery,
+                                ),
                               ),
                               Padding(
                                 key: _mapSectionKey,
@@ -198,6 +203,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                                 padding: const EdgeInsets.only(top: mDefaultPadding),
                                 child: ProjectGallerySection(
                                   galleryItem: projectDetail.gallery,
+                                  onImageTap: _showImageGallery,
                                 ),
                               ),
                               Padding(
@@ -205,6 +211,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                                 padding: const EdgeInsets.only(top: mDefaultPadding),
                                 child: ProjectAdvertisementSection(
                                   advertisements: projectDetail.brochures,
+                                  onImageTap: _showImageGallery,
                                 ),
                               ),
                               SizedBox(height: MediaQuery.of(context).padding.bottom + 60),
@@ -270,7 +277,24 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
               ),
             ),
           ),
-        )
+        ),
+
+        // Gallery Overlay with Fade Animation
+        IgnorePointer(
+          ignoring: !_isShowGallery,
+          child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 300),
+              opacity: _isShowGallery ? 1.0 : 0.0,
+              child: GalleryCarouselWidget(
+                imageUrls: _galleryImageUrls,
+                index: _selectedImageIndex,
+                onClose: () {
+                  setState(() {
+                    _isShowGallery = false;
+                  });
+                },
+              )),
+        ),
       ],
     );
   }
@@ -299,9 +323,10 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
   }
 
   void _shareThis() {
+    if (projectDetail.weblink == null) return;
     final box = context.findRenderObject() as RenderBox?;
     Share.shareUri(
-      Uri.parse(projectDetail.name),
+      Uri.parse(projectDetail.weblink!),
       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
     );
   }
@@ -315,5 +340,18 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
         ),
       ),
     );
+  }
+
+  void _showImageGallery(int index, List<String> imageUrls) {
+    setState(() {
+      // _galleryImageUrls = [
+      //   'https://placehold.co/600x400/png',
+      //   'https://placehold.co/300x600/png',
+      //   'https://picsum.photos/id/239/400/300',
+      // ];
+      _galleryImageUrls = imageUrls;
+      _selectedImageIndex = index;
+      _isShowGallery = true;
+    });
   }
 }

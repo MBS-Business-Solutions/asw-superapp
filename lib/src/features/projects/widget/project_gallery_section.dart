@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProjectGallerySection extends StatelessWidget {
-  const ProjectGallerySection({super.key, required this.galleryItem});
+  const ProjectGallerySection({
+    super.key,
+    required this.galleryItem,
+    this.onImageTap,
+  });
   final List<String> galleryItem;
+  final Function(int index, List<String> imageUrls)? onImageTap;
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +31,17 @@ class ProjectGallerySection extends StatelessWidget {
             separatorBuilder: (_, __) => const SizedBox(width: mDefaultPadding),
             padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
             itemBuilder: (context, index) {
-              return Container(
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: Image.network(galleryItem[index], fit: BoxFit.cover),
+              return GestureDetector(
+                onTap: () => onImageTap?.call(index, galleryItem),
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: Image.network(galleryItem[index], fit: BoxFit.cover),
+                  ),
                 ),
               );
             },

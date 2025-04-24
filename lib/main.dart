@@ -81,6 +81,7 @@ void main() async {
     ChangeNotifierProxyProvider<UserProvider, ProjectProvider>(
       create: (context) => ProjectProvider(),
       update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
+      lazy: false,
     ),
   ], child: MyApp(settingsController: settingsController)));
 }

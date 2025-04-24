@@ -74,3 +74,7 @@ const Color mGreenColor = Color(0xFF139F4B);
 const Color mTileWarnDarkColor = Color(0xFF431E16);
 const Color mTileWarnLightColor = Color(0xFFFFF4F1);
 const Color mAssetWiseLogoColor = Color(0xFF123f6d);
+
+const Color mTealColor = Color(0xFF1D9F9B);
+const Color mLightTealColor = Color(0xFFE5F4F3);
+const Color mTextOnLightTeal = Color(0xFF1D9F9B);

@@ -508,4 +508,23 @@ class AWContentService {
     if (kDebugMode) print(response);
     return ServiceResponseWithData<List<FavouriteProjectSearchItem>>(status: 'error', message: 'Unknown error', data: null);
   }
+
+  Future<Uint8List> fetchFileBinary(String url) async {
+    final response = await http.get(
+      Uri.parse(url),
+      headers: getHeader(),
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 500) {
+        return response.bodyBytes;
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+      return Uint8List(0);
+    }
+
+    if (kDebugMode) print(response);
+    return Uint8List(0);
+  }
 }

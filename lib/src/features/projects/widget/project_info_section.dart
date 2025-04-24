@@ -11,8 +11,10 @@ class ProjectInfoSection extends StatelessWidget {
   const ProjectInfoSection({
     super.key,
     required this.projectDetail,
+    this.onImageTap,
   });
   final ProjectDetail projectDetail;
+  final Function(int index, List<String> imageUrls)? onImageTap;
 
   @override
   Widget build(BuildContext context) {
@@ -140,15 +142,18 @@ class ProjectInfoSection extends StatelessWidget {
             separatorBuilder: (_, __) => const SizedBox(width: mDefaultPadding),
             padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
             itemBuilder: (context, index) {
-              return Container(
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: Container(
-                    child: Image.network(projectDetail.progress.progressImages[index], fit: BoxFit.cover),
+              return GestureDetector(
+                onTap: () => onImageTap?.call(index, projectDetail.progress.progressImages),
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: Container(
+                      child: Image.network(projectDetail.progress.progressImages[index], fit: BoxFit.cover),
+                    ),
                   ),
                 ),
               );

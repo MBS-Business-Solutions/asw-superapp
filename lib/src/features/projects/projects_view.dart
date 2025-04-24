@@ -23,6 +23,8 @@ class ProjectsView extends StatefulWidget {
 }
 
 class _ProjectsViewState extends State<ProjectsView> {
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   void initState() {
     _initData();
@@ -104,7 +106,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                             children: [
                               Expanded(
                                 child: FilledButton(
-                                  onPressed: () => Navigator.pushNamed(context, MapSearchView.routeName),
+                                  onPressed: () => Navigator.pushNamed(context, MapSearchView.routeName, arguments: {'textcontroller': _searchController}),
                                   child: Text(
                                     AppLocalizations.of(context)!.projectsSeeOnMap,
                                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
@@ -213,6 +215,7 @@ class _ProjectsViewState extends State<ProjectsView> {
                 boxShadow: Theme.of(context).brightness == Brightness.dark ? const [BoxShadow(color: Colors.white24, blurRadius: 10, spreadRadius: 1)] : null,
               ),
               child: TextField(
+                controller: _searchController,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   hintText: AppLocalizations.of(context)!.projectsSearchHint,

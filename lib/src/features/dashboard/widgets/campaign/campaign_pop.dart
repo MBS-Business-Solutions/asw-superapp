@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:AssetWise/src/features/projects/views/project_detail_view.dart';
+import 'package:AssetWise/src/features/promotions/views/promotion_detail_view.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/services/aw_content_service.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -53,41 +55,41 @@ class _CampaignPopState extends State<CampaignPop> {
               // Foreground Widget
               if (campaigns.isNotEmpty)
                 Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      print('Campaign Clicked');
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      height: MediaQuery.of(context).size.height * 0.5,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Stack(
-                        children: [
-                          CarouselSlider.builder(
-                            carouselController: _controller,
-                            options: CarouselOptions(
-                              height: height,
-                              viewportFraction: 1.0,
-                              enlargeCenterPage: false,
-                            ),
-                            itemBuilder: (context, index, realIndex) {
-                              return Image.network(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Stack(
+                      children: [
+                        CarouselSlider.builder(
+                          carouselController: _controller,
+                          options: CarouselOptions(
+                            height: height,
+                            viewportFraction: 1.0,
+                            enlargeCenterPage: false,
+                          ),
+                          itemBuilder: (context, index, realIndex) {
+                            return GestureDetector(
+                              onTap: () {
+                                closeAndLinkToContent(campaigns[index]);
+                              },
+                              child: Image.network(
                                 campaigns[index].image,
                                 fit: BoxFit.cover,
-                              );
-                            },
-                            itemCount: campaigns.length,
-                          ),
-                          Positioned(
-                            right: 8,
-                            top: 8,
-                            child: IconButton(onPressed: () => close(), icon: const Icon(Icons.close)),
-                          ),
-                        ],
-                      ),
+                              ),
+                            );
+                          },
+                          itemCount: campaigns.length,
+                        ),
+                        Positioned(
+                          right: 8,
+                          top: 8,
+                          child: IconButton(onPressed: () => close(), icon: const Icon(Icons.close)),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -124,5 +126,14 @@ class _CampaignPopState extends State<CampaignPop> {
       _isShow = false;
       _markHide = true;
     });
+  }
+
+  void closeAndLinkToContent(ImageContent content) {
+    if (content.contentType == 'project') {
+      Navigator.pushNamed(context, ProjectDetailView.routeName, arguments: {'projectId': content.id});
+    } else if (content.contentType == 'promotion') {
+      Navigator.pushNamed(context, PromotionDetailView.routeName, arguments: {'promotionId': content.id});
+    }
+    close();
   }
 }

@@ -16,11 +16,16 @@ class Project {
 class ImageContent {
   final String image;
   final int id;
+  final String? contentType;
 
-  ImageContent({required this.image, required this.id});
+  ImageContent({required this.image, required this.id, this.contentType});
 
   factory ImageContent.fromJson(Map<String, dynamic> json) {
-    return ImageContent(image: json['image'], id: json['id']);
+    return ImageContent(
+      image: json['image'],
+      id: json['id'],
+      contentType: json['type'],
+    );
   }
 }
 
@@ -353,6 +358,11 @@ class ProjectSearchItem {
   final String statusCode;
   final String textPrice;
   bool isFavorite;
+  final double lat;
+  final double lng;
+  final String address;
+  final String? brandImage;
+  final String? braindId;
 
   ProjectSearchItem({
     required this.id,
@@ -362,6 +372,11 @@ class ProjectSearchItem {
     required this.statusCode,
     required this.textPrice,
     required this.isFavorite,
+    required this.lat,
+    required this.lng,
+    required this.address,
+    this.brandImage,
+    this.braindId,
   });
 
   factory ProjectSearchItem.fromJson(Map<String, dynamic> json) {
@@ -373,6 +388,11 @@ class ProjectSearchItem {
       statusCode: json['status_code'],
       textPrice: json['text_price'],
       isFavorite: json['is_favorite'],
+      lat: json['lat']?.toDouble() ?? 0.0,
+      lng: json['lng']?.toDouble() ?? 0.0,
+      address: json['address'] ?? '',
+      brandImage: json['brand_image'],
+      braindId: json['brand_id'],
     );
   }
 }
@@ -390,7 +410,7 @@ class ProjectFilterStatus {
 
   factory ProjectFilterStatus.fromJson(Map<String, dynamic> json) {
     return ProjectFilterStatus(
-      code: json['code'],
+      code: json['code'].toString().trim(),
       nameTh: json['name_th'],
       nameEn: json['name_en'],
     );
@@ -408,6 +428,7 @@ class ProjectDetail {
   final List<String> gallery;
   final List<ProjectBrochure> brochures;
   final List<ProjectVideo> videos;
+  final String? weblink;
 
   ProjectDetail({
     required this.profileImage,
@@ -420,6 +441,7 @@ class ProjectDetail {
     required this.gallery,
     required this.brochures,
     required this.videos,
+    this.weblink,
   });
 
   factory ProjectDetail.fromJson(Map<String, dynamic> json) {
@@ -434,6 +456,7 @@ class ProjectDetail {
       gallery: List<String>.from(json['gallery']),
       brochures: (json['brochures'] as List).map((item) => ProjectBrochure.fromJson(item)).toList(),
       videos: (json['videos'] as List).map((item) => ProjectVideo.fromJson(item)).toList(),
+      weblink: json['weblink'],
     );
   }
 }
@@ -577,6 +600,7 @@ class FavouriteProjectSearchItem {
   final String status;
   final String textPrice;
   bool isFavorite;
+  String statusCode;
 
   FavouriteProjectSearchItem({
     required this.id,
@@ -585,6 +609,7 @@ class FavouriteProjectSearchItem {
     required this.status,
     required this.textPrice,
     required this.isFavorite,
+    required this.statusCode,
   });
 
   factory FavouriteProjectSearchItem.fromJson(Map<String, dynamic> json) {
@@ -595,6 +620,7 @@ class FavouriteProjectSearchItem {
       status: json['status'],
       textPrice: json['text_price'],
       isFavorite: json['is_favorite'],
+      statusCode: json['status_code'],
     );
   }
 }

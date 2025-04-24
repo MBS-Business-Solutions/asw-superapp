@@ -1,4 +1,7 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/find_projects/map_search_view.dart';
+import 'package:AssetWise/src/features/notifications/notifications_view.dart';
+import 'package:AssetWise/src/features/projects/projects_view.dart';
 import 'package:AssetWise/src/features/promotions/promotions_view.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +37,7 @@ class ProjectRegisterDone extends StatelessWidget {
                   SizedBox(
                       width: double.infinity,
                       child: FilledButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () => _backToProject(context),
                         child: Text(AppLocalizations.of(context)!.projectRegisterBackToProject),
                       )),
                 ],
@@ -43,6 +46,13 @@ class ProjectRegisterDone extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+
+  void _backToProject(BuildContext context) {
+    Navigator.popUntil(
+      context,
+      (route) => route is MaterialPageRoute && (route.builder(context) is ProjectsView || route.builder(context) is MapSearchView || route.builder(context) is NotificationsView),
     );
   }
 }

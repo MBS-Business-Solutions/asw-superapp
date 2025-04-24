@@ -23,7 +23,7 @@ class _NotificationsViewState extends State<NotificationsView> {
   List<Map<String, String>> menus = [
     {'ทั้งหมด': 'assets/icons/mail.svg'},
     {'ชำระค่างวด': 'assets/icons/PriceCheckSharp.svg'},
-    {'โปรโมชั่น': 'assets/icons/questionaire.svg'},
+    {'โปรโมชั่น': 'assets/icons/Campaign.svg'},
     {'Hot Deal': 'assets/icons/hot_deal.svg'},
     {'ข่าวสาร': 'assets/icons/news.svg'}
   ];

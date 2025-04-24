@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GooglemapUtil {
   static CameraPosition calculateCameraPosition(BuildContext context, List<LatLng> pinLocations, {double zoomFactor = 0.6}) {
@@ -27,7 +28,7 @@ class GooglemapUtil {
       (bounds.northeast.longitude + bounds.southwest.longitude) / 2,
     );
 
-    double zoom = _calculateZoom(context, bounds, zoomFactor);
+    double zoom = min(_calculateZoom(context, bounds, zoomFactor), 19);
 
     return CameraPosition(
       target: center,
@@ -60,5 +61,15 @@ class GooglemapUtil {
 
   static double calculateDistanceInKm(LatLng start, LatLng end) {
     return calculateDistance(start, end) / 1000; // convert to kilometers
+  }
+
+  static Future<void> openGoogleMap(double lat, double lng) async {
+    final googleMapUrl = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=driving");
+
+    if (await canLaunchUrl(googleMapUrl)) {
+      await launchUrl(googleMapUrl, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch Google Maps';
+    }
   }
 }

@@ -439,6 +439,11 @@
   "unableToPayBack": "Return to contract page",
 
   "mapTitle": "แผนที่",
+  "mapSearchHint": "ค้นหา",
+  "mapSearchCount": "{count, plural, =1{ผลการค้นหา : 1 รายการ} other{ผลการค้นหา : {count} รายการ}}",
+  "mapShowProjectDetail": "ดูข้อมูลโครงการ",
+  "mapNavigate": "นำทาง",
+  "mapDistanceKM": "{distance} กม.",
 
   "projectsTitle": "โครงการ",
   "projectsSearchHint": "ค้นหาชื่อโครงการ",

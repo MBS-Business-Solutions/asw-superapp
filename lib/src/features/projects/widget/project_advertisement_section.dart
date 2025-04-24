@@ -4,8 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProjectAdvertisementSection extends StatelessWidget {
-  const ProjectAdvertisementSection({super.key, required this.advertisements});
+  const ProjectAdvertisementSection({
+    super.key,
+    required this.advertisements,
+    this.onImageTap,
+  });
   final List<ProjectBrochure> advertisements;
+  final Function(int index, List<String> imageUrls)? onImageTap;
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +32,18 @@ class ProjectAdvertisementSection extends StatelessWidget {
             separatorBuilder: (_, __) => const SizedBox(width: mDefaultPadding),
             padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
             itemBuilder: (context, index) {
-              return Container(
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: Container(
-                    child: Image.network(advertisements[index].image, fit: BoxFit.cover),
+              return GestureDetector(
+                onTap: () => onImageTap?.call(index, advertisements.map((image) => image.image).toList()),
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: Container(
+                      child: Image.network(advertisements[index].image, fit: BoxFit.cover),
+                    ),
                   ),
                 ),
               );

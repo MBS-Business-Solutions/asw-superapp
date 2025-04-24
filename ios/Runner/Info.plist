@@ -56,5 +56,7 @@
 		<string>Save QR Code as image</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>Save QR Code as image</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>We need your location to show your current position on the map.</string>
 	</dict>
 </plist>

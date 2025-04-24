@@ -10,7 +10,7 @@ class SettingsService {
   /// Loads the User's preferred ThemeMode from local or remote storage.
   Future<ThemeMode> themeMode() async {
     final shared = await SharedPreferences.getInstance();
-    return ThemeMode.values[shared.getInt('THEME_MODE') ?? ThemeMode.dark.index];
+    return ThemeMode.values[shared.getInt('THEME_MODE') ?? ThemeMode.light.index];
   }
 
   /// Persists the user's preferred ThemeMode to local or remote storage.

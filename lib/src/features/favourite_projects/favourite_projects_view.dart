@@ -200,8 +200,7 @@ class _ProjectsViewState extends State<FavouriteProjectsView> {
         if (_searchByProjectStatus == null || _searchByProjectStatus == '' || _searchByProjectStatus == 'all') {
           return true;
         } else {
-          // TODO: เปลี่ยนให้เป็น status Code หลังจากที่ได้จาก API
-          return item.status == _searchByProjectStatus;
+          return item.statusCode == _searchByProjectStatus;
         }
       }));
     });

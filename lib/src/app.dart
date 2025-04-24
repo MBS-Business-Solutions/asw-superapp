@@ -244,7 +244,9 @@ class _MyAppState extends State<MyApp> {
                   case ManagePersonalInfoView.routeName:
                     return const ManagePersonalInfoView();
                   case MapSearchView.routeName:
-                    return const MapSearchView();
+                    return MapSearchView(
+                      textController: routeMap!['textcontroller'] as TextEditingController,
+                    );
                   case HotMenuesConfigView.routeName:
                     return const HotMenuesConfigView();
                   case ProjectsView.routeName:
