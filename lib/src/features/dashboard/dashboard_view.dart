@@ -7,8 +7,10 @@ import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key, required this.controller});
@@ -20,6 +22,7 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> {
+  bool _isLoading = false;
   BottomTab _currentTab = BottomTab.home;
   @override
   Widget build(BuildContext context) {
@@ -67,24 +70,12 @@ class _DashboardViewState extends State<DashboardView> {
                       if (tab == BottomTab.myqr) {
                         // Check if the user is authenticated before navigating to My QR page
                         Navigator.pushNamed(context, MyQrView.routeName);
+                      } else if (tab == BottomTab.privilege) {
+                        _openPriviledge();
                       } else {
                         setState(() {
                           _currentTab = tab;
                         });
-                      }
-                      switch (tab) {
-                        case BottomTab.home:
-                          break;
-                        case BottomTab.service:
-                          break;
-                        case BottomTab.privilege:
-                          break;
-                        case BottomTab.myqr:
-                          break;
-                        case BottomTab.chat:
-                          break;
-                        default:
-                          break;
                       }
                     },
                   ),
@@ -93,8 +84,34 @@ class _DashboardViewState extends State<DashboardView> {
             },
           ),
           const CampaignPop(),
+          if (_isLoading)
+            Positioned.fill(
+              child: Container(
+                color: Colors.black.withOpacity(0.5),
+                child: const Center(child: CircularProgressIndicator()),
+              ),
+            ),
         ],
       ),
     );
+  }
+
+  void _openPriviledge() async {
+    setState(() {
+      _isLoading = true;
+    });
+    final link = await context.read<UserProvider>().getPriviledgeLink();
+    if (link == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.errorUnableToProcess),
+        ),
+      );
+      return;
+    }
+    await launchUrl(Uri.parse(link));
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

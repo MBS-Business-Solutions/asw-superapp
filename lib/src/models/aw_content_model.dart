@@ -624,3 +624,15 @@ class FavouriteProjectSearchItem {
     );
   }
 }
+
+class Priviledge {
+  final String url;
+
+  Priviledge({required this.url});
+
+  factory Priviledge.fromJson(Map<String, dynamic> json) {
+    return Priviledge(
+      url: json['url'],
+    );
+  }
+}

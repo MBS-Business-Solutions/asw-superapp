@@ -1,4 +1,5 @@
 import 'package:AssetWise/src/features/dashboard/widgets/suggest_assets/widgets/suggest_item.dart';
+import 'package:AssetWise/src/features/projects/views/project_detail_view.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +25,12 @@ class SuggestAssets extends StatelessWidget {
               childAspectRatio: 0.7,
             ),
             itemBuilder: (context, index) {
-              return SuggestItem(project: projects[index]);
+              return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, ProjectDetailView.routeName, arguments: {'projectId': projects[index].id});
+                },
+                child: SuggestItem(project: projects[index]),
+              );
             },
             itemCount: projects.length,
           ),

@@ -40,6 +40,7 @@ class _ProjectsViewState extends State<ProjectsView> {
   @override
   Widget build(BuildContext context) {
     final userProvider = context.read<UserProvider>();
+    final provider = context.read<ProjectProvider>();
     return GestureDetector(
       onTap: () => CommonUtil.dismissKeyboard(context),
       child: Stack(
@@ -47,7 +48,9 @@ class _ProjectsViewState extends State<ProjectsView> {
           const AssetWiseBG(),
           Scaffold(
             key: _scaffoldKey,
-            endDrawer: const FilterDrawerWidget(),
+            endDrawer: FilterDrawerWidget(
+              onClearFilter: _clearAllFilters,
+            ),
             onEndDrawerChanged: (isOpened) {
               if (!isOpened) {
                 final provider = context.read<ProjectProvider>();
@@ -245,5 +248,10 @@ class _ProjectsViewState extends State<ProjectsView> {
         ],
       ),
     );
+  }
+
+  void _clearAllFilters() {
+    _searchController.clear();
+    context.read<ProjectProvider>().clearFilter();
   }
 }

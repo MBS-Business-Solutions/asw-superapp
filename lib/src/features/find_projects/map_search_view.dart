@@ -118,7 +118,9 @@ class _MapSearchViewState extends State<MapSearchView> {
       child: Scaffold(
         key: _scaffoldKey,
         extendBody: true,
-        endDrawer: const FilterDrawerWidget(),
+        endDrawer: FilterDrawerWidget(
+          onClearFilter: _clearAllFilters,
+        ),
         body: Stack(
           children: [
             _buildGoogleMap(),
@@ -278,5 +280,10 @@ class _MapSearchViewState extends State<MapSearchView> {
         ),
       ],
     );
+  }
+
+  void _clearAllFilters() {
+    _projectProvider.clearFilter();
+    widget.textController.clear();
   }
 }

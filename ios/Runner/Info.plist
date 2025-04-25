@@ -58,5 +58,7 @@
 		<string>Save QR Code as image</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>We need your location to show your current position on the map.</string>
+		<key>NSCameraUsageDescription</key>
+		<string>This app needs camera access to scan QR codes</string>
 	</dict>
 </plist>

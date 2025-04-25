@@ -214,4 +214,11 @@ class UserProvider with ChangeNotifier {
     final secureStorageUnlock = FlutterSecureStorage();
     await secureStorageUnlock.deleteAll();
   }
+
+  Future<String?> getPriviledgeLink() async {
+    if (token == null) return null;
+
+    final response = await AwUserService().fetchPriviledge(_token!);
+    return response.data?.url;
+  }
 }

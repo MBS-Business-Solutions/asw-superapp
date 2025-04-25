@@ -1,8 +1,10 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/my_qr/views/scan_qr_view.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gal/gal.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -100,7 +102,7 @@ class MyQrView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           InkWell(
-                            onTap: () {},
+                            onTap: () => _showScanQR(context),
                             child: Container(
                               padding: const EdgeInsets.all(mSmallPadding),
                               alignment: Alignment.center,
@@ -198,5 +200,9 @@ class MyQrView extends StatelessWidget {
       text: AppLocalizations.of(context)!.myQRTitle,
       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
     );
+  }
+
+  void _showScanQR(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const ScanQrView()));
   }
 }

@@ -173,7 +173,7 @@ class _BottomBarState extends State<BottomBar> {
                     if (_currentTab == BottomTab.privilege) return;
 
                     setState(() {
-                      _currentTab = BottomTab.privilege;
+                      // ไม่ต้อง Set สถานะ _currentTab จะเปิด link ที่ browser แทน
                       widget.onTabChanged?.call(BottomTab.privilege);
                     });
                   },

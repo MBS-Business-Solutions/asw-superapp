@@ -356,4 +356,28 @@ class AwUserService {
     if (kDebugMode) print(response);
     return null;
   }
+
+  Future<ServiceResponseWithData<Priviledge?>> fetchPriviledge(String userToken) async {
+    final response = await http.get(
+      Uri.parse('$BASE_URL/mobile/privilege/url'),
+      headers: getHeader(token: userToken),
+    );
+
+    try {
+      if (response.statusCode >= 200 && response.statusCode < 500) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final result = ServiceResponseWithData.fromJson(
+          jsonResponse,
+          (json) => Priviledge.fromJson(json),
+        );
+        return result;
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+      return ServiceResponseWithData<Priviledge?>(status: 'error', message: e.toString(), data: null);
+    }
+
+    if (kDebugMode) print(response);
+    return ServiceResponseWithData<Priviledge?>(status: 'error', message: 'Unknown error', data: null);
+  }
 }

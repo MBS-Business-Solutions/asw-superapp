@@ -8,7 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FilterDrawerWidget extends StatelessWidget {
-  const FilterDrawerWidget({super.key});
+  const FilterDrawerWidget({super.key, this.onClearFilter});
+  final Function? onClearFilter;
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +129,10 @@ class FilterDrawerWidget extends StatelessWidget {
         ),
         Expanded(
           child: FilledButton(
-            onPressed: () => context.read<ProjectProvider>().clearFilter(),
+            onPressed: () {
+              onClearFilter?.call();
+              Navigator.pop(context);
+            },
             style: FilledButton.styleFrom(
               backgroundColor: CommonUtil.colorTheme(context, darkColor: mGreyBackgroundColor, lightColor: mLightCardBackgroundColor),
             ),
