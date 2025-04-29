@@ -48,120 +48,122 @@ class ProjectInfoSection extends StatelessWidget {
               ),
               // Description
               Text(
-                projectDetail.description,
+                projectDetail.description ?? '',
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: CommonUtil.colorTheme(context, darkColor: mDarkBodyTextColor, lightColor: mGreyColor),
                     ),
               ),
               const SizedBox(height: mDefaultPadding),
               // ความคืบหน้า
-              Row(
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.projectDetailProgressTitle,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const Spacer(),
-                  Text(
-                    AppLocalizations.of(context)!.projectDetailProgressUpdated(DateFormatterUtil.formatShortNumberDate(context, projectDetail.progress.updateDated)),
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-              const SizedBox(height: mSmallPadding),
-              IntrinsicHeight(
-                child: Row(
+              if (projectDetail.progress != null) ...[
+                Row(
                   children: [
-                    ProgressIndicatorWidget(
-                      progress: projectDetail.progress.overall,
-                      label: AppLocalizations.of(context)!.projectDetailProgressTitle,
+                    Text(
+                      AppLocalizations.of(context)!.projectDetailProgressTitle,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    const SizedBox(width: mDefaultPadding * 2),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // โครงสร้าง
-                          Row(
-                            children: [
-                              Text(AppLocalizations.of(context)!.projectDetailProgressStructure),
-                              const Spacer(),
-                              Text(
-                                '${(projectDetail.progress.construction * 100).toStringAsFixed(0)}%',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          // สถาปัตยกรรม
-                          Row(
-                            children: [
-                              Text(AppLocalizations.of(context)!.projectDetailProgressFinishing),
-                              const Spacer(),
-                              Text(
-                                '${(projectDetail.progress.interior * 100).toStringAsFixed(0)}%',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          // ติดตั้งระบบ
-                          Row(
-                            children: [
-                              Text(AppLocalizations.of(context)!.projectDetailProgressComplete),
-                              const Spacer(),
-                              Text(
-                                '${(projectDetail.progress.facilities * 100).toStringAsFixed(0)}%',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          // เสาเข็ม
-                          Row(
-                            children: [
-                              Text(AppLocalizations.of(context)!.projectDetailProgressConstruction),
-                              const Spacer(),
-                              Text(
-                                '${(projectDetail.progress.constructionPiles * 100).toStringAsFixed(0)}%',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    )
+                    const Spacer(),
+                    Text(
+                      AppLocalizations.of(context)!.projectDetailProgressUpdated(DateFormatterUtil.formatShortNumberDate(context, projectDetail.progress!.updateDated)),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                   ],
                 ),
-              )
+                const SizedBox(height: mSmallPadding),
+                IntrinsicHeight(
+                  child: Row(
+                    children: [
+                      ProgressIndicatorWidget(
+                        progress: projectDetail.progress!.overall,
+                        label: AppLocalizations.of(context)!.projectDetailProgressTitle,
+                      ),
+                      const SizedBox(width: mDefaultPadding * 2),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // โครงสร้าง
+                            Row(
+                              children: [
+                                Text(AppLocalizations.of(context)!.projectDetailProgressStructure),
+                                const Spacer(),
+                                Text(
+                                  '${(projectDetail.progress!.construction * 100).toStringAsFixed(0)}%',
+                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                            // สถาปัตยกรรม
+                            Row(
+                              children: [
+                                Text(AppLocalizations.of(context)!.projectDetailProgressFinishing),
+                                const Spacer(),
+                                Text(
+                                  '${(projectDetail.progress!.interior * 100).toStringAsFixed(0)}%',
+                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                            // ติดตั้งระบบ
+                            Row(
+                              children: [
+                                Text(AppLocalizations.of(context)!.projectDetailProgressComplete),
+                                const Spacer(),
+                                Text(
+                                  '${(projectDetail.progress!.facilities * 100).toStringAsFixed(0)}%',
+                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                            // เสาเข็ม
+                            Row(
+                              children: [
+                                Text(AppLocalizations.of(context)!.projectDetailProgressConstruction),
+                                const Spacer(),
+                                Text(
+                                  '${(projectDetail.progress!.constructionPiles * 100).toStringAsFixed(0)}%',
+                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ]
             ],
           ),
         ),
-        const SizedBox(height: mDefaultPadding),
-        SizedBox(
-          height: 184,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            separatorBuilder: (_, __) => const SizedBox(width: mDefaultPadding),
-            padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () => onImageTap?.call(index, projectDetail.progress.progressImages),
-                child: Container(
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: Container(
-                      child: Image.network(projectDetail.progress.progressImages[index], fit: BoxFit.cover),
+        if (projectDetail.progress?.progressImages != null) ...[
+          const SizedBox(height: mDefaultPadding),
+          SizedBox(
+            height: 184,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              separatorBuilder: (_, __) => const SizedBox(width: mDefaultPadding),
+              padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () => onImageTap?.call(index, projectDetail.progress!.progressImages!),
+                  child: Container(
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Image.network(projectDetail.progress!.progressImages![index], fit: BoxFit.cover),
                     ),
                   ),
-                ),
-              );
-            },
-            itemCount: projectDetail.progress.progressImages.length,
-            shrinkWrap: true,
+                );
+              },
+              itemCount: projectDetail.progress!.progressImages!.length,
+              shrinkWrap: true,
+            ),
           ),
-        ),
+        ]
       ],
     );
   }

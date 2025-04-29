@@ -1,6 +1,9 @@
 import 'package:AssetWise/src/features/hot_menues/fav_hot_menues/fav_hot_menues.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/home_action_button/home_action_button.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/main/notification_section.dart';
+import 'package:AssetWise/src/features/projects/views/project_detail_view.dart';
+import 'package:AssetWise/src/features/promotions/views/promotion_detail_view.dart';
+import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
@@ -10,6 +13,7 @@ import 'package:AssetWise/src/widgets/aw_carousel.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/suggest_assets/suggest_asset.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DashboardMainView extends StatelessWidget {
   const DashboardMainView({super.key});
@@ -49,12 +53,17 @@ class DashboardMainView extends StatelessWidget {
                 autoPlayInterval: const Duration(seconds: 4),
                 children: [
                   for (var imageContent in dashboardProvider.banners)
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4.0),
-                        image: DecorationImage(
-                          image: NetworkImage(imageContent.image),
-                          fit: BoxFit.cover,
+                    GestureDetector(
+                      onTap: () {
+                        _openLink(context, imageContent);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4.0),
+                          image: DecorationImage(
+                            image: NetworkImage(imageContent.image),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     )
@@ -109,5 +118,18 @@ class DashboardMainView extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void _openLink(BuildContext context, ImageContent content) {
+    if (content.contentType == 'project') {
+      Navigator.pushNamed(context, ProjectDetailView.routeName, arguments: {'projectId': content.id});
+    } else if (content.contentType == 'promotion') {
+      Navigator.pushNamed(context, PromotionDetailView.routeName, arguments: {'promotionId': content.id});
+    } else if (content.contentType == 'url') {
+      launchUrl(
+        Uri.parse(content.url!),
+        mode: LaunchMode.externalApplication,
+      );
+    }
   }
 }

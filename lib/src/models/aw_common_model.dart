@@ -65,7 +65,7 @@ class ServiceResponseWithData<T> extends ServiceResponse {
 }
 
 class KeyValue {
-  final int id;
+  final dynamic id;
   final String value;
   final String? image;
 

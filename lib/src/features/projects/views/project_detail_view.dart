@@ -11,7 +11,6 @@ import 'package:AssetWise/src/features/projects/widget/project_info_section.dart
 import 'package:AssetWise/src/features/projects/widget/project_location_section.dart';
 import 'package:AssetWise/src/features/projects/widget/project_nearby_section.dart';
 import 'package:AssetWise/src/features/projects/widget/project_plans_section.dart';
-import 'package:AssetWise/src/features/promotions/views/promotion_register_view.dart';
 import 'package:AssetWise/src/models/aw_common_model.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/project_provider.dart';
@@ -48,6 +47,8 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
   bool _isShowGallery = false;
   int _selectedImageIndex = 0;
   List<String> _galleryImageUrls = [];
+
+  List<GlobalKey> _sectionKeys = [];
   @override
   void initState() {
     super.initState();
@@ -66,6 +67,13 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
         _isError = false;
         _isLoading = false;
         projectDetail = _serviceResponse!.data!;
+        _sectionKeys = [
+          _detailSectionKey,
+          if (projectDetail.location != null) _mapSectionKey,
+          if (projectDetail.plans != null) _planSectionKey,
+          if (projectDetail.gallery != null) _gallerySectionKey,
+          if (projectDetail.brochures != null) _advertisementSectionKey,
+        ];
       }
     });
   }
@@ -129,32 +137,42 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                         indicatorSize: TabBarIndicatorSize.tab,
                         indicatorWeight: 2,
                         onTap: (value) {
-                          switch (value) {
-                            case 0:
-                              _scrollTo(_detailSectionKey);
-                              break;
-                            case 1:
-                              _scrollTo(_mapSectionKey);
-                              break;
-                            case 2:
-                              _scrollTo(_planSectionKey);
-                              break;
-                            case 3:
-                              _scrollTo(_gallerySectionKey);
-                              break;
-                            case 4:
-                              _scrollTo(_advertisementSectionKey);
-                              break;
-                          }
+                          _scrollTo(_sectionKeys[value]);
+                          // switch (value) {
+                          //   case 0:
+                          //     _scrollTo(_detailSectionKey);
+                          //     break;
+                          //   case 1:
+                          //     _scrollTo(_mapSectionKey);
+                          //     break;
+                          //   case 2:
+                          //     _scrollTo(_planSectionKey);
+                          //     break;
+                          //   case 3:
+                          //     _scrollTo(_gallerySectionKey);
+                          //     break;
+                          //   case 4:
+                          //     _scrollTo(_advertisementSectionKey);
+                          //     break;
+                          // }
                         },
-                        tabs: [
-                          _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionDetail),
-                          _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionMap),
-                          _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionPlan),
-                          _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionGallery),
-                          _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionAdvertisement),
-                        ],
-                      ),
+                        tabs: List.generate(
+                          _sectionKeys.length,
+                          (index) {
+                            final key = _sectionKeys[index];
+                            if (key == _detailSectionKey) {
+                              return _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionDetail);
+                            } else if (key == _mapSectionKey) {
+                              return _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionMap);
+                            } else if (key == _planSectionKey) {
+                              return _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionPlan);
+                            } else if (key == _gallerySectionKey) {
+                              return _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionGallery);
+                            } else {
+                              return _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionAdvertisement);
+                            }
+                          },
+                        )),
               ),
               body: _isError
                   ? Center(
@@ -182,38 +200,43 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                                   onImageTap: _showImageGallery,
                                 ),
                               ),
-                              Padding(
-                                key: _mapSectionKey,
-                                padding: const EdgeInsets.only(top: mDefaultPadding),
-                                child: LocationSection(location: projectDetail.location),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(top: mDefaultPadding),
-                                child: ProjectNearbySection(),
-                              ),
-                              Padding(
-                                key: _planSectionKey,
-                                padding: const EdgeInsets.only(top: mDefaultPadding),
-                                child: ProjectPlansSection(
-                                  floorPlan: projectDetail.plans,
+                              if (projectDetail.location != null)
+                                Padding(
+                                  key: _mapSectionKey,
+                                  padding: const EdgeInsets.only(top: mDefaultPadding),
+                                  child: LocationSection(location: projectDetail.location!),
                                 ),
-                              ),
-                              Padding(
-                                key: _gallerySectionKey,
-                                padding: const EdgeInsets.only(top: mDefaultPadding),
-                                child: ProjectGallerySection(
-                                  galleryItem: projectDetail.gallery,
-                                  onImageTap: _showImageGallery,
+                              if (projectDetail.nearbyLocations != null)
+                                Padding(
+                                  padding: EdgeInsets.only(top: mDefaultPadding),
+                                  child: ProjectNearbySection(),
                                 ),
-                              ),
-                              Padding(
-                                key: _advertisementSectionKey,
-                                padding: const EdgeInsets.only(top: mDefaultPadding),
-                                child: ProjectAdvertisementSection(
-                                  advertisements: projectDetail.brochures,
-                                  onImageTap: _showImageGallery,
+                              if (projectDetail.plans != null)
+                                Padding(
+                                  key: _planSectionKey,
+                                  padding: const EdgeInsets.only(top: mDefaultPadding),
+                                  child: ProjectPlansSection(
+                                    floorPlan: projectDetail.plans!,
+                                  ),
                                 ),
-                              ),
+                              if (projectDetail.gallery != null)
+                                Padding(
+                                  key: _gallerySectionKey,
+                                  padding: const EdgeInsets.only(top: mDefaultPadding),
+                                  child: ProjectGallerySection(
+                                    galleryItem: projectDetail.gallery!,
+                                    onImageTap: _showImageGallery,
+                                  ),
+                                ),
+                              if (projectDetail.brochures != null)
+                                Padding(
+                                  key: _advertisementSectionKey,
+                                  padding: const EdgeInsets.only(top: mDefaultPadding),
+                                  child: ProjectAdvertisementSection(
+                                    advertisements: projectDetail.brochures!,
+                                    onImageTap: _showImageGallery,
+                                  ),
+                                ),
                               SizedBox(height: MediaQuery.of(context).padding.bottom + 60),
                             ],
                           ),

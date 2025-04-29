@@ -365,6 +365,7 @@ class AWContentService {
     required List<String> brandIds,
     required List<String> locationIds,
     required String status,
+    String? token,
   }) async {
     final body = jsonEncode({
       'search': search,
@@ -375,7 +376,7 @@ class AWContentService {
     if (kDebugMode) print(body);
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/project/projects'),
-      headers: getPostHeader(),
+      headers: getPostHeader(token: token),
       body: body,
     );
 

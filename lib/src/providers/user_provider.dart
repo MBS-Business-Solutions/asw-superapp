@@ -206,8 +206,9 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<MyQRResponse?> fetchMyQR() async {
-    if (token == null) return null;
-    return await AwUserService().fetchMyQR(_token!);
+    //if (token == null) return null;
+    final String qr = '${_userInformation?.userCode ?? ''}|${_userInformation?.code ?? ''}|${_userInformation?.phone ?? ''}';
+    return MyQRResponse(code: 200, status: 'success', ref: qr, qrCode: qr); //await AwUserService().fetchMyQR(_token!);
   }
 
   Future<void> cleanUpKeyChain() async {

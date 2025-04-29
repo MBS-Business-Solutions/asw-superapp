@@ -65,6 +65,8 @@ class _CheckOutlineButtonState extends State<CheckOutlineButton> {
           : null,
       label: Text(
         widget.title,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
       style: isChecked ? activeButtonStyle : inactiveButtonStyle,
     );

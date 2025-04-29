@@ -17,8 +17,9 @@ class ImageContent {
   final String image;
   final int id;
   final String? contentType;
+  final String? url;
 
-  ImageContent({required this.image, required this.id, this.contentType});
+  ImageContent({required this.image, required this.id, this.contentType, this.url});
 
   factory ImageContent.fromJson(Map<String, dynamic> json) {
     return ImageContent(
@@ -150,6 +151,7 @@ class UserInformation {
   final bool? isVerified;
   final bool? consent;
   final String? code;
+  final String? userCode;
 
   UserInformation({
     required this.firstName,
@@ -161,6 +163,7 @@ class UserInformation {
     required this.isVerified,
     this.consent,
     this.code,
+    this.userCode,
   });
 
   factory UserInformation.fromJson(Map<String, dynamic> json) {
@@ -174,6 +177,7 @@ class UserInformation {
       isVerified: json['is_verified'],
       consent: json['consent'],
       code: json['code'],
+      userCode: json['user_code'],
     );
   }
 
@@ -186,6 +190,9 @@ class UserInformation {
       'unit_count': unitCount,
       'language': language,
       'is_verified': isVerified,
+      'consent': consent,
+      'code': code,
+      'userCode': userCode,
     });
   }
 }
@@ -342,7 +349,7 @@ class PromotionItemDetail {
     return PromotionItemDetail(
       id: json['id'],
       name: json['name'],
-      date: DateTime.parse(json['date']),
+      date: json['date'] != null ? DateTime.parse(json['date']) : DateTime.now(),
       image: json['image'],
       content: json['content'],
       url: json['url'],
@@ -362,7 +369,7 @@ class ProjectSearchItem {
   final double lng;
   final String address;
   final String? brandImage;
-  final String? braindId;
+  final String? brandId;
 
   ProjectSearchItem({
     required this.id,
@@ -376,7 +383,7 @@ class ProjectSearchItem {
     required this.lng,
     required this.address,
     this.brandImage,
-    this.braindId,
+    this.brandId,
   });
 
   factory ProjectSearchItem.fromJson(Map<String, dynamic> json) {
@@ -385,14 +392,14 @@ class ProjectSearchItem {
       name: json['name'],
       image: json['image'],
       status: json['status'],
-      statusCode: json['status_code'],
+      statusCode: json['status_code'] ?? '',
       textPrice: json['text_price'],
       isFavorite: json['is_favorite'],
       lat: json['lat']?.toDouble() ?? 0.0,
       lng: json['lng']?.toDouble() ?? 0.0,
       address: json['address'] ?? '',
       brandImage: json['brand_image'],
-      braindId: json['brand_id'],
+      brandId: json['brand_id'],
     );
   }
 }
@@ -420,27 +427,27 @@ class ProjectFilterStatus {
 class ProjectDetail {
   final String profileImage;
   final String name;
-  final String description;
-  final ProjectProgress progress;
-  final ProjectLocation location;
-  final List<ProjectNearbyLocation> nearbyLocations;
-  final List<ProjectPlan> plans;
-  final List<String> gallery;
-  final List<ProjectBrochure> brochures;
-  final List<ProjectVideo> videos;
+  final String? description;
+  final ProjectProgress? progress;
+  final ProjectLocation? location;
+  final List<ProjectNearbyLocation>? nearbyLocations;
+  final List<ProjectPlan>? plans;
+  final List<String>? gallery;
+  final List<ProjectBrochure>? brochures;
+  final List<ProjectVideo>? videos;
   final String? weblink;
 
   ProjectDetail({
     required this.profileImage,
     required this.name,
-    required this.description,
-    required this.progress,
-    required this.location,
-    required this.nearbyLocations,
-    required this.plans,
-    required this.gallery,
-    required this.brochures,
-    required this.videos,
+    this.description,
+    this.progress,
+    this.location,
+    this.nearbyLocations,
+    this.plans,
+    this.gallery,
+    this.brochures,
+    this.videos,
     this.weblink,
   });
 
@@ -449,13 +456,13 @@ class ProjectDetail {
       profileImage: json['profileImage'],
       name: json['name'],
       description: json['description'],
-      progress: ProjectProgress.fromJson(json['progress']),
-      location: ProjectLocation.fromJson(json['location']),
-      nearbyLocations: (json['nearbyLocations'] as List).map((item) => ProjectNearbyLocation.fromJson(item)).toList(),
-      plans: (json['plans'] as List).map((item) => ProjectPlan.fromJson(item)).toList(),
-      gallery: List<String>.from(json['gallery']),
-      brochures: (json['brochures'] as List).map((item) => ProjectBrochure.fromJson(item)).toList(),
-      videos: (json['videos'] as List).map((item) => ProjectVideo.fromJson(item)).toList(),
+      progress: json['progress'] != null ? ProjectProgress.fromJson(json['progress']) : null,
+      location: json['location'] != null ? ProjectLocation.fromJson(json['location']) : null,
+      nearbyLocations: (json['nearbyLocations'] as List?)?.map((item) => ProjectNearbyLocation.fromJson(item)).toList(),
+      plans: (json['plans'] as List?)?.map((item) => ProjectPlan.fromJson(item)).toList(),
+      gallery: json['gallery'] != null ? List<String>.from(json['gallery']) : null,
+      brochures: (json['brochures'] as List?)?.map((item) => ProjectBrochure.fromJson(item)).toList(),
+      videos: (json['videos'] as List?)?.map((item) => ProjectVideo.fromJson(item)).toList(),
       weblink: json['weblink'],
     );
   }
@@ -468,7 +475,7 @@ class ProjectProgress {
   final double interior;
   final double facilities;
   final double constructionPiles;
-  final List<String> progressImages;
+  final List<String>? progressImages;
 
   ProjectProgress({
     required this.updateDated,
@@ -477,7 +484,7 @@ class ProjectProgress {
     required this.interior,
     required this.facilities,
     required this.constructionPiles,
-    required this.progressImages,
+    this.progressImages,
   });
 
   factory ProjectProgress.fromJson(Map<String, dynamic> json) {
@@ -518,13 +525,11 @@ class ProjectLocation {
 
 class ProjectNearbyLocation {
   final String name;
-  final String image;
   final String distance;
   final String group;
 
   ProjectNearbyLocation({
     required this.name,
-    required this.image,
     required this.distance,
     required this.group,
   });
@@ -532,7 +537,6 @@ class ProjectNearbyLocation {
   factory ProjectNearbyLocation.fromJson(Map<String, dynamic> json) {
     return ProjectNearbyLocation(
       name: json['name'],
-      image: json['image'],
       distance: json['distance'],
       group: json['group'],
     );

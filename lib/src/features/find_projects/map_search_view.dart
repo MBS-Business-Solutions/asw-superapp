@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/find_projects/widgets/map_search_result_widget.dart';
-import 'package:AssetWise/src/features/find_projects/widgets/pin_widget.dart';
 import 'package:AssetWise/src/features/projects/widget/filter_drawer_widget.dart';
 import 'package:AssetWise/src/features/projects/widget/filter_outline_button.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
@@ -85,10 +84,11 @@ class _MapSearchViewState extends State<MapSearchView> {
   Future<void> _updateMarker() async {
     pinLocations.clear(); // Clear previous markers
     final locations = <LatLng>[];
-    for (final item in _searchResults) {
-      var icon = _projectProvider.pinBitmapNormal?[item.braindId];
+    for (var index = 0; index < max(10, _searchResults.length); index++) {
+      final item = _searchResults[index];
+      var icon = _projectProvider.pinBitmapNormal?[item.brandId];
       if (item.id == _selectedProjectSearchItem?.id) {
-        icon = _projectProvider.pinBitmapSelected?[item.braindId]; // Use the selected bitmap for the marker
+        icon = _projectProvider.pinBitmapSelected?[item.brandId]; // Use the selected bitmap for the marker
       }
 
       final location = LatLng(item.lat, item.lng); // Assuming e has latitude and longitude properties

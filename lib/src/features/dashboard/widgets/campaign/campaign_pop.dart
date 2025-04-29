@@ -7,6 +7,7 @@ import 'package:AssetWise/src/services/aw_content_service.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CampaignPop extends StatefulWidget {
   const CampaignPop({super.key});
@@ -133,6 +134,11 @@ class _CampaignPopState extends State<CampaignPop> {
       Navigator.pushNamed(context, ProjectDetailView.routeName, arguments: {'projectId': content.id});
     } else if (content.contentType == 'promotion') {
       Navigator.pushNamed(context, PromotionDetailView.routeName, arguments: {'promotionId': content.id});
+    } else if (content.contentType == 'url') {
+      launchUrl(
+        Uri.parse(content.url!),
+        mode: LaunchMode.externalApplication,
+      );
     }
     close();
   }

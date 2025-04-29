@@ -49,6 +49,7 @@ class MyQrView extends StatelessWidget {
                   );
                 }
                 return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     WidgetsToImage(
                       controller: controller,
@@ -62,6 +63,7 @@ class MyQrView extends StatelessWidget {
                         ),
                         alignment: Alignment.topCenter,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             QrImageView(
                               size: MediaQuery.of(context).size.width * 0.6,
@@ -87,6 +89,7 @@ class MyQrView extends StatelessWidget {
                             ),
                             Text(
                               AppLocalizations.of(context)!.myQRRefCode(qrData.ref ?? ''),
+                              textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.labelMedium!.copyWith(color: Colors.white),
                             ),
                           ],

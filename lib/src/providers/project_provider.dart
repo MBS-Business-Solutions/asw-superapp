@@ -1,7 +1,4 @@
-import 'dart:typed_data';
-
 import 'package:AssetWise/src/consts/colors_const.dart';
-import 'package:AssetWise/src/features/find_projects/map_search_view.dart';
 import 'package:AssetWise/src/features/find_projects/widgets/pin_widget.dart';
 import 'package:AssetWise/src/models/aw_common_model.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
@@ -17,6 +14,8 @@ class ProjectProvider with ChangeNotifier {
   UserProvider? _userProvider;
   bool _isFiltering = false;
   bool get isFiltering => _isFiltering;
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
   final _searchResults = <ProjectSearchItem>[];
   List<ProjectSearchItem> get searchResults => _searchResults;
@@ -187,17 +186,22 @@ class ProjectProvider with ChangeNotifier {
   }
 
   Future<void> _search() async {
+    _isLoading = true;
+    _searchResults.clear();
+    notifyListeners();
     final projectsResponse = await AWContentService().searchProjects(
       search: _searchText,
       brandIds: _selectedBrands.map((e) => e.toString()).toList(),
       locationIds: _selectedLocations.map((e) => e.toString()).toList(),
       status: _selectedStatus.isEmpty ? (_projectStatus.firstOrNull?.code ?? '') : _selectedStatus,
+      token: _userProvider?.token,
     );
     if (projectsResponse.status == 'success') {
       _isFiltering = _searchText.isNotEmpty || _selectedBrands.isNotEmpty || _selectedLocations.isNotEmpty || _selectedStatus.isNotEmpty;
-      _searchResults.clear();
+
       _searchResults.addAll(projectsResponse.data!);
     }
+    _isLoading = false;
   }
 
   Future<ServiceResponseWithData<ProjectDetail>> fetchProjectDetail(int id) async {

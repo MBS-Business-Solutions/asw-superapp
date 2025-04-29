@@ -40,7 +40,6 @@ class _ProjectsViewState extends State<ProjectsView> {
   @override
   Widget build(BuildContext context) {
     final userProvider = context.read<UserProvider>();
-    final provider = context.read<ProjectProvider>();
     return GestureDetector(
       onTap: () => CommonUtil.dismissKeyboard(context),
       child: Stack(
@@ -133,6 +132,9 @@ class _ProjectsViewState extends State<ProjectsView> {
 
   List<Widget> _buildSearchResult(BuildContext context, ProjectProvider projectProvider, UserProvider userProvider) {
     final projects = projectProvider.searchResults;
+    if (projectProvider.isLoading) {
+      return [const Center(child: CircularProgressIndicator())];
+    }
     return [
       if (projectProvider.isFiltering && projectProvider.searchResults.isNotEmpty)
         Padding(

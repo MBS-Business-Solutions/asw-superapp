@@ -163,22 +163,23 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
                       },
                     ),
                   ),
-                  Expanded(
-                    flex: mHotMenuRow - selectedMenues.length,
-                    child: ReorderableWrap(
-                      enableReorder: false,
-                      onReorder: (oldIndex, newIndex) {},
-                      children: [
-                        for (var i = 0; i < mHotMenuRow - selectedMenues.length; i++)
-                          SizedBox(
-                            width: itemWidth,
-                            child: const HotMenuWidget(
-                              titleText: '',
-                            ),
-                          ),
-                      ],
-                    ),
-                  )
+                  // ยกเลิกไม่แสดงกล่องว่าง 20250429 Requested จาก MBS
+                  // Expanded(
+                  //   flex: mHotMenuRow - selectedMenues.length,
+                  //   child: ReorderableWrap(
+                  //     enableReorder: false,
+                  //     onReorder: (oldIndex, newIndex) {},
+                  //     children: [
+                  //       for (var i = 0; i < mHotMenuRow - selectedMenues.length; i++)
+                  //         SizedBox(
+                  //           width: itemWidth,
+                  //           child: const HotMenuWidget(
+                  //             titleText: '',
+                  //           ),
+                  //         ),
+                  //     ],
+                  //   ),
+                  // )
                 ],
               );
             }),

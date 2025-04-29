@@ -131,7 +131,7 @@ class FilterDrawerWidget extends StatelessWidget {
           child: FilledButton(
             onPressed: () {
               onClearFilter?.call();
-              Navigator.pop(context);
+              //Navigator.pop(context);
             },
             style: FilledButton.styleFrom(
               backgroundColor: CommonUtil.colorTheme(context, darkColor: mGreyBackgroundColor, lightColor: mLightCardBackgroundColor),
