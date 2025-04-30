@@ -44,6 +44,7 @@ dependencies:
   share_plus: ^10.1.4
   shared_preferences: ^2.3.5
   url_launcher: ^6.3.1
+  video_thumbnail: ^0.5.3
   webview_flutter: ^4.10.0
   widget_to_marker: ^1.0.6
   widgets_to_image: ^1.0.0

@@ -335,6 +335,7 @@ class PromotionItemDetail {
   final String image;
   final String content;
   final String url;
+  final List<ParticipanProject>? participantProjects;
 
   PromotionItemDetail({
     required this.id,
@@ -343,6 +344,7 @@ class PromotionItemDetail {
     required this.image,
     required this.content,
     required this.url,
+    this.participantProjects,
   });
 
   factory PromotionItemDetail.fromJson(Map<String, dynamic> json) {
@@ -353,6 +355,24 @@ class PromotionItemDetail {
       image: json['image'],
       content: json['content'],
       url: json['url'],
+      participantProjects: (json['participant_projects'] as List?)?.map((item) => ParticipanProject.fromJson(item)).toList(),
+    );
+  }
+}
+
+class ParticipanProject {
+  final int id;
+  final String name;
+
+  ParticipanProject({
+    required this.id,
+    required this.name,
+  });
+
+  factory ParticipanProject.fromJson(Map<String, dynamic> json) {
+    return ParticipanProject(
+      id: json['id'],
+      name: json['name'],
     );
   }
 }
@@ -489,7 +509,7 @@ class ProjectProgress {
 
   factory ProjectProgress.fromJson(Map<String, dynamic> json) {
     return ProjectProgress(
-      updateDated: DateTime.parse(json['updateDated']),
+      updateDated: DateTime.tryParse(json['updateDated']) ?? DateTime.now(),
       overall: json['overall'],
       construction: json['construction'],
       interior: json['interior'],

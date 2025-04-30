@@ -241,6 +241,7 @@ class AWContentService {
     required String email,
     required String priceInterest,
     required String objectiveInterest,
+    String? projectId,
   }) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/interest'),

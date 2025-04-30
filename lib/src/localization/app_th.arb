@@ -462,6 +462,7 @@
   "projectDetailSectionPlan": "แปลน",
   "projectDetailSectionGallery": "แกลเลอรี่",
   "projectDetailSectionAdvertisement": "ใบโฆษณา",
+  "projectDetailSectionVideo": "วิดีโอ",
   "projectDetailProgressTitle": "ความคืบหน้า",
   "projectDetailProgressUpdated": "วันที่อัปเดต : {date}",
   "projectDetailProgressStructure": "โครงสร้าง",
@@ -473,6 +474,7 @@
   "projectDetailPlanTitle": "แปลนห้อง",
   "projectDetailGalleryTitle": "แกลเลอรี่",
   "projectDetailAdvertisementTitle": "ใบโฆษณา",
+  "projectDetailVideoTitle": "วิดีโอ",
   
   "projectRegisterInterest": "สนใจโครงการนี้",
   "projectRegisterNameField": "ชื่อ",
@@ -500,6 +502,7 @@
   "promotionsLastNameField": "นามสกุล",
   "promotionsPhoneField": "เบอร์โทร",  
   "promotionsEmailField": "อีเมล",
+  "promotionsProject": "โครงการ",
   "promotionsPriceRange": "ช่วงราคาที่สนใจ",
   "promotionsPurpose": "วัตถุประสงค์การซื้อ",
   "promotionsRegister": "ลงทะเบียน",

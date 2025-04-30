@@ -28,6 +28,8 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
   int? _selectedPriceRangeKeyValue;
   final _purposeKeyValues = <KeyValue>[];
   int? _selectedPurposeKeyValue;
+  final _projectsValues = <ParticipanProject>[];
+  int? _selectedProjectKeyValue;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -61,6 +63,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
         _selectedPurposeKeyValue = _purposeKeyValues.first.id;
       }
     });
+    _selectedProjectKeyValue = widget.promotionItemDetail.participantProjects?.first.id;
     setState(() {});
   }
 
@@ -135,6 +138,18 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
                     },
                   ),
                   const SizedBox(height: mScreenEdgeInsetValue),
+                  // Participate Project
+                  AwDropdownform<int>(
+                    initialValue: _selectedProjectKeyValue,
+                    itemBuilder: (context, index) => _projectsValues[index].id,
+                    titleBuilder: (context, index) => Text(_projectsValues[index].name, style: Theme.of(context).textTheme.bodyLarge),
+                    itemCount: _projectsValues.length,
+                    label: AppLocalizations.of(context)!.promotionsProject,
+                    onChanged: (dynamic projectId) {
+                      _selectedProjectKeyValue = projectId;
+                    },
+                  ),
+                  const SizedBox(height: mScreenEdgeInsetValue),
                   // Price Range
                   AwDropdownform<int>(
                     initialValue: _selectedPriceRangeKeyValue,
@@ -189,6 +204,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
       email: _emailTextController.text,
       priceInterest: _priceRangeKeyValues.firstWhere((element) => element.id == _selectedPriceRangeKeyValue).value,
       objectiveInterest: _purposeKeyValues.firstWhere((element) => element.id == _selectedPurposeKeyValue).value,
+      projectId: _selectedProjectKeyValue!,
     );
     if (registerResult.status == 'error') {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

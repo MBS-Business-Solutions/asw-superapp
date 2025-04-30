@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:AssetWise/src/consts/colors_const.dart';
@@ -11,6 +12,8 @@ import 'package:AssetWise/src/features/projects/widget/project_info_section.dart
 import 'package:AssetWise/src/features/projects/widget/project_location_section.dart';
 import 'package:AssetWise/src/features/projects/widget/project_nearby_section.dart';
 import 'package:AssetWise/src/features/projects/widget/project_plans_section.dart';
+import 'package:AssetWise/src/features/projects/widget/project_video_section.dart';
+import 'package:AssetWise/src/features/projects/widget/video_thumbnail_widget.dart';
 import 'package:AssetWise/src/models/aw_common_model.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/project_provider.dart';
@@ -18,8 +21,11 @@ import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class ProjectDetailView extends StatefulWidget {
   const ProjectDetailView({super.key, required this.projectId});
@@ -47,6 +53,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
   bool _isShowGallery = false;
   int _selectedImageIndex = 0;
   List<String> _galleryImageUrls = [];
+  String? _videoThumbnailPath;
 
   List<GlobalKey> _sectionKeys = [];
   @override
@@ -59,7 +66,13 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
     _tabController = TabController(length: 5, vsync: this);
     final projectProvider = context.read<ProjectProvider>();
     _serviceResponse = await projectProvider.fetchProjectDetail(widget.projectId);
-
+    _videoThumbnailPath = await VideoThumbnail.thumbnailFile(
+      video: "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4",
+      thumbnailPath: (await getTemporaryDirectory()).path,
+      imageFormat: ImageFormat.WEBP,
+      maxHeight: 200,
+      quality: 99,
+    );
     setState(() {
       if (_serviceResponse?.status != 'success') {
         _isError = true;
@@ -138,23 +151,6 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                         indicatorWeight: 2,
                         onTap: (value) {
                           _scrollTo(_sectionKeys[value]);
-                          // switch (value) {
-                          //   case 0:
-                          //     _scrollTo(_detailSectionKey);
-                          //     break;
-                          //   case 1:
-                          //     _scrollTo(_mapSectionKey);
-                          //     break;
-                          //   case 2:
-                          //     _scrollTo(_planSectionKey);
-                          //     break;
-                          //   case 3:
-                          //     _scrollTo(_gallerySectionKey);
-                          //     break;
-                          //   case 4:
-                          //     _scrollTo(_advertisementSectionKey);
-                          //     break;
-                          // }
                         },
                         tabs: List.generate(
                           _sectionKeys.length,
@@ -174,6 +170,26 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                           },
                         )),
               ),
+              // // launch vdo url
+              // TextButton(
+              //   onPressed: () async {
+              //     final url = Uri.parse('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
+              //     if (await canLaunchUrl(url)) {
+              //       await launchUrl(url);
+              //     } else {
+              //       throw 'Could not launch $url';
+              //     }
+              //   },
+              //   child: const Text('Click here to watch the video'),
+              // ),
+              // Container(
+              //   width: double.infinity,
+              //   color: Colors.red,
+              //   child: Image.file(
+              //     File(_videoThumbnailPath!),
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
               body: _isError
                   ? Center(
                       child: Text(
@@ -235,6 +251,14 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                                   child: ProjectAdvertisementSection(
                                     advertisements: projectDetail.brochures!,
                                     onImageTap: _showImageGallery,
+                                  ),
+                                ),
+                              if (projectDetail.videos != null && projectDetail.videos!.isNotEmpty)
+                                Padding(
+                                  key: _advertisementSectionKey,
+                                  padding: const EdgeInsets.only(top: mDefaultPadding),
+                                  child: ProjectVideoSection(
+                                    videoUrl: projectDetail.videos!.first.url,
                                   ),
                                 ),
                               SizedBox(height: MediaQuery.of(context).padding.bottom + 60),
