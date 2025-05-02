@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/contract/overdues_view.dart';
 import 'package:AssetWise/src/features/notifications/widgets/notification_item_theme.dart';
-import 'package:AssetWise/src/features/payments/payment_channels_view.dart';
 import 'package:AssetWise/src/features/promotions/views/promotion_detail_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/models/aw_notification_model.dart';
@@ -126,15 +126,15 @@ class NotificationItemTile extends StatelessWidget {
         // find contract
         final contracts = await context.read<ContractProvider>().fetchContracts(context);
         final contract = contracts.firstWhere((element) => element.contractId == contractId);
-        final overdueDetail = await context.read<ContractProvider>().fetchOverdueDetail(contractId);
-
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => PaymentChannelsView(
-                      contract: contract,
-                      overdueDetail: overdueDetail,
-                    )));
+        // final overdueDetail = await context.read<ContractProvider>().fetchOverdueDetail(contractId);
+        Navigator.pushNamed(context, OverduesView.routeName, arguments: {'contract': contract});
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => PaymentChannelsView(
+        //               contract: contract,
+        //               overdueDetail: overdueDetail,
+        //             )));
       }
     } else if (item.type == 'promotion') {
       final promotionId = data['promotion_id'];

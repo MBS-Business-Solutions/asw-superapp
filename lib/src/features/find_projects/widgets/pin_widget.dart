@@ -34,7 +34,7 @@ class PinWidget extends StatelessWidget {
                 width: 24,
                 height: 24,
                 clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(shape: BoxShape.circle),
+                decoration: const BoxDecoration(shape: BoxShape.circle),
                 child: bytes != null && bytes!.isNotEmpty
                     ? Image.memory(
                         bytes!,

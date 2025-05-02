@@ -8,7 +8,6 @@ import 'package:AssetWise/src/widgets/webview_with_close.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class CampaignPop extends StatefulWidget {
   const CampaignPop({super.key});

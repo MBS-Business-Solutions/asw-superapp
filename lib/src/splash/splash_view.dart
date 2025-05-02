@@ -1,6 +1,4 @@
-import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/services/aw_content_service.dart';
-import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

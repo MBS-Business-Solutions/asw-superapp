@@ -3,7 +3,6 @@ import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/favourite_projects/widgets/favourite_item_widget.dart';
 import 'package:AssetWise/src/features/projects/views/project_detail_view.dart';
 import 'package:AssetWise/src/features/projects/widget/filter_outline_button.dart';
-import 'package:AssetWise/src/models/aw_common_model.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/project_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';

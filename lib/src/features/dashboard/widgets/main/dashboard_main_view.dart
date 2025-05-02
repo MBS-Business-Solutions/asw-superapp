@@ -14,7 +14,6 @@ import 'package:AssetWise/src/widgets/aw_carousel.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/suggest_assets/suggest_asset.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DashboardMainView extends StatelessWidget {
   const DashboardMainView({super.key});

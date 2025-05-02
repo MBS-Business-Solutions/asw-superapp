@@ -138,7 +138,7 @@ class _MapSearchViewState extends State<MapSearchView> {
   SafeArea _buildAppBar() {
     final projectProvider = context.read<ProjectProvider>();
     return SafeArea(
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

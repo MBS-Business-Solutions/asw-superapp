@@ -117,7 +117,7 @@ class _ScanQrViewState extends State<ScanQrView> with WidgetsBindingObserver {
                   ),
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.only(top: 64),
+                      padding: const EdgeInsets.only(top: 64),
                       alignment: Alignment.topCenter,
                       child: Column(
                         children: [
@@ -143,7 +143,7 @@ class _ScanQrViewState extends State<ScanQrView> with WidgetsBindingObserver {
                                       _openLink();
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.all(mSmallPadding),
+                                      padding: const EdgeInsets.all(mSmallPadding),
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(9),
@@ -151,13 +151,13 @@ class _ScanQrViewState extends State<ScanQrView> with WidgetsBindingObserver {
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Icon(Icons.link_sharp, color: Color(0xFF0080DD)),
+                                          const Icon(Icons.link_sharp, color: Color(0xFF0080DD)),
                                           const SizedBox(width: mSmallPadding),
                                           Text(
                                             _qrCodeData!,
                                             maxLines: 2,
                                             overflow: TextOverflow.fade,
-                                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Color(0xFF0080DD)),
+                                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: const Color(0xFF0080DD)),
                                           ),
                                         ],
                                       ),

@@ -52,10 +52,11 @@ class _MapSearchResultWidgetState extends State<MapSearchResultWidget> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ProjectProvider>(builder: (context, provider, child) {
-      if (selectedProjectSearchItem != null)
+      if (selectedProjectSearchItem != null) {
         return _buildSelectProject();
-      else
+      } else {
         return _buildList(provider);
+      }
     });
   }
 
@@ -77,7 +78,7 @@ class _MapSearchResultWidgetState extends State<MapSearchResultWidget> {
                 onPressed: () {
                   widget.onSelected?.call(null);
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.chevron_left,
                   color: mGreyColor,
                   size: 32,
@@ -127,7 +128,7 @@ class _MapSearchResultWidgetState extends State<MapSearchResultWidget> {
                                 height: 32,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: CommonUtil.colorTheme(context, darkColor: Color(0xFF444444), lightColor: Color(0xFFF9F9F9)),
+                                  color: CommonUtil.colorTheme(context, darkColor: const Color(0xFF444444), lightColor: const Color(0xFFF9F9F9)),
                                 ),
                                 child: Transform.rotate(
                                   angle: pi, // Rotate 180 degrees
@@ -152,7 +153,7 @@ class _MapSearchResultWidgetState extends State<MapSearchResultWidget> {
                       ],
                     ),
                   ),
-                  Divider(),
+                  const Divider(),
                   const SizedBox(height: mSmallPadding),
                   Row(
                     children: [
@@ -164,13 +165,13 @@ class _MapSearchResultWidgetState extends State<MapSearchResultWidget> {
                               widget.onSelected?.call(null); // Clear the selected project when navigating back
                             });
                           },
+                          style: FilledButton.styleFrom(backgroundColor: mLightTealColor, foregroundColor: mTextOnLightTeal),
                           child: Text(
                             AppLocalizations.of(context)!.mapShowProjectDetail,
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                   color: mTextOnLightTeal,
                                 ),
                           ),
-                          style: FilledButton.styleFrom(backgroundColor: mLightTealColor, foregroundColor: mTextOnLightTeal),
                         ),
                       ),
                       const SizedBox(width: mDefaultPadding),
@@ -183,6 +184,7 @@ class _MapSearchResultWidgetState extends State<MapSearchResultWidget> {
                               selectedProjectSearchItem!.lng,
                             );
                           },
+                          style: FilledButton.styleFrom(backgroundColor: mTealColor, foregroundColor: Colors.white),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -193,14 +195,13 @@ class _MapSearchResultWidgetState extends State<MapSearchResultWidget> {
                                     ),
                               ),
                               const SizedBox(width: mMediumPadding),
-                              Icon(
+                              const Icon(
                                 Icons.gps_fixed_sharp,
                                 color: Colors.white,
                                 size: 20,
                               ),
                             ],
                           ),
-                          style: FilledButton.styleFrom(backgroundColor: mTealColor, foregroundColor: Colors.white),
                         ),
                       ),
                     ],
@@ -237,7 +238,7 @@ class _MapSearchResultWidgetState extends State<MapSearchResultWidget> {
                 width: 32,
                 height: 5,
                 decoration: BoxDecoration(
-                  color: CommonUtil.colorTheme(context, darkColor: Colors.white, lightColor: Color(0xFFBABABA)),
+                  color: CommonUtil.colorTheme(context, darkColor: Colors.white, lightColor: const Color(0xFFBABABA)),
                   borderRadius: BorderRadius.circular(50.0), // Stadium shape
                 ),
               ),
@@ -308,7 +309,7 @@ class _MapSearchResultWidgetState extends State<MapSearchResultWidget> {
                               height: 32,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: CommonUtil.colorTheme(context, darkColor: Color(0xFF444444), lightColor: Color(0xFFF9F9F9)),
+                                color: CommonUtil.colorTheme(context, darkColor: const Color(0xFF444444), lightColor: const Color(0xFFF9F9F9)),
                               ),
                               child: Transform.rotate(
                                 angle: pi, // Rotate 180 degrees

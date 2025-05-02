@@ -3,8 +3,8 @@ import 'dart:math';
 
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/contract/overdues_view.dart';
 import 'package:AssetWise/src/features/notifications/notifications_view.dart';
-import 'package:AssetWise/src/features/payments/payment_channels_view.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:AssetWise/src/widgets/hot_menu.dart';
@@ -110,17 +110,17 @@ class DashboardNotificationSection extends StatelessWidget {
               // find contract
               final contracts = await context.read<ContractProvider>().fetchContracts(context);
               final contract = contracts.firstWhere((element) => element.contractId == contractId);
-              final overdueDetail = await context.read<ContractProvider>().fetchOverdueDetail(contractId);
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PaymentChannelsView(
-                    contract: contract,
-                    overdueDetail: overdueDetail,
-                  ),
-                ),
-              );
+              // final overdueDetail = await context.read<ContractProvider>().fetchOverdueDetail(contractId);
+              Navigator.pushNamed(context, OverduesView.routeName, arguments: {'contract': contract});
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => PaymentChannelsView(
+              //         contract: contract,
+              //         overdueDetail: overdueDetail,
+              //       ),
+              //     ),
+              //   );
             }
           },
           contentPadding: EdgeInsets.zero,

@@ -212,7 +212,7 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<void> cleanUpKeyChain() async {
-    final secureStorageUnlock = FlutterSecureStorage();
+    const secureStorageUnlock = FlutterSecureStorage();
     await secureStorageUnlock.deleteAll();
   }
 

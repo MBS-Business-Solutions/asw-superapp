@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:AssetWise/src/consts/colors_const.dart';
@@ -13,7 +12,6 @@ import 'package:AssetWise/src/features/projects/widget/project_location_section.
 import 'package:AssetWise/src/features/projects/widget/project_nearby_section.dart';
 import 'package:AssetWise/src/features/projects/widget/project_plans_section.dart';
 import 'package:AssetWise/src/features/projects/widget/project_video_section.dart';
-import 'package:AssetWise/src/features/projects/widget/video_thumbnail_widget.dart';
 import 'package:AssetWise/src/models/aw_common_model.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/project_provider.dart';
@@ -24,7 +22,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 class ProjectDetailView extends StatefulWidget {
@@ -223,7 +220,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                                   child: LocationSection(location: projectDetail.location!),
                                 ),
                               if (projectDetail.nearbyLocations != null)
-                                Padding(
+                                const Padding(
                                   padding: EdgeInsets.only(top: mDefaultPadding),
                                   child: ProjectNearbySection(),
                                 ),

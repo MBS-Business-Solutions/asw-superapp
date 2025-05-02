@@ -63,7 +63,7 @@ class _GalleryCarouselWidgetState extends State<GalleryCarouselWidget> {
                   alignment: Alignment.centerLeft,
                   child: IconButton.filled(
                     onPressed: () => _controller.previousPage(),
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.chevron_left,
                       color: mGreyColor,
                       size: 32,
@@ -78,7 +78,7 @@ class _GalleryCarouselWidgetState extends State<GalleryCarouselWidget> {
                   alignment: Alignment.centerRight,
                   child: IconButton.filled(
                     onPressed: () => _controller.nextPage(),
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.chevron_right,
                       color: mGreyColor,
                       size: 32,
