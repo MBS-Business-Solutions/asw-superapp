@@ -125,7 +125,7 @@ class DashboardMainView extends StatelessWidget {
       Navigator.pushNamed(context, ProjectDetailView.routeName, arguments: {'projectId': content.id});
     } else if (content.contentType == 'promotion') {
       Navigator.pushNamed(context, PromotionDetailView.routeName, arguments: {'promotionId': content.id});
-    } else if (content.contentType == 'url') {
+    } else if (content.contentType == 'external') {
       launchUrl(
         Uri.parse(content.url!),
         mode: LaunchMode.externalApplication,

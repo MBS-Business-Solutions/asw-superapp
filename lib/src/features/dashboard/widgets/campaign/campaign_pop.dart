@@ -104,8 +104,9 @@ class _CampaignPopState extends State<CampaignPop> {
   Future<void> getCampaigns() async {
     // แสดงโปรโมชั่นทุกชั่วโมง 1 ครั้ง
     if (mounted) {
-      if (_markHide) return;
       final shared = await SharedPreferences.getInstance();
+      // await shared.setInt('CAMPAIGN_POP_NEXT_SHOW', 0);
+      if (_markHide) return;
       final nextShow = shared.getInt('CAMPAIGN_POP_NEXT_SHOW') ?? 0;
       if (nextShow < DateTime.now().millisecondsSinceEpoch) {
         final nextShow = DateTime.now().add(const Duration(hours: 1)).millisecondsSinceEpoch;
@@ -134,7 +135,7 @@ class _CampaignPopState extends State<CampaignPop> {
       Navigator.pushNamed(context, ProjectDetailView.routeName, arguments: {'projectId': content.id});
     } else if (content.contentType == 'promotion') {
       Navigator.pushNamed(context, PromotionDetailView.routeName, arguments: {'promotionId': content.id});
-    } else if (content.contentType == 'url') {
+    } else if (content.contentType == 'external') {
       launchUrl(
         Uri.parse(content.url!),
         mode: LaunchMode.externalApplication,
