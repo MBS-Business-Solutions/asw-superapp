@@ -9,6 +9,7 @@ import 'package:AssetWise/src/models/aw_notification_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -51,6 +52,8 @@ class NotificationItemTile extends StatelessWidget {
               children: [
                 Text(
                   _lang(preferedLanguage, en: notificationItem.titleEn, th: notificationItem.titleTh),
+                  // maxLines: 1,
+                  // overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.titleSmall!.copyWith(color: notificationItem.isRead ? theme?.readHeaderTextColor : theme?.unreadPaymentHeaderTextColor),
                 ),
                 Text(
@@ -76,39 +79,54 @@ class NotificationItemTile extends StatelessWidget {
   Container _icon(NotificationItem item, NotificationItemTileTheme? theme) {
     var iconColor = theme?.paymentIconColor;
     var iconBackgroundColor = theme?.paymentIconBackgroundColor;
-    var iconData = Icons.account_balance_wallet_outlined;
+    // var iconData = Icons.account_balance_wallet_outlined;
+    var iconAsset = 'assets/icons/PriceCheckSharp.svg';
     switch (item.type) {
       case 'overdue':
       case 'remind':
         iconColor = theme?.paymentIconColor;
-        iconData = Icons.account_balance_wallet_outlined;
+        iconAsset = 'assets/icons/PriceCheckSharp.svg';
         iconBackgroundColor = theme?.paymentIconBackgroundColor;
         break;
       case 'promotion':
         iconColor = theme?.promotionIconColor;
-        iconData = Icons.campaign_outlined;
+        iconAsset = 'assets/icons/Campaign.svg';
         iconBackgroundColor = theme?.promotionIconBackgroundColor;
         break;
       case 'hotdeal':
         iconColor = theme?.hotDealIconColor;
+        iconAsset = 'assets/icons/hot_deal.svg';
         iconBackgroundColor = theme?.hotDealIconBackgroundColor;
         break;
       case 'news':
         iconColor = theme?.newsIconColor;
+        iconAsset = 'assets/icons/news.svg';
         iconBackgroundColor = theme?.newsIconBackgroundColor;
         break;
     }
     return Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          color: iconBackgroundColor,
-          borderRadius: BorderRadius.circular(4),
+      width: 40,
+      height: 40,
+
+      decoration: BoxDecoration(
+        color: iconBackgroundColor,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: SvgPicture.asset(
+          iconAsset,
+          colorFilter: ColorFilter.mode(
+            iconColor!,
+            BlendMode.srcIn,
+          ),
         ),
-        child: Icon(
-          iconData,
-          color: iconColor,
-        ));
+      ),
+      // child: Icon(
+      //   iconData,
+      //   color: iconColor,
+      // ),
+    );
   }
 
   String _lang(String preferedLanguage, {required String th, required String en}) {

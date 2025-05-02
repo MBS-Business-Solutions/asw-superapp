@@ -36,7 +36,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // _initForm();
+      _initForm();
     });
     super.initState();
   }
@@ -52,19 +52,19 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
       }
 
       final promotionProvider = context.read<PromotionProvider>();
-      await promotionProvider.fetchPromotionPriceRanges().then((value) {
-        if (value.status == 'success') {
-          _priceRangeKeyValues.addAll(value.data ?? []);
-          _selectedPriceRangeKeyValue = _priceRangeKeyValues.first.id;
-        }
-      });
-      await promotionProvider.fetchPurposes().then((value) {
-        if (value.status == 'success') {
-          _purposeKeyValues.addAll(value.data ?? []);
-          _selectedPurposeKeyValue = _purposeKeyValues.first.id;
-        }
-      });
-      _selectedProjectKeyValue = widget.promotionItemDetail.participantProjects?.first.id;
+      final prices = await promotionProvider.fetchPromotionPriceRanges();
+      if (prices.status == 'success') {
+        _priceRangeKeyValues.addAll(prices.data ?? []);
+        _selectedPriceRangeKeyValue = _priceRangeKeyValues.first.id;
+      }
+      final purposes = await promotionProvider.fetchPurposes();
+      if (purposes.status == 'success') {
+        _purposeKeyValues.addAll(purposes.data ?? []);
+        _selectedPurposeKeyValue = _purposeKeyValues.first.id;
+      }
+      if (widget.promotionItemDetail.participantProjects != null && widget.promotionItemDetail.participantProjects!.isNotEmpty) {
+        _selectedProjectKeyValue = widget.promotionItemDetail.participantProjects!.first.id;
+      }
       setState(() {});
     } catch (e) {
       // Handle any errors that occur during the initialization
