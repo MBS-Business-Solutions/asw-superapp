@@ -28,25 +28,83 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          const AssetWiseBG(),
-          Positioned.fill(
-            child: CustomScrollView(
-              slivers: [
-                _buildAppBar(),
-                ..._buildPreviewButtonsSection(),
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: 48),
-                ),
-                ..._buildAvailableButtonsSection(),
-              ],
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          context.read<HotMenuProvider>().reload();
+          Navigator.of(context).pop();
+        }
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            const AssetWiseBG(),
+            Positioned.fill(
+              child: CustomScrollView(
+                slivers: [
+                  _buildAppBar(),
+                  ..._buildPreviewButtonsSection(),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: 48),
+                  ),
+                  ..._buildAvailableButtonsSection(),
+                ],
+              ),
             ),
-          )
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              bottom: isEditing ? 0 : -100, // Start off-screen when loading
+              left: 0,
+              right: 0,
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                opacity: isEditing ? 1 : 0, // Fade in when loading
+                child: Container(
+                  alignment: Alignment.bottomCenter,
+                  decoration: BoxDecoration(
+                    color: CommonUtil.colorTheme(context, darkColor: const Color(0xEE262626), lightColor: Colors.white),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
+                    ),
+                    border: Border.all(
+                      color: CommonUtil.colorTheme(context, darkColor: Colors.white24, lightColor: mLightBackgroundColor),
+                    ),
+                    boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [const BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mDefaultPadding),
+                  child: SafeArea(
+                    top: false,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: FilledButton.icon(
+                            onPressed: () {
+                              context.read<HotMenuProvider>().saveConfig();
+                              setState(() {
+                                isEditing = false;
+                              });
+                            },
+                            icon: const Icon(Icons.check),
+                            label: Text(
+                              AppLocalizations.of(context)!.hotMenesConfigDone,
+                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            )
 
-          // _buildAvailableButtons(),
-        ],
+            // _buildAvailableButtons(),
+          ],
+        ),
       ),
     );
   }
@@ -85,11 +143,13 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
                         fontWeight: FontWeight.w400,
                       ),
                 ),
-                onPressed: () {
-                  setState(() {
-                    isEditing = !isEditing;
-                  });
-                },
+                onPressed: isEditing
+                    ? null
+                    : () {
+                        setState(() {
+                          isEditing = !isEditing;
+                        });
+                      },
                 child: Row(
                   children: [
                     Text(
