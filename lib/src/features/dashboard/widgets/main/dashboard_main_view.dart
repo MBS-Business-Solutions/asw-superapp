@@ -7,6 +7,7 @@ import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_logo.dart';
+import 'package:AssetWise/src/widgets/webview_with_close.dart';
 import 'package:flutter/material.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/widgets/aw_carousel.dart';
@@ -126,10 +127,14 @@ class DashboardMainView extends StatelessWidget {
     } else if (content.contentType == 'promotion') {
       Navigator.pushNamed(context, PromotionDetailView.routeName, arguments: {'promotionId': content.id});
     } else if (content.contentType == 'external') {
-      launchUrl(
-        Uri.parse(content.url!),
-        mode: LaunchMode.externalApplication,
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => WebViewWithCloseButton(link: content.url!)),
       );
+      // launchUrl(
+      //   Uri.parse(content.url!),
+      //   mode: LaunchMode.externalApplication,
+      // );
     }
   }
 }

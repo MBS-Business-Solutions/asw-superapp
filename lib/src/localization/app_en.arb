@@ -317,7 +317,7 @@
     "placeholders": {
       "action": {
         "type": "String",
-        "example": "ทำการสมัครสมาชิก"
+        "example": "Please sign up before using the service"
       }
     }
   },
@@ -445,15 +445,15 @@
   "mapDistanceKM": "{distance} km.",
 
   "projectsTitle": "Projects",
-  "projectsSearchHint": "ค้นหาชื่อโครงการ",
+  "projectsSearchHint": "Search for project name",
   "projectsSeeOnMap": "View on Map",
   "projectsFilterTitle": "Filter",
-  "projectsBrands": "แบรนด์",
+  "projectsBrands": "Brand",
   "projectsLocations": "Location",
   "projectsClearFilter": "Clear Filter",
   "projectsSearch": "Search",
-  "projectsSearchNoResult": "ไม่พบผลการค้นหา",
-  "projectsSearchTryAgain": "กรุณาลองใหม่อีกครั้ง",
+  "projectsSearchNoResult": "No search results found",
+  "projectsSearchTryAgain": "Please try again",
   "projectsSearchCount": "{count, plural, =1{ผลการค้นหา : 1 รายการ} other{ผลการค้นหา : {count} รายการ}}",
 
   "projectDetailTitle": "Project Details",
@@ -470,7 +470,7 @@
   "projectDetailProgressComplete": "System Installation",
   "projectDetailProgressConstruction": "Piling",
   "projectDetailMapTitle": "Map",
-  "projectDetailNearbyTitle": "สถานที่ใกล้เคียง",
+  "projectDetailNearbyTitle": "Nearby places",
   "projectDetailPlanTitle": "Room Plan",
   "projectDetailGalleryTitle": "Gallery",
   "projectDetailAdvertisementTitle": "Brochure",
@@ -490,7 +490,7 @@
   "myQRTitle": "My QR",
   "myQRDescription": "QR for Identity Verification and Privileges",
   "myQRRefCode": "รหัสอ้างอิง : {refCode}",
-  "myQRScanQR": "สแกน QR",
+  "myQRScanQR": "Scan QR code",
   "myQRShare": "Share",
   "myQRSave": "Save",
   "myQRSaveCompleted": "Saved successfully",
@@ -502,12 +502,12 @@
   "promotionsLastNameField": "Last Name",
   "promotionsPhoneField": "Phone Number",  
   "promotionsEmailField": "Email",
-  "promotionsProject": "โครงการ",
+  "promotionsProject": "Project",
   "promotionsPriceRange": "Preferred Price Range",
   "promotionsPurpose": "Purpose of Purchase",
   "promotionsRegister": "Register",
   "promotionsRegisterSuccess": "Submission Successful",
-  "promotionsBackToPromotions": "กลับสู่หน้าโปรโมชั่น",
+  "promotionsBackToPromotions": "Back to promotions page",
 
   "hotMenesConfigTitle": "All Menus",
   "hotMenesConfigFavourite": "Favorite Menu",
@@ -516,7 +516,7 @@
   "hotMenesConfigDone": "Done",
 
   "favouritesTitle": "Favorites",
-  "favouritesSearchHint": "ค้นหาชื่อโครงการ",
-  "favouritesSearchNoResult": "ไม่พบผลการค้นหา",
-  "favouritesSearchTryAgain": "กรุณาลองใหม่อีกครั้ง"
+  "favouritesSearchHint": "Search project name",
+  "favouritesSearchNoResult": "No results found",
+  "favouritesSearchTryAgain": "Please try again"
 }

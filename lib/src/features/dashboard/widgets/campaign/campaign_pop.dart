@@ -4,6 +4,7 @@ import 'package:AssetWise/src/features/projects/views/project_detail_view.dart';
 import 'package:AssetWise/src/features/promotions/views/promotion_detail_view.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/services/aw_content_service.dart';
+import 'package:AssetWise/src/widgets/webview_with_close.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -136,10 +137,14 @@ class _CampaignPopState extends State<CampaignPop> {
     } else if (content.contentType == 'promotion') {
       Navigator.pushNamed(context, PromotionDetailView.routeName, arguments: {'promotionId': content.id});
     } else if (content.contentType == 'external') {
-      launchUrl(
-        Uri.parse(content.url!),
-        mode: LaunchMode.externalApplication,
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => WebViewWithCloseButton(link: content.url!)),
       );
+      // launchUrl(
+      //   Uri.parse(content.url!),
+      //   mode: LaunchMode.externalApplication,
+      // );
     }
     close();
   }

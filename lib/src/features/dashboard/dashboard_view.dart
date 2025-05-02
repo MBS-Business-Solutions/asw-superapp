@@ -5,12 +5,14 @@ import 'package:AssetWise/src/features/my_qr/my_qr_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
+import 'package:AssetWise/src/widgets/webview_with_close.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key, required this.controller});
@@ -109,7 +111,10 @@ class _DashboardViewState extends State<DashboardView> {
       );
       return;
     }
-    await launchUrl(Uri.parse(link));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => WebViewWithCloseButton(link: link)),
+    );
     setState(() {
       _isLoading = false;
     });
