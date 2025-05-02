@@ -36,35 +36,44 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initForm();
+      // _initForm();
     });
     super.initState();
   }
 
   Future<void> _initForm() async {
-    final userProvider = context.read<UserProvider>();
-    if (userProvider.isAuthenticated) {
-      _nameTextController.text = userProvider.userInformation?.firstName ?? '';
-      _lastNameTextController.text = userProvider.userInformation?.lastName ?? '';
-      _phoneTextController.text = userProvider.userInformation?.phone ?? '';
-      _emailTextController.text = userProvider.userInformation?.email ?? '';
-    }
+    try {
+      final userProvider = context.read<UserProvider>();
+      if (userProvider.isAuthenticated) {
+        _nameTextController.text = userProvider.userInformation?.firstName ?? '';
+        _lastNameTextController.text = userProvider.userInformation?.lastName ?? '';
+        _phoneTextController.text = userProvider.userInformation?.phone ?? '';
+        _emailTextController.text = userProvider.userInformation?.email ?? '';
+      }
 
-    final promotionProvider = context.read<PromotionProvider>();
-    await promotionProvider.fetchPromotionPriceRanges().then((value) {
-      if (value.status == 'success') {
-        _priceRangeKeyValues.addAll(value.data ?? []);
-        _selectedPriceRangeKeyValue = _priceRangeKeyValues.first.id;
-      }
-    });
-    await promotionProvider.fetchPurposes().then((value) {
-      if (value.status == 'success') {
-        _purposeKeyValues.addAll(value.data ?? []);
-        _selectedPurposeKeyValue = _purposeKeyValues.first.id;
-      }
-    });
-    _selectedProjectKeyValue = widget.promotionItemDetail.participantProjects?.first.id;
-    setState(() {});
+      final promotionProvider = context.read<PromotionProvider>();
+      await promotionProvider.fetchPromotionPriceRanges().then((value) {
+        if (value.status == 'success') {
+          _priceRangeKeyValues.addAll(value.data ?? []);
+          _selectedPriceRangeKeyValue = _priceRangeKeyValues.first.id;
+        }
+      });
+      await promotionProvider.fetchPurposes().then((value) {
+        if (value.status == 'success') {
+          _purposeKeyValues.addAll(value.data ?? []);
+          _selectedPurposeKeyValue = _purposeKeyValues.first.id;
+        }
+      });
+      _selectedProjectKeyValue = widget.promotionItemDetail.participantProjects?.first.id;
+      setState(() {});
+    } catch (e) {
+      // Handle any errors that occur during the initialization
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          AppLocalizations.of(context)!.errorUnableToProcess,
+        ),
+      ));
+    }
   }
 
   @override
@@ -139,17 +148,19 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
                   ),
                   const SizedBox(height: mScreenEdgeInsetValue),
                   // Participate Project
-                  AwDropdownform<int>(
-                    initialValue: _selectedProjectKeyValue,
-                    itemBuilder: (context, index) => _projectsValues[index].id,
-                    titleBuilder: (context, index) => Text(_projectsValues[index].name, style: Theme.of(context).textTheme.bodyLarge),
-                    itemCount: _projectsValues.length,
-                    label: AppLocalizations.of(context)!.promotionsProject,
-                    onChanged: (dynamic projectId) {
-                      _selectedProjectKeyValue = projectId;
-                    },
-                  ),
-                  const SizedBox(height: mScreenEdgeInsetValue),
+                  if (_projectsValues.isNotEmpty) ...[
+                    AwDropdownform<int>(
+                      initialValue: _selectedProjectKeyValue,
+                      itemBuilder: (context, index) => _projectsValues[index].id,
+                      titleBuilder: (context, index) => Text(_projectsValues[index].name, style: Theme.of(context).textTheme.bodyLarge),
+                      itemCount: _projectsValues.length,
+                      label: AppLocalizations.of(context)!.promotionsProject,
+                      onChanged: (dynamic projectId) {
+                        _selectedProjectKeyValue = projectId;
+                      },
+                    ),
+                    const SizedBox(height: mScreenEdgeInsetValue),
+                  ],
                   // Price Range
                   AwDropdownform<int>(
                     initialValue: _selectedPriceRangeKeyValue,

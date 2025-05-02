@@ -88,34 +88,39 @@ class _ProjectsViewState extends State<ProjectsView> {
                       bottom: projectProvider.searchResults.isNotEmpty ? 0 : -100, // Start off-screen when loading
                       left: 0,
                       right: 0,
-                      child: Container(
-                        alignment: Alignment.bottomCenter,
-                        decoration: BoxDecoration(
-                          color: CommonUtil.colorTheme(context, darkColor: const Color(0xEE262626), lightColor: Colors.white),
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20.0),
-                            topRight: Radius.circular(20.0),
+                      child: AnimatedOpacity(
+                        duration: const Duration(milliseconds: 300),
+                        opacity: projectProvider.searchResults.isNotEmpty ? 1 : 0, // Fade in when loading
+                        curve: Curves.easeInOut,
+                        child: Container(
+                          alignment: Alignment.bottomCenter,
+                          decoration: BoxDecoration(
+                            color: CommonUtil.colorTheme(context, darkColor: const Color(0xEE262626), lightColor: Colors.white),
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(20.0),
+                              topRight: Radius.circular(20.0),
+                            ),
+                            border: Border.all(
+                              color: CommonUtil.colorTheme(context, darkColor: Colors.white24, lightColor: mLightBackgroundColor),
+                            ),
+                            boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [const BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
                           ),
-                          border: Border.all(
-                            color: CommonUtil.colorTheme(context, darkColor: Colors.white24, lightColor: mLightBackgroundColor),
-                          ),
-                          boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [const BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mDefaultPadding),
-                        child: SafeArea(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: FilledButton(
-                                  onPressed: () => Navigator.pushNamed(context, MapSearchView.routeName, arguments: {'textcontroller': _searchController}),
-                                  child: Text(
-                                    AppLocalizations.of(context)!.projectsSeeOnMap,
-                                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
+                          padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mDefaultPadding),
+                          child: SafeArea(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: FilledButton(
+                                    onPressed: () => Navigator.pushNamed(context, MapSearchView.routeName, arguments: {'textcontroller': _searchController}),
+                                    child: Text(
+                                      AppLocalizations.of(context)!.projectsSeeOnMap,
+                                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),

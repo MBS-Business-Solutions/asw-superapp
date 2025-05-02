@@ -511,8 +511,9 @@
 
   "hotMenesConfigTitle": "เมนูทั้งหมด",
   "hotMenesConfigFavourite": "เมนูโปรด",
-  "hotMenesConfigOthers": "เมนูอื่นๆ",
+  "hotMenesConfigOthers": "เมนูอื่น ๆ",
   "hotMenesConfigSetting": "ตั้งค่า",
+  "hotMenesConfigDone": "เสร็จสิ้น",
 
   "favouritesTitle": "รายการโปรด",
   "favouritesSearchHint": "ค้นหาชื่อโครงการ",

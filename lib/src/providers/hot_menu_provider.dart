@@ -18,6 +18,10 @@ class HotMenuProvider with ChangeNotifier {
 
   Future<void> init() async {
     _allHotMenu = mHotMenuConfig.map((key, value) => MapEntry(key, HotMenuItem.fromJson(key, value)));
+    await reload();
+  }
+
+  Future<void> reload() async {
     await _loadSelectedHotMenu();
     await _loadAvailableHotMenu();
   }
@@ -25,13 +29,13 @@ class HotMenuProvider with ChangeNotifier {
   Future<void> _loadSelectedHotMenu() async {
     final prefs = await SharedPreferences.getInstance();
     final selectedIds = prefs.getStringList('selectedHotMenu') ?? mDefaultMenuConfig;
-
+    _selectedHotMenu.clear();
     for (final hotMenuId in selectedIds) {
       if (mHotMenuConfig.containsKey(hotMenuId)) {
         _selectedHotMenu.add(_allHotMenu[hotMenuId]!);
       }
     }
-    await _saveConfig();
+    await saveConfig();
     notifyListeners();
   }
 
@@ -47,18 +51,17 @@ class HotMenuProvider with ChangeNotifier {
     }
     _selectedHotMenu.add(_allHotMenu[id]!);
     _loadAvailableHotMenu();
-    await _saveConfig();
     notifyListeners();
   }
 
   Future<void> removeHotMenu(String id) async {
     _selectedHotMenu.removeWhere((item) => item.id == id);
     _loadAvailableHotMenu();
-    await _saveConfig();
+    await saveConfig();
     notifyListeners();
   }
 
-  Future<void> _saveConfig() async {
+  Future<void> saveConfig() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setStringList('selectedHotMenu', _selectedHotMenu.map((item) => item.id).toList());
   }
@@ -68,7 +71,6 @@ class HotMenuProvider with ChangeNotifier {
 
     final item = _selectedHotMenu.removeAt(oldIndex);
     _selectedHotMenu.insert(newIndex + 1, item);
-    await _saveConfig();
     notifyListeners();
   }
 }

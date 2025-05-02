@@ -26,6 +26,7 @@ class ImageContent {
       image: json['image'],
       id: json['id'],
       contentType: json['type'],
+      url: json['url'],
     );
   }
 }
