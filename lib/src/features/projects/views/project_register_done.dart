@@ -51,7 +51,7 @@ class ProjectRegisterDone extends StatelessWidget {
   void _backToProject(BuildContext context) {
     Navigator.popUntil(
       context,
-      (route) => route is MaterialPageRoute && (route.builder(context) is ProjectsView || route.builder(context) is MapSearchView || route.builder(context) is NotificationsView),
+      (route) => route is MaterialPageRoute && (route.builder(context) is ProjectsView || route.builder(context) is MapSearchView || route.builder(context) is NotificationsView || route.isFirst),
     );
   }
 }

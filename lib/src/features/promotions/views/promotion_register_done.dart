@@ -49,7 +49,7 @@ class PromotionRegisterDone extends StatelessWidget {
 
   void _backUntilPromotions(BuildContext context) {
     Navigator.of(context).popUntil(
-      (route) => route is MaterialPageRoute && (route.builder(context) is PromotionsView || route.builder(context) is NotificationsView),
+      (route) => route is MaterialPageRoute && (route.builder(context) is PromotionsView || route.builder(context) is NotificationsView || route.isFirst),
     );
   }
 }
