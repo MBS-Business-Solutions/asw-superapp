@@ -1,6 +1,7 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/constants.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/providers/hot_menu_provider.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
@@ -167,6 +168,7 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
       ),
       Consumer<HotMenuProvider>(builder: (context, provider, child) {
         final selectedMenues = provider.selectedHotMenu;
+        final currentLocale = context.read<SettingsController>().supportedLocales;
         return SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: mMediumPadding),
@@ -188,7 +190,7 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
                                 clipBehavior: Clip.none,
                                 children: [
                                   HotMenuWidget(
-                                    titleText: e.titleTextTh,
+                                    titleText: currentLocale.locale == 'th' ? e.titleTextTh : e.titleTextEn,
                                     iconAsset: e.iconAsset,
                                     onTap: !isEditing
                                         ? null

@@ -29,7 +29,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
   final _purposeKeyValues = <KeyValue>[];
   int? _selectedPurposeKeyValue;
   final _projectsValues = <ParticipanProject>[];
-  int? _selectedProjectKeyValue;
+  String? _selectedProjectKeyValue;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -50,7 +50,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
         _phoneTextController.text = userProvider.userInformation?.phone ?? '';
         _emailTextController.text = userProvider.userInformation?.email ?? '';
       }
-
+      _projectsValues.addAll(widget.promotionItemDetail.participantProjects ?? []);
       final promotionProvider = context.read<PromotionProvider>();
       final prices = await promotionProvider.fetchPromotionPriceRanges();
       if (prices.status == 'success') {
@@ -148,7 +148,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
                   ),
                   const SizedBox(height: mScreenEdgeInsetValue),
                   // Participate Project
-                  AwDropdownform<int>(
+                  AwDropdownform<String>(
                     initialValue: _selectedProjectKeyValue,
                     itemBuilder: (context, index) => _projectsValues[index].id,
                     titleBuilder: (context, index) => Text(_projectsValues[index].name, style: Theme.of(context).textTheme.bodyLarge),
@@ -214,7 +214,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
       email: _emailTextController.text,
       priceInterest: _priceRangeKeyValues.firstWhere((element) => element.id == _selectedPriceRangeKeyValue).value,
       objectiveInterest: _purposeKeyValues.firstWhere((element) => element.id == _selectedPurposeKeyValue).value,
-      projectId: _selectedProjectKeyValue!,
+      projectId: int.tryParse(_selectedProjectKeyValue ?? '0') ?? 0,
     );
     if (registerResult.status == 'error') {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

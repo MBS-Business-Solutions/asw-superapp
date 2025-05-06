@@ -1,5 +1,6 @@
 import 'package:AssetWise/src/consts/constants.dart';
 import 'package:AssetWise/src/features/hot_menues/hot_menues_config_view.dart';
+import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/providers/hot_menu_provider.dart';
 import 'package:AssetWise/src/widgets/hot_menu.dart';
 import 'package:flutter/material.dart';
@@ -48,6 +49,7 @@ class FavHotMenues extends StatelessWidget {
           ),
           Consumer<HotMenuProvider>(builder: (context, provider, child) {
             final selectedMenues = provider.selectedHotMenu;
+            final currentLocale = context.read<SettingsController>().supportedLocales;
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.max,
@@ -56,7 +58,7 @@ class FavHotMenues extends StatelessWidget {
                   (e) {
                     return Flexible(
                       child: HotMenuWidget(
-                        titleText: e.titleTextTh,
+                        titleText: currentLocale.locale == 'th' ? e.titleTextTh : e.titleTextEn,
                         iconAsset: e.iconAsset,
                         onTap: () {
                           Navigator.pushNamed(context, e.link);

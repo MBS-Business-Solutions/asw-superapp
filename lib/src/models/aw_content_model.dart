@@ -364,7 +364,7 @@ class PromotionItemDetail {
 }
 
 class ParticipanProject {
-  final int id;
+  final String id;
   final String name;
 
   ParticipanProject({
