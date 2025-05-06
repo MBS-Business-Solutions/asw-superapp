@@ -57,26 +57,25 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
   }
 
   void _initData() async {
-    _tabController = TabController(length: 5, vsync: this);
     final projectProvider = context.read<ProjectProvider>();
     _serviceResponse = await projectProvider.fetchProjectDetail(widget.projectId);
+    if (_serviceResponse?.status != 'success') {
+      _isError = true;
+    } else {
+      _isError = false;
+      _isLoading = false;
+      projectDetail = _serviceResponse!.data!;
+      _sectionKeys = [
+        _detailSectionKey,
+        if (projectDetail.location != null) _mapSectionKey,
+        if (projectDetail.plans != null) _planSectionKey,
+        if (projectDetail.gallery != null) _gallerySectionKey,
+        if (projectDetail.brochures != null) _advertisementSectionKey,
+      ];
+    }
+    _tabController = TabController(length: _sectionKeys.length, vsync: this);
 
-    setState(() {
-      if (_serviceResponse?.status != 'success') {
-        _isError = true;
-      } else {
-        _isError = false;
-        _isLoading = false;
-        projectDetail = _serviceResponse!.data!;
-        _sectionKeys = [
-          _detailSectionKey,
-          if (projectDetail.location != null) _mapSectionKey,
-          if (projectDetail.plans != null) _planSectionKey,
-          if (projectDetail.gallery != null) _gallerySectionKey,
-          if (projectDetail.brochures != null) _advertisementSectionKey,
-        ];
-      }
-    });
+    setState(() {});
   }
 
   @override
@@ -113,214 +112,197 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
             ),
           ),
           child: Scaffold(
-              backgroundColor: Colors.transparent,
-              appBar: AppBar(
-                leading: IconButton(
-                  icon: const Icon(
-                    Icons.close,
-                    color: mLightGreyColor,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.close,
+                  color: mLightGreyColor,
                 ),
-                title: Text(AppLocalizations.of(context)!.projectDetailTitle),
-                centerTitle: true,
-                backgroundColor: Colors.transparent,
-                bottom: (_isLoading || _isError)
-                    ? null
-                    : TabBar(
-                        controller: _tabController,
-                        tabAlignment: TabAlignment.start,
-                        isScrollable: true,
-                        dividerColor: CommonUtil.colorTheme(context, darkColor: Colors.white, lightColor: const Color(0xFFDEDEDE)),
-                        dividerHeight: 2,
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        indicatorWeight: 2,
-                        onTap: (value) {
-                          _scrollTo(_sectionKeys[value]);
-                        },
-                        tabs: List.generate(
-                          _sectionKeys.length,
-                          (index) {
-                            final key = _sectionKeys[index];
-                            if (key == _detailSectionKey) {
-                              return _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionDetail);
-                            } else if (key == _mapSectionKey) {
-                              return _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionMap);
-                            } else if (key == _planSectionKey) {
-                              return _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionPlan);
-                            } else if (key == _gallerySectionKey) {
-                              return _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionGallery);
-                            } else {
-                              return _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionAdvertisement);
-                            }
-                          },
-                        )),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
-              // // launch vdo url
-              // TextButton(
-              //   onPressed: () async {
-              //     final url = Uri.parse('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
-              //     if (await canLaunchUrl(url)) {
-              //       await launchUrl(url);
-              //     } else {
-              //       throw 'Could not launch $url';
-              //     }
-              //   },
-              //   child: const Text('Click here to watch the video'),
-              // ),
-              // Container(
-              //   width: double.infinity,
-              //   color: Colors.red,
-              //   child: Image.file(
-              //     File(_videoThumbnailPath!),
-              //     fit: BoxFit.cover,
-              //   ),
-              // ),
-              body: _isError
-                  ? Center(
-                      child: Text(
-                        _serviceResponse?.message ?? AppLocalizations.of(context)!.errorUnableToProcess,
-                      ),
-                    )
-                  : _isLoading
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : SingleChildScrollView(
-                          controller: _scrollController,
-                          padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).padding.bottom + mDefaultPadding,
+              title: Text(AppLocalizations.of(context)!.projectDetailTitle),
+              centerTitle: true,
+              backgroundColor: Colors.transparent,
+              bottom: (_isLoading || _isError)
+                  ? null
+                  : TabBar(
+                      controller: _tabController,
+                      tabAlignment: TabAlignment.start,
+                      isScrollable: true,
+                      dividerColor: CommonUtil.colorTheme(context, darkColor: Colors.white, lightColor: const Color(0xFFDEDEDE)),
+                      dividerHeight: 2,
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      indicatorWeight: 2,
+                      onTap: (value) {
+                        _scrollTo(_sectionKeys[value]);
+                      },
+                      tabs: List.generate(
+                        _sectionKeys.length,
+                        (index) {
+                          final key = _sectionKeys[index];
+                          if (key == _detailSectionKey) {
+                            return _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionDetail);
+                          } else if (key == _mapSectionKey) {
+                            return _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionMap);
+                          } else if (key == _planSectionKey) {
+                            return _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionPlan);
+                          } else if (key == _gallerySectionKey) {
+                            return _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionGallery);
+                          } else {
+                            return _buildTab(title: AppLocalizations.of(context)!.projectDetailSectionAdvertisement);
+                          }
+                        },
+                      )),
+            ),
+            body: _isError
+                ? Center(
+                    child: Text(
+                      _serviceResponse?.message ?? AppLocalizations.of(context)!.errorUnableToProcess,
+                    ),
+                  )
+                : _isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Stack(
+                        children: [
+                          SingleChildScrollView(
+                            controller: _scrollController,
+                            padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).padding.bottom + mDefaultPadding,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Padding(
+                                  key: _detailSectionKey,
+                                  padding: const EdgeInsets.only(top: mDefaultPadding),
+                                  child: ProjectInfoSection(
+                                    projectDetail: projectDetail,
+                                    onImageTap: _showImageGallery,
+                                  ),
+                                ),
+                                if (projectDetail.location != null)
+                                  Padding(
+                                    key: _mapSectionKey,
+                                    padding: const EdgeInsets.only(top: mDefaultPadding),
+                                    child: LocationSection(location: projectDetail.location!),
+                                  ),
+                                if (projectDetail.nearbyLocations != null)
+                                  Padding(
+                                    padding: EdgeInsets.only(top: mDefaultPadding),
+                                    child: ProjectNearbySection(
+                                      nearbyLocations: projectDetail.nearbyLocations,
+                                    ),
+                                  ),
+                                if (projectDetail.plans != null)
+                                  Padding(
+                                    key: _planSectionKey,
+                                    padding: const EdgeInsets.only(top: mDefaultPadding),
+                                    child: ProjectPlansSection(
+                                      floorPlan: projectDetail.plans!,
+                                    ),
+                                  ),
+                                if (projectDetail.gallery != null)
+                                  Padding(
+                                    key: _gallerySectionKey,
+                                    padding: const EdgeInsets.only(top: mDefaultPadding),
+                                    child: ProjectGallerySection(
+                                      galleryItem: projectDetail.gallery!,
+                                      onImageTap: _showImageGallery,
+                                    ),
+                                  ),
+                                if (projectDetail.brochures != null)
+                                  Padding(
+                                    key: _advertisementSectionKey,
+                                    padding: const EdgeInsets.only(top: mDefaultPadding),
+                                    child: ProjectAdvertisementSection(
+                                      advertisements: projectDetail.brochures!,
+                                      onImageTap: _showImageGallery,
+                                    ),
+                                  ),
+                                if (projectDetail.videos != null && projectDetail.videos!.isNotEmpty)
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: mDefaultPadding),
+                                    child: ProjectVideoSection(
+                                      videoUrl: projectDetail.videos!.first.url,
+                                    ),
+                                  ),
+                                SizedBox(height: MediaQuery.of(context).padding.bottom + 60),
+                              ],
+                            ),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Padding(
-                                key: _detailSectionKey,
-                                padding: const EdgeInsets.only(top: mDefaultPadding),
-                                child: ProjectInfoSection(
-                                  projectDetail: projectDetail,
-                                  onImageTap: _showImageGallery,
+                          AnimatedPositioned(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                            bottom: _isLoading ? -100 : 0, // Start off-screen when loading
+                            left: 0,
+                            right: 0,
+                            child: AnimatedOpacity(
+                              duration: const Duration(milliseconds: 300),
+                              opacity: _isLoading ? 0.0 : 1.0, // Fade in when loading is done
+                              curve: Curves.easeInOut,
+                              child: Container(
+                                alignment: Alignment.bottomCenter,
+                                decoration: BoxDecoration(
+                                  color: CommonUtil.colorTheme(context, darkColor: const Color(0xEE262626), lightColor: Colors.white),
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(20.0),
+                                    topRight: Radius.circular(20.0),
+                                  ),
+                                  border: Border.all(
+                                    color: CommonUtil.colorTheme(context, darkColor: Colors.white24, lightColor: mLightBackgroundColor),
+                                  ),
+                                  boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [const BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
+                                ),
+                                padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mDefaultPadding),
+                                child: SafeArea(
+                                  top: false,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: FilledButton(
+                                          onPressed: _showRegisterView,
+                                          child: Text(
+                                            AppLocalizations.of(context)!.projectRegisterInterest,
+                                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 16.0),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: CommonUtil.colorTheme(context, darkColor: mGreyColor, lightColor: mLightBackgroundDimColor),
+                                          ),
+                                          color: CommonUtil.colorTheme(context, darkColor: mLightOutlinedButtonColor, lightColor: mLightBackgroundDimColor),
+                                          boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [const BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
+                                        ),
+                                        child: Transform(
+                                          alignment: Alignment.center,
+                                          transform: Matrix4.rotationY(pi),
+                                          child: IconButton(
+                                            onPressed: _shareThis,
+                                            icon: const Icon(Icons.reply_sharp),
+                                            color: CommonUtil.colorTheme(context, darkColor: mDarkBodyTextColor, lightColor: mPrimaryMatColor),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              if (projectDetail.location != null)
-                                Padding(
-                                  key: _mapSectionKey,
-                                  padding: const EdgeInsets.only(top: mDefaultPadding),
-                                  child: LocationSection(location: projectDetail.location!),
-                                ),
-                              if (projectDetail.nearbyLocations != null)
-                                Padding(
-                                  padding: EdgeInsets.only(top: mDefaultPadding),
-                                  child: ProjectNearbySection(
-                                    nearbyLocations: projectDetail.nearbyLocations,
-                                  ),
-                                ),
-                              if (projectDetail.plans != null)
-                                Padding(
-                                  key: _planSectionKey,
-                                  padding: const EdgeInsets.only(top: mDefaultPadding),
-                                  child: ProjectPlansSection(
-                                    floorPlan: projectDetail.plans!,
-                                  ),
-                                ),
-                              if (projectDetail.gallery != null)
-                                Padding(
-                                  key: _gallerySectionKey,
-                                  padding: const EdgeInsets.only(top: mDefaultPadding),
-                                  child: ProjectGallerySection(
-                                    galleryItem: projectDetail.gallery!,
-                                    onImageTap: _showImageGallery,
-                                  ),
-                                ),
-                              if (projectDetail.brochures != null)
-                                Padding(
-                                  key: _advertisementSectionKey,
-                                  padding: const EdgeInsets.only(top: mDefaultPadding),
-                                  child: ProjectAdvertisementSection(
-                                    advertisements: projectDetail.brochures!,
-                                    onImageTap: _showImageGallery,
-                                  ),
-                                ),
-                              if (projectDetail.videos != null && projectDetail.videos!.isNotEmpty)
-                                Padding(
-                                  padding: const EdgeInsets.only(top: mDefaultPadding),
-                                  child: ProjectVideoSection(
-                                    videoUrl: projectDetail.videos!.first.url,
-                                  ),
-                                ),
-                              SizedBox(height: MediaQuery.of(context).padding.bottom + 60),
-                            ],
+                            ),
                           ),
-                        )),
-        ),
-        AnimatedPositioned(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-          bottom: _isLoading ? -100 : 0, // Start off-screen when loading
-          left: 0,
-          right: 0,
-          child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 300),
-            opacity: _isLoading ? 0.0 : 1.0, // Fade in when loading is done
-            curve: Curves.easeInOut,
-            child: Container(
-              alignment: Alignment.bottomCenter,
-              decoration: BoxDecoration(
-                color: CommonUtil.colorTheme(context, darkColor: const Color(0xEE262626), lightColor: Colors.white),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20.0),
-                  topRight: Radius.circular(20.0),
-                ),
-                border: Border.all(
-                  color: CommonUtil.colorTheme(context, darkColor: Colors.white24, lightColor: mLightBackgroundColor),
-                ),
-                boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [const BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mDefaultPadding),
-              child: SafeArea(
-                top: false,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: FilledButton(
-                        onPressed: _showRegisterView,
-                        child: Text(
-                          AppLocalizations.of(context)!.projectRegisterInterest,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
-                        ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(width: 16.0),
-                    Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: CommonUtil.colorTheme(context, darkColor: mGreyColor, lightColor: mLightBackgroundDimColor),
-                        ),
-                        color: CommonUtil.colorTheme(context, darkColor: mLightOutlinedButtonColor, lightColor: mLightBackgroundDimColor),
-                        boxShadow: Theme.of(context).brightness == Brightness.dark ? null : [const BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
-                      ),
-                      child: Transform(
-                        alignment: Alignment.center,
-                        transform: Matrix4.rotationY(pi),
-                        child: IconButton(
-                          onPressed: _shareThis,
-                          icon: const Icon(Icons.reply_sharp),
-                          color: CommonUtil.colorTheme(context, darkColor: mDarkBodyTextColor, lightColor: mPrimaryMatColor),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
           ),
-        ),
-
-        // Gallery Overlay with Fade Animation
+        ), // Gallery Overlay with Fade Animation
         IgnorePointer(
           ignoring: !_isShowGallery,
           child: AnimatedOpacity(
