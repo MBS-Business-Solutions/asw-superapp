@@ -31,18 +31,20 @@ class PinWidget extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
+                // margin: const EdgeInsets.only(left: 1),
+                padding: const EdgeInsets.all(4),
                 width: 24,
                 height: 24,
                 clipBehavior: Clip.antiAlias,
-                decoration: const BoxDecoration(shape: BoxShape.circle),
+                decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
                 child: bytes != null && bytes!.isNotEmpty
                     ? Image.memory(
                         bytes!,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                       )
                     : Image.network(
                         imageUrl!,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                       ),
               )),
       ],

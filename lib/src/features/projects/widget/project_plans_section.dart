@@ -18,12 +18,12 @@ class ProjectPlansSection extends StatefulWidget {
 }
 
 class _ProjectPlansSectionState extends State<ProjectPlansSection> {
-  ProjectPlan? selectedFloorPlan;
+  ProjectPlan? _selectedFloorPlan;
 
   @override
   void initState() {
     super.initState();
-    selectedFloorPlan = widget.floorPlan.isNotEmpty ? widget.floorPlan.first : null;
+    _selectedFloorPlan = widget.floorPlan.isNotEmpty ? widget.floorPlan.first : null;
   }
 
   @override
@@ -52,7 +52,7 @@ class _ProjectPlansSectionState extends State<ProjectPlansSection> {
               child: DropdownButton<ProjectPlan>(
                 padding: EdgeInsets.zero,
                 isExpanded: true,
-                value: selectedFloorPlan,
+                value: _selectedFloorPlan,
                 items: widget.floorPlan.map((floorPlan) {
                   return DropdownMenuItem<ProjectPlan>(
                     value: floorPlan,
@@ -65,7 +65,7 @@ class _ProjectPlansSectionState extends State<ProjectPlansSection> {
                 onChanged: (selectedFloorPlan) {
                   // Handle selection change
                   setState(() {
-                    selectedFloorPlan = selectedFloorPlan;
+                    _selectedFloorPlan = selectedFloorPlan;
                   });
                 },
                 icon: const Icon(Icons.arrow_drop_down),
@@ -73,12 +73,12 @@ class _ProjectPlansSectionState extends State<ProjectPlansSection> {
             ),
           ),
           const SizedBox(height: mDefaultPadding),
-          if (selectedFloorPlan != null)
+          if (_selectedFloorPlan != null)
             Container(
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(4)),
               child: CachedNetworkImage(
-                imageUrl: selectedFloorPlan!.image,
+                imageUrl: _selectedFloorPlan!.image,
                 fit: BoxFit.contain,
                 placeholder: (context, url) => const CircularProgressIndicator(),
                 errorWidget: (context, url, error) => const Icon(Icons.error),

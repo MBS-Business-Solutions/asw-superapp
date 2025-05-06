@@ -211,9 +211,11 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                                   child: LocationSection(location: projectDetail.location!),
                                 ),
                               if (projectDetail.nearbyLocations != null)
-                                const Padding(
+                                Padding(
                                   padding: EdgeInsets.only(top: mDefaultPadding),
-                                  child: ProjectNearbySection(),
+                                  child: ProjectNearbySection(
+                                    nearbyLocations: projectDetail.nearbyLocations,
+                                  ),
                                 ),
                               if (projectDetail.plans != null)
                                 Padding(

@@ -191,6 +191,7 @@ class FilterDrawerWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
+                          padding: const EdgeInsets.all(4),
                           clipBehavior: Clip.antiAlias,
                           width: 64,
                           height: 64,
@@ -204,7 +205,7 @@ class FilterDrawerWidget extends StatelessWidget {
                           ),
                           child: Image.network(
                             list[index].image!,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.contain,
                           )),
                       Row(
                         children: [

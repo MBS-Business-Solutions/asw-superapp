@@ -4,6 +4,7 @@ import 'package:AssetWise/src/features/projects/widget/progress_indicator_widget
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/utils/date_formatter_util.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -154,7 +155,12 @@ class ProjectInfoSection extends StatelessWidget {
                     ),
                     child: AspectRatio(
                       aspectRatio: 1,
-                      child: Image.network(projectDetail.progress!.progressImages![index], fit: BoxFit.cover),
+                      child: CachedNetworkImage(
+                        imageUrl: projectDetail.progress!.progressImages![index],
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                      ),
                     ),
                   ),
                 );

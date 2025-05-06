@@ -1,11 +1,13 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProjectNearbySection extends StatelessWidget {
-  const ProjectNearbySection({super.key});
+  const ProjectNearbySection({super.key, this.nearbyLocations});
+  final List<ProjectNearbyLocation>? nearbyLocations;
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +22,18 @@ class ProjectNearbySection extends StatelessWidget {
           ),
           const SizedBox(height: mSmallPadding),
           // Map image
-          Container(
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: const AspectRatio(
-              aspectRatio: 4 / 3,
-              child: Placeholder(),
-            ),
-          ),
-          const SizedBox(height: mDefaultPadding),
-          for (final i in [1, 2, 3])
+          // Container(
+          //   clipBehavior: Clip.antiAlias,
+          //   decoration: BoxDecoration(
+          //     borderRadius: BorderRadius.circular(4),
+          //   ),
+          //   child: const AspectRatio(
+          //     aspectRatio: 4 / 3,
+          //     child: Placeholder(),
+          //   ),
+          // ),
+          // const SizedBox(height: mDefaultPadding),
+          for (final location in nearbyLocations ?? <ProjectNearbyLocation>[])
             Container(
               margin: const EdgeInsets.symmetric(vertical: mDefaultPadding),
               child: Text.rich(
@@ -43,12 +45,12 @@ class ProjectNearbySection extends StatelessWidget {
                         child: Icon(Icons.pin_drop_outlined),
                       ),
                     ),
-                    TextSpan(text: 'Major รังสิต', style: Theme.of(context).textTheme.bodyLarge),
+                    TextSpan(text: location.name, style: Theme.of(context).textTheme.bodyLarge),
                     const WidgetSpan(
                       child: SizedBox(width: mMediumPadding),
                     ),
                     TextSpan(
-                        text: '6.1 กิโลเมตร',
+                        text: location.distance,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: CommonUtil.colorTheme(context, darkColor: mBrightPrimaryColor, lightColor: mPrimaryMatColor))),
                   ],
                 ),

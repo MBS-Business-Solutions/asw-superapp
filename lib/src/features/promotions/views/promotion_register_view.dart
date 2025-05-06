@@ -148,19 +148,18 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
                   ),
                   const SizedBox(height: mScreenEdgeInsetValue),
                   // Participate Project
-                  if (_projectsValues.isNotEmpty) ...[
-                    AwDropdownform<int>(
-                      initialValue: _selectedProjectKeyValue,
-                      itemBuilder: (context, index) => _projectsValues[index].id,
-                      titleBuilder: (context, index) => Text(_projectsValues[index].name, style: Theme.of(context).textTheme.bodyLarge),
-                      itemCount: _projectsValues.length,
-                      label: AppLocalizations.of(context)!.promotionsProject,
-                      onChanged: (dynamic projectId) {
-                        _selectedProjectKeyValue = projectId;
-                      },
-                    ),
-                    const SizedBox(height: mScreenEdgeInsetValue),
-                  ],
+                  AwDropdownform<int>(
+                    initialValue: _selectedProjectKeyValue,
+                    itemBuilder: (context, index) => _projectsValues[index].id,
+                    titleBuilder: (context, index) => Text(_projectsValues[index].name, style: Theme.of(context).textTheme.bodyLarge),
+                    itemCount: _projectsValues.length,
+                    label: AppLocalizations.of(context)!.promotionsProject,
+                    onChanged: (dynamic projectId) {
+                      _selectedProjectKeyValue = projectId;
+                    },
+                    validator: (value) => value == null ? AppLocalizations.of(context)!.errorFieldRequired : null,
+                  ),
+                  const SizedBox(height: mScreenEdgeInsetValue),
                   // Price Range
                   AwDropdownform<int>(
                     initialValue: _selectedPriceRangeKeyValue,
@@ -181,7 +180,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
                     itemCount: _purposeKeyValues.length,
                     label: AppLocalizations.of(context)!.promotionsPurpose,
                     onChanged: (dynamic purposeId) {
-                      _selectedPriceRangeKeyValue = purposeId;
+                      _selectedPurposeKeyValue = purposeId;
                     },
                   ),
                   const SizedBox(height: mScreenEdgeInsetValue),
