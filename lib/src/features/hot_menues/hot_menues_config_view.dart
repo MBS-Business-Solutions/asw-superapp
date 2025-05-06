@@ -31,8 +31,7 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
     return PopScope(
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) {
-          context.read<HotMenuProvider>().reload();
-          Navigator.of(context).pop();
+          await context.read<HotMenuProvider>().reload();
         }
       },
       child: Scaffold(
