@@ -60,5 +60,7 @@
 		<string>We need your location to show your current position on the map.</string>
 		<key>NSCameraUsageDescription</key>
 		<string>This app needs camera access to scan QR codes</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>We need your location to calculate the distance to the project you are searching for.</string>
 	</dict>
 </plist>
