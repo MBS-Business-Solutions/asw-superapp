@@ -1,3 +1,5 @@
+import 'package:AssetWise/src/models/aw_content_model.dart';
+import 'package:AssetWise/src/providers/project_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/services/aw_header_util.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ class SettingsController with ChangeNotifier {
   // Make SettingsService a private variable so it is not used directly.
   final SettingsService _settingsService;
   UserProvider? _userProvider;
+  ProjectProvider? _projectProvider;
 
   // Make ThemeMode a private variable so it is not updated directly without
   // also persisting the changes with the SettingsService.
@@ -31,8 +34,12 @@ class SettingsController with ChangeNotifier {
   late SupportedLocales _selectedLocale;
   SupportedLocales get supportedLocales => _selectedLocale;
 
-  SettingsController updateUserProvider(UserProvider userProvider) {
+  SettingsController updateProvider(UserProvider userProvider, ProjectProvider projectProvider) {
     _userProvider = userProvider;
+    _projectProvider = projectProvider;
+    if (_projectProvider != null) {
+      _projectProvider!.loadMasterData();
+    }
     return this;
   }
 

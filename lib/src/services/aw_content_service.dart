@@ -481,10 +481,10 @@ class AWContentService {
     return ServiceResponseWithData<ProjectDetail>(status: 'error', message: 'Unknown error', data: null);
   }
 
-  Future<ServiceResponseWithData<List<FavouriteProjectSearchItem>>> fetchFavouriteProjects() async {
+  Future<ServiceResponseWithData<List<FavouriteProjectSearchItem>>> fetchFavouriteProjects(String? token) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/project/favorite'),
-      headers: getHeader(),
+      headers: getHeader(token: token),
     );
 
     try {

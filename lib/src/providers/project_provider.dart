@@ -198,7 +198,7 @@ class ProjectProvider with ChangeNotifier {
     );
     if (projectsResponse.status == 'success') {
       _isFiltering = _searchText.isNotEmpty || _selectedBrands.isNotEmpty || _selectedLocations.isNotEmpty || _selectedStatus.isNotEmpty;
-
+      _searchResults.clear();
       _searchResults.addAll(projectsResponse.data!);
     }
     _isLoading = false;
@@ -210,7 +210,7 @@ class ProjectProvider with ChangeNotifier {
   }
 
   Future<ServiceResponseWithData<List<FavouriteProjectSearchItem>>> fetchFavouriteProjects() async {
-    final favouritesResponse = await AWContentService().fetchFavouriteProjects();
+    final favouritesResponse = await AWContentService().fetchFavouriteProjects(_userProvider?.token);
     return favouritesResponse;
   }
 

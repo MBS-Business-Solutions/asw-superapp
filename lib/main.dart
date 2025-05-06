@@ -52,10 +52,6 @@ void main() async {
     ChangeNotifierProvider(
       create: (context) => userProvider,
     ),
-    ChangeNotifierProxyProvider<UserProvider, SettingsController>(
-      create: (context) => settingsController,
-      update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
-    ),
     ProxyProvider<UserProvider, FirebaseMessagingProvider>(
       create: (context) => FirebaseMessagingProvider(),
       update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
@@ -82,6 +78,10 @@ void main() async {
       create: (context) => ProjectProvider(),
       update: (context, userProvider, previous) => previous!..updateUserProvider(userProvider),
       lazy: false,
+    ),
+    ChangeNotifierProxyProvider2<UserProvider, ProjectProvider, SettingsController>(
+      create: (context) => settingsController,
+      update: (context, userProvider, projectProvider, previous) => previous!..updateProvider(userProvider, projectProvider),
     ),
   ], child: MyApp(settingsController: settingsController)));
 }

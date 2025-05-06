@@ -153,7 +153,8 @@ class FilterDrawerWidget extends StatelessWidget {
         Expanded(
           child: FilledButton(
               onPressed: () {
-                context.read<ProjectProvider>().applySearchFilter();
+                // ไม่ต้อง apply filter เพราะ filter จะถูก apply เองเมื่อมีปิด Drawer
+                // context.read<ProjectProvider>().applySearchFilter();
                 Navigator.pop(context);
               },
               child: Text(
