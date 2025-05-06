@@ -96,22 +96,22 @@ class _BottomBarState extends State<BottomBar> {
                 flex: widget.normalFlex,
                 child: InkWell(
                   onTap: () {
-                    if (_currentTab == BottomTab.service) return;
+                    if (_currentTab == BottomTab.privilege) return;
 
                     setState(() {
-                      _currentTab = BottomTab.service;
-                      widget.onTabChanged?.call(BottomTab.service);
+                      // ไม่ต้อง Set สถานะ _currentTab จะเปิด link ที่ browser แทน
+                      widget.onTabChanged?.call(BottomTab.privilege);
                     });
                   },
                   child: Column(
                     children: [
                       Icon(
-                        Icons.support_agent_outlined,
-                        color: _currentTab == BottomTab.service ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor,
+                        Icons.local_activity_outlined,
+                        color: _currentTab == BottomTab.privilege ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor,
                       ),
                       Text(
-                        AppLocalizations.of(context)!.bottomBarService,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.service ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
+                        AppLocalizations.of(context)!.bottomBarPrivilege,
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.privilege ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
                       ),
                     ],
                   ),
@@ -124,11 +124,7 @@ class _BottomBarState extends State<BottomBar> {
                   height: 80,
                   child: InkWell(
                     onTap: () {
-                      if (_currentTab == BottomTab.chat) return;
-                      setState(() {
-                        _currentTab = BottomTab.chat;
-                        widget.onTabChanged?.call(BottomTab.chat);
-                      });
+                      widget.onTabChanged?.call(BottomTab.myUnit);
                     },
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -155,39 +151,18 @@ class _BottomBarState extends State<BottomBar> {
                             ],
                           ),
                           padding: const EdgeInsets.all(12.0),
-                          child: SvgPicture.asset('assets/icons/chat.svg'),
+                          child: const Icon(
+                            Icons.gite_sharp,
+                            size: 32,
+                            color: Colors.white,
+                          ),
                         ),
                         Text(
-                          AppLocalizations.of(context)!.bottomBarChat,
-                          style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.chat ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
+                          AppLocalizations.of(context)!.bottomBarMyUnit,
+                          style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.myUnit ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
                         ),
                       ],
                     ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: widget.normalFlex,
-                child: InkWell(
-                  onTap: () {
-                    if (_currentTab == BottomTab.privilege) return;
-
-                    setState(() {
-                      // ไม่ต้อง Set สถานะ _currentTab จะเปิด link ที่ browser แทน
-                      widget.onTabChanged?.call(BottomTab.privilege);
-                    });
-                  },
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.local_activity_outlined,
-                        color: _currentTab == BottomTab.privilege ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor,
-                      ),
-                      Text(
-                        AppLocalizations.of(context)!.bottomPrivilege,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.privilege ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
-                      ),
-                    ],
                   ),
                 ),
               ),
@@ -205,8 +180,33 @@ class _BottomBarState extends State<BottomBar> {
                         color: _currentTab == BottomTab.myqr ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor,
                       ),
                       Text(
-                        AppLocalizations.of(context)!.bottomMyQR,
+                        AppLocalizations.of(context)!.bottomBarMyQR,
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.myqr ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: widget.normalFlex,
+                child: InkWell(
+                  onTap: () {
+                    // if (_currentTab == BottomTab.profile) return;
+
+                    // setState(() {
+                    // _currentTab = BottomTab.profile;
+                    widget.onTabChanged?.call(BottomTab.profile);
+                    // });
+                  },
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.person_outline_sharp,
+                        color: _currentTab == BottomTab.profile ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor,
+                      ),
+                      Text(
+                        AppLocalizations.of(context)!.bottomBarProfile,
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.profile ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
                       ),
                     ],
                   ),
@@ -222,8 +222,8 @@ class _BottomBarState extends State<BottomBar> {
 
 enum BottomTab {
   home,
-  service,
-  chat,
   privilege,
+  myUnit,
   myqr,
+  profile,
 }

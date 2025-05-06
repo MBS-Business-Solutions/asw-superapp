@@ -77,8 +77,10 @@
   "bottomBarChat": "Chat",
   "bottomBarMenu": "Menu",
   "bottomBarCalendar": "Calendar",
-  "bottomPrivilege": "Privilege",
-  "bottomMyQR": "My QR",
+  "bottomBarPrivilege": "Privilege",
+  "bottomBarMyQR": "My QR",
+  "bottomBarProfile":"Profile",
+  "bottomBarMyUnit": "My Unit",
 
   "registerUserName": "Enter your mobile number or email address",
   "registerUserNameHint": "Enter your mobile phone number or email to apply for membership.",

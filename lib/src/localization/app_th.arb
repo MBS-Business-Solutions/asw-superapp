@@ -77,8 +77,10 @@
   "bottomBarChat": "แชท",
   "bottomBarMenu": "เมนู",
   "bottomBarCalendar": "ปฏิทิน",
-  "bottomPrivilege": "สิทธิพิเศษ",
-  "bottomMyQR": "QR ของฉัน",
+  "bottomBarPrivilege": "สิทธิพิเศษ",
+  "bottomBarMyQR": "QR ของฉัน",
+  "bottomBarProfile":"โปรไฟล์",
+  "bottomBarMyUnit": "บ้านของฉัน",
 
   "registerUserName": "กรอกเบอร์มือถือหรือ E-mail",
   "registerUserNameHint": "ระบุเบอร์มือถือหรือ E-mail ของท่าน เพื่อทำการสมัครสมาชิก",

@@ -245,19 +245,6 @@ class _ProfileViewState extends State<ProfileView> {
                 ],
               ),
             ),
-          // ลบออกเมื่อไม่ใช้
-          ListTile(
-            title: const Text('ลบ Keychain ชั่วคราว*'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () async {
-              await context.read<UserProvider>().cleanUpKeyChain();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('DONE'),
-                ),
-              );
-            },
-          ),
         ],
       ),
     );

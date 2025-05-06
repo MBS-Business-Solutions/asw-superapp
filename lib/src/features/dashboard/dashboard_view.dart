@@ -1,7 +1,9 @@
+import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/campaign/campaign_pop.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/bottom_bar/bottom_bar.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/main/dashboard_main_view.dart';
 import 'package:AssetWise/src/features/my_qr/my_qr_view.dart';
+import 'package:AssetWise/src/features/profile/profile_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
@@ -71,6 +73,10 @@ class _DashboardViewState extends State<DashboardView> {
                         Navigator.pushNamed(context, MyQrView.routeName);
                       } else if (tab == BottomTab.privilege) {
                         _openPriviledge();
+                      } else if (tab == BottomTab.myUnit) {
+                        _openMyUnit();
+                      } else if (tab == BottomTab.profile) {
+                        _openProfile();
                       } else {
                         setState(() {
                           _currentTab = tab;
@@ -115,5 +121,13 @@ class _DashboardViewState extends State<DashboardView> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void _openMyUnit() {
+    Navigator.of(context).pushNamed(ContractsView.routeName);
+  }
+
+  void _openProfile() {
+    Navigator.of(context).pushNamed(ProfileView.routeName);
   }
 }
