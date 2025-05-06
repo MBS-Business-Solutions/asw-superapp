@@ -26,4 +26,14 @@ class CommonUtil {
       FocusManager.instance.primaryFocus?.unfocus();
     }
   }
+
+  static double parseDouble(dynamic value) {
+    if (value == null) return 0.0;
+    return double.tryParse(value.toString()) ?? 0.0;
+  }
+
+  static int parseInt(dynamic value) {
+    if (value == null) return 0;
+    return int.tryParse(value.toString()) ?? 0;
+  }
 }

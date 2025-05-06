@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:AssetWise/src/utils/common_util.dart';
+
 class Project {
   final int id;
   final String name;
@@ -511,11 +513,11 @@ class ProjectProgress {
   factory ProjectProgress.fromJson(Map<String, dynamic> json) {
     return ProjectProgress(
       updateDated: DateTime.tryParse(json['updateDated']) ?? DateTime.now(),
-      overall: json['overall'],
-      construction: json['construction'],
-      interior: json['interior'],
-      facilities: json['facilities'],
-      constructionPiles: json['constructionPiles'],
+      overall: CommonUtil.parseDouble(json['overall']),
+      construction: CommonUtil.parseDouble(json['construction']),
+      interior: CommonUtil.parseDouble(json['interior']),
+      facilities: CommonUtil.parseDouble(json['facilities']),
+      constructionPiles: CommonUtil.parseDouble(json['constructionPiles']),
       progressImages: List<String>.from(json['progressImages']),
     );
   }
