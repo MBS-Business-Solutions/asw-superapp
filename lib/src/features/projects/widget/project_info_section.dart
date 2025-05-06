@@ -88,7 +88,7 @@ class ProjectInfoSection extends StatelessWidget {
                                 Text(AppLocalizations.of(context)!.projectDetailProgressStructure),
                                 const Spacer(),
                                 Text(
-                                  '${(projectDetail.progress!.construction * 100).toStringAsFixed(0)}%',
+                                  '${_formatPercentage(projectDetail.progress!.construction)}%',
                                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                                 ),
                               ],
@@ -99,7 +99,7 @@ class ProjectInfoSection extends StatelessWidget {
                                 Text(AppLocalizations.of(context)!.projectDetailProgressFinishing),
                                 const Spacer(),
                                 Text(
-                                  '${(projectDetail.progress!.interior * 100).toStringAsFixed(0)}%',
+                                  '${_formatPercentage(projectDetail.progress!.interior)}%',
                                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                                 ),
                               ],
@@ -110,7 +110,7 @@ class ProjectInfoSection extends StatelessWidget {
                                 Text(AppLocalizations.of(context)!.projectDetailProgressComplete),
                                 const Spacer(),
                                 Text(
-                                  '${(projectDetail.progress!.facilities * 100).toStringAsFixed(0)}%',
+                                  '${_formatPercentage(projectDetail.progress!.facilities)}%',
                                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                                 ),
                               ],
@@ -121,7 +121,7 @@ class ProjectInfoSection extends StatelessWidget {
                                 Text(AppLocalizations.of(context)!.projectDetailProgressConstruction),
                                 const Spacer(),
                                 Text(
-                                  '${(projectDetail.progress!.constructionPiles * 100).toStringAsFixed(0)}%',
+                                  '${_formatPercentage(projectDetail.progress!.constructionPiles)}%',
                                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                                 ),
                               ],
@@ -166,5 +166,14 @@ class ProjectInfoSection extends StatelessWidget {
         ]
       ],
     );
+  }
+
+  String _formatPercentage(double? value) {
+    if (value == null) return '0';
+    var v = value.toStringAsFixed(1);
+    if (v.endsWith('.0')) {
+      v = v.substring(0, v.length - 2);
+    }
+    return v;
   }
 }

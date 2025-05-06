@@ -19,10 +19,8 @@ import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 class ProjectDetailView extends StatefulWidget {
   const ProjectDetailView({super.key, required this.projectId});
@@ -50,7 +48,6 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
   bool _isShowGallery = false;
   int _selectedImageIndex = 0;
   List<String> _galleryImageUrls = [];
-  String? _videoThumbnailPath;
 
   List<GlobalKey> _sectionKeys = [];
   @override
@@ -63,13 +60,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
     _tabController = TabController(length: 5, vsync: this);
     final projectProvider = context.read<ProjectProvider>();
     _serviceResponse = await projectProvider.fetchProjectDetail(widget.projectId);
-    _videoThumbnailPath = await VideoThumbnail.thumbnailFile(
-      video: "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4",
-      thumbnailPath: (await getTemporaryDirectory()).path,
-      imageFormat: ImageFormat.WEBP,
-      maxHeight: 200,
-      quality: 99,
-    );
+
     setState(() {
       if (_serviceResponse?.status != 'success') {
         _isError = true;
@@ -252,7 +243,6 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                                 ),
                               if (projectDetail.videos != null && projectDetail.videos!.isNotEmpty)
                                 Padding(
-                                  key: _advertisementSectionKey,
                                   padding: const EdgeInsets.only(top: mDefaultPadding),
                                   child: ProjectVideoSection(
                                     videoUrl: projectDetail.videos!.first.url,

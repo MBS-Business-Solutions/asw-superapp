@@ -1,5 +1,6 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -41,8 +42,11 @@ class ProjectAdvertisementSection extends StatelessWidget {
                   ),
                   child: AspectRatio(
                     aspectRatio: 1,
-                    child: Container(
-                      child: Image.network(advertisements[index].image, fit: BoxFit.cover),
+                    child: CachedNetworkImage(
+                      imageUrl: advertisements[index].image,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
                     ),
                   ),
                 ),

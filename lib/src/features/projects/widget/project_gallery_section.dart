@@ -1,4 +1,5 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -40,7 +41,14 @@ class ProjectGallerySection extends StatelessWidget {
                   ),
                   child: AspectRatio(
                     aspectRatio: 1,
-                    child: Image.network(galleryItem[index], fit: BoxFit.cover),
+                    child: CachedNetworkImage(
+                      imageUrl: galleryItem[index],
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                    ),
                   ),
                 ),
               );

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -35,28 +36,29 @@ class _VideoThumbnailWidgetState extends State<VideoThumbnailWidget> {
   }
 
   Future<void> _generateThumbnail() async {
-    try {
-      final thumbnailPath = await VideoThumbnail.thumbnailFile(
-        video: widget.videoUrl,
-        thumbnailPath: (await getTemporaryDirectory()).path,
-        imageFormat: ImageFormat.WEBP,
-        maxHeight: 200,
-        quality: 99,
-      );
+    // try {
+    //   final thumbnailPath = await VideoThumbnail.thumbnailFile(
+    //     video: widget.videoUrl,
+    //     thumbnailPath: (await getTemporaryDirectory()).path,
+    //     imageFormat: ImageFormat.WEBP,
+    //     maxHeight: 200,
+    //     quality: 99,
+    //   );
 
-      if (!mounted) return;
+    //   if (!mounted) return;
 
-      setState(() {
-        _thumbnailPath = thumbnailPath;
-        _isLoading = false;
-      });
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _hasError = true;
-        _isLoading = false;
-      });
-    }
+    setState(() {
+      final videoId = widget.videoUrl.split('/').last;
+      _thumbnailPath = 'https://img.youtube.com/vi/$videoId/0.jpg';
+      _isLoading = false;
+    });
+    // } catch (e) {
+    //   if (!mounted) return;
+    //   setState(() {
+    //     _hasError = true;
+    //     _isLoading = false;
+    //   });
+    // }
   }
 
   @override
@@ -81,31 +83,40 @@ class _VideoThumbnailWidgetState extends State<VideoThumbnailWidget> {
       );
     }
 
-    return GestureDetector(
-      onTap: widget.onTap,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Image.file(
-            File(_thumbnailPath!),
-            width: widget.width,
-            height: widget.height,
-            fit: widget.fit,
-          ),
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.5),
-              shape: BoxShape.circle,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Image.network(
+              _thumbnailPath!,
+              width: widget.width,
+              height: widget.height,
+              fit: widget.fit,
             ),
-            child: const Icon(
-              Icons.play_arrow,
-              color: Colors.white,
-              size: 30,
+            // Image.file(
+            //   File(_thumbnailPath!),
+            //   width: widget.width,
+            //   height: widget.height,
+            //   fit: widget.fit,
+            // ),
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.5),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.play_arrow,
+                color: Colors.white,
+                size: 30,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

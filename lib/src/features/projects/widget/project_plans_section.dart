@@ -2,6 +2,7 @@ import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -76,9 +77,11 @@ class _ProjectPlansSectionState extends State<ProjectPlansSection> {
             Container(
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(4)),
-              child: Image.network(
-                selectedFloorPlan!.image,
+              child: CachedNetworkImage(
+                imageUrl: selectedFloorPlan!.image,
                 fit: BoxFit.contain,
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             )
         ],

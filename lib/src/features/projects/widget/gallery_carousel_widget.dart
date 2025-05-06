@@ -1,4 +1,5 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,11 @@ class _GalleryCarouselWidgetState extends State<GalleryCarouselWidget> {
         _imageUrls.addAll(widget.imageUrls);
       });
     }
-    oldWidget.index != widget.index ? _controller.jumpToPage(widget.index) : null;
+    _controller.onReady.then((_) {
+      if (oldWidget.index != widget.index) {
+        _controller.jumpToPage(widget.index);
+      }
+    });
     super.didUpdateWidget(oldWidget);
   }
 
@@ -53,7 +58,13 @@ class _GalleryCarouselWidgetState extends State<GalleryCarouselWidget> {
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(4),
-                        child: Image.network(_imageUrls[index], fit: BoxFit.contain, width: MediaQuery.of(context).size.width * 0.7),
+                        child: CachedNetworkImage(
+                          imageUrl: _imageUrls[index],
+                          fit: BoxFit.contain,
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                        ),
                       ),
                     ),
                     itemCount: _imageUrls.length,
