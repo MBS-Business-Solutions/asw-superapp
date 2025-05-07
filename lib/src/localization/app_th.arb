@@ -19,7 +19,7 @@
     "description": "The format of the price",
     "placeholders": {
       "price": {
-        "type": "int",
+        "type": "double",
         "format": "decimalPattern",
         "optionalParameters": {
           "decimalDigits": 2
@@ -33,7 +33,7 @@
     "description": "The format of the price",
     "placeholders": {
       "price": {
-        "type": "int",
+        "type": "double",
         "format": "currency",
         "optionalParameters": {
           "decimalDigits": 2,
@@ -48,7 +48,7 @@
     "description": "The format of the amount",
     "placeholders": {
       "amount": {
-        "type": "int",
+        "type": "double",
         "format": "decimalPattern",
         "optionalParameters": {
           "decimalDigits": 2
@@ -62,7 +62,7 @@
     "description": "The format of the amount",
     "placeholders": {
       "amount": {
-        "type": "int",
+        "type": "double",
         "format": "currency",
         "optionalParameters": {
           "decimalDigits": 2,

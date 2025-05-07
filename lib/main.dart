@@ -42,6 +42,9 @@ void main() async {
   await initIsar();
 
   final userProvider = UserProvider();
+  // await userProvider.initApp(
+  //     testToken:
+  //         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDc2M2M3OC1jMTEzLTRiNjEtYjdiYS05ZThiNGU5MDI5MWUiLCJlbWFpbCI6IiIsImlhdCI6MTc0NjU4ODY4NCwiZXhwIjoxNzQ5MTgwNjg0fQ.IHqSVB8xHGA6ECmaiZMXB1fXLhVONIZmHRNfUmJcDyM');
   await userProvider.initApp();
 
   // Run the app and pass in the SettingsController. The app listens to the

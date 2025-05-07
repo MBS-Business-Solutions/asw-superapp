@@ -1,3 +1,5 @@
+import 'package:AssetWise/src/utils/common_util.dart';
+
 class Contract {
   final String id;
   final String contractId;
@@ -40,17 +42,17 @@ class ContractDetail {
   final DateTime date;
   final DateTime signDate;
   final DateTime transferDate;
-  final int sellingPrice;
-  final int cashDiscount;
-  final int cashDiscountTransfer;
-  final int netPrice;
-  final int bookAmount;
-  final int contractAmount;
-  final int downAmount;
-  final int transferAmount;
-  final int paymentAmount;
-  final int remainDownAmount;
-  final int remainAmount;
+  final double sellingPrice;
+  final double cashDiscount;
+  final double cashDiscountTransfer;
+  final double netPrice;
+  final double bookAmount;
+  final double contractAmount;
+  final double downAmount;
+  final double transferAmount;
+  final double paymentAmount;
+  final double remainDownAmount;
+  final double remainAmount;
   List<String>? freebies;
 
   ContractDetail({
@@ -76,24 +78,24 @@ class ContractDetail {
       date: DateTime.parse(json['date']),
       signDate: DateTime.parse(json['sign_date']),
       transferDate: DateTime.parse(json['transfer_date']),
-      sellingPrice: json['selling_price'],
-      cashDiscount: json['cash_discount'],
-      cashDiscountTransfer: json['transfer_discount'],
-      netPrice: json['net_price'],
-      bookAmount: json['book_amount'],
-      contractAmount: json['contract_amount'],
-      downAmount: json['down_amount'],
-      transferAmount: json['transfer_amount'],
-      paymentAmount: json['payment_amount'],
-      remainDownAmount: json['remain_down_amount'],
-      remainAmount: json['remain_amount'],
+      sellingPrice: CommonUtil.parseDouble(json['selling_price']),
+      cashDiscount: CommonUtil.parseDouble(json['cash_discount']),
+      cashDiscountTransfer: CommonUtil.parseDouble(json['transfer_discount']),
+      netPrice: CommonUtil.parseDouble(json['net_price']),
+      bookAmount: CommonUtil.parseDouble(json['book_amount']),
+      contractAmount: CommonUtil.parseDouble(json['contract_amount']),
+      downAmount: CommonUtil.parseDouble(json['down_amount']),
+      transferAmount: CommonUtil.parseDouble(json['transfer_amount']),
+      paymentAmount: CommonUtil.parseDouble(json['payment_amount']),
+      remainDownAmount: CommonUtil.parseDouble(json['remain_down_amount']),
+      remainAmount: CommonUtil.parseDouble(json['remain_amount']),
     );
   }
 }
 
 class PaymentDetail {
   final DateTime date;
-  final int amount;
+  final double amount;
   final String? type;
   final String status;
   final String receiptNumber;
@@ -109,7 +111,7 @@ class PaymentDetail {
   factory PaymentDetail.fromJson(Map<String, dynamic> json) {
     return PaymentDetail(
       date: DateTime.parse(json['date']),
-      amount: json['amount'],
+      amount: CommonUtil.parseDouble(json['amount']),
       type: json['type'],
       status: json['status'],
       receiptNumber: json['receipt_number'],
@@ -118,7 +120,7 @@ class PaymentDetail {
 }
 
 class OverdueDetail {
-  final int amount;
+  final double amount;
   final String? creditNumber;
   final DateTime? debitDate;
   final DateTime dueDate;
@@ -132,7 +134,7 @@ class OverdueDetail {
 
   factory OverdueDetail.fromJson(Map<String, dynamic> json) {
     return OverdueDetail(
-      amount: json['amount'],
+      amount: CommonUtil.parseDouble(json['amount']),
       creditNumber: json['credit_number'],
       debitDate: json['debit_date'] != null ? DateTime.parse(json['debit_date']) : null,
       dueDate: DateTime.parse(json['due_date']),
@@ -141,7 +143,7 @@ class OverdueDetail {
 }
 
 class ReceiptDetail {
-  final int amount;
+  final double amount;
   final DateTime date;
   final String paymentType;
   final String receiptNumber;
@@ -161,7 +163,7 @@ class ReceiptDetail {
 
   factory ReceiptDetail.fromJson(Map<String, dynamic> json) {
     return ReceiptDetail(
-      amount: json['amount'],
+      amount: CommonUtil.parseDouble(json['amount']),
       date: DateTime.parse(json['date']),
       paymentType: json['payment_type'],
       receiptNumber: json['receipt_number'],
@@ -176,7 +178,7 @@ class DownPaymentDetail {
   final String termCode;
   final String termName;
   final DateTime dueDate;
-  final int amount;
+  final double amount;
   final String status;
   final List<ShortPaymentDetail> payments;
   final String? statusCode;
@@ -199,7 +201,7 @@ class DownPaymentDetail {
       termCode: json['term_code'],
       termName: json['term_name'],
       dueDate: DateTime.parse(json['due_date']),
-      amount: json['amount'],
+      amount: CommonUtil.parseDouble(json['amount']),
       status: json['status'],
       payments: paymentList,
       statusCode: json['status_code'],
@@ -226,7 +228,7 @@ class ShortPaymentDetail {
 
 class DownPaymentTermDue {
   final DateTime dueDate;
-  final int amount;
+  final double amount;
   final String termCode;
   final String termName;
 
@@ -240,7 +242,7 @@ class DownPaymentTermDue {
   factory DownPaymentTermDue.fromJson(Map<String, dynamic> json) {
     return DownPaymentTermDue(
       dueDate: DateTime.parse(json['due_date']),
-      amount: json['amount'],
+      amount: CommonUtil.parseDouble(json['amount']),
       termCode: json['term_code'],
       termName: json['term_name'],
     );

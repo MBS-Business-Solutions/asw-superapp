@@ -20,7 +20,7 @@ class OverduesView extends StatefulWidget {
 
 class _OverduesViewState extends State<OverduesView> {
   final _selectedDownPaymentTermDue = <DownPaymentTermDue>{};
-  int _payAmount = 0;
+  double _payAmount = 0;
   final List<DownPaymentTermDue> downTermDues = [];
 
   @override
@@ -38,7 +38,7 @@ class _OverduesViewState extends State<OverduesView> {
       for (final due in dues) {
         _selectedDownPaymentTermDue.add(due);
       }
-      _payAmount = _selectedDownPaymentTermDue.fold(0, (sum, item) => sum + item.amount);
+      _payAmount = _selectedDownPaymentTermDue.fold(0.0, (sum, item) => sum + item.amount);
     });
   }
 
@@ -80,7 +80,7 @@ class _OverduesViewState extends State<OverduesView> {
                               ),
                             ),
                             Text(
-                              AppLocalizations.of(context)!.priceFormatDouble(_payAmount),
+                              AppLocalizations.of(context)!.priceFormatBaht(_payAmount),
                               style: Theme.of(context).textTheme.titleMedium!.copyWith(color: CommonUtil.colorTheme(context, darkColor: mDarkUnPaidColor, lightColor: mLightUnPaidColor)),
                             ),
                           ],

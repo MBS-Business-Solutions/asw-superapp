@@ -96,17 +96,17 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> initApp() async {
+  Future<void> initApp({String? testToken}) async {
     _isPinSet = await secureStorage.read(key: 'PIN') != null;
     if (await secureStorage.read(key: 'LOGOUT') == null) {
       // reload data from secure storage
 
-      await _loadPreviousData();
+      await _loadPreviousData(testToken: testToken);
       notifyListeners();
     }
   }
 
-  Future<void> _loadPreviousData() async {
+  Future<void> _loadPreviousData({String? testToken}) async {
     final sharedPref = await SharedPreferences.getInstance();
     final isFirstLoad = sharedPref.getBool('FIRST_LOAD') ?? true;
     if (isFirstLoad) {
@@ -120,6 +120,9 @@ class UserProvider with ChangeNotifier {
     }
 
     _token = await secureStorage.read(key: 'SESSION_TOKEN');
+    if (testToken != null) {
+      _token = testToken;
+    }
     if (kDebugMode) {
       print('Token: $_token');
     }
@@ -221,5 +224,10 @@ class UserProvider with ChangeNotifier {
 
     final response = await AwUserService().fetchPriviledge(_token!);
     return response.data?.url;
+  }
+
+  void setTestToken(String token) {
+    _token = token;
+    notifyListeners();
   }
 }
