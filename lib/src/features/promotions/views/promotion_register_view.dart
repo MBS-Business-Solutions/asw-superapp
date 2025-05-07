@@ -214,7 +214,8 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
       email: _emailTextController.text,
       priceInterest: _priceRangeKeyValues.firstWhere((element) => element.id == _selectedPriceRangeKeyValue).value,
       objectiveInterest: _purposeKeyValues.firstWhere((element) => element.id == _selectedPurposeKeyValue).value,
-      projectId: int.tryParse(_selectedProjectKeyValue ?? '0') ?? 0,
+      participantProjectId: _selectedProjectKeyValue,
+      utmSource: 'xxxxxxxxxx',
     );
     if (registerResult.status == 'error') {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

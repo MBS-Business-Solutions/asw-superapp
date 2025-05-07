@@ -8,6 +8,8 @@ import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/models/aw_notification_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/providers/notification_item_provider.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
+import 'package:AssetWise/src/widgets/webview_with_close.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -155,8 +157,14 @@ class NotificationItemTile extends StatelessWidget {
         //             )));
       }
     } else if (item.type == 'promotion') {
-      final promotionId = data['promotion_id'];
-      Navigator.pushNamed(context, PromotionDetailView.routeName, arguments: {'promotionId': promotionId});
+      if (data['type'] == 'promotion') {
+        final promotionId = CommonUtil.parseInt(data['promotion_id']);
+        Navigator.pushNamed(context, PromotionDetailView.routeName, arguments: {'promotionId': promotionId});
+      } else if (data['type'] == 'external') {
+        final url = data['url'];
+        if (url == null) return;
+        MaterialPageRoute(builder: (context) => WebViewWithCloseButton(link: url));
+      }
     } else if (item.type == 'hotdeal') {
     } else if (item.type == 'news') {}
   }
