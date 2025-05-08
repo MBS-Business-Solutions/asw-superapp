@@ -5,6 +5,7 @@ import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:photo_view/photo_view.dart';
 
 class ProjectPlansSection extends StatefulWidget {
   const ProjectPlansSection({
@@ -74,18 +75,41 @@ class _ProjectPlansSectionState extends State<ProjectPlansSection> {
           ),
           const SizedBox(height: mDefaultPadding),
           if (_selectedFloorPlan != null)
-            Container(
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(4)),
-              child: CachedNetworkImage(
-                imageUrl: _selectedFloorPlan!.image,
-                fit: BoxFit.contain,
-                placeholder: (context, url) => const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+            GestureDetector(
+              onTap: () {
+                _onImageTap(_selectedFloorPlan!.image);
+              },
+              child: Container(
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(4)),
+                child: CachedNetworkImage(
+                  imageUrl: _selectedFloorPlan!.image,
+                  fit: BoxFit.contain,
+                  placeholder: (context, url) => const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
               ),
             )
         ],
       ),
     );
+  }
+
+  void _onImageTap(String imageUrl) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: PhotoView(
+              minScale: PhotoViewComputedScale.contained * 0.8,
+              maxScale: PhotoViewComputedScale.covered * 1.5,
+              imageProvider: CachedNetworkImageProvider(imageUrl),
+              backgroundDecoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.6),
+              ),
+            ),
+          );
+        });
   }
 }

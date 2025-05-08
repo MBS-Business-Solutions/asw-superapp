@@ -338,6 +338,7 @@ class PromotionItemDetail {
   final String image;
   final String content;
   final String url;
+  final String? utmSource;
   final List<ParticipanProject>? participantProjects;
 
   PromotionItemDetail({
@@ -347,6 +348,7 @@ class PromotionItemDetail {
     required this.image,
     required this.content,
     required this.url,
+    this.utmSource,
     this.participantProjects,
   });
 
@@ -358,6 +360,7 @@ class PromotionItemDetail {
       image: json['image'],
       content: json['content'],
       url: json['url'],
+      utmSource: json['utm_source'],
       participantProjects: (json['participant_projects'] as List?)?.map((item) => ParticipanProject.fromJson(item)).toList(),
     );
   }

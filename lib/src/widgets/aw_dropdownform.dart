@@ -14,6 +14,7 @@ class AwDropdownform<T> extends StatefulWidget {
     required this.titleBuilder,
     this.onChanged,
     this.itemCount = 0,
+    this.selectedItemBuilder,
   });
   final String? label;
   final bool isEditable;
@@ -23,6 +24,7 @@ class AwDropdownform<T> extends StatefulWidget {
   final Widget Function(BuildContext context, int index) titleBuilder;
   final ValueChanged<T?>? onChanged;
   final int itemCount;
+  final List<Widget> Function(BuildContext context)? selectedItemBuilder;
 
   @override
   State<AwDropdownform> createState() => _AwDropdownformState();
@@ -32,6 +34,7 @@ class _AwDropdownformState<T> extends State<AwDropdownform> {
   bool _isError = false;
   final List<T> _items = [];
   final List<Widget> _titles = [];
+
   @override
   void initState() {
     _items.clear();
@@ -61,38 +64,52 @@ class _AwDropdownformState<T> extends State<AwDropdownform> {
                   ? null
                   : Border.all(color: mLightBorderTextFieldColor),
         ),
-        child: Stack(
-          children: [
-            Text(
-              widget.label ?? '',
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
-            DropdownButtonFormField<T>(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                contentPadding: const EdgeInsets.only(top: mDefaultPadding), // ปรับ padding
-                errorStyle: Theme.of(context).textTheme.bodySmall!.copyWith(color: mRedColor),
+        child: ClipRect(
+          child: Stack(
+            children: [
+              Text(
+                widget.label ?? '',
+                style: Theme.of(context).textTheme.labelMedium,
               ),
-              icon: const Icon(Icons.keyboard_arrow_down),
-              value: widget.initialValue,
-              style: Theme.of(context).textTheme.labelMedium,
-              items: _buildItems(),
-              onChanged: (T? newValue) => widget.onChanged?.call(newValue),
-              validator: (value) {
-                final res = widget.validator?.call(value);
-                if (res != null) {
-                  setState(() {
-                    _isError = true;
-                  });
-                } else {
-                  setState(() {
-                    _isError = false;
-                  });
-                }
-                return res;
-              },
-            ),
-          ],
+              LayoutBuilder(builder: (context, constraints) {
+                return DropdownButtonFormField<T>(
+                  selectedItemBuilder: widget.selectedItemBuilder == null
+                      ? null
+                      : (context) {
+                          return widget.selectedItemBuilder!(context).map((Widget item) {
+                            return SizedBox(
+                              width: constraints.maxWidth - 30,
+                              child: item,
+                            );
+                          }).toList();
+                        },
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.only(top: mDefaultPadding), // ปรับ padding
+                    errorStyle: Theme.of(context).textTheme.bodySmall!.copyWith(color: mRedColor),
+                  ),
+                  icon: const Icon(Icons.keyboard_arrow_down),
+                  value: widget.initialValue,
+                  style: Theme.of(context).textTheme.labelMedium,
+                  items: _buildItems(),
+                  onChanged: (T? newValue) => widget.onChanged?.call(newValue),
+                  validator: (value) {
+                    final res = widget.validator?.call(value);
+                    if (res != null) {
+                      setState(() {
+                        _isError = true;
+                      });
+                    } else {
+                      setState(() {
+                        _isError = false;
+                      });
+                    }
+                    return res;
+                  },
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );

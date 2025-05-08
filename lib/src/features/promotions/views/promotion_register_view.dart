@@ -158,6 +158,14 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
                       _selectedProjectKeyValue = projectId;
                     },
                     validator: (value) => value == null ? AppLocalizations.of(context)!.errorFieldRequired : null,
+                    selectedItemBuilder: (context) => _projectsValues.map((ParticipanProject item) {
+                      return Text(
+                        item.name,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      );
+                    }).toList(),
                   ),
                   const SizedBox(height: mScreenEdgeInsetValue),
                   // Price Range
@@ -215,7 +223,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
       priceInterest: _priceRangeKeyValues.firstWhere((element) => element.id == _selectedPriceRangeKeyValue).value,
       objectiveInterest: _purposeKeyValues.firstWhere((element) => element.id == _selectedPurposeKeyValue).value,
       participantProjectId: _selectedProjectKeyValue,
-      utmSource: 'xxxxxxxxxx',
+      utmSource: widget.promotionItemDetail.utmSource,
     );
     if (registerResult.status == 'error') {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

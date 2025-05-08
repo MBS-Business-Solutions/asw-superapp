@@ -17,8 +17,11 @@ import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/project_provider.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -169,70 +172,72 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                       )
                     : Stack(
                         children: [
-                          SingleChildScrollView(
-                            controller: _scrollController,
-                            padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).padding.bottom + mDefaultPadding,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Padding(
-                                  key: _detailSectionKey,
-                                  padding: const EdgeInsets.only(top: mDefaultPadding),
-                                  child: ProjectInfoSection(
-                                    projectDetail: projectDetail,
-                                    onImageTap: _showImageGallery,
-                                  ),
-                                ),
-                                if (projectDetail.location != null)
+                          Positioned.fill(
+                            child: SingleChildScrollView(
+                              controller: _scrollController,
+                              padding: EdgeInsets.only(
+                                bottom: MediaQuery.of(context).padding.bottom + mDefaultPadding,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
                                   Padding(
-                                    key: _mapSectionKey,
+                                    key: _detailSectionKey,
                                     padding: const EdgeInsets.only(top: mDefaultPadding),
-                                    child: LocationSection(location: projectDetail.location!),
-                                  ),
-                                if (projectDetail.nearbyLocations != null)
-                                  Padding(
-                                    padding: EdgeInsets.only(top: mDefaultPadding),
-                                    child: ProjectNearbySection(
-                                      nearbyLocations: projectDetail.nearbyLocations,
-                                    ),
-                                  ),
-                                if (projectDetail.plans != null)
-                                  Padding(
-                                    key: _planSectionKey,
-                                    padding: const EdgeInsets.only(top: mDefaultPadding),
-                                    child: ProjectPlansSection(
-                                      floorPlan: projectDetail.plans!,
-                                    ),
-                                  ),
-                                if (projectDetail.gallery != null)
-                                  Padding(
-                                    key: _gallerySectionKey,
-                                    padding: const EdgeInsets.only(top: mDefaultPadding),
-                                    child: ProjectGallerySection(
-                                      galleryItem: projectDetail.gallery!,
+                                    child: ProjectInfoSection(
+                                      projectDetail: projectDetail,
                                       onImageTap: _showImageGallery,
                                     ),
                                   ),
-                                if (projectDetail.brochures != null)
-                                  Padding(
-                                    key: _advertisementSectionKey,
-                                    padding: const EdgeInsets.only(top: mDefaultPadding),
-                                    child: ProjectAdvertisementSection(
-                                      advertisements: projectDetail.brochures!,
-                                      onImageTap: _showImageGallery,
+                                  if (projectDetail.location != null)
+                                    Padding(
+                                      key: _mapSectionKey,
+                                      padding: const EdgeInsets.only(top: mDefaultPadding),
+                                      child: LocationSection(location: projectDetail.location!),
                                     ),
-                                  ),
-                                if (projectDetail.videos != null && projectDetail.videos!.isNotEmpty)
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: mDefaultPadding),
-                                    child: ProjectVideoSection(
-                                      videoUrl: projectDetail.videos!.first.url,
+                                  if (projectDetail.nearbyLocations != null)
+                                    Padding(
+                                      padding: EdgeInsets.only(top: mDefaultPadding),
+                                      child: ProjectNearbySection(
+                                        nearbyLocations: projectDetail.nearbyLocations,
+                                      ),
                                     ),
-                                  ),
-                                SizedBox(height: MediaQuery.of(context).padding.bottom + 60),
-                              ],
+                                  if (projectDetail.plans != null)
+                                    Padding(
+                                      key: _planSectionKey,
+                                      padding: const EdgeInsets.only(top: mDefaultPadding),
+                                      child: ProjectPlansSection(
+                                        floorPlan: projectDetail.plans!,
+                                      ),
+                                    ),
+                                  if (projectDetail.gallery != null)
+                                    Padding(
+                                      key: _gallerySectionKey,
+                                      padding: const EdgeInsets.only(top: mDefaultPadding),
+                                      child: ProjectGallerySection(
+                                        galleryItem: projectDetail.gallery!,
+                                        onImageTap: _showImageGallery,
+                                      ),
+                                    ),
+                                  if (projectDetail.brochures != null)
+                                    Padding(
+                                      key: _advertisementSectionKey,
+                                      padding: const EdgeInsets.only(top: mDefaultPadding),
+                                      child: ProjectAdvertisementSection(
+                                        advertisements: projectDetail.brochures!,
+                                        onImageTap: _showImageGallery,
+                                      ),
+                                    ),
+                                  if (projectDetail.videos != null && projectDetail.videos!.isNotEmpty)
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: mDefaultPadding),
+                                      child: ProjectVideoSection(
+                                        videoUrl: projectDetail.videos!.first.url,
+                                      ),
+                                    ),
+                                  SizedBox(height: MediaQuery.of(context).padding.bottom + 60),
+                                ],
+                              ),
                             ),
                           ),
                           AnimatedPositioned(
