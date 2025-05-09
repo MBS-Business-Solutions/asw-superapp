@@ -75,7 +75,7 @@ class ProjectInfoSection extends StatelessWidget {
                   child: Row(
                     children: [
                       ProgressIndicatorWidget(
-                        progress: projectDetail.progress!.overall,
+                        progress: projectDetail.progress!.overall / 100.0,
                         label: AppLocalizations.of(context)!.projectDetailProgressTitle,
                       ),
                       const SizedBox(width: mDefaultPadding * 2),

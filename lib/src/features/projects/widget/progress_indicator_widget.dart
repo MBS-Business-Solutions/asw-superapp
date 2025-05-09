@@ -26,7 +26,7 @@ class ProgressIndicatorWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(label, style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10)),
-            Text('${(progress).toStringAsFixed(0)}%', style: Theme.of(context).textTheme.titleSmall),
+            Text('${(progress * 100.0).toStringAsFixed(0)}%', style: Theme.of(context).textTheme.titleSmall),
           ],
         ),
       ],
