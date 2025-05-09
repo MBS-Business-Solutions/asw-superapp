@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:AssetWise/main.dart';
 import 'package:AssetWise/plugins.dart';
+import 'package:AssetWise/src/features/contract/overdues_view.dart';
 import 'package:AssetWise/src/features/payments/payment_channels_view.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
@@ -92,13 +93,16 @@ class FirebaseMessagingProvider {
       final context = navigatorKey.currentState!.context;
       final contracts = await context.read<ContractProvider>().fetchContracts(context);
       final contract = contracts.firstWhere((element) => element.contractId == contractId);
-      final overdueDetail = await context.read<ContractProvider>().fetchOverdueDetail(contractId);
+      //final overdueDetail = await context.read<ContractProvider>().fetchOverdueDetail(contractId);
 
-      navigatorKey.currentState!.push(MaterialPageRoute(
-          builder: (context) => PaymentChannelsView(
-                contract: contract,
-                overdueDetail: overdueDetail,
-              )));
+      // navigatorKey.currentState!.push(MaterialPageRoute(
+      //     builder: (context) => PaymentChannelsView(
+      //           contract: contract,
+      //           overdueDetail: overdueDetail,
+      //         )));
+
+      // เปลี่ยนไปหน้าสรุปการชำระเงินแทน overdue
+      Navigator.pushNamed(context, OverduesView.routeName, arguments: {'contract': contract});
     }
   }
 

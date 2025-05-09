@@ -20,8 +20,10 @@ import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -244,7 +246,16 @@ class _ProfileViewState extends State<ProfileView> {
                   // ),
                 ],
               ),
-            ),
+            ), // ลบออกเมื่อไม่ใช้
+          ListTile(
+            title: const Text('share log'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () async {
+              final dir = await getApplicationDocumentsDirectory();
+              final logFile = File('${dir.path}/app_log.txt');
+              Share.shareXFiles([XFile(logFile.path)], text: 'Log รายงานปัญหา');
+            },
+          ),
         ],
       ),
     );

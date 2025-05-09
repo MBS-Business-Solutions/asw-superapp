@@ -11,11 +11,13 @@ import 'package:AssetWise/src/providers/register_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/providers/verify_otp_provider.dart';
 import 'package:AssetWise/src/providers/firebase_provider.dart';
+import 'package:AssetWise/src/utils/log_helper.dart';
 import 'package:app_badge_plus/app_badge_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'src/app.dart';
 import 'src/features/settings/settings_controller.dart';
@@ -27,6 +29,7 @@ import 'package:path_provider/path_provider.dart';
 late Isar isar;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await LogHelper.init();
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
   // if (kDebugMode) {
@@ -40,13 +43,14 @@ void main() async {
   await settingsController.loadSettings();
   await initializeFirebase();
   await initIsar();
+  await LogHelper.log('Isar initialized aaabbb');
 
   final userProvider = UserProvider();
   // await userProvider.initApp(
   //     testToken:
   //         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDc2M2M3OC1jMTEzLTRiNjEtYjdiYS05ZThiNGU5MDI5MWUiLCJlbWFpbCI6IiIsImlhdCI6MTc0NjU4ODY4NCwiZXhwIjoxNzQ5MTgwNjg0fQ.IHqSVB8xHGA6ECmaiZMXB1fXLhVONIZmHRNfUmJcDyM');
   await userProvider.initApp();
-
+  await LogHelper.log('UserProvider initialized cccddd');
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
@@ -116,26 +120,38 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 Future<void> initIsar() async {
-  final dir = await getApplicationDocumentsDirectory();
-  isar = await Isar.open(
-    [NotificationItemSchema],
-    directory: dir.path,
-  );
+  try {
+    final dir = await getApplicationDocumentsDirectory();
+    isar = await Isar.open(
+      [NotificationItemSchema],
+      directory: dir.path,
+      inspector: false,
+    );
+    await LogHelper.log('Isar initialized with default user');
+  } catch (e) {
+    await LogHelper.log('Error initIsar $e');
+  }
 }
 
 Future<void> reloadIsar([String? userId]) async {
-  final dir = await getApplicationDocumentsDirectory();
-  await isar.close();
-  isar = await Isar.open(
-    [NotificationItemSchema],
-    directory: dir.path,
-    name: userId ?? 'assetwise',
-  );
+  try {
+    final dir = await getApplicationDocumentsDirectory();
+    await isar.close();
+    isar = await Isar.open(
+      [NotificationItemSchema],
+      directory: dir.path,
+      name: userId ?? 'assetwise',
+      inspector: false,
+    );
+    await LogHelper.log('Isar reloaded with userId ${userId ?? 'assetwise'}');
 
-  if (userId == null) {
-    await isar.writeTxn(() async {
-      await isar.clear();
-    });
+    if (userId == null) {
+      await isar.writeTxn(() async {
+        await isar.clear();
+      });
+    }
+  } catch (e) {
+    await LogHelper.log('Error reloadIsar $e');
   }
 }
 

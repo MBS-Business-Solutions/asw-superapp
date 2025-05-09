@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:AssetWise/main.dart';
 import 'package:AssetWise/src/models/aw_common_model.dart';
@@ -6,6 +7,7 @@ import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/services/aw_user_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProvider with ChangeNotifier {
@@ -217,6 +219,20 @@ class UserProvider with ChangeNotifier {
   Future<void> cleanUpKeyChain() async {
     const secureStorageUnlock = FlutterSecureStorage();
     await secureStorageUnlock.deleteAll();
+
+    await secureStorage.deleteAll();
+    final sharedPref = await SharedPreferences.getInstance();
+    await sharedPref.clear();
+
+    final appPath = await getApplicationDocumentsDirectory();
+    await isar.close();
+
+    // delete all files and directory in the app directory
+
+    final dir = Directory(appPath.path);
+    if (dir.existsSync()) {
+      dir.deleteSync(recursive: true);
+    }
   }
 
   Future<String?> getPriviledgeLink() async {
