@@ -247,15 +247,15 @@ class _ProfileViewState extends State<ProfileView> {
                 ],
               ),
             ), // ลบออกเมื่อไม่ใช้
-          ListTile(
-            title: const Text('share log'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () async {
-              final dir = await getApplicationDocumentsDirectory();
-              final logFile = File('${dir.path}/app_log.txt');
-              Share.shareXFiles([XFile(logFile.path)], text: 'Log รายงานปัญหา');
-            },
-          ),
+          // ListTile(
+          //   title: const Text('share log'),
+          //   trailing: const Icon(Icons.chevron_right),
+          //   onTap: () async {
+          //     final dir = await getApplicationDocumentsDirectory();
+          //     final logFile = File('${dir.path}/app_log.txt');
+          //     Share.shareXFiles([XFile(logFile.path)], text: 'Log รายงานปัญหา');
+          //   },
+          // ),
         ],
       ),
     );
