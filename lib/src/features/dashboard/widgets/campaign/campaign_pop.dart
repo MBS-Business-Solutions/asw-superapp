@@ -71,6 +71,7 @@ class _CampaignPopState extends State<CampaignPop> {
                             height: height,
                             viewportFraction: 1.0,
                             enlargeCenterPage: false,
+                            enableInfiniteScroll: campaigns.length > 1,
                           ),
                           itemBuilder: (context, index, realIndex) {
                             return GestureDetector(
