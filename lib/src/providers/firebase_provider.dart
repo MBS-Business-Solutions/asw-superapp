@@ -116,13 +116,16 @@ class FirebaseMessagingProvider {
       final context = navigatorKey.currentState!.context;
       final contracts = await context.read<ContractProvider>().fetchContracts(context);
       final contract = contracts.firstWhere((element) => element.contractId == contractId);
-      final overdueDetail = await context.read<ContractProvider>().fetchOverdueDetail(contractId);
+      // final overdueDetail = await context.read<ContractProvider>().fetchOverdueDetail(contractId);
 
-      navigatorKey.currentState!.push(MaterialPageRoute(
-          builder: (context) => PaymentChannelsView(
-                contract: contract,
-                overdueDetail: overdueDetail,
-              )));
+      // navigatorKey.currentState!.push(MaterialPageRoute(
+      //     builder: (context) => PaymentChannelsView(
+      //           contract: contract,
+      //           overdueDetail: overdueDetail,
+      //         )));
+
+      // เปลี่ยนไปหน้าสรุปการชำระเงินแทน overdue
+      Navigator.pushNamed(context, OverduesView.routeName, arguments: {'contract': contract});
     }
     // Handle the message()));
   }
