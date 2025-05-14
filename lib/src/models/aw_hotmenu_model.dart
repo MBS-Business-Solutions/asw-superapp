@@ -4,6 +4,7 @@ class HotMenuItem {
   final String titleTextTh;
   final String iconAsset;
   final String link;
+  final bool mandatory;
 
   HotMenuItem({
     required this.id,
@@ -11,6 +12,7 @@ class HotMenuItem {
     required this.titleTextTh,
     required this.iconAsset,
     required this.link,
+    this.mandatory = false,
   });
 
   factory HotMenuItem.fromJson(String id, Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class HotMenuItem {
       titleTextTh: json['titleText_th'] as String,
       iconAsset: json['iconAsset'] as String,
       link: json['link'] as String,
+      mandatory: json['mandatory'] as bool? ?? false,
     );
   }
 

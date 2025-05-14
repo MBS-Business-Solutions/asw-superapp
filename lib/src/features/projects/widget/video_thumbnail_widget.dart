@@ -1,8 +1,5 @@
-import 'dart:io';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 class VideoThumbnailWidget extends StatefulWidget {
   final String videoUrl;
@@ -27,7 +24,7 @@ class VideoThumbnailWidget extends StatefulWidget {
 class _VideoThumbnailWidgetState extends State<VideoThumbnailWidget> {
   String? _thumbnailPath;
   bool _isLoading = true;
-  bool _hasError = false;
+  final bool _hasError = false;
 
   @override
   void initState() {

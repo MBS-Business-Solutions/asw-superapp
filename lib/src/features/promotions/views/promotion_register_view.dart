@@ -30,6 +30,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
   int? _selectedPurposeKeyValue;
   final _projectsValues = <ParticipanProject>[];
   String? _selectedProjectKeyValue;
+  bool _isEditable = true;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -45,6 +46,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
     try {
       final userProvider = context.read<UserProvider>();
       if (userProvider.isAuthenticated) {
+        _isEditable = false;
         _nameTextController.text = userProvider.userInformation?.firstName ?? '';
         _lastNameTextController.text = userProvider.userInformation?.lastName ?? '';
         _phoneTextController.text = userProvider.userInformation?.phone ?? '';
@@ -101,6 +103,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
                 children: [
                   // Name
                   AwTextFormField(
+                    isEditable: _isEditable,
                     controller: _nameTextController,
                     label: AppLocalizations.of(context)!.promotionsNameField,
                     validator: (value) {
@@ -113,6 +116,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
                   const SizedBox(height: mScreenEdgeInsetValue),
                   // Last Name
                   AwTextFormField(
+                    isEditable: _isEditable,
                     controller: _lastNameTextController,
                     label: AppLocalizations.of(context)!.promotionsLastNameField,
                     validator: (value) {
@@ -125,6 +129,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
                   const SizedBox(height: mScreenEdgeInsetValue),
                   // Phone
                   AwTextFormField(
+                    isEditable: _isEditable,
                     controller: _phoneTextController,
                     label: AppLocalizations.of(context)!.promotionsPhoneField,
                     validator: (value) {
@@ -137,6 +142,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
                   const SizedBox(height: mScreenEdgeInsetValue),
                   // Email
                   AwTextFormField(
+                    isEditable: _isEditable,
                     controller: _emailTextController,
                     label: AppLocalizations.of(context)!.promotionsEmailField,
                     validator: (value) {

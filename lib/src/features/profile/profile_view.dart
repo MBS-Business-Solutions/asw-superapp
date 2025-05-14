@@ -20,10 +20,8 @@ import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:share_plus/share_plus.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -149,13 +147,6 @@ class _ProfileViewState extends State<ProfileView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                //   child: Text(
-                //     AppLocalizations.of(context)!.profileLanguage,
-                //     style: Theme.of(context).textTheme.titleSmall,
-                //   ),
-                // ),
                 ListTile(
                   title: Text(AppLocalizations.of(context)!.profileChangeLanguage),
                   trailing: const Icon(Icons.chevron_right),
@@ -226,24 +217,6 @@ class _ProfileViewState extends State<ProfileView> {
                       _showCloseAppConfirmation();
                     },
                   ),
-
-                  // ออกจากระบบ
-                  // ListTile(
-                  //   title: Text(AppLocalizations.of(context)!.profileLogout),
-                  //   trailing: const Icon(
-                  //     Icons.logout,
-                  //     color: mRedColor,
-                  //   ),
-                  //   onTap: () {
-                  //     _showLogoutBottomSheet();
-                  //     // _userProvider.logout();
-                  //     // ScaffoldMessenger.of(context).showSnackBar(
-                  //     //   const SnackBar(
-                  //     //     content: Text('Logout success'),
-                  //     //   ),
-                  //     // );
-                  //   },
-                  // ),
                 ],
               ),
             ), // ลบออกเมื่อไม่ใช้
@@ -295,7 +268,9 @@ class _ProfileViewState extends State<ProfileView> {
                     ),
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
+                  // แสดงรหัสผู้ใช้
                   if (_userInformation?.code?.isNotEmpty ?? false) Text('ID : ${_userInformation?.code ?? ''}', style: Theme.of(context).textTheme.bodySmall),
+                  // แสดงปุ่มลงทะเบียนผู้ซื้อ
                   if (!(_userInformation?.isVerified ?? false)) FilledButton(onPressed: () => _registerBuyer(), child: Text(AppLocalizations.of(context)!.profileRegisterBuyer)),
                 ],
               ))

@@ -8,7 +8,6 @@ import 'package:AssetWise/src/features/payments/payment_channels_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
-import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/utils/date_formatter_util.dart';
 import 'package:flutter/material.dart';

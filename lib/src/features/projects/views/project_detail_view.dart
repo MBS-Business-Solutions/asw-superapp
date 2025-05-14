@@ -17,11 +17,8 @@ import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/project_provider.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:photo_view/photo_view.dart';
-import 'package:photo_view/photo_view_gallery.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -197,7 +194,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                                     ),
                                   if (projectDetail.nearbyLocations != null)
                                     Padding(
-                                      padding: EdgeInsets.only(top: mDefaultPadding),
+                                      padding: const EdgeInsets.only(top: mDefaultPadding),
                                       child: ProjectNearbySection(
                                         nearbyLocations: projectDetail.nearbyLocations,
                                       ),

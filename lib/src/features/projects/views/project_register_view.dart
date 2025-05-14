@@ -29,6 +29,7 @@ class _ProjectRegisterViewState extends State<ProjectRegisterView> {
   int? _selectedPriceRangeKeyValue;
   final _purposeKeyValues = <KeyValue>[];
   int? _selectedPurposeKeyValue;
+  bool _isEditable = true;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -43,6 +44,7 @@ class _ProjectRegisterViewState extends State<ProjectRegisterView> {
   Future<void> _initForm() async {
     final userProvider = context.read<UserProvider>();
     if (userProvider.isAuthenticated) {
+      _isEditable = false;
       _nameTextController.text = userProvider.userInformation?.firstName ?? '';
       _lastNameTextController.text = userProvider.userInformation?.lastName ?? '';
       _phoneTextController.text = userProvider.userInformation?.phone ?? '';
@@ -90,6 +92,7 @@ class _ProjectRegisterViewState extends State<ProjectRegisterView> {
                 children: [
                   // Name
                   AwTextFormField(
+                    isEditable: _isEditable,
                     controller: _nameTextController,
                     label: AppLocalizations.of(context)!.projectRegisterNameField,
                     validator: (value) {
@@ -102,6 +105,7 @@ class _ProjectRegisterViewState extends State<ProjectRegisterView> {
                   const SizedBox(height: mScreenEdgeInsetValue),
                   // Last Name
                   AwTextFormField(
+                    isEditable: _isEditable,
                     controller: _lastNameTextController,
                     label: AppLocalizations.of(context)!.projectRegisterLastNameField,
                     validator: (value) {
@@ -114,6 +118,7 @@ class _ProjectRegisterViewState extends State<ProjectRegisterView> {
                   const SizedBox(height: mScreenEdgeInsetValue),
                   // Phone
                   AwTextFormField(
+                    isEditable: _isEditable,
                     controller: _phoneTextController,
                     label: AppLocalizations.of(context)!.projectRegisterPhoneField,
                     validator: (value) {
@@ -126,6 +131,7 @@ class _ProjectRegisterViewState extends State<ProjectRegisterView> {
                   const SizedBox(height: mScreenEdgeInsetValue),
                   // Email
                   AwTextFormField(
+                    isEditable: _isEditable,
                     controller: _emailTextController,
                     label: AppLocalizations.of(context)!.projectRegisterEmailField,
                     validator: (value) {

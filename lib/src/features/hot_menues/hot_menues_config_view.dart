@@ -2,6 +2,7 @@ import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/constants.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
+import 'package:AssetWise/src/models/aw_hotmenu_model.dart';
 import 'package:AssetWise/src/providers/hot_menu_provider.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
@@ -101,8 +102,6 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
                 ),
               ),
             )
-
-            // _buildAvailableButtons(),
           ],
         ),
       ),
@@ -121,6 +120,7 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
 
   List<Widget> _buildPreviewButtonsSection() {
     return [
+      // Label เมนูโปรด และปุ่มตั้งค่า
       SliverToBoxAdapter(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
@@ -166,6 +166,7 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
       const SliverPadding(
         padding: EdgeInsets.symmetric(vertical: mMediumPadding),
       ),
+      // ปุ่มเมนูโปรดที่เลือกไว้
       Consumer<HotMenuProvider>(builder: (context, provider, child) {
         final selectedMenues = provider.selectedHotMenu;
         final currentLocale = context.read<SettingsController>().supportedLocales;
@@ -174,74 +175,17 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
             padding: const EdgeInsets.symmetric(horizontal: mMediumPadding),
             child: LayoutBuilder(builder: (context, constraint) {
               final itemWidth = constraint.maxWidth / mHotMenuRow;
-              return Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: selectedMenues.length,
-                    child: ReorderableWrap(
-                      enableReorder: isEditing,
-                      children: selectedMenues.map(
-                        (e) {
-                          return SizedBox(
-                            width: itemWidth,
-                            child: Center(
-                              child: Stack(
-                                clipBehavior: Clip.none,
-                                children: [
-                                  HotMenuWidget(
-                                    titleText: currentLocale.locale == 'th' ? e.titleTextTh : e.titleTextEn,
-                                    iconAsset: e.iconAsset,
-                                    onTap: !isEditing
-                                        ? null
-                                        : () {
-                                            provider.removeHotMenu(e.id).catchError((error) {});
-                                          },
-                                    badgeCount: 0,
-                                  ),
-                                  if (isEditing)
-                                    Positioned(
-                                      top: -4,
-                                      right: -4,
-                                      child: IgnorePointer(
-                                        child: Container(
-                                          width: 16,
-                                          height: 16,
-                                          padding: const EdgeInsets.all(1),
-                                          decoration: const BoxDecoration(shape: BoxShape.circle, color: mDeleteRedColor),
-                                          child: const FittedBox(fit: BoxFit.contain, child: Icon(Icons.remove, color: Colors.white)),
-                                        ),
-                                      ),
-                                    )
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ).toList(),
-                      onReorder: (oldIndex, newIndex) {
-                        provider.reorder(oldIndex, newIndex);
-                      },
-                    ),
-                  ),
-                  // ยกเลิกไม่แสดงกล่องว่าง 20250429 Requested จาก MBS
-                  // Expanded(
-                  //   flex: mHotMenuRow - selectedMenues.length,
-                  //   child: ReorderableWrap(
-                  //     enableReorder: false,
-                  //     onReorder: (oldIndex, newIndex) {},
-                  //     children: [
-                  //       for (var i = 0; i < mHotMenuRow - selectedMenues.length; i++)
-                  //         SizedBox(
-                  //           width: itemWidth,
-                  //           child: const HotMenuWidget(
-                  //             titleText: '',
-                  //           ),
-                  //         ),
-                  //     ],
-                  //   ),
-                  // )
-                ],
+              return ReorderableWrap(
+                enableReorder: isEditing,
+                children: selectedMenues.map(
+                  (e) {
+                    final isEditable = isEditing && !e.mandatory;
+                    return _buildPreviewItem(itemWidth, currentLocale, e, isEditable, provider);
+                  },
+                ).toList(),
+                onReorder: (oldIndex, newIndex) {
+                  provider.reorder(oldIndex, newIndex);
+                },
               );
             }),
           ),
@@ -286,42 +230,7 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
                 alignment: WrapAlignment.start,
                 children: provider.availableHotMenu.map(
                   (menu) {
-                    return SizedBox(
-                      width: itemWidth,
-                      child: Center(
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            HotMenuWidget(
-                              titleText: menu.titleTextTh,
-                              iconAsset: menu.iconAsset,
-                              onTap: !isEditing
-                                  ? null
-                                  : () {
-                                      if (provider.canAddMenu) {
-                                        provider.addHotMenu(menu.id).catchError((error) {});
-                                      }
-                                    },
-                              badgeCount: 0,
-                            ),
-                            if (isEditing && provider.canAddMenu)
-                              Positioned(
-                                top: -4,
-                                right: -4,
-                                child: IgnorePointer(
-                                  child: Container(
-                                    width: 16,
-                                    height: 16,
-                                    padding: const EdgeInsets.all(1),
-                                    decoration: const BoxDecoration(shape: BoxShape.circle, color: mAddGreenColor),
-                                    child: const FittedBox(fit: BoxFit.contain, child: Icon(Icons.add, color: Colors.white)),
-                                  ),
-                                ),
-                              )
-                          ],
-                        ),
-                      ),
-                    );
+                    return _buildAvailableItem(itemWidth, menu, provider);
                   },
                 ).toList(),
                 onReorder: (oldIndex, newIndex) {},
@@ -331,5 +240,83 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
         );
       })
     ];
+  }
+
+  // ตัวสร้างปุ่มใน section เมนูโปรด
+  SizedBox _buildPreviewItem(double itemWidth, SupportedLocales currentLocale, HotMenuItem e, bool isEditable, HotMenuProvider provider) {
+    return SizedBox(
+      width: itemWidth,
+      child: Center(
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            HotMenuWidget(
+              titleText: currentLocale.locale == 'th' ? e.titleTextTh : e.titleTextEn,
+              iconAsset: e.iconAsset,
+              onTap: !isEditable
+                  ? null
+                  : () {
+                      provider.removeHotMenu(e.id).catchError((error) {});
+                    },
+              badgeCount: 0,
+            ),
+            if (isEditable)
+              Positioned(
+                top: -4,
+                right: -4,
+                child: IgnorePointer(
+                  child: Container(
+                    width: 16,
+                    height: 16,
+                    padding: const EdgeInsets.all(1),
+                    decoration: const BoxDecoration(shape: BoxShape.circle, color: mDeleteRedColor),
+                    child: const FittedBox(fit: BoxFit.contain, child: Icon(Icons.remove, color: Colors.white)),
+                  ),
+                ),
+              )
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ตัวสร้างปุ่มใน section เมนูอื่นๆ
+  SizedBox _buildAvailableItem(double itemWidth, HotMenuItem menu, HotMenuProvider provider) {
+    return SizedBox(
+      width: itemWidth,
+      child: Center(
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            HotMenuWidget(
+              titleText: menu.titleTextTh,
+              iconAsset: menu.iconAsset,
+              onTap: !isEditing
+                  ? null
+                  : () {
+                      if (provider.canAddMenu) {
+                        provider.addHotMenu(menu.id).catchError((error) {});
+                      }
+                    },
+              badgeCount: 0,
+            ),
+            if (isEditing && provider.canAddMenu)
+              Positioned(
+                top: -4,
+                right: -4,
+                child: IgnorePointer(
+                  child: Container(
+                    width: 16,
+                    height: 16,
+                    padding: const EdgeInsets.all(1),
+                    decoration: const BoxDecoration(shape: BoxShape.circle, color: mAddGreenColor),
+                    child: const FittedBox(fit: BoxFit.contain, child: Icon(Icons.add, color: Colors.white)),
+                  ),
+                ),
+              )
+          ],
+        ),
+      ),
+    );
   }
 }
