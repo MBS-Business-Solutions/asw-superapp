@@ -163,7 +163,7 @@ class NotificationItemTile extends StatelessWidget {
       } else if (data['type'] == 'external') {
         final url = data['url'];
         if (url == null) return;
-        MaterialPageRoute(builder: (context) => WebViewWithCloseButton(link: url));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => WebViewWithCloseButton(link: url)));
       }
     } else if (item.type == 'hotdeal') {
     } else if (item.type == 'news') {}

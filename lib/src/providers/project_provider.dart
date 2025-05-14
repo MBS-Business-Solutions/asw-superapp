@@ -73,6 +73,7 @@ class ProjectProvider with ChangeNotifier {
     _searchText = '';
     _selectedBrands.clear();
     _selectedLocations.clear();
+    _searchResults.clear();
     // load master data
 
     final locationsResponse = await AWContentService().fetchLocationsMasterData();

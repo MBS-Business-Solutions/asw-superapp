@@ -50,48 +50,50 @@ class MyQrView extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    WidgetsToImage(
-                      controller: controller,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
-                        padding: const EdgeInsets.all(mDefaultPadding),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        alignment: Alignment.topCenter,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            QrImageView(
-                              size: MediaQuery.of(context).size.width * 0.6,
-                              data: qrData.qrCode ?? '',
-                              eyeStyle: const QrEyeStyle(
-                                eyeShape: QrEyeShape.square,
-                                color: Colors.white,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+                      child: WidgetsToImage(
+                        controller: controller,
+                        child: Container(
+                          padding: const EdgeInsets.all(mDefaultPadding),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          alignment: Alignment.topCenter,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              QrImageView(
+                                size: MediaQuery.of(context).size.width * 0.6,
+                                data: qrData.qrCode ?? '',
+                                eyeStyle: const QrEyeStyle(
+                                  eyeShape: QrEyeShape.square,
+                                  color: Colors.white,
+                                ),
+                                dataModuleStyle: const QrDataModuleStyle(
+                                  dataModuleShape: QrDataModuleShape.square,
+                                  color: Colors.white,
+                                ),
                               ),
-                              dataModuleStyle: const QrDataModuleStyle(
-                                dataModuleShape: QrDataModuleShape.square,
-                                color: Colors.white,
+                              const SizedBox(
+                                height: mMediumPadding,
                               ),
-                            ),
-                            const SizedBox(
-                              height: mMediumPadding,
-                            ),
-                            Text(
-                              AppLocalizations.of(context)!.myQRDescription,
-                              style: Theme.of(context).textTheme.labelMedium!.copyWith(color: Colors.white),
-                            ),
-                            const SizedBox(
-                              height: mMediumPadding,
-                            ),
-                            Text(
-                              AppLocalizations.of(context)!.myQRRefCode(qrData.ref ?? ''),
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.labelMedium!.copyWith(color: Colors.white),
-                            ),
-                          ],
+                              Text(
+                                AppLocalizations.of(context)!.myQRDescription,
+                                style: Theme.of(context).textTheme.labelMedium!.copyWith(color: Colors.white),
+                              ),
+                              const SizedBox(
+                                height: mMediumPadding,
+                              ),
+                              Text(
+                                AppLocalizations.of(context)!.myQRRefCode(qrData.ref ?? ''),
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.labelMedium!.copyWith(color: Colors.white),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

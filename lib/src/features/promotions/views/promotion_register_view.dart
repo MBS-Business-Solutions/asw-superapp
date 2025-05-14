@@ -199,6 +199,10 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
                       child: Text(AppLocalizations.of(context)!.promotionsRegister),
                     ),
                   ),
+                  const SafeArea(
+                      child: SizedBox(
+                    height: mScreenEdgeInsetValue,
+                  )),
                 ],
               ),
             ),

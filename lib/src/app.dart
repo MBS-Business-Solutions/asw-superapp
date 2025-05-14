@@ -38,6 +38,7 @@ import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/providers/firebase_provider.dart';
 import 'package:AssetWise/src/splash/splash_view.dart';
+import 'package:AssetWise/src/widgets/webview_with_close.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -265,6 +266,10 @@ class _MyAppState extends State<MyApp> {
                     );
                   case FavouriteProjectsView.routeName:
                     return const FavouriteProjectsView();
+                  case WebViewWithCloseButton.routeName:
+                    return WebViewWithCloseButton(
+                      link: routeMap!['link'] as String,
+                    );
                   default:
                     // return DashboardView(controller: settingsController);
                     return const SplashView();

@@ -4,10 +4,13 @@ import 'dart:io';
 import 'package:AssetWise/main.dart';
 import 'package:AssetWise/plugins.dart';
 import 'package:AssetWise/src/features/contract/overdues_view.dart';
+import 'package:AssetWise/src/features/promotions/views/promotion_detail_view.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/services/redirect_page.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/services/aw_user_service.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
+import 'package:AssetWise/src/widgets/webview_with_close.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -75,12 +78,17 @@ class FirebaseMessagingProvider {
     // Handle when app is opened from terminated state via notification
     RemoteMessage? initialMessage = await _messaging.getInitialMessage();
     if (initialMessage != null) {
-      _handleOnMessageOpenedApp(initialMessage, shouldVerifyPin: true);
+      // App was opened from a notification
+      // Handle the notification data
+      _handleOnMessageOpenedApp(initialMessage.data, shouldVerifyPin: true);
     }
 
     // Handle incoming messages
     FirebaseMessaging.onMessage.listen(_showLocalNotification);
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleOnMessageOpenedApp);
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      // App was in background and opened from a notification
+      _handleOnMessageOpenedApp(message.data);
+    });
 
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
@@ -90,55 +98,51 @@ class FirebaseMessagingProvider {
   }
 
   static void _didReceiveNotificationResponse(NotificationResponse details) async {
-    print('Notification clicked: ${details.payload}');
-
-    final data = jsonDecode(details.payload ?? '{}');
-    if (data['contract_id'] != null) {
-      final contractId = data['contract_id'];
-      // find contract
-      final context = navigatorKey.currentState!.context;
-      final contracts = await context.read<ContractProvider>().fetchContracts(context);
-      final contract = contracts.firstWhere((element) => element.contractId == contractId);
-      //final overdueDetail = await context.read<ContractProvider>().fetchOverdueDetail(contractId);
-
-      // navigatorKey.currentState!.push(MaterialPageRoute(
-      //     builder: (context) => PaymentChannelsView(
-      //           contract: contract,
-      //           overdueDetail: overdueDetail,
-      //         )));
-
-      // เปลี่ยนไปหน้าสรุปการชำระเงินแทน overdue
-      Navigator.pushNamed(context, OverduesView.routeName, arguments: {'contract': contract});
-    }
+    _handleOnMessageOpenedApp(details.payload != null ? jsonDecode(details.payload!) : {});
   }
 
-  void _handleOnMessageOpenedApp(RemoteMessage message, {bool shouldVerifyPin = false}) async {
-    print('A new onMessageOpenedApp event was published!');
-    print(navigatorKey.currentState);
-    final data = message.data;
-    if (data['contract_id'] != null) {
-      final contractId = data['contract_id'];
-      // find contract
-      final context = navigatorKey.currentState!.context;
-      final contracts = await context.read<ContractProvider>().fetchContracts(context);
-      final contract = contracts.firstWhere((element) => element.contractId == contractId);
-      // final overdueDetail = await context.read<ContractProvider>().fetchOverdueDetail(contractId);
+  static void _handleOnMessageOpenedApp(Map<String, dynamic> data, {bool shouldVerifyPin = false}) async {
+    final context = navigatorKey.currentState!.context;
 
-      // navigatorKey.currentState!.push(MaterialPageRoute(
-      //     builder: (context) => PaymentChannelsView(
-      //           contract: contract,
-      //           overdueDetail: overdueDetail,
-      //         )));
+    // mark read ไม่ได้เพราะไม่มี id
+    // await context.read<NotificationItemProvider>().markAsRead(id: notificationItem.id);
+    // if (notificationItem.data == null) return;
 
-      if (!shouldVerifyPin) {
-        // เปลี่ยนไปหน้าสรุปการชำระเงินแทน overdue
-        Navigator.pushNamed(context, OverduesView.routeName, arguments: {'contract': contract});
-      } else {
-        // set contractId to open after verify pin
-        RedirectPage().setRedirectPage(OverduesView.routeName, {'contract': contract});
+    if (data['type'] == 'overdue' || data['type'] == 'remind') {
+      if (data['contract_id'] != null) {
+        final contractId = data['contract_id'];
+        // find contract
+        final contracts = await context.read<ContractProvider>().fetchContracts(context);
+        final contract = contracts.firstWhere((element) => element.contractId == contractId);
+
+        if (!shouldVerifyPin) {
+          // เปลี่ยนไปหน้าสรุปการชำระเงินแทน overdue
+          Navigator.pushNamed(context, OverduesView.routeName, arguments: {'contract': contract});
+        } else {
+          // set contractId to open after verify pin
+          RedirectPage().setRedirectPage(OverduesView.routeName, {'contract': contract});
+        }
       }
     }
-    // Handle the message()));
+    if (data['type'] == 'promotion') {
+      final promotionId = CommonUtil.parseInt(data['promotion_id']);
+      if (!shouldVerifyPin) {
+        Navigator.pushNamed(context, PromotionDetailView.routeName, arguments: {'promotionId': promotionId});
+      } else {
+        // set contractId to open after verify pin
+        RedirectPage().setRedirectPage(PromotionDetailView.routeName, {'promotionId': promotionId});
+      }
+    } else if (data['type'] == 'external') {
+      final url = data['url'];
+      if (url == null) return;
+      if (!shouldVerifyPin) {
+        Navigator.pushNamed(context, WebViewWithCloseButton.routeName, arguments: {'link': url});
+      } else {
+        // set contractId to open after verify pin
+        RedirectPage().setRedirectPage(WebViewWithCloseButton.routeName, {'link': url});
+      }
+    } else if (data['type'] == 'hotdeal') {
+    } else if (data['type'] == 'news') {}
   }
 
   Future<void> subscribeToTopic(String topic) async {

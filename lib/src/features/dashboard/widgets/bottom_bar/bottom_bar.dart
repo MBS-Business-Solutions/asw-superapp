@@ -86,7 +86,8 @@ class _BottomBarState extends State<BottomBar> {
                       ),
                       Text(
                         AppLocalizations.of(context)!.bottomBarHome,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.home ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
+                        style:
+                            Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 10, color: _currentTab == BottomTab.home ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
                       ),
                     ],
                   ),
@@ -111,7 +112,10 @@ class _BottomBarState extends State<BottomBar> {
                       ),
                       Text(
                         AppLocalizations.of(context)!.bottomBarPrivilege,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.privilege ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(fontSize: 10, color: _currentTab == BottomTab.privilege ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
                       ),
                     ],
                   ),
@@ -159,7 +163,10 @@ class _BottomBarState extends State<BottomBar> {
                         ),
                         Text(
                           AppLocalizations.of(context)!.bottomBarMyUnit,
-                          style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.myUnit ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(fontSize: 10, color: _currentTab == BottomTab.myUnit ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
                         ),
                       ],
                     ),
@@ -181,7 +188,8 @@ class _BottomBarState extends State<BottomBar> {
                       ),
                       Text(
                         AppLocalizations.of(context)!.bottomBarMyQR,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.myqr ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
+                        style:
+                            Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 10, color: _currentTab == BottomTab.myqr ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
                       ),
                     ],
                   ),
@@ -206,7 +214,10 @@ class _BottomBarState extends State<BottomBar> {
                       ),
                       Text(
                         AppLocalizations.of(context)!.bottomBarProfile,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: _currentTab == BottomTab.profile ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(fontSize: 10, color: _currentTab == BottomTab.profile ? bottomBarTheme?.selectedTextColor : bottomBarTheme?.staticTextColor),
                       ),
                     ],
                   ),

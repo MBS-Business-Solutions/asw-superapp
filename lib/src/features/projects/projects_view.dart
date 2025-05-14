@@ -138,7 +138,7 @@ class _ProjectsViewState extends State<ProjectsView> {
   List<Widget> _buildSearchResult(BuildContext context, ProjectProvider projectProvider, UserProvider userProvider) {
     final projects = projectProvider.searchResults;
     if (projectProvider.isLoading) {
-      return [const Center(child: CircularProgressIndicator())];
+      return [const SizedBox()];
     }
     return [
       if (projectProvider.isFiltering && projectProvider.searchResults.isNotEmpty)

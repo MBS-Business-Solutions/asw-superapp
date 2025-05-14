@@ -167,6 +167,10 @@ class _ProjectRegisterViewState extends State<ProjectRegisterView> {
                       child: Text(AppLocalizations.of(context)!.projectRegisterRegister),
                     ),
                   ),
+                  const SafeArea(
+                      child: SizedBox(
+                    height: mScreenEdgeInsetValue,
+                  )),
                 ],
               ),
             ),
