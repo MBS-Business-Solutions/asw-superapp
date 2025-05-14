@@ -6,9 +6,11 @@ import 'package:AssetWise/src/features/my_qr/my_qr_view.dart';
 import 'package:AssetWise/src/features/profile/profile_view.dart';
 import 'package:AssetWise/src/features/settings/settings_controller.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
+import 'package:AssetWise/src/services/redirect_page.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:AssetWise/src/widgets/webview_with_close.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -27,6 +29,14 @@ class _DashboardViewState extends State<DashboardView> {
   BottomTab _currentTab = BottomTab.home;
   @override
   Widget build(BuildContext context) {
+    // เช็กว่ามีการตั้งค่า redirect page ไว้หรือไม่
+    // ถ้ามีให้ redirect ไปที่หน้า redirect page
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        RedirectPage().redirect(context);
+      }
+    });
+
     return Scaffold(
       body: Stack(
         children: [

@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:AssetWise/main.dart';
 import 'package:AssetWise/plugins.dart';
 import 'package:AssetWise/src/features/contract/overdues_view.dart';
-import 'package:AssetWise/src/features/payments/payment_channels_view.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
+import 'package:AssetWise/src/services/redirect_page.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/services/aw_user_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -72,6 +72,12 @@ class FirebaseMessagingProvider {
     // String? token = await _messaging.getToken();
     // print('Firebase Messaging Token: $token');
 
+    // Handle when app is opened from terminated state via notification
+    RemoteMessage? initialMessage = await _messaging.getInitialMessage();
+    if (initialMessage != null) {
+      _handleOnMessageOpenedApp(initialMessage, shouldVerifyPin: true);
+    }
+
     // Handle incoming messages
     FirebaseMessaging.onMessage.listen(_showLocalNotification);
     FirebaseMessaging.onMessageOpenedApp.listen(_handleOnMessageOpenedApp);
@@ -106,7 +112,7 @@ class FirebaseMessagingProvider {
     }
   }
 
-  void _handleOnMessageOpenedApp(RemoteMessage message) async {
+  void _handleOnMessageOpenedApp(RemoteMessage message, {bool shouldVerifyPin = false}) async {
     print('A new onMessageOpenedApp event was published!');
     print(navigatorKey.currentState);
     final data = message.data;
@@ -124,8 +130,13 @@ class FirebaseMessagingProvider {
       //           overdueDetail: overdueDetail,
       //         )));
 
-      // เปลี่ยนไปหน้าสรุปการชำระเงินแทน overdue
-      Navigator.pushNamed(context, OverduesView.routeName, arguments: {'contract': contract});
+      if (!shouldVerifyPin) {
+        // เปลี่ยนไปหน้าสรุปการชำระเงินแทน overdue
+        Navigator.pushNamed(context, OverduesView.routeName, arguments: {'contract': contract});
+      } else {
+        // set contractId to open after verify pin
+        RedirectPage().setRedirectPage(OverduesView.routeName, {'contract': contract});
+      }
     }
     // Handle the message()));
   }
