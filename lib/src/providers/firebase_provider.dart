@@ -108,7 +108,7 @@ class FirebaseMessagingProvider {
     // await context.read<NotificationItemProvider>().markAsRead(id: notificationItem.id);
     // if (notificationItem.data == null) return;
 
-    if (data['type'] == 'overdue' || data['type'] == 'remind') {
+    if (data['type'] == 'contract') {
       if (data['contract_id'] != null) {
         final contractId = data['contract_id'];
         // find contract
