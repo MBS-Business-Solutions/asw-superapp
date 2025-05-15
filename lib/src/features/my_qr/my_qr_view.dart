@@ -50,17 +50,18 @@ class MyQrView extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+                      clipBehavior: Clip.antiAlias,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                       child: WidgetsToImage(
                         controller: controller,
                         child: Container(
                           padding: const EdgeInsets.all(mDefaultPadding),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
+                          decoration: const BoxDecoration(color: Colors.black),
                           alignment: Alignment.topCenter,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
