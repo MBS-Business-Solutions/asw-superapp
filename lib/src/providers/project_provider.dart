@@ -269,4 +269,9 @@ class ProjectProvider with ChangeNotifier {
     // ดึงตำแหน่ง
     return await Geolocator.getCurrentPosition();
   }
+
+  Future<String?> download(String url) async {
+    if (_userProvider == null) return null;
+    return AWContentService().downloadFile(url: url, fileName: url.split('/').last);
+  }
 }

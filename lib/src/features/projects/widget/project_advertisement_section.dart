@@ -1,10 +1,13 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:AssetWise/src/providers/project_provider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
-class ProjectAdvertisementSection extends StatelessWidget {
+class ProjectAdvertisementSection extends StatefulWidget {
   const ProjectAdvertisementSection({
     super.key,
     required this.advertisements,
@@ -13,6 +16,12 @@ class ProjectAdvertisementSection extends StatelessWidget {
   final List<ProjectBrochure> advertisements;
   final Function(int index, List<String> imageUrls)? onImageTap;
 
+  @override
+  State<ProjectAdvertisementSection> createState() => _ProjectAdvertisementSectionState();
+}
+
+class _ProjectAdvertisementSectionState extends State<ProjectAdvertisementSection> {
+  bool _isDownloading = false;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -26,37 +35,64 @@ class ProjectAdvertisementSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: mSmallPadding),
-        SizedBox(
-          height: 184,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            separatorBuilder: (_, __) => const SizedBox(width: mDefaultPadding),
-            padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () => onImageTap?.call(index, advertisements.map((image) => image.image).toList()),
-                child: Container(
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: CachedNetworkImage(
-                      imageUrl: advertisements[index].image,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) => const Icon(Icons.error),
-                    ),
-                  ),
-                ),
-              );
-            },
-            itemCount: advertisements.length,
-            shrinkWrap: true,
-          ),
+        Container(
+          height: 50,
+          alignment: Alignment.center,
+          child: OutlinedButton.icon(
+              onPressed: _isDownloading
+                  ? null
+                  : () {
+                      _downloadBrochure(
+                        context,
+                        widget.advertisements[0].url,
+                      );
+                    },
+              icon: _isDownloading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : const Icon(Icons.download),
+              label: Text(
+                AppLocalizations.of(context)!.projectDetailAdvertisementDownload,
+              )),
         ),
       ],
     );
+  }
+
+  Future<void> _downloadBrochure(BuildContext context, String url) async {
+    setState(() {
+      _isDownloading = true;
+    });
+    try {
+      // ดาวน์โหลดไฟล์ PDF
+      final filePath = await context.read<ProjectProvider>().download(url);
+      final box = context.findRenderObject() as RenderBox?;
+      if (filePath != null) {
+        // เปิดไฟล์ PDF และให้ผู้ใช้เลือกแอป
+
+        await Share.shareXFiles(
+          [XFile(filePath)],
+          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+        );
+        //await OpenFile.open(filePath);
+      } else {
+        // แจ้งเตือนเมื่อไม่สามารถดาวน์โหลดไฟล์ได้
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            AppLocalizations.of(context)!.errorUnableToDownloadContract,
+          ),
+        ));
+      }
+    } catch (e) {
+      if (kDebugMode) print("Error: $e");
+    }
+    setState(() {
+      _isDownloading = false;
+    });
   }
 }

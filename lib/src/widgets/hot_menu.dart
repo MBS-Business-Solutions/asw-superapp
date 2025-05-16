@@ -11,6 +11,7 @@ class HotMenuWidget extends StatelessWidget {
     this.badgeCount = 0,
     this.highlight = false,
     this.onTap,
+    this.isFavMenu = false,
   });
 
   final String titleText;
@@ -18,6 +19,7 @@ class HotMenuWidget extends StatelessWidget {
   final int badgeCount;
   final bool highlight;
   final Function()? onTap;
+  final bool isFavMenu;
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +29,8 @@ class HotMenuWidget extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 40,
-            height: 40,
+            width: 40 + (isFavMenu ? 5 : 0),
+            height: 40 + (isFavMenu ? 5 : 0),
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),

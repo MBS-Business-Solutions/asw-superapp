@@ -360,7 +360,7 @@ class PromotionItemDetail {
       image: json['image'],
       content: json['content'],
       url: json['url'],
-      utmSource: json['utm_source'],
+      utmSource: '${json['utm_source']}_${json['name'] ?? ''}',
       participantProjects: (json['participant_projects'] as List?)?.map((item) => ParticipanProject.fromJson(item)).toList(),
     );
   }
@@ -485,7 +485,7 @@ class ProjectDetail {
       progress: json['progress'] != null ? ProjectProgress.fromJson(json['progress']) : null,
       location: json['location'] != null ? ProjectLocation.fromJson(json['location']) : null,
       nearbyLocations: (json['nearbyLocations'] as List?)?.map((item) => ProjectNearbyLocation.fromJson(item)).toList(),
-      plans: (json['plans'] as List?)?.map((item) => ProjectPlan.fromJson(item)).toList(),
+      plans: json['plans'] != null && (json['plans'] as List).isNotEmpty ? (json['plans'] as List).map((item) => ProjectPlan.fromJson(item)).toList() : null,
       gallery: json['gallery'] != null ? List<String>.from(json['gallery']) : null,
       brochures: (json['brochures'] as List?)?.map((item) => ProjectBrochure.fromJson(item)).toList(),
       videos: (json['videos'] as List?)?.map((item) => ProjectVideo.fromJson(item)).toList(),

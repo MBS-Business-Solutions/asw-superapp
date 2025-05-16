@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:AssetWise/src/consts/url_const.dart';
 import 'package:AssetWise/src/models/aw_common_model.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
@@ -5,6 +7,8 @@ import 'package:AssetWise/src/services/aw_header_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:path_provider/path_provider.dart';
 
 class AWContentService {
   AWContentService._privateConstructor();
@@ -531,5 +535,51 @@ class AWContentService {
 
     if (kDebugMode) print(response);
     return Uint8List(0);
+  }
+
+  Future<String?> downloadFile({required String url, required String fileName}) async {
+    final response = await http.get(
+      Uri.parse(url),
+      headers: getHeader(),
+    );
+
+    try {
+      if (response.statusCode == 200) {
+        // สร้าง directory ถ้ายังไม่มี
+        final downloadDirectory = await _prepareDownloadDirectory();
+        final filePath = "$downloadDirectory/$fileName.pdf";
+        // เขียนไฟล์ลงเครื่อง
+        final file = File(filePath);
+
+        await file.writeAsBytes(response.bodyBytes);
+        return filePath;
+      } else {
+        if (kDebugMode) {
+          print("Failed to download PDF");
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+    }
+    if (kDebugMode) print(response);
+    return null;
+  }
+
+  Future<String> _prepareDownloadDirectory() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final downloadDirectory = Directory("${directory.path}/downloads");
+    if (!await downloadDirectory.exists()) {
+      await downloadDirectory.create(recursive: true);
+    }
+    // Delete all files in the downloads directory
+    if (await downloadDirectory.exists()) {
+      final files = downloadDirectory.listSync();
+      for (var file in files) {
+        if (file is File) {
+          await file.delete();
+        }
+      }
+    }
+    return downloadDirectory.path;
   }
 }

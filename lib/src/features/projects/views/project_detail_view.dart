@@ -68,9 +68,9 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
       _sectionKeys = [
         _detailSectionKey,
         if (projectDetail.location != null) _mapSectionKey,
-        if (projectDetail.plans != null) _planSectionKey,
-        if (projectDetail.gallery != null) _gallerySectionKey,
-        if (projectDetail.brochures != null) _advertisementSectionKey,
+        if (projectDetail.plans != null && projectDetail.plans!.isNotEmpty) _planSectionKey,
+        if (projectDetail.gallery != null && projectDetail.gallery!.isNotEmpty) _gallerySectionKey,
+        if (projectDetail.brochures != null && projectDetail.brochures!.isNotEmpty) _advertisementSectionKey,
       ];
     }
     _tabController = TabController(length: _sectionKeys.length, vsync: this);
@@ -199,7 +199,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                                         nearbyLocations: projectDetail.nearbyLocations,
                                       ),
                                     ),
-                                  if (projectDetail.plans != null)
+                                  if (projectDetail.plans != null && projectDetail.plans!.isNotEmpty)
                                     Padding(
                                       key: _planSectionKey,
                                       padding: const EdgeInsets.only(top: mDefaultPadding),
@@ -207,7 +207,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                                         floorPlan: projectDetail.plans!,
                                       ),
                                     ),
-                                  if (projectDetail.gallery != null)
+                                  if (projectDetail.gallery != null && projectDetail.gallery!.isNotEmpty)
                                     Padding(
                                       key: _gallerySectionKey,
                                       padding: const EdgeInsets.only(top: mDefaultPadding),
@@ -216,7 +216,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                                         onImageTap: _showImageGallery,
                                       ),
                                     ),
-                                  if (projectDetail.brochures != null)
+                                  if (projectDetail.brochures != null && projectDetail.brochures!.isNotEmpty)
                                     Padding(
                                       key: _advertisementSectionKey,
                                       padding: const EdgeInsets.only(top: mDefaultPadding),
@@ -232,7 +232,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
                                         videoUrl: projectDetail.videos!.first.url,
                                       ),
                                     ),
-                                  SizedBox(height: MediaQuery.of(context).padding.bottom + 60),
+                                  SizedBox(height: MediaQuery.of(context).padding.bottom + 100),
                                 ],
                               ),
                             ),

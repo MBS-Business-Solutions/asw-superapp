@@ -58,6 +58,7 @@ class FavHotMenues extends StatelessWidget {
                   (e) {
                     return Flexible(
                       child: HotMenuWidget(
+                        isFavMenu: true,
                         titleText: currentLocale.locale == 'th' ? e.titleTextTh : e.titleTextEn,
                         iconAsset: e.iconAsset,
                         onTap: () {

@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class NotificationItemTile extends StatelessWidget {
   const NotificationItemTile({
@@ -162,7 +164,11 @@ class NotificationItemTile extends StatelessWidget {
         Navigator.pushNamed(context, PromotionDetailView.routeName, arguments: {'promotionId': promotionId});
       } else if (data['type'] == 'external') {
         final url = data['url'];
+
         if (url == null) return;
+        // if (await canLaunchUrlString(url)) {
+        //   await launchUrlString(url);
+        // }
         Navigator.push(context, MaterialPageRoute(builder: (context) => WebViewWithCloseButton(link: url)));
       }
     } else if (item.type == 'hotdeal') {

@@ -162,7 +162,7 @@ class _ProjectRegisterViewState extends State<ProjectRegisterView> {
                     itemCount: _purposeKeyValues.length,
                     label: AppLocalizations.of(context)!.projectRegisterPurpose,
                     onChanged: (dynamic purposeId) {
-                      _selectedPriceRangeKeyValue = purposeId;
+                      _selectedPurposeKeyValue = purposeId;
                     },
                   ),
                   const SizedBox(height: mScreenEdgeInsetValue),

@@ -251,6 +251,7 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
           clipBehavior: Clip.none,
           children: [
             HotMenuWidget(
+              isFavMenu: true,
               titleText: currentLocale.locale == 'th' ? e.titleTextTh : e.titleTextEn,
               iconAsset: e.iconAsset,
               onTap: !isEditable
@@ -289,6 +290,7 @@ class _HotMenuesConfigViewState extends State<HotMenuesConfigView> {
           clipBehavior: Clip.none,
           children: [
             HotMenuWidget(
+              isFavMenu: true,
               titleText: menu.titleTextTh,
               iconAsset: menu.iconAsset,
               onTap: !isEditing
