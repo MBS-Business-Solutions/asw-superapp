@@ -1,6 +1,7 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/project_provider.dart';
+import 'package:AssetWise/src/services/aw_content_service.dart';
 import 'package:AssetWise/src/widgets/webview_with_close.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -71,27 +72,7 @@ class _ProjectAdvertisementSectionState extends State<ProjectAdvertisementSectio
       _isDownloading = true;
     });
     try {
-      // Navigator.pushNamed(context, WebViewWithCloseButton.routeName, arguments: {'link': url});
-      launchUrlString(url);
-      // // ดาวน์โหลดไฟล์ PDF
-      // final filePath = await context.read<ProjectProvider>().download(url);
-      // final box = context.findRenderObject() as RenderBox?;
-      // if (filePath != null) {
-      //   // เปิดไฟล์ PDF และให้ผู้ใช้เลือกแอป
-
-      //   await Share.shareXFiles(
-      //     [XFile(filePath)],
-      //     sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
-      //   );
-      //   //await OpenFile.open(filePath);
-      // } else {
-      //   // แจ้งเตือนเมื่อไม่สามารถดาวน์โหลดไฟล์ได้
-      //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      //     content: Text(
-      //       AppLocalizations.of(context)!.errorUnableToDownloadContract,
-      //     ),
-      //   ));
-      // }
+      Navigator.pushNamed(context, WebViewWithCloseButton.routeName, arguments: {'link': AWContentService().pdfViewerUrl(url)});
     } catch (e) {
       if (kDebugMode) print("Error: $e");
     }

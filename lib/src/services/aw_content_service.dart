@@ -582,4 +582,9 @@ class AWContentService {
     }
     return downloadDirectory.path;
   }
+
+  String pdfViewerUrl(String url) {
+    final encodedUrl = Uri.encodeComponent(url);
+    return '$BASE_URL/pdf-viewer?url=$encodedUrl';
+  }
 }
