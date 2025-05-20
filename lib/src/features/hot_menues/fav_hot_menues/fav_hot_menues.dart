@@ -62,6 +62,9 @@ class FavHotMenues extends StatelessWidget {
                         titleText: currentLocale.locale == 'th' ? e.titleTextTh : e.titleTextEn,
                         iconAsset: e.iconAsset,
                         onTap: () {
+                          if (e.link.isEmpty) {
+                            return;
+                          }
                           Navigator.pushNamed(context, e.link);
                         },
                         badgeCount: 0,

@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class WebViewWithCloseButton extends StatelessWidget {
+class WebViewWithCloseButton extends StatefulWidget {
   const WebViewWithCloseButton({super.key, required this.link});
   final String link;
   static const String routeName = '/webview_with_close';
 
+  @override
+  State<WebViewWithCloseButton> createState() => _WebViewWithCloseButtonState();
+}
+
+class _WebViewWithCloseButtonState extends State<WebViewWithCloseButton> {
+  bool _isPoped = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,9 +29,13 @@ class WebViewWithCloseButton extends StatelessWidget {
           ..setNavigationDelegate(
             NavigationDelegate(
               onNavigationRequest: (NavigationRequest request) {
-                if (!request.url.startsWith('http')) {
+                bool isAboutBlank = request.url.startsWith('about:blank');
+                if (!request.url.startsWith('http') && !isAboutBlank) {
                   launchUrlString(request.url);
-                  Navigator.pop(context);
+                  if (!_isPoped) {
+                    _isPoped = true;
+                    Navigator.pop(context);
+                  }
                   return NavigationDecision.prevent;
                 }
                 return NavigationDecision.navigate;
@@ -33,7 +43,7 @@ class WebViewWithCloseButton extends StatelessWidget {
             ),
           )
           ..loadRequest(
-            Uri.parse(link),
+            Uri.parse(widget.link),
           ),
       ),
     );

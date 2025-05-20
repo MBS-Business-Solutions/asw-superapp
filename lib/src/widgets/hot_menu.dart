@@ -29,8 +29,8 @@ class HotMenuWidget extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 40 + (isFavMenu ? 5 : 0),
-            height: 40 + (isFavMenu ? 5 : 0),
+            width: 40 + (isFavMenu ? 24 : 0),
+            height: 40 + (isFavMenu ? 24 : 0),
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
@@ -56,7 +56,7 @@ class HotMenuWidget extends StatelessWidget {
               child: InkWell(
                 onTap: onTap,
                 child: Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: EdgeInsets.all(isFavMenu ? 20 : 10),
                   child: Badge.count(
                     count: badgeCount,
                     isLabelVisible: badgeCount > 0,

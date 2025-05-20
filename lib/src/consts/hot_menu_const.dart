@@ -1,5 +1,5 @@
 // link จะโหลดใหม่ทุกครั้งที่เปิดแอปใหม่
-
+// หากมีเมนู Config เพิ่มใหม่ หลังจากติดตั้งแอปไปแล้ว User ต้องไปเพิ่มเมนูใหม่ที่หน้า Favourite Menu เอง
 const mHotMenuConfig = {
   'project': {
     'titleText_en': 'Project',
@@ -21,11 +21,21 @@ const mHotMenuConfig = {
     'iconAsset': 'assets/icons/Fav.svg',
     'link': '/favourites',
     'mandatory': false,
+  },
+  'news': {
+    'titleText_en': 'News',
+    'titleText_th': 'ข่าวสาร',
+    'iconAsset': 'assets/icons/news.svg',
+    'link': '',
+    'mandatory': false,
   }
 };
 
+// ระบุเมนูเริ่มต้นเมื่อติดตั้งแอปครั้งแรก
+// ต้องไม่เกินจำนวนที่กำหนดใน mHotMenuRow
 const mDefaultMenuConfig = [
   'project',
   'promotion',
   'favorite',
+  'news',
 ];
