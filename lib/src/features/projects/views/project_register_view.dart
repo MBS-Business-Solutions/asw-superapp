@@ -69,6 +69,7 @@ class _ProjectRegisterViewState extends State<ProjectRegisterView> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = context.read<UserProvider>();
     return GestureDetector(
       onTap: () => CommonUtil.dismissKeyboard(context),
       child: Scaffold(
@@ -118,7 +119,7 @@ class _ProjectRegisterViewState extends State<ProjectRegisterView> {
                   const SizedBox(height: mScreenEdgeInsetValue),
                   // Phone
                   AwTextFormField(
-                    isEditable: _isEditable,
+                    isEditable: _isEditable || (userProvider.userInformation?.phone ?? '').isEmpty,
                     controller: _phoneTextController,
                     label: AppLocalizations.of(context)!.projectRegisterPhoneField,
                     validator: (value) {
@@ -131,7 +132,7 @@ class _ProjectRegisterViewState extends State<ProjectRegisterView> {
                   const SizedBox(height: mScreenEdgeInsetValue),
                   // Email
                   AwTextFormField(
-                    isEditable: _isEditable,
+                    isEditable: _isEditable || (userProvider.userInformation?.email ?? '').isEmpty,
                     controller: _emailTextController,
                     label: AppLocalizations.of(context)!.projectRegisterEmailField,
                     validator: (value) {

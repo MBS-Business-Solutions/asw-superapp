@@ -71,6 +71,11 @@ class VerifyOtpProvider {
       default:
         return null;
     }
+
+    // Register buyer success ให้ reload ข้อมูลใหม่
+    if (action == OTPFor.validateUser && _verifyOTPResponse != null) {
+      _userProvider!.reloadAll();
+    }
     return _verifyOTPResponse;
   }
 

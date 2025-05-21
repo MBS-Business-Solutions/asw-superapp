@@ -80,6 +80,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = context.read<UserProvider>();
     return GestureDetector(
       onTap: () => CommonUtil.dismissKeyboard(context),
       child: Scaffold(
@@ -129,7 +130,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
                   const SizedBox(height: mScreenEdgeInsetValue),
                   // Phone
                   AwTextFormField(
-                    isEditable: _isEditable,
+                    isEditable: _isEditable || (userProvider.userInformation?.phone ?? '').isEmpty,
                     controller: _phoneTextController,
                     label: AppLocalizations.of(context)!.promotionsPhoneField,
                     validator: (value) {
@@ -142,7 +143,7 @@ class _PromotionRegisterViewState extends State<PromotionRegisterView> {
                   const SizedBox(height: mScreenEdgeInsetValue),
                   // Email
                   AwTextFormField(
-                    isEditable: _isEditable,
+                    isEditable: _isEditable || (userProvider.userInformation?.email ?? '').isEmpty,
                     controller: _emailTextController,
                     label: AppLocalizations.of(context)!.promotionsEmailField,
                     validator: (value) {

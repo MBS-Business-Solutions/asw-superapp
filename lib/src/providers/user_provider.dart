@@ -246,4 +246,8 @@ class UserProvider with ChangeNotifier {
     _token = token;
     notifyListeners();
   }
+
+  void reloadAll() {
+    notifyListeners();
+  }
 }
