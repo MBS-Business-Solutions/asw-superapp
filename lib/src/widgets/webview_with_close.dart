@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -12,9 +13,14 @@ class WebViewWithCloseButton extends StatefulWidget {
 }
 
 class _WebViewWithCloseButtonState extends State<WebViewWithCloseButton> {
-  bool _isPoped = false;
   @override
   Widget build(BuildContext context) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (!widget.link.startsWith('http')) {
+        launchUrlString(widget.link);
+        Navigator.pop(context);
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -25,17 +31,17 @@ class _WebViewWithCloseButtonState extends State<WebViewWithCloseButton> {
       body: WebViewWidget(
         controller: WebViewController()
           ..setJavaScriptMode(JavaScriptMode.unrestricted)
-          //..setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36')
+          ..setUserAgent('Mozilla/5.0 (Mobile; CPU like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile Safari/604.1')
           ..setNavigationDelegate(
             NavigationDelegate(
               onNavigationRequest: (NavigationRequest request) {
                 bool isAboutBlank = request.url.startsWith('about:blank');
                 if (!request.url.startsWith('http') && !isAboutBlank) {
                   launchUrlString(request.url);
-                  if (!_isPoped) {
-                    _isPoped = true;
-                    Navigator.pop(context);
-                  }
+                  // if (!_isPoped) {
+                  //   _isPoped = true;
+                  //   Navigator.pop(context);
+                  // }
                   return NavigationDecision.prevent;
                 }
                 return NavigationDecision.navigate;
