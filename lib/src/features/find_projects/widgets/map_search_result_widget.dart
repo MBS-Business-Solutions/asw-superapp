@@ -179,10 +179,7 @@ class _MapSearchResultWidgetState extends State<MapSearchResultWidget> {
                       Expanded(
                         child: FilledButton(
                           onPressed: () {
-                            GooglemapUtil.openGoogleMap(
-                              selectedProjectSearchItem!.lat,
-                              selectedProjectSearchItem!.lng,
-                            );
+                            GooglemapUtil.openGoogleMapLink(selectedProjectSearchItem!.mapUrl);
                           },
                           style: FilledButton.styleFrom(backgroundColor: mTealColor, foregroundColor: Colors.white),
                           child: Row(

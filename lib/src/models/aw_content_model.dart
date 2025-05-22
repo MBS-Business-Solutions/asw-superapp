@@ -396,6 +396,7 @@ class ProjectSearchItem {
   final String address;
   final String? brandImage;
   final String? brandId;
+  final String? mapUrl;
 
   ProjectSearchItem({
     required this.id,
@@ -410,6 +411,7 @@ class ProjectSearchItem {
     required this.address,
     this.brandImage,
     this.brandId,
+    this.mapUrl,
   });
 
   factory ProjectSearchItem.fromJson(Map<String, dynamic> json) {
@@ -426,6 +428,7 @@ class ProjectSearchItem {
       address: json['address'] ?? '',
       brandImage: json['brand_image'],
       brandId: json['brand_id'],
+      mapUrl: json['mapUrl'],
     );
   }
 }

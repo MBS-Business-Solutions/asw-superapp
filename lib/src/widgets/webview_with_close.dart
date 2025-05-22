@@ -31,7 +31,6 @@ class _WebViewWithCloseButtonState extends State<WebViewWithCloseButton> {
       body: WebViewWidget(
         controller: WebViewController()
           ..setJavaScriptMode(JavaScriptMode.unrestricted)
-          ..setUserAgent('Mozilla/5.0 (Mobile; CPU like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile Safari/604.1')
           ..setNavigationDelegate(
             NavigationDelegate(
               onNavigationRequest: (NavigationRequest request) {

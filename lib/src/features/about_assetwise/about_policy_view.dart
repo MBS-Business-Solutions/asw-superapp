@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class AboutPolicyView extends StatelessWidget {
   const AboutPolicyView({super.key, required this.aboutItem});
@@ -28,6 +29,10 @@ class AboutPolicyView extends StatelessWidget {
             final aboutItemDetail = snapshot.data as AboutItemDetail;
             return SingleChildScrollView(
               child: Html(
+                onLinkTap: (url, attributes, element) {
+                  if (url == null) return;
+                  launchUrlString(url);
+                },
                 data: '''<b>${aboutItem.name}</b>
                         <br>${AppLocalizations.of(context)!.lastUpdated(DateFormatterUtil.formatShortDate(context, aboutItemDetail.updateDate))}<br>
                         ${aboutItemDetail.content}''',

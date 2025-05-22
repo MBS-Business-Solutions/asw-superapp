@@ -13,6 +13,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class PromotionDetailView extends StatefulWidget {
   const PromotionDetailView({super.key, required this.promotionId});
@@ -106,6 +107,10 @@ class _PromotionDetailViewState extends State<PromotionDetailView> {
                           ),
                           const SizedBox(height: mMediumPadding),
                           Html(
+                            onLinkTap: (url, attributes, element) {
+                              if (url == null) return;
+                              launchUrlString(url);
+                            },
                             style: {
                               "body": Style(
                                 padding: HtmlPaddings.zero,

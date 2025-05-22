@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class ConsentsView extends StatefulWidget {
   const ConsentsView({super.key, this.consentUpdated = false});
@@ -62,6 +63,10 @@ class _ConsentsViewState extends State<ConsentsView> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 24),
                           child: Html(
+                            onLinkTap: (url, attributes, element) {
+                              if (url == null) return;
+                              launchUrlString(url);
+                            },
                             data: consent.content,
                           ),
                         ),
@@ -105,6 +110,10 @@ class _ConsentsViewState extends State<ConsentsView> {
         ),
         children: [
           Html(
+            onLinkTap: (url, attributes, element) {
+              if (url == null) return;
+              launchUrlString(url);
+            },
             data: consentItem.content,
           ),
         ],

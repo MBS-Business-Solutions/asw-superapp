@@ -64,7 +64,20 @@ class GooglemapUtil {
   }
 
   static Future<void> openGoogleMap(double lat, double lng) async {
-    final googleMapUrl = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=driving");
+    final googleMapUrl = Uri.parse("https://goo.gl/maps/4gtdsCRKtj1j3L799");
+
+    if (await canLaunchUrl(googleMapUrl)) {
+      await launchUrl(googleMapUrl, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch Google Maps';
+    }
+  }
+
+  static Future<void> openGoogleMapLink(String? link) async {
+    if (link == null || link.isEmpty) {
+      throw 'Invalid Google Maps link';
+    }
+    final googleMapUrl = Uri.parse(link);
 
     if (await canLaunchUrl(googleMapUrl)) {
       await launchUrl(googleMapUrl, mode: LaunchMode.externalApplication);
