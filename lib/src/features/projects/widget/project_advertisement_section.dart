@@ -1,14 +1,10 @@
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
-import 'package:AssetWise/src/providers/project_provider.dart';
 import 'package:AssetWise/src/services/aw_content_service.dart';
 import 'package:AssetWise/src/widgets/webview_with_close.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class ProjectAdvertisementSection extends StatefulWidget {
   const ProjectAdvertisementSection({
