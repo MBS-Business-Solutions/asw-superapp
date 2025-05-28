@@ -4,10 +4,10 @@ name: "AssetWise"
 publish_to: 'none'
 
 #iOS
-# version: 1.48.0+1
+version: 1.48.0+1
 
 #Android
-version: 1.1.0+2025052801
+# version: 1.1.0+2025052801
 
 environment:
   sdk: ^3.5.1
