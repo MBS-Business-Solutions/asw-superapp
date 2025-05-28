@@ -8,7 +8,7 @@ import 'package:AssetWise/src/utils/date_formatter_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:AssetWise/src/localization/app_localizations.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ContractDetailView extends StatefulWidget {

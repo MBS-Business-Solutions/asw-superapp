@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:AssetWise/src/localization/app_localizations.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key, required this.controller});

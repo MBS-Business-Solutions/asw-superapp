@@ -47,10 +47,6 @@ class SettingsController with ChangeNotifier {
   /// settings from the service.
   Future<void> loadSettings() async {
     _themeMode = await _settingsService.themeMode();
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent, // ทำให้โปร่งใส
-      statusBarBrightness: _themeMode == ThemeMode.dark ? Brightness.dark : Brightness.light,
-    ));
 
     _locale = await _settingsService.locale();
     currentLanguage = _locale.languageCode;
@@ -69,10 +65,6 @@ class SettingsController with ChangeNotifier {
     // Otherwise, store the new ThemeMode in memory
     _themeMode = newThemeMode;
 
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent, // ทำให้โปร่งใส
-      statusBarBrightness: _themeMode == ThemeMode.dark ? Brightness.dark : Brightness.light,
-    ));
     // Important! Inform listeners a change has occurred.
     notifyListeners();
 

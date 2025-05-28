@@ -2,7 +2,7 @@ import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:AssetWise/src/localization/app_localizations.dart';
 
 class LocationSection extends StatelessWidget {
   const LocationSection({super.key, required this.location});

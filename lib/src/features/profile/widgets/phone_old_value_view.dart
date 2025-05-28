@@ -4,7 +4,7 @@ import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/utils/string_util.dart';
 import 'package:AssetWise/src/widgets/aw_textformfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:AssetWise/src/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 class PhoneOldValueView extends StatelessWidget {

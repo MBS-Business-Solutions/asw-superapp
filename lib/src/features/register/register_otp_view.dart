@@ -12,7 +12,7 @@ import 'package:AssetWise/src/widgets/assetwise_logo.dart';
 import 'package:AssetWise/src/widgets/otp_input.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:AssetWise/src/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 class RegisterVerifyOtpView extends StatefulWidget {

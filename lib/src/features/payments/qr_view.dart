@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:gal/gal.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:AssetWise/src/localization/app_localizations.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
 
 class QRView extends StatelessWidget {

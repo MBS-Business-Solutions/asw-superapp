@@ -7,7 +7,7 @@ import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/hot_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:AssetWise/src/localization/app_localizations.dart';
 
 class NotificationsView extends StatefulWidget {
   const NotificationsView({super.key, this.selectedIndex = 0});

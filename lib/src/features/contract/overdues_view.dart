@@ -7,7 +7,7 @@ import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:AssetWise/src/localization/app_localizations.dart';
 
 class OverduesView extends StatefulWidget {
   const OverduesView({super.key, required this.contract});

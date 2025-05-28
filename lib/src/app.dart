@@ -31,6 +31,7 @@ import 'package:AssetWise/src/features/register/consents_view.dart';
 import 'package:AssetWise/src/features/register/register_view.dart';
 import 'package:AssetWise/src/features/register/user_detail_view.dart';
 import 'package:AssetWise/src/features/verify_otp/otp_request_view.dart';
+import 'package:AssetWise/src/localization/app_localizations.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/models/aw_otp_model.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
@@ -42,7 +43,6 @@ import 'package:AssetWise/src/widgets/webview_with_close.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -51,10 +51,7 @@ import 'features/dashboard/dashboard_view.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatefulWidget {
-  const MyApp({
-    super.key,
-    required this.settingsController,
-  });
+  const MyApp({super.key, required this.settingsController});
 
   final SettingsController settingsController;
 
@@ -91,15 +88,7 @@ class _MyAppState extends State<MyApp> {
     if (!_showPinEntry) {
       if (navContext.read<UserProvider>().shouldValidatePin) {
         _showPinEntry = true;
-        await Navigator.push(
-          navContext,
-          MaterialPageRoute(
-            builder: (context) => const PinEntryView(
-              isBackable: false,
-            ),
-            fullscreenDialog: true,
-          ),
-        );
+        await Navigator.push(navContext, MaterialPageRoute(builder: (context) => const PinEntryView(isBackable: false), fullscreenDialog: true));
         _showPinEntry = false;
       }
     }
@@ -108,15 +97,7 @@ class _MyAppState extends State<MyApp> {
       if (userProvider.userInformation != null) {
         final consentGave = userProvider.userInformation?.consent ?? false;
         if (!consentGave) {
-          await Navigator.push(
-            navContext,
-            MaterialPageRoute(
-              builder: (context) => const ConsentsView(
-                consentUpdated: true,
-              ),
-              fullscreenDialog: true,
-            ),
-          );
+          await Navigator.push(navContext, MaterialPageRoute(builder: (context) => const ConsentsView(consentUpdated: true), fullscreenDialog: true));
         }
       }
     }
@@ -128,10 +109,7 @@ class _MyAppState extends State<MyApp> {
     final navContext = navigatorKey.currentContext ?? context;
     await navContext.read<NotificationItemProvider>().fetchNotificationItems();
     if (navContext.mounted && !isResumed) {
-      await Future.wait([
-        Future.delayed(const Duration(seconds: 3)),
-        navContext.read<DashboardProvider>().reload(),
-      ]);
+      await Future.wait([Future.delayed(const Duration(seconds: 3)), navContext.read<DashboardProvider>().reload()]);
       Navigator.pushReplacementNamed(navContext, DashboardView.routeName);
     }
   }
@@ -139,27 +117,21 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     if (mounted) {
-      final brightness = Theme.of(context).brightness;
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.transparent,
-          statusBarBrightness: brightness == Brightness.dark ? Brightness.dark : Brightness.light,
-        ),
-      );
+      // SystemChrome.setSystemUIOverlayStyle(
+      //   SystemUiOverlayStyle(
+      //     systemNavigationBarColor: Colors.transparent,
+      //     statusBarBrightness: brightness == Brightness.dark ? Brightness.dark : Brightness.light,
+      //   ),
+      // );
     }
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     return ListenableBuilder(
       listenable: widget.settingsController,
       builder: (BuildContext context, Widget? child) {
         return MaterialApp(
           navigatorKey: navigatorKey,
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
+          localizationsDelegates: const [AppLocalizations.delegate, GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate, GlobalCupertinoLocalizations.delegate],
           supportedLocales: const [
             Locale('en', ''), // English, no country code
             Locale('th', ''), // Thai, no country code
@@ -172,6 +144,15 @@ class _MyAppState extends State<MyApp> {
           darkTheme: mDarkTheme,
           themeMode: widget.settingsController.themeMode,
           onGenerateRoute: (RouteSettings routeSettings) {
+            final brightness = Theme.of(context).brightness;
+            SystemChrome.setSystemUIOverlayStyle(
+              SystemUiOverlayStyle(
+                statusBarColor: Colors.transparent,
+                systemNavigationBarColor: Colors.transparent,
+                statusBarBrightness: brightness == Brightness.dark ? Brightness.dark : Brightness.light,
+              ),
+            );
+            SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
             final routeMap = routeSettings.arguments as Map<String, dynamic>?;
             return MaterialPageRoute<dynamic>(
               settings: routeSettings,
@@ -195,49 +176,27 @@ class _MyAppState extends State<MyApp> {
                   case ConsentsView.routeName:
                     return const ConsentsView();
                   case ContractsView.routeName:
-                    return ContractsView(
-                      linkId: routeMap?['linkId'] as String?,
-                    );
+                    return ContractsView(linkId: routeMap?['linkId'] as String?);
                   case DownHistoryView.routeName:
                     return DownHistoryView(contractId: routeMap!['contractId'] as String);
                   case ChangeLanguangeView.routeName:
                     return const ChangeLanguangeView();
                   case ReceiptView.routeName:
-                    return ReceiptView(
-                      contractNumber: routeMap!['contractNumber'] as String,
-                      receiptNumber: routeMap['receiptNumber'] as String,
-                    );
+                    return ReceiptView(contractNumber: routeMap!['contractNumber'] as String, receiptNumber: routeMap['receiptNumber'] as String);
                   case ReceiptViewFile.routeName:
-                    return ReceiptViewFile(
-                      contractNumber: routeMap!['contractNumber'] as String,
-                      receiptNumber: routeMap['receiptNumber'] as String,
-                    );
+                    return ReceiptViewFile(contractNumber: routeMap!['contractNumber'] as String, receiptNumber: routeMap['receiptNumber'] as String);
                   case OverduesView.routeName:
                     return OverduesView(contract: routeMap!['contract'] as Contract);
                   case NotificationsView.routeName:
-                    return NotificationsView(
-                      selectedIndex: routeMap?['selectedIndex'] ?? 0,
-                    );
+                    return NotificationsView(selectedIndex: routeMap?['selectedIndex'] ?? 0);
                   case PaymentChannelsView.routeName:
-                    return PaymentChannelsView(
-                      contract: routeMap!['contract'] as Contract,
-                      overdueDetail: routeMap['overdueDetail'] as OverdueDetail?,
-                      amount: routeMap['amount'] as double?,
-                    );
+                    return PaymentChannelsView(contract: routeMap!['contract'] as Contract, overdueDetail: routeMap['overdueDetail'] as OverdueDetail?, amount: routeMap['amount'] as double?);
                   case QRView.routeName:
-                    return QRView(
-                      contract: routeMap!['contract'] as Contract,
-                      amount: routeMap['amount'] as double,
-                    );
+                    return QRView(contract: routeMap!['contract'] as Contract, amount: routeMap['amount'] as double);
                   case PinEntryView.routeName:
-                    return PinEntryView(
-                      isBackable: routeMap?['isBackable'] as bool?,
-                    );
+                    return PinEntryView(isBackable: routeMap?['isBackable'] as bool?);
                   case OTPRequestView.routeName:
-                    return OTPRequestView(
-                      forAction: routeMap?['forAction'] as String?,
-                      otpFor: routeMap?['otpFor'] as OTPFor,
-                    );
+                    return OTPRequestView(forAction: routeMap?['forAction'] as String?, otpFor: routeMap?['otpFor'] as OTPFor);
                   case AboutAsswiseView.routeName:
                     return const AboutAsswiseView();
                   case MyAssetsView.routeName:
@@ -245,9 +204,7 @@ class _MyAppState extends State<MyApp> {
                   case ManagePersonalInfoView.routeName:
                     return const ManagePersonalInfoView();
                   case MapSearchView.routeName:
-                    return MapSearchView(
-                      textController: routeMap!['textcontroller'] as TextEditingController,
-                    );
+                    return MapSearchView(textController: routeMap!['textcontroller'] as TextEditingController);
                   case HotMenuesConfigView.routeName:
                     return const HotMenuesConfigView();
                   case ProjectsView.routeName:
@@ -257,19 +214,13 @@ class _MyAppState extends State<MyApp> {
                   case PromotionsView.routeName:
                     return const PromotionsView();
                   case PromotionDetailView.routeName:
-                    return PromotionDetailView(
-                      promotionId: routeMap!['promotionId'] as int,
-                    );
+                    return PromotionDetailView(promotionId: routeMap!['promotionId'] as int);
                   case ProjectDetailView.routeName:
-                    return ProjectDetailView(
-                      projectId: routeMap!['projectId'] as int,
-                    );
+                    return ProjectDetailView(projectId: routeMap!['projectId'] as int);
                   case FavouriteProjectsView.routeName:
                     return const FavouriteProjectsView();
                   case WebViewWithCloseButton.routeName:
-                    return WebViewWithCloseButton(
-                      link: routeMap!['link'] as String,
-                    );
+                    return WebViewWithCloseButton(link: routeMap!['link'] as String);
                   default:
                     // return DashboardView(controller: settingsController);
                     return const SplashView();
