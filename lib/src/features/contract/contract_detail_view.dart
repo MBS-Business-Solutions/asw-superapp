@@ -202,7 +202,9 @@ class _ContractDetailViewState extends State<ContractDetailView> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(AppLocalizations.of(context)!.contractDetailDownloadDoc),
+                                Text(
+                                  contractDetail.isEContract ? AppLocalizations.of(context)!.contractDetailDownloadEDoc : AppLocalizations.of(context)!.contractDetailDownloadDoc,
+                                ),
                                 const Icon(Icons.file_download_outlined),
                                 if (_isLoadingContractFile) const SizedBox(width: 16, height: 16, child: CircularProgressIndicator.adaptive()),
                               ],

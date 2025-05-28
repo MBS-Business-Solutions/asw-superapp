@@ -431,6 +431,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get contractDetailDownloadDoc => 'ดาวน์โหลดรายละเอียดสัญญา';
 
   @override
+  String get contractDetailDownloadEDoc => 'ดาวน์โหลด e-contract';
+
+  @override
   String get receiptViewTitle => 'รายละเอียดใบเสร็จ';
 
   @override

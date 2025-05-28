@@ -836,6 +836,12 @@ abstract class AppLocalizations {
   /// **'Download Contract Documents'**
   String get contractDetailDownloadDoc;
 
+  /// No description provided for @contractDetailDownloadEDoc.
+  ///
+  /// In en, this message translates to:
+  /// **'Download e-contract'**
+  String get contractDetailDownloadEDoc;
+
   /// No description provided for @receiptViewTitle.
   ///
   /// In en, this message translates to:

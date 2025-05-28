@@ -255,6 +255,7 @@
   "contractDetailRemainHousePayment": "Total Remaining House Payment",
   "contractDetailFreebiesTitle": "Freebies and Discounts List",
   "contractDetailDownloadDoc": "Download Contract Documents",
+  "contractDetailDownloadEDoc": "Download e-contract",
 
   "receiptViewTitle": "Receipt Details",
   "receiptViewSuccess": "Transaction Successful",

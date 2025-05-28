@@ -440,6 +440,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get contractDetailDownloadDoc => 'Download Contract Documents';
 
   @override
+  String get contractDetailDownloadEDoc => 'Download e-contract';
+
+  @override
   String get receiptViewTitle => 'Receipt Details';
 
   @override

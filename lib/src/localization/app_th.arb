@@ -255,6 +255,7 @@
   "contractDetailRemainHousePayment": "คงเหลือค่าบ้านทั้งหมด",
   "contractDetailFreebiesTitle": "รายการของแถมและส่วนลด",
   "contractDetailDownloadDoc": "ดาวน์โหลดรายละเอียดสัญญา",
+  "contractDetailDownloadEDoc": "ดาวน์โหลด e-contract",
 
   "receiptViewTitle": "รายละเอียดใบเสร็จ",
   "receiptViewSuccess": "ทำรายการสำเร็จ",

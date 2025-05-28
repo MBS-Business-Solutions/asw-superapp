@@ -53,7 +53,8 @@ class ContractDetail {
   final double paymentAmount;
   final double remainDownAmount;
   final double remainAmount;
-  List<String>? freebies;
+  List<String>? freebies; // load by using another API
+  final bool isEContract;
 
   ContractDetail({
     required this.date,
@@ -71,6 +72,7 @@ class ContractDetail {
     required this.remainDownAmount,
     required this.remainAmount,
     this.freebies,
+    this.isEContract = false,
   });
 
   factory ContractDetail.fromJson(Map<String, dynamic> json) {
@@ -89,6 +91,7 @@ class ContractDetail {
       paymentAmount: CommonUtil.parseDouble(json['payment_amount']),
       remainDownAmount: CommonUtil.parseDouble(json['remain_down_amount']),
       remainAmount: CommonUtil.parseDouble(json['remain_amount']),
+      isEContract: json['is_e_contract'] ?? false,
     );
   }
 }
