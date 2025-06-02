@@ -4,40 +4,523 @@
   "@appTitle": {
     "description": "The title of the application"
   },
+  "actionButtonNext": "Next",
+  "actionButtonCancel": "Cancel",
+  "errorUnableToProcess": "Unavailable Please try again.",
+  "errorUnableToDownloadContract": "Unable to download contract documents Please try again.",
+  "errorFieldRequired": "This field is required.",
+  "errorNoData": "No data found.",
+  "errorInvalidOTP": "Incorrect OTP number.",
+  "errorInvalidPIN": "Please enter the PIN code correctly.",
+  "errorComingSoon": "Service not yet available.",
+  "bahtUnit": "baht",
+  "priceFormat": "{price}",
+  "@priceFormat": {
+    "description": "The format of the price",
+    "placeholders": {
+      "price": {
+        "type": "double",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 2
+        }
+      }
+    }
+  },
+
+  "priceFormatDouble": "{price}",
+  "@priceFormatDouble": {
+    "description": "The format of the price",
+    "placeholders": {
+      "price": {
+        "type": "double",
+        "format": "currency",
+        "optionalParameters": {
+          "decimalDigits": 2,
+          "customPattern": "#,##0.00"
+        }
+      }
+    }
+  },
+
+  "priceFormatBaht": "{amount} baht",
+  "@priceFormatBaht": {
+    "description": "The format of the amount",
+    "placeholders": {
+      "amount": {
+        "type": "double",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 2
+        }
+      }
+    }
+  },
+
+  "priceFormatBahtDouble": "{amount} baht",
+  "@priceFormatBahtDouble": {
+    "description": "The format of the amount",
+    "placeholders": {
+      "amount": {
+        "type": "double",
+        "format": "currency",
+        "optionalParameters": {
+          "decimalDigits": 2,
+          "customPattern": "#,##0.00"
+        }
+      }
+    }
+  },
 
   "bottomBarHome": "Home",
-  "@bottomBarHome": {
-    "description": "Label for icon Bottom App Bar"
-  },
-  "bottomBarService": "บริการ",
-  "@bottomBarService": {
-    "description": "Label for icon Bottom App Bar"
-  },
-  "bottomBarChat": "แชท",
-  "@bottomBarChat": {
-    "description": "Label for icon Bottom App Bar"
-  },
-  "bottomBarMenu": "เมนู",
-  "@bottomBarMenu": {
-    "description": "Label for icon Bottom App Bar"
-  },
-  "bottomBarProfile": "โปรไฟล์",
-  "@bottomBarProfile": {
-    "description": "Label for icon Bottom App Bar"
-  },
-  
-  "registerMobile": "กรอกเบอร์มือถือ",
-  "registerMobileHint": "ระบุเบอร์มือถือของท่าน เพื่อทำการสมัครสมาชิก",
-  "registerEMail": "กรอก E-Mail",
-  "registerEMailHint": "ระบุ E-mail ของท่าน เพื่อทำการสมัครสมาชิก",
+  "bottomBarService": "Services",
+  "bottomBarChat": "Chat",
+  "bottomBarMenu": "Menu",
+  "bottomBarCalendar": "Calendar",
+  "bottomBarPrivilege": "Privilege",
+  "bottomBarMyQR": "My QR",
+  "bottomBarProfile":"Profile",
+  "bottomBarMyUnit": "My Unit",
 
-  "sectionFavourite": "เมนูโปรด",
-  "@sectionFavourite": {
+  "registerUserName": "Enter your mobile number or email address",
+  "registerUserNameHint": "Enter your mobile phone number or email to apply for membership.",
+  "registerUserNameLabel": "Mobile Number/email",
+  "registerMobileLabel": "Mobile Number",
+  "registerMobile": "Enter your mobile number",
+  "registerMobileHint": "Provide your mobile number to register as a member",
+  "registerEMailLabel": "Email",
+  "registerEMail": "Enter Email",
+  "registerEMailHint": "Please enter your email address to register",
+  "registerLoginByEmail": "Log in with Email",
+  "registerLast4Digits": "Last 4 digits of ID card",
+  "registerIsResident": "Existing customer",
+  "registerNext": "Next",
+  "registerInvalidData": "Please check your input.",
+  "registerInvalidResident": "Please enter your ID card number to match your registered mobile number.",
+  "registerInvalidUser": "Please enter your ID card number to match your registered mobile number/email address.",
+  "registerError": "Unable to process. Please try again.",
+  "otpTitle": "Enter OTP",
+  "otpRequestIsResident": "Existing customer",
+  "otpRequestLast4Digits": "Last 4 digits of ID card",
+  "otpRequestAgain": "Request code again.",
+  "otpRequestCountdownPrefix": "Request code again in",
+  "otpRequestCountdown": "{time, plural, =0{} =1{1 second} other{{time} seconds}}",
+  "@otpRequestCountdown": {
+    "description": "Message indicating the countdown time to request the OTP code again",
+    "placeholders": {
+      "time": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "otpInstruction": "Enter the 6 digits sent to\n{sendto} REF : {refCode}",
+  "@otpInstruction": {
+    "description": "OTP confirmation message by selecting the type of sending (email or mobile number)",
+    "placeholders": {
+      "sendto": {
+        "type": "String",
+        "example": "user@example.com"
+      },
+      "refCode": {
+        "type": "String",
+        "example": "ABC123"
+      }
+    }
+  },
+  "userDetailTitle": "Enter Name - Surname",
+  "userDetailInstruction": "Provide your details to access the service",
+  "userDetailFirstName": "First Name *",
+  "userDetailLastName": "Last Name *",
+  "userDetailMobile": "Mobile",
+  "userDetailEmail": "Email",
+  "userDetailCitizenId": "National ID / Passport No.",
+  "userDetailInvalidFirstName": "Please enter your first name correctly without using special characters.",
+  "userDetailInvalidLastName": "Please enter your last name correctly without using special characters.",
+  "userDetailInvalidEmail": "Please enter a valid E-mail address in the correct format.",
+  "userDetailInvalidPhone": "Please enter a 10-digit mobile number.",
+
+  "consentAgree": "Accept",
+  "consentDisagree": "Don't accept",
+  "consentAgreeNext": "Consent",
+  "consentAgreeAll": "Consent to all",
+
+  "setPinSetPin": "Set a {digits}-digit PIN",
+  "@setPinSetPin": {
+    "description": "Message to set a PIN with a specified number of digits",
+    "placeholders": {
+      "digits": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "setPinConfirm": "Enter the PIN code again.",
+  "setPinInstruction": "Please enter a {digits}-digit PIN to set up your password",
+  "@setPinInstruction": {
+    "description": "Message to set a PIN with a specified number of digits",
+    "placeholders": {
+      "digits": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "setPinSkipInstruction" :"You can skip this step.\nYou will be able to access the system without having to enter a PIN.",
+  "setPinSkip": "Skip",
+  "setPinError": "Please start setting a new PIN code again.",
+
+  "changeLanguageTitle": "Change Language",
+  "changeLanguageCurrentLang": "Current Language",
+  "changeLanguageLanguage": "Language",
+
+  "dashboardMainSectionFavourite": "Favorite",
+  "@dashboardMainSectionFavourite": {
     "description": "The title of the favourite section"
   },
-  "sectionFavouriteMore": "เมนูทั้งหมด",
-  "sectionRecommended": "โครงการแนะนำ",
+  "dashboardMainSectionFavouriteMore": "All menus",
+  "dashboardMainSectionNotification": "Notifications",
+  "dashboardMainSectionRecommended": "Recommended projects",
+  "dashboardMainSectionRecommendedDetail": "We are committed to designing homes. For the happiness of the people Taking into account lifestyle and the lifestyle of each person is different Allowing you to live your life the way you want.",
 
-  "eReadyToMoveIn": "พร้อมอยู่",
-  "eNewProject": "โครงการใหม่"
+  "profileNameFormat": "{firstName} {lastName}",
+  "@profileNameFormat": {
+    "description": "The format of the full name",
+    "placeholders": {
+      "firstName": {
+        "type": "String",
+        "example": "John"
+      },
+      "lastName": {
+        "type": "String",
+        "example": "Doe"
+      }
+    }
+  },
+  "profileRegisterBuyer": "Register Buyer",
+  "profileDarkMode": "Dark Mode",
+  "profileMyInfo": "My Information",
+  "profilePhoneNumber": "Phone Number",
+  "profileEmail": "Email",
+  "profileMyAsset":"My Units",
+  "profileMyAssetSum":"{count} {count, plural, =1{unit} other{units}}",
+  "@profileMyAssetSum": {
+    "description": "Message indicating the number of assets",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "profileLanguage": "Language",
+  "profileChangeLanguage": "Change Language",
+  "profileSettings": "Account Settings",
+  "profilePersonalInfo": "Manage Personal Information",
+  "profilePin": "PIN Code",
+  "profileDeleteAccount": "Deactivate or Delete Account",
+  "profileAbout": "About Assetwise",
+  "profileAuthen": "Login",
+  "profileExit": "Exit",
+  "profileLogout": "Log Out",
+
+  "contractsViewContract": "Contract Details",
+
+  "overdueDetailAmountLabel": "Make Payment",
+  "overdueDetailDueDateLabel": "Due Date",
+  "overdueDetailCreditNumberLabel": "Deduct from Account",
+  "overdueDetailDebitDateLabel": "Deduction Date",
+  "overdueDetailPayment": "Pay",
+  "overdueDetailViewDetail": "View Details",
+
+  "paymentHistoryTitle": "Payment History",
+
+  "contractDetailTitle": "Contract Details",
+  "contractDetailContractDate": "Contract Date",
+  "contractDetailSigningDate": "Contract Date",
+  "contractDetailEstimatedTransferDate": "Estimated Transfer Date",
+  "contractDetailContractValueTitle": "Contract Value",  
+  "contractDetailBookingSellingPrice": "Selling Price",
+  "contractDetailBookingDiscountPrice": "Discount",
+  "contractDetailBookingDiscountAtTransferPrice": "Discount on transfer date",
+  "contractDetailBookingNetPrice": "Net Price",
+  "contractDetailBookingAmount": "Booking",
+  "contractDetailContractAmount": "Contract",
+  "contractDetailDownAmount": "Down payment",
+  "contractDetailDownAmountDetails": "details",
+  "contractDetailTransferAmount": "Transfer",
+  "contractDetailPaymentTitle": "Payment Details",
+  "contractDetailPaymentAmount": "Payment Amount",
+  "contractDetailRemainDownAmount": "Remaining Down Payment",
+  "contractDetailRemainHousePayment": "Total Remaining House Payment",
+  "contractDetailFreebiesTitle": "Freebies and Discounts List",
+  "contractDetailDownloadDoc": "Download Contract Documents",
+  "contractDetailDownloadEDoc": "Download e-contract",
+
+  "receiptViewTitle": "Receipt Details",
+  "receiptViewSuccess": "Transaction Successful",
+  "receiptViewPaymentType": "Payment Method",
+  "receiptViewDate": "Transaction Date",
+  "receiptViewRef1": "Item number",
+  "receiptViewRef2": "Reference Number",
+  "receiptViewRemark": "Notes",
+  "receiptViewDue": "Due Date",
+  "receiptViewViewReceipt": "View Receipt",
+
+  "receiptViewFileTitle": "Receipt",
+  "receiptViewFileDownload": "Download Receipt",
+
+  "downHistoryViewTitle": "Down payment details",
+
+  "overduesViewTitle": "Amount Due",
+  "overduesViewSumLabel": "Amount Due",
+  "overduesViewMakePayment": "Payment",
+
+  "paymentChannelViewPaymentTitle": "Payment",
+  "paymentChannelViewCreditChannel": "Credit/Debit Card",
+  "paymentChannelViewQRChannel": "QR Code",
+  "paymentChannelViewTotalAmount": "Total Amount Due",
+  "paymentChannelViewDue": "Due Date",
+  "paymentChannelViewPayment": "Payment",
+
+  "qrViewTitle": "QR Code",
+  "qrViewProject": "Project",
+  "qrViewUnit": "Unit",
+  "qrViewTotal": "Total Payment",
+  "qrViewPromptPayInstruction": "How to pay with PromptPay QR Code",
+  "qrViewPromptPayInstruction1": "1. Open your banking app and select the \"Scan\" menu.",
+  "qrViewPromptPayInstruction2": "2. Scan the store's QR Code.",
+  "qrViewPromptPayInstruction3": "3. Select your account, enter the amount, and tap \"Confirm\".",
+  "qrViewPromptPayInstruction4": "4. Confirm",
+  "qrViewPromptPayDownload": "Download QR Code",
+  "qrViewPromptPayDone": "Completed",
+  "qrViewPromptSavedToGallery": "QR Code saved to gallery",
+
+  "pinEntryTitle": "Enter PIN",
+  "pinEntryInstruction": "Enter a {digits}-digit PIN to log in.",
+  "@pinEntryInstruction": {
+    "description": "Message to enter a PIN with a specified number of digits",
+    "placeholders": {
+      "digits": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "pinEntryForget": "Forgot PIN code",
+
+  "otpRequestActionResetPin": "verify your identity for setting up a PIN.",
+  "otpRequestActionFirstSetPin": "verify your identity every time you log in in the future.",
+  "otpRequestActionReLogin": "register as a member.",
+  "otpRequestMobileLabel": "Mobile Number",
+  "otpRequestMobile": "Enter Mobile Number",
+  "otpRequestMobileHint": "Provide your mobile number to {action}",
+  "@otpRequestMobileHint": {
+    "description": "Hint for the mobile number input field",
+    "placeholders": {
+      "action": {
+        "type": "String",
+        "example": "Please sign up before using the service"
+      }
+    }
+  },
+  "otpRequestEMailLabel": "Email",
+  "otpRequestEMail": "Enter Email",
+  "otpRequestEMailHint": "Please enter your email address to {action}",
+  "@otpRequestEMailHint": {
+    "description": "Hint for the email input field",
+    "placeholders": {
+      "action": {
+        "type": "String",
+        "example": "Apply for membership"
+      }
+    }
+  },
+  "otpRequestLoginByEmail": "Log in with Email",
+  "otpRequestNext": "Next",
+  "otpRequestInvalidData": "Please fill in all information completely.",
+  "otpRequestInvalidMobile": "Please enter your ID card number to match your registered mobile number.",
+  "otpRequestInvalidEmail": "Please enter your ID card number to match your registered email address.",
+  "otpRequestInvalidUser": "Please enter your ID card number to match your registered mobile number/email address.",
+
+  "logoutConfirmationTitle": "Do you want to log out?",
+  "logoutConfirmationMessage": "You are about to log out of {userName}", 
+  "logoutConfirmationBottomTitle": "Are you sure you want to log out?",
+  "logoutConfirmationOKButton": "Log out",
+
+  "closeAppConfirmationTitle": "Do you want to exit?",
+  "closeAppConfirmationMessage": "You can re-log in\n by verifying your identity with a PIN.",
+  "closeAppConfirmationOKButton": "Exit",
+
+  "emailOldValueTitle": "Edit Email",
+  "emailOldValueInstructions": "If you wish to update your email here, all accounts linked to this user account will also be updated accordingly.",
+  "emailOldValueTextLabel": "E-mail",
+  "emailOldValueAction": "Change E-mail",
+  "emailNewValueTitle": "Enter a New E-mail",
+  "emailNewValueInstructions": "If you wish to change your E-mail, please submit a request so that our staff can contact you later.",
+  "emailNewValueTextLabel": "Enter a New E-mail",
+  "emailNewValueAction": "Submit E-mail Change Request",
+  "emailChangeSuccessTitle": "Request Submitted",
+  "emailChangeSuccessIntructions": "You will be contacted within 24 hours.",
+  "emailChangeSuccessAction": "Go back to Home",
+
+  "phoneOldValueTitle": "Phone Number",
+  "phoneOldValueInstructions": "If you wish to change your phone number, please press \"Send Request\" to allow our staff to contact you later.",
+  "phoneOldValueTextLabel": "Phone Number",
+  "phoneOldValueAction": "Change number",
+  "phoneNewValueTitle": "Specify a new phone number",
+  "phoneNewValueInstructions": "If you wish to change your phone number, please press \"Send Request\" to allow our staff to contact you later.",
+  "phoneNewValueTextLabel": "Specify a new phone number",
+  "phoneNewValueAction": "Submit a Phone Number Change Request",
+  "phoneChangeSuccessTitle": "Request Submitted",
+  "phoneChangeSuccessIntructions": "You will be contacted within 24 hours.",
+  "phoneChangeSuccessAction": "Go back to Home",
+
+  "notificationTitle": "All Notifications",
+  "notificationAll": "All",
+  "notificationPayment": "Payment",
+  "notificationPromotion": "Promotion",
+  "notificationHotDeal": "Hot Deal",
+  "notificationNews": "News",
+  "notificationReadAll": "Mark All as Read",
+
+  "aboutAssetWiseTitle": "About Assetwise",
+  "aboutAssetWiseVersion": "Version {version} ({build})",
+  "aboutAssetWiseCopyright": "ⓒ 2025 บริษัท แอสเซทไวส์ จำกัด",
+  "aboutAssetWiseTermOfService": "Terms of Service",
+  "aboutAssetWisePrivacyPolicy": "Privacy Policy",
+  "aboutAssetWiseSecurityPolicy": "Security Policy",
+
+  "registerBuyerTitle": "Buyer Registration",
+  "registerBuyerHeader": "Verify Identity",
+  "registerBuyerInstruction": "Please verify your identity with your National ID number or Passport number for security purposes.",
+  "registerBuyerIdentifier": "National ID / Passport No.",
+  "registerBuyerRegister": "Register",
+  "registerBuyerInvalidId": "Please fill in your ID card number completely, 13 digits",
+
+  "myAssetTitle": "My Home",
+  "myAssetSum": " {count, plural, =0{} =1{1 Unit} other{{count} Unit}}",
+  "@myAssetSum": {
+    "description": "Message indicating the number of assets",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "myAssetAdd": "Add Home",
+  "myAssetViewDetail": "View Details",
+  "myAssetSetDefault": "Set as Default",
+  "myAssetDelete": "Delete house",
+  "myAssetDeleteConfirmation": "Do you want to delete the house?",
+  "myAssetDeleteDetail": "If you want to delete house number {unitNumber},\nall information will be removed from the system.",
+  "myAssetDeleteDelete": "Delete",
+  "myAssetDeleteCancel": "Cancel",
+  "myAssetDeleteSuccess": "Data deleted successfully",
+  "myAssetDefault": "Default",
+
+  "addAssetTitle": "Add Home",
+  "addAssetInstruction": "Please provide your details for service access.",
+  "addAssetProject": "Project*",
+  "addAssetUnit": "Unit Number*",
+  "addAssetLast4Id": "Last 4 digits of ID Card*",
+  "addAssetProjectRequired": "Please specify the project.",
+  "addAssetUnitRequired": "Please specify your house number.",
+  "addAssetLast4IdRequired": "Please enter the last 4 digits of your national ID card number.",
+
+  "managePersonalInfoTitle": "Manage Personal Information",
+  "managePersonalInfoCollectionPersonalInfo": "Collection and Use of Personal Information",
+  "managePersonalInfoMarketingPurpose": "Consent for Marketing Purposes",
+  "managePersonalInfoDisclosureMarketing": "Consent for Disclosure of Information for Marketing Purposes",
+  "managePersonalInfoGiveConsent": "Give Consent",
+
+  "lastUpdated": "Last updated {date}",
+
+  "unableToPayHeading": "Payment is not available at this time.",
+  "unableToPayBack": "Return to contract page",
+
+  "mapTitle": "Map",
+  "mapSearchHint": "Search",
+  "mapSearchCount": "{count, plural, =1{ผลการค้นหา : 1 รายการ} other{ผลการค้นหา : {count} รายการ}}",
+  "mapShowProjectDetail": "View project details",
+  "mapNavigate": "Navigate",
+  "mapDistanceKM": "{distance} km.",
+
+  "projectsTitle": "Projects",
+  "projectsSearchHint": "Search for project name",
+  "projectsSeeOnMap": "View on Map",
+  "projectsFilterTitle": "Filter",
+  "projectsBrands": "Brand",
+  "projectsLocations": "Location",
+  "projectsClearFilter": "Clear Filter",
+  "projectsSearch": "Search",
+  "projectsSearchNoResult": "No search results found",
+  "projectsSearchTryAgain": "Please try again",
+  "projectsSearchCount": "{count, plural, =1{ผลการค้นหา : 1 รายการ} other{ผลการค้นหา : {count} รายการ}}",
+
+  "projectDetailTitle": "Project Details",
+  "projectDetailSectionDetail": "Details",
+  "projectDetailSectionMap": "Map",
+  "projectDetailSectionPlan": "Plan",
+  "projectDetailSectionGallery": "Gallery",
+  "projectDetailSectionAdvertisement": "Brochure",
+  "projectDetailSectionVideo": "Video",
+  "projectDetailProgressTitle": "Progress",
+  "projectDetailProgressUpdated": "วันที่อัปเดต : {date}",
+  "projectDetailProgressStructure": "Structure",
+  "projectDetailProgressFinishing": "Architecture",
+  "projectDetailProgressComplete": "System Installation",
+  "projectDetailProgressConstruction": "Piling",
+  "projectDetailMapTitle": "Map",
+  "projectDetailNearbyTitle": "Nearby places",
+  "projectDetailPlanTitle": "Room Plan",
+  "projectDetailGalleryTitle": "Gallery",
+  "projectDetailAdvertisementTitle": "Brochure",
+  "projectDetailAdvertisementDownload": "Download Brochure",
+  "projectDetailVideoTitle": "Video",
+  
+  "projectRegisterInterest": "Interested in this project?",
+  "projectRegisterNameField": "First Name*",
+  "projectRegisterLastNameField": "Last Name*",
+  "projectRegisterPhoneField": "Phone Number*",  
+  "projectRegisterEmailField": "Email*",
+  "projectRegisterPriceRange": "Preferred Price Range*",
+  "projectRegisterPurpose": "Purpose of Purchase*",
+  "projectRegisterRegister": "Register",
+  "projectRegisterRegisterSuccess": "Submission Successful",
+  "projectRegisterBackToProject": "Back to Project Details Page",
+  
+  "myQRTitle": "My QR",
+  "myQRDescription": "QR for Identity Verification and Privileges",
+  "myQRRefCode": "รหัสอ้างอิง : {refCode}",
+  "myQRScanQR": "Scan QR code",
+  "myQRShare": "Share",
+  "myQRSave": "Save",
+  "myQRSaveCompleted": "Saved successfully",
+
+  "promotionsTitle": "Promotions",
+  "promotionsSearchHint": "Search Promotion",
+  "promotionsInterest": "Interested in this promotion?",
+  "promotionsNameField": "First Name*",
+  "promotionsLastNameField": "Last Name*",
+  "promotionsPhoneField": "Phone Number*",  
+  "promotionsEmailField": "Email*",
+  "promotionsProject": "Project*",
+  "promotionsPriceRange": "Preferred Price Range*",
+  "promotionsPurpose": "Purpose of Purchase*",
+  "promotionsRegister": "Register",
+  "promotionsRegisterSuccess": "Submission Successful",
+  "promotionsBackToPromotions": "Back to promotions page",
+
+  "hotMenesConfigTitle": "All Menus",
+  "hotMenesConfigFavourite": "Favorite Menu",
+  "hotMenesConfigOthers": "Other Menus",
+  "hotMenesConfigSetting": "Settings",
+  "hotMenesConfigDone": "Done",
+
+  "favouritesTitle": "Favorites",
+  "favouritesSearchHint": "Search project name",
+  "favouritesSearchNoResult": "No results found",
+  "favouritesSearchTryAgain": "Please try again"
 }

@@ -1,11 +1,526 @@
 {
+  "@@locale": "th",
   "appTitle": "AssetWise",
   "@appTitle": {
     "description": "The title of the application"
   },
+  "actionButtonNext": "ถัดไป",
+  "actionButtonCancel": "ยกเลิก",
+  "errorUnableToProcess": "ไม่สามารถใช้งานได้ กรุณาลองใหม่อีกครั้ง",
+  "errorUnableToDownloadContract": "***ไม่สามารถดาวน์โหลดเอกสารสัญญาได้ กรุณาลองใหม่อีกครั้ง***",
+  "errorFieldRequired": "กรุณากรอกข้อมูล",
+  "errorNoData": "ไม่พบข้อมูล",
+  "errorInvalidOTP": "หมายเลข OTP ไม่ถูกต้อง",
+  "errorInvalidPIN": "กรุณากรอกรหัส PIN ให้ถูกต้อง",
+  "errorComingSoon": "ยังไม่เปิดใช้บริการ",
+  "bahtUnit": "บาท",
+  "priceFormat": "{price}",
+  "@priceFormat": {
+    "description": "The format of the price",
+    "placeholders": {
+      "price": {
+        "type": "double",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 2
+        }
+      }
+    }
+  },
+
+  "priceFormatDouble": "{price}",
+  "@priceFormatDouble": {
+    "description": "The format of the price",
+    "placeholders": {
+      "price": {
+        "type": "double",
+        "format": "currency",
+        "optionalParameters": {
+          "decimalDigits": 2,
+          "customPattern": "#,##0.00"
+        }
+      }
+    }
+  },
+
+  "priceFormatBaht": "{amount} บาท",
+  "@priceFormatBaht": {
+    "description": "The format of the amount",
+    "placeholders": {
+      "amount": {
+        "type": "double",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 2
+        }
+      }
+    }
+  },
+
+  "priceFormatBahtDouble": "{amount} บาท",
+  "@priceFormatBahtDouble": {
+    "description": "The format of the amount",
+    "placeholders": {
+      "amount": {
+        "type": "double",
+        "format": "currency",
+        "optionalParameters": {
+          "decimalDigits": 2,
+          "customPattern": "#,##0.00"
+        }
+      }
+    }
+  },
+
   "bottomBarHome": "หน้าหลัก",
   "bottomBarService": "บริการ",
   "bottomBarChat": "แชท",
   "bottomBarMenu": "เมนู",
-  "bottomBarProfile": "โปรไฟล์"
+  "bottomBarCalendar": "ปฏิทิน",
+  "bottomBarPrivilege": "สิทธิพิเศษ",
+  "bottomBarMyQR": "QR ของฉัน",
+  "bottomBarProfile":"โปรไฟล์",
+  "bottomBarMyUnit": "บ้านของฉัน",
+
+  "registerUserName": "กรอกเบอร์มือถือหรือ E-mail",
+  "registerUserNameHint": "ระบุเบอร์มือถือหรือ E-mail ของท่าน เพื่อทำการสมัครสมาชิก",
+  "registerUserNameLabel": "เบอร์มือถือ/E-mail",
+  "registerMobileLabel": "เบอร์มือถือ",
+  "registerMobile": "กรอกเบอร์มือถือ",
+  "registerMobileHint": "ระบุเบอร์มือถือของท่าน เพื่อทำการสมัครสมาชิก",
+  "registerEMailLabel": "Email",
+  "registerEMail": "กรอก E-Mail",
+  "registerEMailHint": "ระบุ E-mail ของท่าน เพื่อทำการสมัครสมาชิก",
+  "registerLoginByEmail": "เข้าสู่ระบบผ่าน E-mail",
+  "registerLast4Digits": "เลขบัตรประชาชน 4 ตัวหลัง",
+  "registerIsResident": "เป็นลูกบ้าน",
+  "registerNext": "ถัดไป",
+  "registerInvalidData": "กรุณากรอกข้อมูลให้ครบถ้วน",
+  "registerInvalidResident": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน",
+  "registerInvalidUser": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับ เบอร์มือถือ/อีเมล ที่ลงทะเบียน",
+  "registerError": "ไม่สามารถทำงานได้ กรุณาลองใหม่อีกครั้ง",
+  "otpTitle": "กรอก OTP",
+  "otpRequestAgain": "ขอรหัสอีกครั้ง",
+  "otpRequestIsResident": "เป็นลูกบ้าน",
+  "otpRequestLast4Digits": "เลขบัตรประชาชน 4 ตัวหลัง",
+  "otpRequestCountdownPrefix": "ขอรหัสอีกครั้งใน",
+  "otpRequestCountdown": "{time, plural, =0{} =1{1 วินาที} other{{time} วินาที}}",
+  "@otpRequestCountdown": {
+    "description": "Message indicating the countdown time to request the OTP code again",
+    "placeholders": {
+      "time": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "otpInstruction": "ระบุตัวเลข 6 หลักที่ถูกส่งไปยัง\n{sendto} รหัสอ้างอิง : {refCode}",
+  "@otpInstruction": {
+    "description": "ข้อความยืนยันรหัส OTP โดยเลือกตามประเภทการส่ง (อีเมลหรือเบอร์โทรศัพท์)",
+    "placeholders": {
+      "sendto": {
+        "type": "String",
+        "example": "user@example.com"
+      },
+      "refCode": {
+        "type": "String",
+        "example": "ABC123"
+      }
+    }
+  },
+  "userDetailTitle": "ระบุ - ชื่อนามสกุล",
+  "userDetailInstruction": "ระบุรายละเอียดของคุณสำหรับการเข้าใช้บริการ",
+  "userDetailFirstName": "ชื่อ *",
+  "userDetailLastName": "นามสกุล *",
+  "userDetailMobile": "เบอร์โทร",
+  "userDetailEmail": "อีเมล",
+  "userDetailCitizenId": "เลขบัตรประจำตัวประชาชน / Passport No.",
+  "userDetailInvalidFirstName": "กรุณากรอกชื่อให้ถูกต้อง โดยไม่ใช้อักขระพิเศษ",
+  "userDetailInvalidLastName": "กรุณากรอกนามสกุลให้ถูกต้อง โดยไม่ใช้อักขระพิเศษ",
+  "userDetailInvalidEmail": "กรุณากรอกรูปแบบ E-mail ให้ถูกต้อง",
+  "userDetailInvalidPhone": "กรุณากรอกเบอร์มือถือให้ครบ 10 หลัก",
+
+  "consentAgree": "ยินยอม",
+  "consentDisagree": "ไม่ยินยอม",
+  "consentAgreeNext": "ยืนยัน",
+  "consentAgreeAll": "ยินยอมทั้งหมด",
+
+  "setPinSetPin": "ตั้งรหัส PIN จำนวน {digits} หลัก",
+  "@setPinSetPin": {
+    "description": "Message to set a PIN with a specified number of digits",
+    "placeholders": {
+      "digits": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "setPinConfirm": "ใส่รหัส PIN อีกครั้ง",
+  "setPinInstruction": "ระบุ PIN จำนวน {digits} หลักเพื่อใช้ในการเข้าสู่ระบบครั้งต่อไป",
+  "@setPinInstruction": {
+    "description": "Message to set a PIN with a specified number of digits",
+    "placeholders": {
+      "digits": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "setPinSkipInstruction" :"คุณสามารถข้ามขั้นตอนนี้ได้\nโดยจะสามารถเข้าใช้ระบบได้โดยไม่ต้องใส่ PIN",
+  "setPinSkip": "ข้าม",
+  "setPinError": "กรุณา เริ่มต้น ตั้งรหัส PIN ใหม่อีกครั้ง",
+
+  "changeLanguageTitle": "เปลี่ยนภาษา",
+  "changeLanguageCurrentLang": "ภาษาที่ใช้ปัจจุบัน",
+  "changeLanguageLanguage": "ภาษา",
+
+  "dashboardMainSectionFavourite": "เมนูโปรด",
+  "@dashboardMainSectionFavourite": {
+    "description": "The title of the favourite section"
+  },
+  "dashboardMainSectionFavouriteMore": "เมนูทั้งหมด",
+  "dashboardMainSectionNotification": "การแจ้งเตือน",
+  "dashboardMainSectionRecommended": "โครงการแนะนำ",
+  "dashboardMainSectionRecommendedDetail": "เรามุ่งมั่นที่จะออกแบบที่อยู่อาศัย เพื่อความสุขของคนอยู่ โดยคำนึงถึงไลฟ์สไตล์ และการใช้ชีวิตของแต่ละคนที่แตกต่างกัน ให้คุณได้ใช้ชีวิตในแบบที่คุณต้องการ",
+
+  "profileNameFormat": "{firstName} {lastName}",
+  "@profileNameFormat": {
+    "description": "The format of the full name",
+    "placeholders": {
+      "firstName": {
+        "type": "String",
+        "example": "John"
+      },
+      "lastName": {
+        "type": "String",
+        "example": "Doe"
+      }
+    }
+  },
+  "profileRegisterBuyer": "ลงทะเบียนผู้ซื้อ",
+  "profileDarkMode": "โหมดสีเข้ม",
+  "profileMyInfo": "ข้อมูลของฉัน",
+  "profilePhoneNumber": "เบอร์มือถือ",
+  "profileEmail": "อีเมล",
+  "profileMyAsset":"บ้านของฉัน",
+  "profileMyAssetSum":"{count} หลัง",
+  "@profileMyAssetSum": {
+    "description": "Message indicating the number of assets",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "profileLanguage": "ภาษา",
+  "profileChangeLanguage": "เปลี่ยนภาษา",
+  "profileSettings": "ตั้งค่าบัญชี",
+  "profilePersonalInfo": "จัดการข้อมูลส่วนตัว",
+  "profilePin": "รหัส PIN",
+  "profileDeleteAccount": "ปิดใช้งานหรือลบบัญชี",
+  "profileAbout": "เกี่ยวกับ Assetwise",
+  "profileAuthen": "การเข้าสู่ระบบ",
+  "profileExit": "ออกจากแอปพลิเคชัน Assetwise",
+  "profileLogout": "ออกจากระบบ",
+
+  "contractsViewContract": "รายละเอียดสัญญา",
+
+  "overdueDetailAmountLabel": "ยอดที่ต้องชำระ",
+  "overdueDetailDueDateLabel": "ชำระภายใน",
+  "overdueDetailCreditNumberLabel": "ตัดผ่านบัญชี",
+  "overdueDetailDebitDateLabel": "วันที่ตัดบัญชี",
+  "overdueDetailPayment": "ชำระเงิน",
+  "overdueDetailViewDetail": "ดูรายละเอียด",
+
+  "paymentHistoryTitle": "ประวัติการชำระ",
+
+  "contractDetailTitle": "รายละเอียดสัญญา",
+  "contractDetailContractDate": "วันที่สัญญา",
+  "contractDetailSigningDate": "วันที่ลงนาม",
+  "contractDetailEstimatedTransferDate": "วันที่ประมาณการโอน",
+  "contractDetailContractValueTitle": "มูลค่าสัญญา",
+  "contractDetailBookingSellingPrice": "ราคาขาย",
+  "contractDetailBookingDiscountPrice": "ส่วนลดเงินสด",
+  "contractDetailBookingDiscountAtTransferPrice": "ส่วนลด ณ วันโอน",
+  "contractDetailBookingNetPrice": "ราคาสุทธิ",
+  "contractDetailBookingAmount": "จอง",
+  "contractDetailContractAmount": "สัญญา",
+  "contractDetailDownAmount": "ดาวน์",
+  "contractDetailDownAmountDetails": "รายละเอียด",
+  "contractDetailTransferAmount": "โอน",
+  "contractDetailPaymentTitle": "รายละเอียดการชำระ",
+  "contractDetailPaymentAmount": "ยอดชำระเงิน",
+  "contractDetailRemainDownAmount": "คงเหลือ เงินดาวน์",
+  "contractDetailRemainHousePayment": "คงเหลือค่าบ้านทั้งหมด",
+  "contractDetailFreebiesTitle": "รายการของแถมและส่วนลด",
+  "contractDetailDownloadDoc": "ดาวน์โหลดรายละเอียดสัญญา",
+  "contractDetailDownloadEDoc": "ดาวน์โหลด e-contract",
+
+  "receiptViewTitle": "รายละเอียดใบเสร็จ",
+  "receiptViewSuccess": "ทำรายการสำเร็จ",
+  "receiptViewPaymentType": "ช่องทางการชำระเงิน",
+  "receiptViewDate": "วันที่ทำรายการ",
+  "receiptViewRef1": "เลขที่รายการ",
+  "receiptViewRef2": "หมายเลขอ้างอิง",
+  "receiptViewRemark": "หมายเหตุ",
+  "receiptViewDue": "วันที่ครบกำหนดชำระ",
+  "receiptViewViewReceipt": "ดูใบเสร็จ",
+
+  "receiptViewFileTitle": "ใบเสร็จ",
+  "receiptViewFileDownload": "ดาวน์โหลดเอกสาร",
+
+  "downHistoryViewTitle": "รายละเอียดงวดดาวน์",
+
+  "overduesViewTitle": "ยอดที่ต้องชำระ",
+  "overduesViewSumLabel": "ยอดที่ต้องชำระ",
+  "overduesViewMakePayment": "ชำระเงิน",
+
+  "paymentChannelViewPaymentTitle": "ชำระเงิน",
+  "paymentChannelViewCreditChannel": "บัตรเครดิต/เดบิต",
+  "paymentChannelViewQRChannel": "QR Code",
+  "paymentChannelViewTotalAmount": "ยอดที่ต้องชำระ",
+  "paymentChannelViewDue": "ชำระภายใน",
+  "paymentChannelViewPayment": "ชำระเงิน",
+
+  "qrViewTitle": "QR Code", 
+  "qrViewProject": "โครงการ",
+  "qrViewUnit": "แปลง/ห้อง",
+  "qrViewTotal": "ยอดชำระทั้งสิ้น",
+  "qrViewPromptPayInstruction": "วิธีการชำระเงินด้วย QR Code พร้อมเพย์",
+  "qrViewPromptPayInstruction1": "1. เปิดแอปพลิเคชันธนาคาร จากนั้นเลือกเมนู \"Scan\"",
+  "qrViewPromptPayInstruction2": "2. สแกน QR Code ร้านค้าที่ต้องการสแกน",
+  "qrViewPromptPayInstruction3": "3. เลือกบัญชีและระบุจำนวนเงินที่ต้องการ กด \"ตรวจสอบข้อมูล\"",
+  "qrViewPromptPayInstruction4": "4. กดยืนยัน",
+  "qrViewPromptPayDownload": "ดาวน์โหลด QR Code",
+  "qrViewPromptPayDone": "เสร็จสิ้น",
+  "qrViewPromptSavedToGallery": "บันทึก QR Code ลงในแกลเลอรี่ของคุณแล้ว",
+
+  "pinEntryTitle": "ใส่รหัส PIN",
+  "pinEntryInstruction": "ระบุรหัส PIN จำนวน {digits} หลักเพื่อใช้ในการเข้าสู่ระบบ",
+  "@pinEntryInstruction": {
+    "description": "Message to enter a PIN with a specified number of digits",
+    "placeholders": {
+      "digits": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "pinEntryForget": "ลืมรหัส PIN",
+
+  "otpRequestActionResetPin": "ทำยืนยันตัวตนในการตั้งรหัส PIN",
+  "otpRequestActionFirstSetPin": "ใช้ในการเข้าสู่ระบบครั้งต่อไป",
+  "otpRequestActionReLogin": "ทำการสมัครสมาชิก",
+  "otpRequestMobileLabel": "เบอร์มือถือ",
+  "otpRequestMobile": "กรอกเบอร์มือถือ",
+  "otpRequestMobileHint": "ระบุเบอร์มือถือของท่าน เพื่อ{action}",
+  "@otpRequestMobileHint": {
+    "description": "Hint for the mobile number input field",
+    "placeholders": {
+      "action": {
+        "type": "String",
+        "example": "ทำการสมัครสมาชิก"
+      }
+    }
+  },
+  "otpRequestEMailLabel": "Email",
+  "otpRequestEMail": "กรอก E-Mail",
+  "otpRequestEMailHint": "ระบุ E-mail ของท่าน เพื่อ{action}",
+  "@otpRequestEMailHint": {
+    "description": "Hint for the email input field",
+    "placeholders": {
+      "action": {
+        "type": "String",
+        "example": "ทำการสมัครสมาชิก"
+      }
+    }
+  },
+  "otpRequestLoginByEmail": "เข้าสู่ระบบผ่าน E-mail",
+  "otpRequestNext": "ถัดไป",
+  "otpRequestInvalidData": "กรุณากรอกข้อมูลให้ครบถ้วน",
+  "otpRequestInvalidMobile": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน",
+  "otpRequestInvalidEmail": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน",
+  "otpRequestInvalidUser": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับ เบอร์มือถือ/อีเมล ที่ลงทะเบียน",
+
+  "logoutConfirmationTitle": "ต้องการออกจากระบบใช่หรือไม่",
+  "logoutConfirmationMessage": "คุณจะออกจากระบบของ {userName}", 
+  "logoutConfirmationBottomTitle": "คุณแน่ใจหรือไม่ว่าต้องการออกจากระบบ",
+  "logoutConfirmationOKButton": "ออกจากระบบ",
+
+  "closeAppConfirmationTitle": "ต้องการออกจากแอปพลิเคชั่น\nใช่หรือไม่",
+  "closeAppConfirmationMessage": "คุณสามารถกลับเข้ามาใช้งานได้ใหม่ได้\nโดยยืนยันตัวตนผ่านรหัส PIN",
+  "closeAppConfirmationOKButton": "ออกจากแอป",
+
+  "emailOldValueTitle": "แก้ไข E-mail",
+  "emailOldValueInstructions": "หากคุณแก้ไข E-mail ที่นี่ บัญชีทั้งหมดที่ผูกกับบัญชีผู้ใช้นี้ จะถูกแก้ไขตามไปด้วย",
+  "emailOldValueTextLabel": "E-mail",
+  "emailOldValueAction": "เปลี่ยน E-mail",
+  "emailNewValueTitle": "ระบุ E-mail ใหม่",
+  "emailNewValueInstructions": "หากต้องการเปลี่ยนแปลง E-mail กรุณากดส่งคำขอเพื่อให้เจ้าหน้าที่ทำการติดต่อคุณในภายหลัง",
+  "emailNewValueTextLabel": "ระบุเบอร์ E-mail ใหม่",
+  "emailNewValueAction": "ส่งคำขอเปลี่ยนแปลง E-mail",
+  "emailChangeSuccessTitle": "ส่งข้อมูลสำเร็จ",
+  "emailChangeSuccessIntructions": "เจ้าหน้าที่จะติดต่อคุณกลับภายใน 24 ชั่วโมง",
+  "emailChangeSuccessAction": "กลับสู่หน้าหลัก",
+
+  "phoneOldValueTitle": "เบอร์มือถือ",
+  "phoneOldValueInstructions": "หากต้องการเปลี่ยนแปลงเบอร์มือถือ กรุณากดส่งคำขอ เพื่อให้เจ้าหน้าที่ทำการติดต่อคุณในภายหลัง",
+  "phoneOldValueTextLabel": "เบอร์มือถือ",
+  "phoneOldValueAction": "เปลี่ยนเบอร์",
+  "phoneNewValueTitle": "ระบุเบอร์โทรใหม่",
+  "phoneNewValueInstructions": "หากต้องการเปลี่ยนแปลงเบอร์มือถือ กรุณากดส่งคำขอ เพื่อให้เจ้าหน้าที่ทำการติดต่อคุณในภายหลัง",
+  "phoneNewValueTextLabel": "ระบุเบอร์มือถือใหม่",
+  "phoneNewValueAction": "ส่งคำขอเปลี่ยนแปลงเบอร์มือถือ",
+  "phoneChangeSuccessTitle": "ส่งข้อมูลสำเร็จ",
+  "phoneChangeSuccessIntructions": "*เจ้าหน้าที่จะติดต่อคุณกลับภายใน 24 ชั่วโมง",
+  "phoneChangeSuccessAction": "กลับสู่หน้าหลัก",
+
+  "notificationTitle": "แจ้งเตือนทั้งหมด",
+  "notificationAll": "ทั้งหมด",
+  "notificationPayment": "ชำระค่างวด",
+  "notificationPromotion": "โปรโมชั่น",
+  "notificationHotDeal": "Hot Deal",
+  "notificationNews": "ข่าวสาร",
+  "notificationReadAll": "อ่านทั้งหมด",
+
+  "aboutAssetWiseTitle": "เกี่ยวกับ AssetWise",
+  "aboutAssetWiseVersion": "เวอร์ชั่น {version} ({build})",
+  "aboutAssetWiseCopyright": "ⓒ 2025 บริษัท แอสเซทไวส์ จำกัด",
+  "aboutAssetWiseTermOfService": "เงื่อนไขการให้บริการ",
+  "aboutAssetWisePrivacyPolicy": "นโยบายคุ้มครองข้อมูลส่วนตัว",
+  "aboutAssetWiseSecurityPolicy": "นโยบายความปลอดภัย",
+
+  "registerBuyerTitle": "ลงทะเบียนผู้ซื้อ",
+  "registerBuyerHeader": "ยืนยันตัวตน",
+  "registerBuyerInstruction": "กรุณายืนยันตัวตนของคุณด้วยเลขประจำตัวประชาชนหรือหมายเลข Passport เพื่อความปลอดภัย",
+  "registerBuyerIdentifier": "เลขประจำตัวประชาชน / Passport No.",
+  "registerBuyerRegister": "ลงทะเบียน",
+  "registerBuyerInvalidId": "กรุณากรอกเลขบัตรประชาชนให้ครบถ้วน 13 หลัก",
+
+  "myAssetTitle": "บ้านของฉัน",
+  "myAssetSum": " {count, plural, =0{} =1{1 หลัง} other{{count} หลัง}}",
+  "@myAssetSum": {
+    "description": "Message indicating the number of assets",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "myAssetAdd": "เพิ่มบ้าน",
+  "myAssetViewDetail": "ดูรายละเอียด",
+  "myAssetSetDefault": "ตั้งเป็นค่าเริ่มต้น",
+  "myAssetDelete": "ลบบ้าน",
+  "myAssetDeleteConfirmation": "ต้องการลบบ้านใช่หรือไม่",
+  "myAssetDeleteDetail": "หากคุณทำการลบบ้านเลขที่ {unitNumber}\nข้อมูลทั้งหมดจะถูกลบออกจากระบบ",
+  "myAssetDeleteDelete": "ลบ",
+  "myAssetDeleteCancel": "ยกเลิก",
+  "myAssetDeleteSuccess": "ลบข้อมูลบ้านสำเร็จ",
+  "myAssetDefault": "ค่าเริ่มต้น",
+
+  "addAssetTitle": "เพิ่มบ้าน",
+  "addAssetInstruction": "ระบุรายละเอียดของคุณสำหรับการเข้าใช้บริการ",
+  "addAssetProject": "โครงการ*",
+  "addAssetUnit": "บ้านเลขที่*",
+  "addAssetLast4Id": "รหัสประจำตัวประชาชน 4 ตัวหลัง*",
+  "addAssetProjectRequired": "กรุณาระบุโครงการ",
+  "addAssetUnitRequired": "กรุณาระบุบ้านเลขที่",
+  "addAssetLast4IdRequired": "กรุณาระบุรหัสบัตรประชาชน 4 ตัวหลัง",
+
+  "managePersonalInfoTitle": "จัดการข้อมูลส่วนตัว",
+  "managePersonalInfoCollectionPersonalInfo": "การรวมรวบและใช้ข้อมูลส่วนบุคคล",
+  "managePersonalInfoMarketingPurpose": "ความยินยอมเพื่อวัตถุประสงค์ทางการตลาด",
+  "managePersonalInfoDisclosureMarketing": "ความยินยอมในการเปิดเผยข้อมูลเพื่อวัตถุประสงค์ทางการตลาด",
+  "managePersonalInfoGiveConsent": "ให้ความยินยอม",
+
+  "lastUpdated": "อัปเดตล่าสุด {date}",
+
+  "unableToPayHeading": "ไม่สามารถชำระเงินได้ในขณะนี้",
+  "unableToPayBack": "กลับไปหน้าสัญญา",
+
+  "mapTitle": "แผนที่",
+  "mapSearchHint": "ค้นหา",
+  "mapSearchCount": "{count, plural, =1{ผลการค้นหา : 1 รายการ} other{ผลการค้นหา : {count} รายการ}}",
+  "mapShowProjectDetail": "ดูข้อมูลโครงการ",
+  "mapNavigate": "นำทาง",
+  "mapDistanceKM": "{distance} กม.",
+
+  "projectsTitle": "โครงการ",
+  "projectsSearchHint": "ค้นหาชื่อโครงการ",
+  "projectsSeeOnMap": "ดูบนแผนที่",
+  "projectsFilterTitle": "ตัวกรอง",
+  "projectsBrands": "แบรนด์",
+  "projectsLocations": "ทำเล",
+  "projectsClearFilter": "ล้างตัวกรอง",
+  "projectsSearch": "ค้นหา",
+  "projectsSearchNoResult": "ไม่พบผลการค้นหา",
+  "projectsSearchTryAgain": "กรุณาลองใหม่อีกครั้ง",
+  "projectsSearchCount": "{count, plural, =1{ผลการค้นหา : 1 รายการ} other{ผลการค้นหา : {count} รายการ}}",
+
+  "projectDetailTitle": "รายละเอียดโครงการ",
+  "projectDetailSectionDetail": "รายละเอียด",
+  "projectDetailSectionMap": "แผนที่",
+  "projectDetailSectionPlan": "แปลน",
+  "projectDetailSectionGallery": "แกลเลอรี่",
+  "projectDetailSectionAdvertisement": "ใบโฆษณา",
+  "projectDetailSectionVideo": "วิดีโอ",
+  "projectDetailProgressTitle": "ความคืบหน้า",
+  "projectDetailProgressUpdated": "วันที่อัปเดต : {date}",
+  "projectDetailProgressStructure": "โครงสร้าง",
+  "projectDetailProgressFinishing": "สถาปัตยกรรม",
+  "projectDetailProgressComplete": "ติดตั้งระบบ",
+  "projectDetailProgressConstruction": "เสาเข็ม",
+  "projectDetailMapTitle": "แผนที่",
+  "projectDetailNearbyTitle": "สถานที่ใกล้เคียง",
+  "projectDetailPlanTitle": "แปลนห้อง",
+  "projectDetailGalleryTitle": "แกลเลอรี่",
+  "projectDetailAdvertisementTitle": "ใบโฆษณา",
+  "projectDetailAdvertisementDownload": "ดาวน์โหลดใบโฆษณา",
+  "projectDetailVideoTitle": "วิดีโอ",
+  
+  "projectRegisterInterest": "สนใจโครงการนี้",
+  "projectRegisterNameField": "ชื่อ*",
+  "projectRegisterLastNameField": "นามสกุล*",
+  "projectRegisterPhoneField": "เบอร์มือถือ*",  
+  "projectRegisterEmailField": "อีเมล*",
+  "projectRegisterPriceRange": "ช่วงราคาที่สนใจ*",
+  "projectRegisterPurpose": "วัตถุประสงค์การซื้อ*",
+  "projectRegisterRegister": "ลงทะเบียน",
+  "projectRegisterRegisterSuccess": "ส่งข้อมูลสำเร็จ",
+  "projectRegisterBackToProject": "กลับสู่หน้าโครงการ",
+
+  "myQRTitle": "QR ของฉัน",
+  "myQRDescription": "QR สำหรับใช้ยืนยันตัวตนรับสิทธิต่าง ๆ",
+  "myQRRefCode": "รหัสอ้างอิง : {refCode}",
+  "myQRScanQR": "สแกน QR",
+  "myQRShare": "แชร์",
+  "myQRSave": "บันทึก",
+  "myQRSaveCompleted": "บันทึกสำเร็จ",
+
+  "promotionsTitle": "โปรโมชั่น",
+  "promotionsSearchHint": "ค้นหาโปรโมชั่น",
+  "promotionsInterest": "สนใจโปรโมชั่นนี้",
+  "promotionsNameField": "ชื่อ*",
+  "promotionsLastNameField": "นามสกุล*",
+  "promotionsPhoneField": "เบอร์มือถือ*",  
+  "promotionsEmailField": "อีเมล*",
+  "promotionsProject": "โครงการ*",
+  "promotionsPriceRange": "ช่วงราคาที่สนใจ*",
+  "promotionsPurpose": "วัตถุประสงค์การซื้อ*",
+  "promotionsRegister": "ลงทะเบียน",
+  "promotionsRegisterSuccess": "ส่งข้อมูลสำเร็จ",
+  "promotionsBackToPromotions": "กลับสู่หน้าโปรโมชั่น",
+
+  "hotMenesConfigTitle": "เมนูทั้งหมด",
+  "hotMenesConfigFavourite": "เมนูโปรด",
+  "hotMenesConfigOthers": "เมนูอื่น ๆ",
+  "hotMenesConfigSetting": "ตั้งค่า",
+  "hotMenesConfigDone": "เสร็จสิ้น",
+
+  "favouritesTitle": "รายการโปรด",
+  "favouritesSearchHint": "ค้นหาชื่อโครงการ",
+  "favouritesSearchNoResult": "ไม่พบผลการค้นหา",
+  "favouritesSearchTryAgain": "กรุณาลองใหม่อีกครั้ง"
 }

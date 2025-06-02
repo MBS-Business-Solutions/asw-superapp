@@ -1,8 +1,10 @@
-import 'package:asset_wise_super_app/src/0_widgets/aw_textfield.dart';
+import 'package:AssetWise/src/utils/common_util.dart';
+import 'package:AssetWise/src/widgets/aw_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_svg/svg.dart';
 
-class UIShowcaseScreen extends StatelessWidget {
+class UIShowcaseScreen extends StatefulWidget {
   const UIShowcaseScreen({super.key, required this.onSwitchToDarkMode, required this.onSwitchToLightMode, this.widgets});
   static const String routeName = '/ui-showcase';
   final Function onSwitchToDarkMode;
@@ -10,41 +12,54 @@ class UIShowcaseScreen extends StatelessWidget {
   final List<Widget>? widgets;
 
   @override
+  State<UIShowcaseScreen> createState() => _UIShowcaseScreenState();
+}
+
+class _UIShowcaseScreenState extends State<UIShowcaseScreen> {
+  bool value = false;
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () => CommonUtil.dismissKeyboard(context),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('UI Showcase'),
           actions: [
             IconButton(
               icon: const Icon(Icons.dark_mode),
-              onPressed: () => onSwitchToDarkMode(),
+              onPressed: () => widget.onSwitchToDarkMode(),
             ),
             IconButton(
               icon: const Icon(Icons.light_mode),
-              onPressed: () => onSwitchToLightMode(),
+              onPressed: () => widget.onSwitchToLightMode(),
             ),
           ],
         ),
         body: ListView(
           children: [
+            SvgPicture.asset(
+              height: 300,
+              'assets/images/ASW_Logo_Rac_dark-bg.svg',
+              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+              alignment: Alignment.centerLeft,
+            ),
             ListTile(
-              title: Text('Text showcases'),
+              title: const Text('Text showcases'),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => TextShowCases(),
+                  builder: (context) => const TextShowCases(),
                 ));
               },
-              trailing: Icon(Icons.arrow_forward_ios),
+              trailing: const Icon(Icons.arrow_forward_ios),
             ),
+            SwitchListTile.adaptive(value: value, onChanged: (v) => setState(() => value = v), title: const Text('Switch')),
             ..._textfieldShowcase(context),
             ..._buttonsShowcase(context),
             ..._iconButtonShowcase(context),
-            ...widgets ?? [],
+            ...widget.widgets ?? [],
             SizedBox(
               width: double.infinity,
-              child: HtmlWidget('''<h2>คุณมีสิทธิในการ:</h2>
+              child: Html(data: '''<h2>คุณมีสิทธิในการ:</h2>
 <ul>
 <li>เข้าถึงและขอสำเนาข้อมูลส่วนบุคคลของคุณ</li>
 <li>ขอแก้ไขข้อมูลส่วนบุคคลที่ไม่ถูกต้อง</li>
@@ -67,35 +82,35 @@ class UIShowcaseScreen extends StatelessWidget {
           children: [
             TextField(
               controller: TextEditingController(text: 'Lorem ipsum'),
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 label: Text('Text field'),
                 hintText: 'TextField',
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                 label: Text('Hint text'),
                 hintText: 'Hint text',
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             TextField(
               controller: TextEditingController(text: 'Lorem ipsum'),
               enabled: false,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 label: Text('Disabled'),
                 hintText: 'TextField',
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
-            AwTextField(label: 'เบอร์มือถือ'),
+            const AwTextField(label: 'เบอร์มือถือ'),
           ],
         ),
       )
@@ -109,8 +124,8 @@ class UIShowcaseScreen extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ElevatedButton(onPressed: () {}, child: Text('ElevatedButton')),
-            ElevatedButton(onPressed: null, child: Text('Disabled')),
+            ElevatedButton(onPressed: () {}, child: const Text('ElevatedButton')),
+            const ElevatedButton(onPressed: null, child: Text('Disabled')),
           ],
         ),
       ),
@@ -119,9 +134,9 @@ class UIShowcaseScreen extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            FilledButton(onPressed: () {}, child: Text('FilledButton')),
-            FilledButton.tonal(onPressed: () {}, child: Text('FilledButton.tonal')),
-            FilledButton(onPressed: null, child: Text('Disabled')),
+            FilledButton(onPressed: () {}, child: const Text('FilledButton')),
+            FilledButton.tonal(onPressed: () {}, child: const Text('FilledButton.tonal')),
+            const FilledButton(onPressed: null, child: Text('Disabled')),
           ],
         ),
       ),
@@ -130,8 +145,8 @@ class UIShowcaseScreen extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            OutlinedButton(onPressed: () {}, child: Text('OutlinedButton')),
-            OutlinedButton(onPressed: null, child: Text('Disabled')),
+            OutlinedButton(onPressed: () {}, child: const Text('OutlinedButton')),
+            const OutlinedButton(onPressed: null, child: Text('Disabled')),
           ],
         ),
       ),
@@ -140,8 +155,8 @@ class UIShowcaseScreen extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextButton(onPressed: () {}, child: Text('TextButton')),
-            TextButton(onPressed: null, child: Text('Disabled')),
+            TextButton(onPressed: () {}, child: const Text('TextButton')),
+            const TextButton(onPressed: null, child: Text('Disabled')),
           ],
         ),
       ),
@@ -159,12 +174,12 @@ class UIShowcaseScreen extends StatelessWidget {
                 Expanded(
                   child: Column(
                     children: [
-                      IconButton(onPressed: () {}, icon: Icon(Icons.add_a_photo_rounded)),
-                      Text('IconButton'),
+                      IconButton(onPressed: () {}, icon: const Icon(Icons.add_a_photo_rounded)),
+                      const Text('IconButton'),
                     ],
                   ),
                 ),
-                Expanded(
+                const Expanded(
                   child: Column(
                     children: [
                       IconButton(onPressed: null, icon: Icon(Icons.add_a_photo_rounded)),
@@ -179,12 +194,12 @@ class UIShowcaseScreen extends StatelessWidget {
                 Expanded(
                   child: Column(
                     children: [
-                      IconButton.filled(onPressed: () {}, icon: Icon(Icons.add_a_photo_rounded)),
-                      Text('IconButton.filled'),
+                      IconButton.filled(onPressed: () {}, icon: const Icon(Icons.add_a_photo_rounded)),
+                      const Text('IconButton.filled'),
                     ],
                   ),
                 ),
-                Expanded(
+                const Expanded(
                   child: Column(
                     children: [
                       IconButton.filled(onPressed: null, icon: Icon(Icons.add_a_photo_rounded)),
@@ -199,12 +214,12 @@ class UIShowcaseScreen extends StatelessWidget {
                 Expanded(
                   child: Column(
                     children: [
-                      IconButton.filledTonal(onPressed: () {}, icon: Icon(Icons.add_a_photo_rounded)),
-                      Text('IconButton.filled'),
+                      IconButton.filledTonal(onPressed: () {}, icon: const Icon(Icons.add_a_photo_rounded)),
+                      const Text('IconButton.filled'),
                     ],
                   ),
                 ),
-                Expanded(
+                const Expanded(
                   child: Column(
                     children: [
                       IconButton.filledTonal(onPressed: null, icon: Icon(Icons.add_a_photo_rounded)),
@@ -219,12 +234,12 @@ class UIShowcaseScreen extends StatelessWidget {
                 Expanded(
                   child: Column(
                     children: [
-                      IconButton.outlined(onPressed: () {}, icon: Icon(Icons.add_a_photo_rounded)),
-                      Text('IconButton.filled'),
+                      IconButton.outlined(onPressed: () {}, icon: const Icon(Icons.add_a_photo_rounded)),
+                      const Text('IconButton.filled'),
                     ],
                   ),
                 ),
-                Expanded(
+                const Expanded(
                   child: Column(
                     children: [
                       IconButton.outlined(onPressed: null, icon: Icon(Icons.add_a_photo_rounded)),

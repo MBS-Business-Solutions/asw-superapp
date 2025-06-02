@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "asset_wise_super_app",
+            "name": "AssetWise",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "asset_wise_super_app (profile mode)",
+            "name": "AssetWise (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "asset_wise_super_app (release mode)",
+            "name": "AssetWise (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

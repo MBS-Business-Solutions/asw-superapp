@@ -1,4 +1,4 @@
-# asset_wise_super_app
+# AssetWise
 
 A new Flutter project.
 

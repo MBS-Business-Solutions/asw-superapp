@@ -1,4 +1,4 @@
-package th.co.assetwise.superapp
+package com.assetwise.customerportal
 
 import io.flutter.embedding.android.FlutterActivity
 

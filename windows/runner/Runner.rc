@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "asset_wise_super_app" "\0"
+            VALUE "FileDescription", "AssetWise" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "asset_wise_super_app" "\0"
+            VALUE "InternalName", "AssetWise" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "asset_wise_super_app.exe" "\0"
-            VALUE "ProductName", "asset_wise_super_app" "\0"
+            VALUE "OriginalFilename", "AssetWise.exe" "\0"
+            VALUE "ProductName", "AssetWise" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

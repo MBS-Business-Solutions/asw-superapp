@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "70133075858",
+    "project_id": "assetwiseapp-202501",
+    "storage_bucket": "assetwiseapp-202501.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70133075858:android:95dc8944ac649a15747b4b",
+        "android_client_info": {
+          "package_name": "com.assetwise.customerportal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6M-ppN8NCDh7aTCJ3zmTl-rX92tgbS_c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

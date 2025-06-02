@@ -1,0 +1,16 @@
+# https://developer.android.com/develop/ui/views/launch/splash-screen
+flutter_native_splash:
+  background_image: assets/images/AS_Light_BG.png
+  background_image_dark: assets/images/AS_Dark_BG.png
+  image: assets/images/logo_light.png
+  image_dark: assets/images/logo_dark.png
+  fullscreen: true
+  
+  android_12:
+    color: "#FFFFFF"
+    image: assets/icons/ic_launcher_google_play.png
+    icon_background_color: "#FFFFFF"
+    image_dark: assets/icons/ic_launcher_google_play.png
+    icon_background_color_dark: "#000000"
+
+  web: false
