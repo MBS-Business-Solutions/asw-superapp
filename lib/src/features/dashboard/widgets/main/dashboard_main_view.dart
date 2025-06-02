@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/widgets/aw_carousel.dart';
 import 'package:AssetWise/src/features/dashboard/widgets/suggest_assets/suggest_asset.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:AssetWise/src/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 class DashboardMainView extends StatelessWidget {

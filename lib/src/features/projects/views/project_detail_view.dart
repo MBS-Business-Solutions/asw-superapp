@@ -18,7 +18,7 @@ import 'package:AssetWise/src/providers/project_provider.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:AssetWise/src/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -91,7 +91,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> with SingleTicker
         const AssetWiseBG(),
         Theme(
           data: Theme.of(context).copyWith(
-            tabBarTheme: TabBarTheme(
+            tabBarTheme: TabBarThemeData(
               labelStyle: mTabBarTextTheme.titleLarge,
               unselectedLabelStyle: mTabBarTextTheme.titleLarge,
               labelColor: CommonUtil.colorTheme(

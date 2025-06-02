@@ -8,7 +8,7 @@ import 'package:AssetWise/src/utils/date_formatter_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:AssetWise/src/localization/app_localizations.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ContractDetailView extends StatefulWidget {
@@ -202,7 +202,9 @@ class _ContractDetailViewState extends State<ContractDetailView> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(AppLocalizations.of(context)!.contractDetailDownloadDoc),
+                                Text(
+                                  contractDetail.isEContract ? AppLocalizations.of(context)!.contractDetailDownloadEDoc : AppLocalizations.of(context)!.contractDetailDownloadDoc,
+                                ),
                                 const Icon(Icons.file_download_outlined),
                                 if (_isLoadingContractFile) const SizedBox(width: 16, height: 16, child: CircularProgressIndicator.adaptive()),
                               ],

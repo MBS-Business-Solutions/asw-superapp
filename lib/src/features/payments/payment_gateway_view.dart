@@ -7,7 +7,7 @@ import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:AssetWise/src/localization/app_localizations.dart';
 
 class PaymentGatewayView extends StatefulWidget {
   const PaymentGatewayView({super.key, required this.contract, required this.amount, this.detail});

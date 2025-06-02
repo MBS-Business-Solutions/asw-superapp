@@ -3,7 +3,7 @@ import 'package:AssetWise/src/features/notifications/notifications_view.dart';
 import 'package:AssetWise/src/features/promotions/promotions_view.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:AssetWise/src/localization/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class PromotionRegisterDone extends StatelessWidget {
