@@ -132,6 +132,10 @@ class UserProvider with ChangeNotifier {
     if (_token != null) {
       // fetch last updated user information
       await fetchUserInformation();
+      if (_userInformation == null) {
+        // if user information is not found, logout
+        await logout();
+      }
     } else {
       // if login anonymously, fetch user information from secure storage instead
       final userJson = await secureStorage.read(key: 'USER_INFO');
@@ -181,6 +185,8 @@ class UserProvider with ChangeNotifier {
     if (userInformation != null) {
       _userInformation = userInformation;
       await secureStorage.write(key: 'USER_INFO', value: _userInformation!.toJson());
+    } else {
+      _userInformation = null;
     }
     return _userInformation;
   }

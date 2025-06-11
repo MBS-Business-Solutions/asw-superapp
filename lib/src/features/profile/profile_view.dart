@@ -42,6 +42,9 @@ class _ProfileViewState extends State<ProfileView> {
   void initState() {
     _userProvider = context.read<UserProvider>();
     _userInformationFuture = _userProvider.fetchUserInformation();
+    if (_userInformation == null) {
+      _userProvider.logout();
+    }
     super.initState();
   }
 
