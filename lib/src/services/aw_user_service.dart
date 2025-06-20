@@ -2,6 +2,7 @@ import 'package:AssetWise/src/consts/url_const.dart';
 import 'package:AssetWise/src/models/aw_common_model.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/services/aw_header_util.dart';
+import 'package:AssetWise/src/utils/api_response_handler.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -32,7 +33,12 @@ class AwUserService {
     return null;
   }
 
-  Future<UserToken?> loginNewUser({required String type, required String phone, required String email, required String firstName, required String lastName}) async {
+  Future<UserToken?> loginNewUser(
+      {required String type,
+      required String phone,
+      required String email,
+      required String firstName,
+      required String lastName}) async {
     final response = await http.post(
       Uri.parse('$BASE_URL/mobile/register/person'),
       headers: getPostHeader(),
@@ -59,7 +65,8 @@ class AwUserService {
     return null;
   }
 
-  Future<bool> submitConsents(String token, String consentId, Map<String, bool> consents) async {
+  Future<bool> submitConsents(
+      String token, String consentId, Map<String, bool> consents) async {
     final body = {
       "consent_id": consentId,
       "items": consents.entries
@@ -94,11 +101,15 @@ class AwUserService {
           headers: getPostHeader(token: token),
           body: jsonEncode(<String, String>{"language": language}),
         )
-        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+        .timeout(const Duration(seconds: 5),
+            onTimeout: () => http.Response('{"status": "error"}', 408));
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
+    final handledResponse =
+        await ApiResponseHandler.handleAuthenticatedResponse(response);
+
+    if (handledResponse.statusCode >= 200 && handledResponse.statusCode < 300) {
       try {
-        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        Map<String, dynamic> jsonResponse = json.decode(handledResponse.body);
         if (jsonResponse['status'] == 'success') {
           return true;
         }
@@ -106,7 +117,7 @@ class AwUserService {
         if (kDebugMode) print(e);
       }
     }
-    if (kDebugMode) print(response);
+    if (kDebugMode) print(handledResponse);
     return false;
   }
 
@@ -117,11 +128,15 @@ class AwUserService {
           headers: getPostHeader(token: userToken),
           body: jsonEncode(<String, String>{"token": fcmToken}),
         )
-        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+        .timeout(const Duration(seconds: 5),
+            onTimeout: () => http.Response('{"status": "error"}', 408));
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
+    final handledResponse =
+        await ApiResponseHandler.handleAuthenticatedResponse(response);
+
+    if (handledResponse.statusCode >= 200 && handledResponse.statusCode < 300) {
       try {
-        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        Map<String, dynamic> jsonResponse = json.decode(handledResponse.body);
         if (jsonResponse['status'] == 'success') {
           return true;
         }
@@ -129,7 +144,7 @@ class AwUserService {
         if (kDebugMode) print(e);
       }
     }
-    if (kDebugMode) print(response);
+    if (kDebugMode) print(handledResponse);
     return false;
   }
 
@@ -140,11 +155,16 @@ class AwUserService {
           headers: getPostHeader(token: userToken),
           body: jsonEncode(<String, String>{"email": newValue}),
         )
-        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+        .timeout(const Duration(seconds: 5),
+            onTimeout: () => http.Response('{"status": "error"}', 408));
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
+    // จัดการ 401 error สำหรับ API ที่ใช้ token
+    final handledResponse =
+        await ApiResponseHandler.handleAuthenticatedResponse(response);
+
+    if (handledResponse.statusCode >= 200 && handledResponse.statusCode < 300) {
       try {
-        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        Map<String, dynamic> jsonResponse = json.decode(handledResponse.body);
         if (jsonResponse['status'] == 'success') {
           return true;
         }
@@ -152,7 +172,7 @@ class AwUserService {
         if (kDebugMode) print(e);
       }
     }
-    if (kDebugMode) print(response);
+    if (kDebugMode) print(handledResponse);
     return false;
   }
 
@@ -163,7 +183,8 @@ class AwUserService {
           headers: getPostHeader(token: userToken),
           body: jsonEncode(<String, String>{"phone": newValue}),
         )
-        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+        .timeout(const Duration(seconds: 5),
+            onTimeout: () => http.Response('{"status": "error"}', 408));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       try {
@@ -185,11 +206,15 @@ class AwUserService {
           Uri.parse('$BASE_URL/mobile/home/me'),
           headers: getHeader(token: userToken),
         )
-        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+        .timeout(const Duration(seconds: 5),
+            onTimeout: () => http.Response('{"status": "error"}', 408));
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
+    final handledResponse =
+        await ApiResponseHandler.handleAuthenticatedResponse(response);
+
+    if (handledResponse.statusCode >= 200 && handledResponse.statusCode < 300) {
       try {
-        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        Map<String, dynamic> jsonResponse = json.decode(handledResponse.body);
         if (jsonResponse['status'] == 'success') {
           return UserInformation.fromJson(jsonResponse['data']);
         }
@@ -197,17 +222,19 @@ class AwUserService {
         if (kDebugMode) print(e);
       }
     }
-    if (kDebugMode) print(response);
+    if (kDebugMode) print(handledResponse);
     return null;
   }
 
-  Future<List<PersonalConsent>> fetchPersonalConsents(String userToken, {String? language}) async {
+  Future<List<PersonalConsent>> fetchPersonalConsents(String userToken,
+      {String? language}) async {
     final response = await http
         .get(
           Uri.parse('$BASE_URL/mobile/setting/consent'),
           headers: getHeader(token: userToken),
         )
-        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+        .timeout(const Duration(seconds: 5),
+            onTimeout: () => http.Response('{"status": "error"}', 408));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       try {
@@ -224,13 +251,16 @@ class AwUserService {
     return [];
   }
 
-  Future<PersonalConsentDetail?> fetchPersonalConsentDetail(String userToken, String consentId, {String? language}) async {
+  Future<PersonalConsentDetail?> fetchPersonalConsentDetail(
+      String userToken, String consentId,
+      {String? language}) async {
     final response = await http
         .get(
           Uri.parse('$BASE_URL/mobile/setting/consent/$consentId'),
           headers: getHeader(token: userToken),
         )
-        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+        .timeout(const Duration(seconds: 5),
+            onTimeout: () => http.Response('{"status": "error"}', 408));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       try {
@@ -246,7 +276,8 @@ class AwUserService {
     return null;
   }
 
-  Future<bool> submitPersonalConsent(String userToken, String consentId, bool consentGiven) async {
+  Future<bool> submitPersonalConsent(
+      String userToken, String consentId, bool consentGiven) async {
     final response = await http
         .post(
           Uri.parse('$BASE_URL/mobile/setting/consent/$consentId'),
@@ -255,7 +286,8 @@ class AwUserService {
             "is_given": consentGiven,
           }),
         )
-        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+        .timeout(const Duration(seconds: 5),
+            onTimeout: () => http.Response('{"status": "error"}', 408));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       try {
@@ -271,13 +303,15 @@ class AwUserService {
     return false;
   }
 
-  Future<List<AboutItem>> fetchAboutItems(String userToken, {String? language}) async {
+  Future<List<AboutItem>> fetchAboutItems(String userToken,
+      {String? language}) async {
     final response = await http
         .get(
           Uri.parse('$BASE_URL/mobile/setting/about'),
           headers: getHeader(token: userToken),
         )
-        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+        .timeout(const Duration(seconds: 5),
+            onTimeout: () => http.Response('{"status": "error"}', 408));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       try {
@@ -294,13 +328,16 @@ class AwUserService {
     return [];
   }
 
-  Future<AboutItemDetail?> fetchAboutItemDetail(String userToken, String consentId, {String? language}) async {
+  Future<AboutItemDetail?> fetchAboutItemDetail(
+      String userToken, String consentId,
+      {String? language}) async {
     final response = await http
         .get(
           Uri.parse('$BASE_URL/mobile/setting/about/$consentId'),
           headers: getHeader(token: userToken),
         )
-        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+        .timeout(const Duration(seconds: 5),
+            onTimeout: () => http.Response('{"status": "error"}', 408));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       try {
@@ -342,7 +379,8 @@ class AwUserService {
           Uri.parse('$BASE_URL/mobile/my-qr'),
           headers: getHeader(token: userToken),
         )
-        .timeout(const Duration(seconds: 5), onTimeout: () => http.Response('{"status": "error"}', 408));
+        .timeout(const Duration(seconds: 5),
+            onTimeout: () => http.Response('{"status": "error"}', 408));
 
     if (response.statusCode >= 200 && response.statusCode < 500) {
       try {
@@ -357,7 +395,8 @@ class AwUserService {
     return null;
   }
 
-  Future<ServiceResponseWithData<Priviledge?>> fetchPriviledge(String userToken) async {
+  Future<ServiceResponseWithData<Priviledge?>> fetchPriviledge(
+      String userToken) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/privilege/url'),
       headers: getHeader(token: userToken),
@@ -374,10 +413,12 @@ class AwUserService {
       }
     } catch (e) {
       if (kDebugMode) print(e);
-      return ServiceResponseWithData<Priviledge?>(status: 'error', message: e.toString(), data: null);
+      return ServiceResponseWithData<Priviledge?>(
+          status: 'error', message: e.toString(), data: null);
     }
 
     if (kDebugMode) print(response);
-    return ServiceResponseWithData<Priviledge?>(status: 'error', message: 'Unknown error', data: null);
+    return ServiceResponseWithData<Priviledge?>(
+        status: 'error', message: 'Unknown error', data: null);
   }
 }

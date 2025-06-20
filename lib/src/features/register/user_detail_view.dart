@@ -63,10 +63,7 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
         body: Stack(
           children: [
             const AssetWiseBG(),
-            Positioned(
-              left: 0,
-              right: 0,
-              top: 0,
+            Positioned.fill(
               child: SingleChildScrollView(
                 child: SafeArea(
                   child: Padding(

@@ -4,6 +4,7 @@ import 'package:AssetWise/src/consts/url_const.dart';
 import 'package:AssetWise/src/models/aw_common_model.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/services/aw_header_util.dart';
+import 'package:AssetWise/src/utils/api_response_handler.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -13,7 +14,8 @@ import 'package:path_provider/path_provider.dart';
 
 class AwContractService {
   AwContractService._privateConstructor();
-  static final AwContractService _instance = AwContractService._privateConstructor();
+  static final AwContractService _instance =
+      AwContractService._privateConstructor();
   factory AwContractService() => _instance;
 
   Future<List<Contract>> fetchContracts({required String token}) async {
@@ -22,40 +24,51 @@ class AwContractService {
       headers: getHeader(token: token),
     );
 
+    final handledResponse =
+        await ApiResponseHandler.handleAuthenticatedResponse(response);
+
     try {
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        Map<String, dynamic> jsonResponse = json.decode(response.body);
+      if (handledResponse.statusCode >= 200 &&
+          handledResponse.statusCode < 300) {
+        Map<String, dynamic> jsonResponse = json.decode(handledResponse.body);
         List<dynamic> data = jsonResponse['data'];
         return data.map((json) => Contract.fromJson(json)).toList();
       }
     } catch (e) {
       if (kDebugMode) print(e);
     }
-    if (kDebugMode) print(response);
+    if (kDebugMode) print(handledResponse);
     return [];
   }
 
-  Future<ContractDetail?> fetchContractDetail(String token, String contractId) async {
+  Future<ContractDetail?> fetchContractDetail(
+      String token, String contractId) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId'),
       headers: getHeader(token: token),
     );
 
+    final handledResponse =
+        await ApiResponseHandler.handleAuthenticatedResponse(response);
+
     try {
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        Map<String, dynamic> jsonResponse = json.decode(response.body);
+      if (handledResponse.statusCode >= 200 &&
+          handledResponse.statusCode < 300) {
+        Map<String, dynamic> jsonResponse = json.decode(handledResponse.body);
         final contractDetail = ContractDetail.fromJson(jsonResponse['data']);
-        contractDetail.freebies = await fetchFreebies(token: token, contractId: contractId);
+        contractDetail.freebies =
+            await fetchFreebies(token: token, contractId: contractId);
         return contractDetail;
       }
     } catch (e) {
       if (kDebugMode) print(e);
     }
-    if (kDebugMode) print(response);
+    if (kDebugMode) print(handledResponse);
     return null;
   }
 
-  Future<List<String>> fetchFreebies({required String token, required String contractId}) async {
+  Future<List<String>> fetchFreebies(
+      {required String token, required String contractId}) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/promotions'),
       headers: getHeader(token: token),
@@ -74,7 +87,10 @@ class AwContractService {
     return [];
   }
 
-  Future<List<PaymentDetail>?> fetchPaymentsByYear({required String token, required String contractId, required int year}) async {
+  Future<List<PaymentDetail>?> fetchPaymentsByYear(
+      {required String token,
+      required String contractId,
+      required int year}) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/payments?year=$year'),
       headers: getHeader(token: token),
@@ -93,7 +109,8 @@ class AwContractService {
     return null;
   }
 
-  Future<OverdueDetail?> fetchOverdueDetail({required String token, required String contractId}) async {
+  Future<OverdueDetail?> fetchOverdueDetail(
+      {required String token, required String contractId}) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/overdue'),
       headers: getHeader(token: token),
@@ -111,9 +128,13 @@ class AwContractService {
     return null;
   }
 
-  Future<ReceiptDetail?> fetchReceiptDetail({required String token, required String contractId, required String receiptNumber}) async {
+  Future<ReceiptDetail?> fetchReceiptDetail(
+      {required String token,
+      required String contractId,
+      required String receiptNumber}) async {
     final response = await http.get(
-      Uri.parse('$BASE_URL/mobile/contracts/$contractId/payments/$receiptNumber'),
+      Uri.parse(
+          '$BASE_URL/mobile/contracts/$contractId/payments/$receiptNumber'),
       headers: getHeader(token: token),
     );
 
@@ -129,7 +150,8 @@ class AwContractService {
     return null;
   }
 
-  Future<List<DownPaymentDetail>> fetchTerms({required String token, required String contractId}) async {
+  Future<List<DownPaymentDetail>> fetchTerms(
+      {required String token, required String contractId}) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/terms'),
       headers: getHeader(token: token),
@@ -148,7 +170,8 @@ class AwContractService {
     return [];
   }
 
-  Future<List<DownPaymentTermDue>> fetchDownPaymentDues({required String token, required String contractId}) async {
+  Future<List<DownPaymentTermDue>> fetchDownPaymentDues(
+      {required String token, required String contractId}) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/contracts/$contractId/terms-due'),
       headers: getHeader(token: token),
@@ -175,10 +198,15 @@ class AwContractService {
     return '$BASE_URL/mobile/contracts/$contractId/payments/$receiptNumber/download';
   }
 
-  Future<QRResponse?> getQRPaymentCode({required String token, required String contractId, double amount = 0, String? language}) async {
+  Future<QRResponse?> getQRPaymentCode(
+      {required String token,
+      required String contractId,
+      double amount = 0,
+      String? language}) async {
     final formatNumber = NumberFormat('####.00');
     final response = await http.get(
-      Uri.parse('$BASE_URL/mobile/contracts/$contractId/qr-code?amount=${formatNumber.format(amount)}'),
+      Uri.parse(
+          '$BASE_URL/mobile/contracts/$contractId/qr-code?amount=${formatNumber.format(amount)}'),
       headers: getHeader(token: token),
     );
 
@@ -194,7 +222,12 @@ class AwContractService {
     return null;
   }
 
-  Future<PaymentGatewayResponse?> getPaymentGatewayURL({required String token, required Contract contract, double amount = 0, String? detail, required String email}) async {
+  Future<PaymentGatewayResponse?> getPaymentGatewayURL(
+      {required String token,
+      required Contract contract,
+      double amount = 0,
+      String? detail,
+      required String email}) async {
     final formatNumber = NumberFormat('####.00');
     final body = {
       'payment_type': '9',
@@ -222,7 +255,10 @@ class AwContractService {
     return null;
   }
 
-  Future<String?> downloadFile({required String token, required String url, required String fileName}) async {
+  Future<String?> downloadFile(
+      {required String token,
+      required String url,
+      required String fileName}) async {
     final response = await http.get(
       Uri.parse(url),
       headers: getHeader(token: token),
@@ -272,7 +308,8 @@ class AwContractService {
     return downloadDirectory.path;
   }
 
-  Future<bool> setDefaultContract({required String token, required String unitId}) async {
+  Future<bool> setDefaultContract(
+      {required String token, required String unitId}) async {
     final body = {
       'unit_id': unitId,
     };
@@ -282,18 +319,24 @@ class AwContractService {
       body: jsonEncode(body),
     );
 
+    // จัดการ 401 error สำหรับ API ที่ใช้ token
+    final handledResponse =
+        await ApiResponseHandler.handleAuthenticatedResponse(response);
+
     try {
-      if (response.statusCode >= 200 && response.statusCode < 300) {
+      if (handledResponse.statusCode >= 200 &&
+          handledResponse.statusCode < 300) {
         return true;
       }
     } catch (e) {
       if (kDebugMode) print(e);
     }
-    if (kDebugMode) print(response);
+    if (kDebugMode) print(handledResponse);
     return false;
   }
 
-  Future<ServiceResponse?> removeContract({required String token, required String unitId}) async {
+  Future<ServiceResponse?> removeContract(
+      {required String token, required String unitId}) async {
     final body = {
       'unit_id': unitId,
     };
