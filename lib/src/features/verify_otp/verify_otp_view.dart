@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/models/aw_otp_model.dart';
+import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/providers/verify_otp_provider.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:AssetWise/src/widgets/assetwise_bg.dart';
@@ -203,6 +204,7 @@ class _VerifyOTPViewState extends State<VerifyOTPView> {
     if (widget.action == OTPFor.addUnit) {
       final response = await provider.verifyOTPForAddUnit(otp: otpController.text);
       if (response != null && response.status == 'success') {
+        context.read<UserProvider>().reloadAll();
         Navigator.pop(context, response);
       } else {
         setState(() {
