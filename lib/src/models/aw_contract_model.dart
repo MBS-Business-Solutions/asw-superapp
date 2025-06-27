@@ -40,7 +40,7 @@ class Contract {
 
 class ContractDetail {
   final DateTime date;
-  final DateTime signDate;
+  final DateTime? signDate;
   final DateTime transferDate;
   final double sellingPrice;
   final double cashDiscount;
@@ -58,7 +58,7 @@ class ContractDetail {
 
   ContractDetail({
     required this.date,
-    required this.signDate,
+    this.signDate,
     required this.transferDate,
     required this.sellingPrice,
     required this.cashDiscount,
@@ -78,7 +78,7 @@ class ContractDetail {
   factory ContractDetail.fromJson(Map<String, dynamic> json) {
     return ContractDetail(
       date: DateTime.parse(json['date']),
-      signDate: DateTime.parse(json['sign_date']),
+      signDate: DateTime.tryParse(json['sign_date']),
       transferDate: DateTime.parse(json['transfer_date']),
       sellingPrice: CommonUtil.parseDouble(json['selling_price']),
       cashDiscount: CommonUtil.parseDouble(json['cash_discount']),
