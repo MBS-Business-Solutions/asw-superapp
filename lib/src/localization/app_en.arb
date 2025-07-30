@@ -522,5 +522,17 @@
   "favouritesTitle": "Favorites",
   "favouritesSearchHint": "Search project name",
   "favouritesSearchNoResult": "No results found",
-  "favouritesSearchTryAgain": "Please try again"
+  "favouritesSearchTryAgain": "Please try again",
+
+  "existingUsersTitle": "เลือกชื่อลูกค้า",
+  "existingUsersSubtitlePhone": "พบข้อมูลลูกค้าหลายรายการสำหรับเบอร์ {phoneNumber}",
+  "existingUsersSubtitleEmail": "พบข้อมูลลูกค้าหลายรายการสำหรับอีเมล",
+  "existingUsersSubtitleCont": "กรุณาเลือกชื่อลูกค้าที่ต้องการเพื่อดำเนินการลงทะเบียนต่อ",
+  "existingUsersSearchHint": "ค้นหาชื่อ-นามสกุล หรือรหัสลูกค้า",
+  "existingUsersSearchHintEmail": "ค้นหาชื่อ-นามสกุล รหัสลูกค้า หรือเบอร์โทร",
+  "existingUsersSearchResult": "{count, plural, =0{ไม่พบข้อมูลลูกค้า} =1{รายการลูกค้า (1 รายการ)} other{รายการลูกค้า ({count} รายการ)}}",
+  "existingUsersInstruction": "แตะเพื่อเลือกชื่อที่ต้องการ",
+  "existingUsersNextButton": "ดำเนินการต่อด้วยชื่อ {name}",
+  "existingUsersItemCustomerId": "รหัสลูกค้า: {customerId}",
+  "existingUsersItemPhone": "เบอร์มือถือ: {phone}"
 }

@@ -3,6 +3,7 @@ import 'package:AssetWise/src/features/dashboard/widgets/home_action_button/home
 import 'package:AssetWise/src/features/dashboard/widgets/main/notification_section.dart';
 import 'package:AssetWise/src/features/projects/views/project_detail_view.dart';
 import 'package:AssetWise/src/features/promotions/views/promotion_detail_view.dart';
+import 'package:AssetWise/src/features/register/existing_users_view.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
@@ -33,10 +34,13 @@ class DashboardMainView extends StatelessWidget {
         SliverToBoxAdapter(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue, vertical: mDefaultPadding / 4),
-            child: const Row(
+            child: Row(
               children: [
-                AssetWiseLogo(
-                  width: 158,
+                GestureDetector(
+                  onTap: () => Navigator.pushNamed(context, ExistingUsersView.routeName),
+                  child: AssetWiseLogo(
+                    width: 158,
+                  ),
                 ),
                 Spacer(),
                 HomeActionButtons()

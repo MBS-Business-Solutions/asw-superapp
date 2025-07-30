@@ -2059,6 +2059,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please try again'**
   String get favouritesSearchTryAgain;
+
+  /// No description provided for @existingUsersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'เลือกชื่อลูกค้า'**
+  String get existingUsersTitle;
+
+  /// No description provided for @existingUsersSubtitlePhone.
+  ///
+  /// In en, this message translates to:
+  /// **'พบข้อมูลลูกค้าหลายรายการสำหรับเบอร์ {phoneNumber}'**
+  String existingUsersSubtitlePhone(Object phoneNumber);
+
+  /// No description provided for @existingUsersSubtitleEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'พบข้อมูลลูกค้าหลายรายการสำหรับอีเมล'**
+  String get existingUsersSubtitleEmail;
+
+  /// No description provided for @existingUsersSubtitleCont.
+  ///
+  /// In en, this message translates to:
+  /// **'กรุณาเลือกชื่อลูกค้าที่ต้องการเพื่อดำเนินการลงทะเบียนต่อ'**
+  String get existingUsersSubtitleCont;
+
+  /// No description provided for @existingUsersSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'ค้นหาชื่อ-นามสกุล หรือรหัสลูกค้า'**
+  String get existingUsersSearchHint;
+
+  /// No description provided for @existingUsersSearchHintEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'ค้นหาชื่อ-นามสกุล รหัสลูกค้า หรือเบอร์โทร'**
+  String get existingUsersSearchHintEmail;
+
+  /// No description provided for @existingUsersSearchResult.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{ไม่พบข้อมูลลูกค้า} =1{รายการลูกค้า (1 รายการ)} other{รายการลูกค้า ({count} รายการ)}}'**
+  String existingUsersSearchResult(num count);
+
+  /// No description provided for @existingUsersInstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'แตะเพื่อเลือกชื่อที่ต้องการ'**
+  String get existingUsersInstruction;
+
+  /// No description provided for @existingUsersNextButton.
+  ///
+  /// In en, this message translates to:
+  /// **'ดำเนินการต่อด้วยชื่อ {name}'**
+  String existingUsersNextButton(Object name);
+
+  /// No description provided for @existingUsersItemCustomerId.
+  ///
+  /// In en, this message translates to:
+  /// **'รหัสลูกค้า: {customerId}'**
+  String existingUsersItemCustomerId(Object customerId);
+
+  /// No description provided for @existingUsersItemPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'เบอร์มือถือ: {phone}'**
+  String existingUsersItemPhone(Object phone);
 }
 
 class _AppLocalizationsDelegate

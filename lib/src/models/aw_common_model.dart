@@ -79,3 +79,17 @@ class KeyValue {
     );
   }
 }
+
+class CustomerItem {
+  final String name;
+  final String customerId;
+  final String phone;
+  bool isSelected;
+
+  CustomerItem({
+    required this.name,
+    required this.customerId,
+    required this.phone,
+    this.isSelected = false,
+  });
+}
