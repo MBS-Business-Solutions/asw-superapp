@@ -33,7 +33,7 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
   @override
   void initState() {
     final registerProvider = context.read<RegisterProvider>();
-    final verifyOTPResponse = registerProvider.verifyOTPResponse;
+    final verifyOTPResponse = registerProvider.verifyOTPResponse?.items.first;
     if (verifyOTPResponse != null) {
       firstNameController.text = verifyOTPResponse.firstName ?? '';
       lastNameController.text = verifyOTPResponse.lastName ?? '';
@@ -150,7 +150,7 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 8.0),
                               child: AwTextFormField(
-                                initialValue: verifyOTPResponse?.idCard,
+                                initialValue: verifyOTPResponse?.items.first.idCard,
                                 isEditable: isEditable,
                                 label: AppLocalizations.of(context)!.userDetailCitizenId,
                               ),
@@ -205,7 +205,7 @@ class _RegisterUserDetailViewState extends State<RegisterUserDetailView> {
       }
     } else {
       if (registerProvider.verifyOTPResponse != null) {
-        final userId = registerProvider.verifyOTPResponse!.id!;
+        final userId = registerProvider.verifyOTPResponse!.items.first.id!;
         if (await context.read<UserProvider>().login(userId)) {
           if (context.mounted) {
             loginResult = true;

@@ -1,9 +1,13 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/register/register_view.dart';
+import 'package:AssetWise/src/features/register/user_detail_view.dart';
 import 'package:AssetWise/src/localization/app_localizations.dart';
 import 'package:AssetWise/src/models/aw_common_model.dart';
+import 'package:AssetWise/src/providers/register_provider.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ExistingUsersView extends StatefulWidget {
   static const String routeName = '/existing-users';
@@ -24,16 +28,7 @@ class _ExistingUsersViewState extends State<ExistingUsersView> {
   bool _isLoginByPhone = false;
 
   // Sample customer data
-  final List<CustomerItem> _customers = [
-    CustomerItem(name: 'สมชาย ใจดี', customerId: 'C-195575', phone: '081-234-5678', isSelected: true),
-    CustomerItem(name: 'สมหญิง รักดี', customerId: 'C-195576', phone: '081-345-6789'),
-    CustomerItem(name: 'วิชัย มั่นคง', customerId: 'C-195577', phone: '081-456-7890'),
-    CustomerItem(name: 'อรทัย ใจงาม', customerId: 'C-195578', phone: '081-567-8901'),
-    CustomerItem(name: 'ประยุทธ ขยันดี', customerId: 'C-195579', phone: '081-678-9012'),
-    CustomerItem(name: 'สมปอง พอเพียง', customerId: 'C-195580', phone: '081-789-0123'),
-    CustomerItem(name: 'สมศรี มีสุข', customerId: 'C-195581', phone: '081-890-1234'),
-    CustomerItem(name: 'วิทยา รักสงบ', customerId: 'C-195582', phone: '081-901-2345'),
-  ];
+  final List<CustomerItem> _customers = [];
 
   final List<CustomerItem> _filteredCustomers = [];
 
@@ -43,10 +38,21 @@ class _ExistingUsersViewState extends State<ExistingUsersView> {
     _phoneNumber = widget.phoneNumber;
     _email = widget.email;
 
-    if (_phoneNumber == null && _email == null) {
-      _phoneNumber = '081-234-5678'; // Default phone number if none provided. For testing purposes.
+    final verifyOTPResponse = context.read<RegisterProvider>().verifyOTPResponse;
+    _customers.clear();
+    _customers.addAll(verifyOTPResponse?.items.map((item) {
+          return CustomerItem(
+            name: '${item.firstName} ${item.lastName}',
+            customerId: item.remCode ?? '',
+            phone: item.phone ?? '',
+            isSelected: false,
+            item: item,
+          );
+        }) ??
+        []);
+    if (_customers.isNotEmpty) {
+      _customers.first.isSelected = true;
     }
-
     _isLoginByPhone = _phoneNumber != null && _phoneNumber!.isNotEmpty;
 
     _filteredCustomers.addAll(_customers);
@@ -159,7 +165,7 @@ class _ExistingUsersViewState extends State<ExistingUsersView> {
                         ),
                         if (_filteredCustomers.isNotEmpty)
                           Padding(
-                            padding: EdgeInsets.only(bottom: mMediumPadding),
+                            padding: const EdgeInsets.only(bottom: mMediumPadding),
                             child: Text(AppLocalizations.of(context)!.existingUsersInstruction,
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                       color: mLightBodyTextColor,
@@ -268,7 +274,7 @@ class _ExistingUsersViewState extends State<ExistingUsersView> {
                 ),
                 child: SafeArea(
                     child: FilledButton(
-                  onPressed: _selectedCustomer != null ? () {} : null,
+                  onPressed: _selectedCustomer != null ? _processToUserForm : null,
                   child: Text(
                     AppLocalizations.of(context)!.existingUsersNextButton(_selectedCustomer?.name ?? ''),
                   ),
@@ -295,9 +301,9 @@ class _ExistingUsersViewState extends State<ExistingUsersView> {
         },
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
         decoration: InputDecoration(
-          hintText: AppLocalizations.of(context)!.existingUsersSearchHint,
-          hintStyle: TextStyle(color: Colors.white54),
-          icon: Icon(Icons.search, color: Colors.white54),
+          hintText: _isLoginByPhone ? AppLocalizations.of(context)!.existingUsersSearchHint : AppLocalizations.of(context)!.existingUsersSearchHintEmail,
+          hintStyle: const TextStyle(color: Colors.white54),
+          icon: const Icon(Icons.search, color: Colors.white54),
           border: InputBorder.none,
         ),
       ),
@@ -318,5 +324,13 @@ class _ExistingUsersViewState extends State<ExistingUsersView> {
       }
       _selectCustomer(_filteredCustomers.firstOrNull);
     });
+  }
+
+  void _processToUserForm() {
+    CommonUtil.dismissKeyboard(context);
+    if (_selectedCustomer != null) {
+      context.read<RegisterProvider>().setSelectREPUser(_selectedCustomer!.item);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const RegisterUserDetailView()), ModalRoute.withName(RegisterView.routeName));
+    }
   }
 }

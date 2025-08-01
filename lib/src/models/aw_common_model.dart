@@ -1,3 +1,5 @@
+import 'package:AssetWise/src/models/aw_content_model.dart';
+
 class ServiceResponse {
   int? code;
   String status;
@@ -85,11 +87,13 @@ class CustomerItem {
   final String customerId;
   final String phone;
   bool isSelected;
+  final RegisterOTPVerifyItem item;
 
   CustomerItem({
     required this.name,
     required this.customerId,
     required this.phone,
     this.isSelected = false,
+    required this.item,
   });
 }

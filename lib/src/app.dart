@@ -223,7 +223,7 @@ class _MyAppState extends State<MyApp> {
                   case WebViewWithCloseButton.routeName:
                     return WebViewWithCloseButton(link: routeMap!['link'] as String);
                   case ExistingUsersView.routeName:
-                    return ExistingUsersView();
+                    return const ExistingUsersView();
                   default:
                     // return DashboardView(controller: settingsController);
                     return const SplashView();
