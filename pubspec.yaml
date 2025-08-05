@@ -7,7 +7,7 @@ publish_to: "none"
 # version: 1.49.1+1
 
 #Android
-version: 1.49.3+2025062702
+version: 1.49.3+2025080401
 
 environment:
   sdk: ^3.5.1
