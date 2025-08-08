@@ -28,6 +28,7 @@ import 'package:AssetWise/src/features/projects/views/project_detail_view.dart';
 import 'package:AssetWise/src/features/promotions/promotions_view.dart';
 import 'package:AssetWise/src/features/promotions/views/promotion_detail_view.dart';
 import 'package:AssetWise/src/features/register/consents_view.dart';
+import 'package:AssetWise/src/features/register/existing_users_view.dart';
 import 'package:AssetWise/src/features/register/register_view.dart';
 import 'package:AssetWise/src/features/register/user_detail_view.dart';
 import 'package:AssetWise/src/features/verify_otp/otp_request_view.dart';
@@ -221,6 +222,8 @@ class _MyAppState extends State<MyApp> {
                     return const FavouriteProjectsView();
                   case WebViewWithCloseButton.routeName:
                     return WebViewWithCloseButton(link: routeMap!['link'] as String);
+                  case ExistingUsersView.routeName:
+                    return const ExistingUsersView();
                   default:
                     // return DashboardView(controller: settingsController);
                     return const SplashView();

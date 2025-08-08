@@ -69,7 +69,7 @@ class AwRegisterService {
       try {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == 'success') {
-          return RegisterOTPVerifyResponse.fromJson(jsonResponse['data']);
+          return RegisterOTPVerifyResponse.fromJson([jsonResponse['data']]);
         }
       } catch (e) {
         if (kDebugMode) print(e);

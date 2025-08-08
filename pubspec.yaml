@@ -3,11 +3,9 @@ name: "AssetWise"
 # Prevent accidental publishing to pub.dev.
 publish_to: "none"
 
-#iOS
-# version: 1.49.1+1
-
-#Android
-version: 1.49.3+2025062702
+# Version format: major.minor.patch+build_number
+# Example: 1.49.3+2025080401
+version: 1.49.3+2025080503
 
 environment:
   sdk: ^3.5.1

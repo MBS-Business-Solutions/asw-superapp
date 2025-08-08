@@ -1109,4 +1109,57 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get favouritesSearchTryAgain => 'กรุณาลองใหม่อีกครั้ง';
+
+  @override
+  String get existingUsersTitle => 'เลือกชื่อลูกค้า';
+
+  @override
+  String existingUsersSubtitlePhone(Object phoneNumber) {
+    return 'พบข้อมูลลูกค้าหลายรายการสำหรับเบอร์ $phoneNumber';
+  }
+
+  @override
+  String get existingUsersSubtitleEmail =>
+      'พบข้อมูลลูกค้าหลายรายการสำหรับอีเมล';
+
+  @override
+  String get existingUsersSubtitleCont =>
+      'กรุณาเลือกชื่อลูกค้าที่ต้องการเพื่อดำเนินการลงทะเบียนต่อ';
+
+  @override
+  String get existingUsersSearchHint => 'ค้นหาชื่อ-นามสกุล หรือรหัสลูกค้า';
+
+  @override
+  String get existingUsersSearchHintEmail =>
+      'ค้นหาชื่อ-นามสกุล รหัสลูกค้า หรือเบอร์โทร';
+
+  @override
+  String existingUsersSearchResult(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'รายการลูกค้า ($count รายการ)',
+      one: 'รายการลูกค้า (1 รายการ)',
+      zero: 'ไม่พบข้อมูลลูกค้า',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get existingUsersInstruction => 'แตะเพื่อเลือกชื่อที่ต้องการ';
+
+  @override
+  String existingUsersNextButton(Object name) {
+    return 'ดำเนินการต่อด้วยชื่อ $name';
+  }
+
+  @override
+  String existingUsersItemCustomerId(Object customerId) {
+    return 'รหัสลูกค้า: $customerId';
+  }
+
+  @override
+  String existingUsersItemPhone(Object phone) {
+    return 'เบอร์มือถือ: $phone';
+  }
 }
