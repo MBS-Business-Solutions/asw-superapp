@@ -60,10 +60,18 @@ class RegisterProvider {
     if (otpRef != null) {
       _verifyOTPResponse = await AwRegisterService.verifyOTPNonResident(transId: otpRef!.transId!, otp: otp);
     }
-    if (_verifyOTPResponse?.isResident ?? false) {
-      _isResident = true;
+    if (_verifyOTPResponse != null && _verifyOTPResponse!.items.isNotEmpty) {
+      if (_verifyOTPResponse!.items.length == 1) {
+        _isResident = true;
+      }
     }
     return verifyOTPResponse;
+  }
+
+  void setSelectREPUser(RegisterOTPVerifyItem item) {
+    _verifyOTPResponse!.items.clear();
+    _verifyOTPResponse!.items.add(item);
+    _isResident = true;
   }
 
   void _saveValues({String? idCard4, String? userName}) {

@@ -70,7 +70,23 @@ class RegisterOTPRef {
   }
 }
 
+// CR20250801: Verify OTP response returns a list of items
 class RegisterOTPVerifyResponse {
+  final List<RegisterOTPVerifyItem> items;
+
+  RegisterOTPVerifyResponse({required this.items});
+
+  factory RegisterOTPVerifyResponse.fromJson(List<dynamic> json) {
+    var itemsList = json;
+    List<RegisterOTPVerifyItem> items = itemsList.map((i) => RegisterOTPVerifyItem.fromJson(i)).toList();
+
+    return RegisterOTPVerifyResponse(
+      items: items,
+    );
+  }
+}
+
+class RegisterOTPVerifyItem {
   final String? id;
   final String? firstName;
   final String? lastName;
@@ -78,11 +94,12 @@ class RegisterOTPVerifyResponse {
   final String? email;
   final String? idCard;
   final bool? isResident;
+  final String? remCode;
 
-  RegisterOTPVerifyResponse({this.id, this.phone, this.firstName, this.lastName, this.email, this.idCard, this.isResident});
+  RegisterOTPVerifyItem({this.id, this.phone, this.firstName, this.lastName, this.email, this.idCard, this.isResident, this.remCode});
 
-  factory RegisterOTPVerifyResponse.fromJson(Map<String, dynamic> json) {
-    return RegisterOTPVerifyResponse(
+  factory RegisterOTPVerifyItem.fromJson(Map<String, dynamic> json) {
+    return RegisterOTPVerifyItem(
       id: json['id'],
       phone: json['phone'],
       firstName: json['first_name'],
@@ -90,6 +107,7 @@ class RegisterOTPVerifyResponse {
       email: json['email'],
       idCard: json['id_card'],
       isResident: json['is_resident'],
+      remCode: json['rem_code'],
     );
   }
 }

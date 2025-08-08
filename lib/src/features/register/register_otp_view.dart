@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
+import 'package:AssetWise/src/features/register/existing_users_view.dart';
 import 'package:AssetWise/src/features/register/register_view.dart';
 import 'package:AssetWise/src/features/register/user_detail_view.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
@@ -205,8 +206,28 @@ class _RegisterVerifyOtpViewState extends State<RegisterVerifyOtpView> {
     }
     if (mounted) {
       if (response != null) {
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const RegisterUserDetailView()), ModalRoute.withName(RegisterView.routeName));
-        //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ConsentsView()));
+        if (response.items.length == 1) {
+          // ถ้าพบข้อมูลผู้ใช้เพียงคนเดียว(ทั้งจาก REM หรือ User ใน SuperApp) ให้ไปยังหน้ารายละเอียดผู้ใช้
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const RegisterUserDetailView()), ModalRoute.withName(RegisterView.routeName));
+        } else if (response.items.length > 1) {
+          // ถ้ามีผู้ใช้หลายคน ให้ User ทำการเลือกชื่อที่ต้องการ
+          String? email;
+          String? phoneNumber;
+          if (refCode!.identifier!.contains('@')) {
+            email = refCode!.identifier!;
+          } else {
+            phoneNumber = refCode!.identifier!;
+          }
+
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ExistingUsersView(
+                        email: email,
+                        phoneNumber: phoneNumber,
+                      )),
+              ModalRoute.withName(RegisterView.routeName));
+        }
       } else {
         setState(() {
           _invalidOTP = true;
