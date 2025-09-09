@@ -5,7 +5,7 @@ publish_to: "none"
 
 # Version format: major.minor.patch+build_number
 # Example: 1.49.3+2025080401
-version: 1.49.3+2025080801
+version: 1.49.4+2025081301
 
 environment:
   sdk: ^3.5.1

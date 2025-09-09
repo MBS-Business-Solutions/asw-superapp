@@ -817,7 +817,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get addAssetProject => 'โครงการ*';
 
   @override
-  String get addAssetUnit => 'บ้านเลขที่*';
+  String get addAssetUnit => 'บ้านเลขที่ / เลข Unit*';
 
   @override
   String get addAssetLast4Id => 'รหัสประจำตัวประชาชน 4 ตัวหลัง*';

@@ -61,9 +61,7 @@ class RegisterProvider {
       _verifyOTPResponse = await AwRegisterService.verifyOTPNonResident(transId: otpRef!.transId!, otp: otp);
     }
     if (_verifyOTPResponse != null && _verifyOTPResponse!.items.isNotEmpty) {
-      if (_verifyOTPResponse!.items.length == 1) {
-        _isResident = true;
-      }
+      _isResident = _verifyOTPResponse!.items.any((item) => item.isResident ?? false);
     }
     return verifyOTPResponse;
   }
