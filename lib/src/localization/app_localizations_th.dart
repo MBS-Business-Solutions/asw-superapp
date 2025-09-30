@@ -161,6 +161,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get registerError => 'ไม่สามารถทำงานได้ กรุณาลองใหม่อีกครั้ง';
 
   @override
+  String get helpCenter => 'ศูนย์ช่วยเหลือ';
+
+  @override
   String get otpTitle => 'กรอก OTP';
 
   @override

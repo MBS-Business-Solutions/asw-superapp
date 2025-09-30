@@ -344,6 +344,12 @@ abstract class AppLocalizations {
   /// **'Unable to process. Please try again.'**
   String get registerError;
 
+  /// No description provided for @helpCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Help Center'**
+  String get helpCenter;
+
   /// No description provided for @otpTitle.
   ///
   /// In en, this message translates to:

@@ -99,6 +99,7 @@
   "registerInvalidResident": "Please enter your ID card number to match your registered mobile number.",
   "registerInvalidUser": "Please enter your ID card number to match your registered mobile number/email address.",
   "registerError": "Unable to process. Please try again.",
+  "helpCenter": "Help Center",
   "otpTitle": "Enter OTP",
   "otpRequestIsResident": "Existing customer",
   "otpRequestLast4Digits": "Last 4 digits of ID card",

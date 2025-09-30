@@ -149,9 +149,9 @@ class _RegisterViewState extends State<RegisterView> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
-                    child: const Text(
-                      'ศูนย์ช่วยเหลือ',
-                      style: TextStyle(
+                    child: Text(
+                      AppLocalizations.of(context)!.helpCenter,
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),

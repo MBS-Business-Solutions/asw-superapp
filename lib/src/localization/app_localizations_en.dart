@@ -161,6 +161,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get registerError => 'Unable to process. Please try again.';
 
   @override
+  String get helpCenter => 'Help Center';
+
+  @override
   String get otpTitle => 'Enter OTP';
 
   @override

@@ -99,6 +99,7 @@
   "registerInvalidResident": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับเบอร์มือถือที่ลงทะเบียน",
   "registerInvalidUser": "กรุณากรอกเลขบัตรประชาชนให้ตรงกับ เบอร์มือถือ/อีเมล ที่ลงทะเบียน",
   "registerError": "ไม่สามารถทำงานได้ กรุณาลองใหม่อีกครั้ง",
+  "helpCenter": "ศูนย์ช่วยเหลือ",
   "otpTitle": "กรอก OTP",
   "otpRequestAgain": "ขอรหัสอีกครั้ง",
   "otpRequestIsResident": "เป็นลูกบ้าน",
