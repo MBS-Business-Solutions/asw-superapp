@@ -1529,7 +1529,7 @@ abstract class AppLocalizations {
   /// No description provided for @addAssetUnit.
   ///
   /// In en, this message translates to:
-  /// **'Unit Number*'**
+  /// **'House Number / Unit Number*'**
   String get addAssetUnit;
 
   /// No description provided for @addAssetLast4Id.
@@ -1547,7 +1547,7 @@ abstract class AppLocalizations {
   /// No description provided for @addAssetUnitRequired.
   ///
   /// In en, this message translates to:
-  /// **'Please specify your house number.'**
+  /// **'Please specify your house number / unit number.'**
   String get addAssetUnitRequired;
 
   /// No description provided for @addAssetLast4IdRequired.

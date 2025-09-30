@@ -8,6 +8,7 @@ import 'package:AssetWise/src/widgets/aw_textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:AssetWise/src/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -23,7 +24,6 @@ class _RegisterViewState extends State<RegisterView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _userNameController = TextEditingController();
-  final TextEditingController _idCardController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -46,13 +46,16 @@ class _RegisterViewState extends State<RegisterView> {
                 child: SingleChildScrollView(
                   child: SafeArea(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: mScreenEdgeInsetValue),
                       child: Form(
                         key: _formKey,
                         child: Column(
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, bottom: 32),
+                              padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).padding.top,
+                                  bottom: 32),
                               child: AssetWiseLogo(
                                 width: MediaQuery.of(context).size.width * 0.5,
                               ),
@@ -66,7 +69,8 @@ class _RegisterViewState extends State<RegisterView> {
                               height: 4,
                             ),
                             Text(
-                              AppLocalizations.of(context)!.registerUserNameHint,
+                              AppLocalizations.of(context)!
+                                  .registerUserNameHint,
                               style: Theme.of(context).textTheme.bodyMedium,
                               textAlign: TextAlign.center,
                             ),
@@ -85,7 +89,8 @@ class _RegisterViewState extends State<RegisterView> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   const Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 8),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 8),
                                     child: Icon(
                                       Icons.cancel_outlined,
                                       color: Colors.red,
@@ -94,7 +99,8 @@ class _RegisterViewState extends State<RegisterView> {
                                   Expanded(
                                       child: Text(
                                     _showError!,
-                                    style: Theme.of(context).textTheme.labelMedium,
+                                    style:
+                                        Theme.of(context).textTheme.labelMedium,
                                   ))
                                 ],
                               ),
@@ -110,7 +116,10 @@ class _RegisterViewState extends State<RegisterView> {
                                       : () {
                                           _processToOTPForm();
                                         },
-                                  child: _isLoading ? const CircularProgressIndicator() : Text(AppLocalizations.of(context)!.registerNext),
+                                  child: _isLoading
+                                      ? const CircularProgressIndicator()
+                                      : Text(AppLocalizations.of(context)!
+                                          .registerNext),
                                 )),
                             SizedBox(
                               height: MediaQuery.of(context).viewInsets.bottom,
@@ -121,7 +130,35 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                   ),
                 ),
-              )
+              ),
+              // Help Center Link at bottom right
+              Positioned(
+                bottom: 16,
+                right: 16,
+                child: SafeArea(
+                  child: TextButton(
+                    onPressed: _launchHelpCenter,
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.white.withOpacity(0.9),
+                      foregroundColor: Theme.of(context).primaryColor,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    child: const Text(
+                      'ศูนย์ช่วยเหลือ',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -134,7 +171,9 @@ class _RegisterViewState extends State<RegisterView> {
       AwTextFormField(
         controller: _userNameController,
         label: AppLocalizations.of(context)!.registerUserNameLabel,
-        validator: (value) => (value?.isEmpty ?? true) ? AppLocalizations.of(context)!.registerInvalidData : null,
+        validator: (value) => (value?.isEmpty ?? true)
+            ? AppLocalizations.of(context)!.registerInvalidData
+            : null,
       ),
     ]);
   }
@@ -161,7 +200,8 @@ class _RegisterViewState extends State<RegisterView> {
       } else {
         // Show error message
         setState(() {
-          _showError = ref?.message ?? AppLocalizations.of(context)!.registerError;
+          _showError =
+              ref?.message ?? AppLocalizations.of(context)!.registerError;
         });
       }
     } finally {
@@ -172,6 +212,21 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   void _registerProcess() async {
-    await Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterVerifyOtpView()));
+    await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const RegisterVerifyOtpView()));
+  }
+
+  Future<void> _launchHelpCenter() async {
+    final Uri url = Uri.parse('https://assetwise.co.th/l/app');
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      // Handle error if URL cannot be launched
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('ไม่สามารถเปิดลิงก์ได้'),
+          ),
+        );
+      }
+    }
   }
 }

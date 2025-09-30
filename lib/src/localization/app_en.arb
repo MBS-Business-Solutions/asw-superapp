@@ -423,10 +423,10 @@
   "addAssetTitle": "Add Home",
   "addAssetInstruction": "Please provide your details for service access.",
   "addAssetProject": "Project*",
-  "addAssetUnit": "Unit Number*",
+  "addAssetUnit": "House Number / Unit Number*",
   "addAssetLast4Id": "Last 4 digits of ID Card*",
   "addAssetProjectRequired": "Please specify the project.",
-  "addAssetUnitRequired": "Please specify your house number.",
+  "addAssetUnitRequired": "Please specify your house number / unit number.",
   "addAssetLast4IdRequired": "Please enter the last 4 digits of your national ID card number.",
 
   "managePersonalInfoTitle": "Manage Personal Information",
