@@ -39,6 +39,7 @@ import 'package:AssetWise/src/providers/dashboard_provider.dart';
 import 'package:AssetWise/src/providers/notification_item_provider.dart';
 import 'package:AssetWise/src/providers/user_provider.dart';
 import 'package:AssetWise/src/providers/firebase_provider.dart';
+import 'package:AssetWise/src/services/deep_link_service.dart';
 import 'package:AssetWise/src/splash/splash_view.dart';
 import 'package:AssetWise/src/widgets/webview_with_close.dart';
 import 'package:flutter/material.dart';
@@ -81,6 +82,9 @@ class _MyAppState extends State<MyApp> {
       },
     );
     context.read<FirebaseMessagingProvider>().initialize();
+
+    // Initialize Deep Link Service
+    DeepLinkService().initialize();
   }
 
   // เมื่อเปิดแอป ให้เช็ก pin แล้วตามด้วย consent
@@ -89,7 +93,11 @@ class _MyAppState extends State<MyApp> {
     if (!_showPinEntry) {
       if (navContext.read<UserProvider>().shouldValidatePin) {
         _showPinEntry = true;
-        await Navigator.push(navContext, MaterialPageRoute(builder: (context) => const PinEntryView(isBackable: false), fullscreenDialog: true));
+        await Navigator.push(
+            navContext,
+            MaterialPageRoute(
+                builder: (context) => const PinEntryView(isBackable: false),
+                fullscreenDialog: true));
         _showPinEntry = false;
       }
     }
@@ -98,7 +106,12 @@ class _MyAppState extends State<MyApp> {
       if (userProvider.userInformation != null) {
         final consentGave = userProvider.userInformation?.consent ?? false;
         if (!consentGave) {
-          await Navigator.push(navContext, MaterialPageRoute(builder: (context) => const ConsentsView(consentUpdated: true), fullscreenDialog: true));
+          await Navigator.push(
+              navContext,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      const ConsentsView(consentUpdated: true),
+                  fullscreenDialog: true));
         }
       }
     }
@@ -110,7 +123,10 @@ class _MyAppState extends State<MyApp> {
     final navContext = navigatorKey.currentContext ?? context;
     await navContext.read<NotificationItemProvider>().fetchNotificationItems();
     if (navContext.mounted && !isResumed) {
-      await Future.wait([Future.delayed(const Duration(seconds: 3)), navContext.read<DashboardProvider>().reload()]);
+      await Future.wait([
+        Future.delayed(const Duration(seconds: 3)),
+        navContext.read<DashboardProvider>().reload()
+      ]);
       Navigator.pushReplacementNamed(navContext, DashboardView.routeName);
     }
   }
@@ -132,14 +148,21 @@ class _MyAppState extends State<MyApp> {
       builder: (BuildContext context, Widget? child) {
         return MaterialApp(
           navigatorKey: navigatorKey,
-          localizationsDelegates: const [AppLocalizations.delegate, GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate, GlobalCupertinoLocalizations.delegate],
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate
+          ],
           supportedLocales: const [
             Locale('en', ''), // English, no country code
             Locale('th', ''), // Thai, no country code
           ],
-          locale: widget.settingsController.locale, // Set default locale to Thai
+          locale:
+              widget.settingsController.locale, // Set default locale to Thai
 
-          onGenerateTitle: (BuildContext context) => AppLocalizations.of(context)!.appTitle,
+          onGenerateTitle: (BuildContext context) =>
+              AppLocalizations.of(context)!.appTitle,
 
           theme: mLightTheme,
           darkTheme: mDarkTheme,
@@ -150,7 +173,9 @@ class _MyAppState extends State<MyApp> {
               SystemUiOverlayStyle(
                 statusBarColor: Colors.transparent,
                 systemNavigationBarColor: Colors.transparent,
-                statusBarBrightness: brightness == Brightness.dark ? Brightness.dark : Brightness.light,
+                statusBarBrightness: brightness == Brightness.dark
+                    ? Brightness.dark
+                    : Brightness.light,
               ),
             );
             SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
@@ -177,27 +202,44 @@ class _MyAppState extends State<MyApp> {
                   case ConsentsView.routeName:
                     return const ConsentsView();
                   case ContractsView.routeName:
-                    return ContractsView(linkId: routeMap?['linkId'] as String?);
+                    return ContractsView(
+                        linkId: routeMap?['linkId'] as String?);
                   case DownHistoryView.routeName:
-                    return DownHistoryView(contractId: routeMap!['contractId'] as String);
+                    return DownHistoryView(
+                        contractId: routeMap!['contractId'] as String);
                   case ChangeLanguangeView.routeName:
                     return const ChangeLanguangeView();
                   case ReceiptView.routeName:
-                    return ReceiptView(contractNumber: routeMap!['contractNumber'] as String, receiptNumber: routeMap['receiptNumber'] as String);
+                    return ReceiptView(
+                        contractNumber: routeMap!['contractNumber'] as String,
+                        receiptNumber: routeMap['receiptNumber'] as String);
                   case ReceiptViewFile.routeName:
-                    return ReceiptViewFile(contractNumber: routeMap!['contractNumber'] as String, receiptNumber: routeMap['receiptNumber'] as String);
+                    return ReceiptViewFile(
+                        contractNumber: routeMap!['contractNumber'] as String,
+                        receiptNumber: routeMap['receiptNumber'] as String);
                   case OverduesView.routeName:
-                    return OverduesView(contract: routeMap!['contract'] as Contract);
+                    return OverduesView(
+                        contract: routeMap!['contract'] as Contract);
                   case NotificationsView.routeName:
-                    return NotificationsView(selectedIndex: routeMap?['selectedIndex'] ?? 0);
+                    return NotificationsView(
+                        selectedIndex: routeMap?['selectedIndex'] ?? 0);
                   case PaymentChannelsView.routeName:
-                    return PaymentChannelsView(contract: routeMap!['contract'] as Contract, overdueDetail: routeMap['overdueDetail'] as OverdueDetail?, amount: routeMap['amount'] as double?);
+                    return PaymentChannelsView(
+                        contract: routeMap!['contract'] as Contract,
+                        overdueDetail:
+                            routeMap['overdueDetail'] as OverdueDetail?,
+                        amount: routeMap['amount'] as double?);
                   case QRView.routeName:
-                    return QRView(contract: routeMap!['contract'] as Contract, amount: routeMap['amount'] as double);
+                    return QRView(
+                        contract: routeMap!['contract'] as Contract,
+                        amount: routeMap['amount'] as double);
                   case PinEntryView.routeName:
-                    return PinEntryView(isBackable: routeMap?['isBackable'] as bool?);
+                    return PinEntryView(
+                        isBackable: routeMap?['isBackable'] as bool?);
                   case OTPRequestView.routeName:
-                    return OTPRequestView(forAction: routeMap?['forAction'] as String?, otpFor: routeMap?['otpFor'] as OTPFor);
+                    return OTPRequestView(
+                        forAction: routeMap?['forAction'] as String?,
+                        otpFor: routeMap?['otpFor'] as OTPFor);
                   case AboutAsswiseView.routeName:
                     return const AboutAsswiseView();
                   case MyAssetsView.routeName:
@@ -205,7 +247,9 @@ class _MyAppState extends State<MyApp> {
                   case ManagePersonalInfoView.routeName:
                     return const ManagePersonalInfoView();
                   case MapSearchView.routeName:
-                    return MapSearchView(textController: routeMap!['textcontroller'] as TextEditingController);
+                    return MapSearchView(
+                        textController: routeMap!['textcontroller']
+                            as TextEditingController);
                   case HotMenuesConfigView.routeName:
                     return const HotMenuesConfigView();
                   case ProjectsView.routeName:
@@ -215,13 +259,16 @@ class _MyAppState extends State<MyApp> {
                   case PromotionsView.routeName:
                     return const PromotionsView();
                   case PromotionDetailView.routeName:
-                    return PromotionDetailView(promotionId: routeMap!['promotionId'] as int);
+                    return PromotionDetailView(
+                        promotionId: routeMap!['promotionId'] as int);
                   case ProjectDetailView.routeName:
-                    return ProjectDetailView(projectId: routeMap!['projectId'] as int);
+                    return ProjectDetailView(
+                        projectId: routeMap!['projectId'] as int);
                   case FavouriteProjectsView.routeName:
                     return const FavouriteProjectsView();
                   case WebViewWithCloseButton.routeName:
-                    return WebViewWithCloseButton(link: routeMap!['link'] as String);
+                    return WebViewWithCloseButton(
+                        link: routeMap!['link'] as String);
                   case ExistingUsersView.routeName:
                     return const ExistingUsersView();
                   default:
@@ -245,14 +292,21 @@ class _ShieldGuard extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
-        color: (brightness == Brightness.dark ? mDarkBackgroundBottomBar : mLightBackgroundBottomBar).withOpacity(0.3),
+        color: (brightness == Brightness.dark
+                ? mDarkBackgroundBottomBar
+                : mLightBackgroundBottomBar)
+            .withOpacity(0.3),
         alignment: Alignment.center,
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
           child: Center(
             child: SvgPicture.asset(
               'assets/images/ASW_Logo_Rac_dark-bg.svg',
-              colorFilter: ColorFilter.mode(brightness == Brightness.dark ? Colors.white : mAssetWiseLogoColor, BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(
+                  brightness == Brightness.dark
+                      ? Colors.white
+                      : mAssetWiseLogoColor,
+                  BlendMode.srcIn),
               width: MediaQuery.of(context).size.width * 0.6,
             ),
           ),
