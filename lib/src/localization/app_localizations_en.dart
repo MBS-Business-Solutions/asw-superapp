@@ -161,6 +161,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get registerError => 'Unable to process. Please try again.';
 
   @override
+  String get helpCenter => 'Help Center';
+
+  @override
   String get otpTitle => 'Enter OTP';
 
   @override
@@ -825,7 +828,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addAssetProject => 'Project*';
 
   @override
-  String get addAssetUnit => 'Unit Number*';
+  String get addAssetUnit => 'House Number / Unit Number*';
 
   @override
   String get addAssetLast4Id => 'Last 4 digits of ID Card*';
@@ -834,7 +837,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addAssetProjectRequired => 'Please specify the project.';
 
   @override
-  String get addAssetUnitRequired => 'Please specify your house number.';
+  String get addAssetUnitRequired =>
+      'Please specify your house number / unit number.';
 
   @override
   String get addAssetLast4IdRequired =>

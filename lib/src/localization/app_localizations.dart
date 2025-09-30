@@ -344,6 +344,12 @@ abstract class AppLocalizations {
   /// **'Unable to process. Please try again.'**
   String get registerError;
 
+  /// No description provided for @helpCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Help Center'**
+  String get helpCenter;
+
   /// No description provided for @otpTitle.
   ///
   /// In en, this message translates to:
@@ -1529,7 +1535,7 @@ abstract class AppLocalizations {
   /// No description provided for @addAssetUnit.
   ///
   /// In en, this message translates to:
-  /// **'Unit Number*'**
+  /// **'House Number / Unit Number*'**
   String get addAssetUnit;
 
   /// No description provided for @addAssetLast4Id.
@@ -1547,7 +1553,7 @@ abstract class AppLocalizations {
   /// No description provided for @addAssetUnitRequired.
   ///
   /// In en, this message translates to:
-  /// **'Please specify your house number.'**
+  /// **'Please specify your house number / unit number.'**
   String get addAssetUnitRequired;
 
   /// No description provided for @addAssetLast4IdRequired.

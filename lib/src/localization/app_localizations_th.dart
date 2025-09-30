@@ -161,6 +161,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get registerError => 'ไม่สามารถทำงานได้ กรุณาลองใหม่อีกครั้ง';
 
   @override
+  String get helpCenter => 'ศูนย์ช่วยเหลือ';
+
+  @override
   String get otpTitle => 'กรอก OTP';
 
   @override
@@ -817,7 +820,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get addAssetProject => 'โครงการ*';
 
   @override
-  String get addAssetUnit => 'บ้านเลขที่ / เลข Unit*';
+  String get addAssetUnit => 'บ้านเลขที่ / เลขยูนิต*';
 
   @override
   String get addAssetLast4Id => 'รหัสประจำตัวประชาชน 4 ตัวหลัง*';
@@ -826,7 +829,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get addAssetProjectRequired => 'กรุณาระบุโครงการ';
 
   @override
-  String get addAssetUnitRequired => 'กรุณาระบุบ้านเลขที่';
+  String get addAssetUnitRequired => 'กรุณาระบุบ้านเลขที่ / เลขยูนิต';
 
   @override
   String get addAssetLast4IdRequired => 'กรุณาระบุรหัสบัตรประชาชน 4 ตัวหลัง';
