@@ -6,6 +6,7 @@ import '../features/contract/contracts_view.dart';
 import '../features/promotions/views/promotion_detail_view.dart';
 import '../features/projects/views/project_detail_view.dart';
 import '../widgets/webview_with_close.dart';
+import '../consts/url_const.dart';
 import '../../main.dart';
 
 class DeepLinkService {
@@ -61,8 +62,13 @@ class DeepLinkService {
     final queryParams = uri.queryParameters;
 
     if (kDebugMode) {
-      print('Deep link path: ${uri.path}');
+      print('=== Deep Link Debug ===');
+      print('Full URI: $uri');
+      print('Scheme: ${uri.scheme}');
+      print('Host: ${uri.host}');
+      print('Path: ${uri.path}');
       print('Query parameters: $queryParams');
+      print('=====================');
     }
 
     try {
@@ -75,6 +81,9 @@ class DeepLinkService {
         _handleProjectLink(context, queryParams);
       } else if (uri.path.startsWith('/app/external')) {
         _handleExternalLink(context, queryParams);
+      } else if (uri.path == '/app') {
+        // Handle landing page with parameters
+        _handleLandingPageLink(context, queryParams);
       } else if (uri.scheme == 'assetwise') {
         _handleCustomScheme(context, uri);
       } else {
@@ -164,25 +173,69 @@ class DeepLinkService {
     }
   }
 
+  void _handleLandingPageLink(
+      BuildContext context, Map<String, String> params) {
+    // Handle landing page parameters
+    final path = params['path'];
+    final screen = params['screen'];
+
+    if (path != null) {
+      // Handle path parameter: /contract, /promotion, etc.
+      if (path.startsWith('/contract')) {
+        _handleContractLink(context, params);
+      } else if (path.startsWith('/promotion')) {
+        _handlePromotionLink(context, params);
+      } else if (path.startsWith('/project')) {
+        _handleProjectLink(context, params);
+      } else if (path.startsWith('/external')) {
+        _handleExternalLink(context, params);
+      }
+    } else if (screen != null) {
+      // Handle screen parameter: contract, promotion, etc.
+      switch (screen) {
+        case 'contract':
+          _handleContractLink(context, params);
+          break;
+        case 'promotion':
+          _handlePromotionLink(context, params);
+          break;
+        case 'project':
+          _handleProjectLink(context, params);
+          break;
+        case 'external':
+          _handleExternalLink(context, params);
+          break;
+        default:
+          if (kDebugMode) {
+            print('Unhandled screen parameter: $screen');
+          }
+      }
+    } else {
+      if (kDebugMode) {
+        print('No valid parameters found in landing page link');
+      }
+    }
+  }
+
   void dispose() {
     _linkSubscription?.cancel();
   }
 
   // Static helper methods for generating deep links
   static String generateContractLink(String contractId) {
-    return 'https://api.assetwise.co.th/app/contract?id=$contractId';
+    return '$BASE_URL/app/contract?id=$contractId';
   }
 
   static String generatePromotionLink(int promotionId) {
-    return 'https://api.assetwise.co.th/app/promotion?id=$promotionId';
+    return '$BASE_URL/app/promotion?id=$promotionId';
   }
 
   static String generateProjectLink(int projectId) {
-    return 'https://api.assetwise.co.th/app/project?id=$projectId';
+    return '$BASE_URL/app/project?id=$projectId';
   }
 
   static String generateExternalLink(String url) {
-    return 'https://api.assetwise.co.th/app/external?url=${Uri.encodeComponent(url)}';
+    return '$BASE_URL/app/external?url=${Uri.encodeComponent(url)}';
   }
 
   // Custom scheme helpers

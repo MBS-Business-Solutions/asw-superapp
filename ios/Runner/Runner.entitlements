@@ -6,7 +6,8 @@
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:api.assetwise.co.th</string>
+		<string>applinks:dev-superapp-api.assetwise.co.th</string>
+		<string>applinks:superapp-api.assetwise.co.th</string>
 	</array>
 </dict>
 </plist>

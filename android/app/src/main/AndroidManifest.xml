@@ -44,7 +44,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https"
-                      android:host="api.assetwise.co.th" />
+                      android:host="dev-superapp-api.assetwise.co.th" />
+            </intent-filter>
+            
+            <!-- Production Deep Link Intent Filter -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                      android:host="superapp-api.assetwise.co.th" />
             </intent-filter>
             
             <!-- Custom URL Scheme -->
