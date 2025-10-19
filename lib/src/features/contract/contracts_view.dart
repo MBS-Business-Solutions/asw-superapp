@@ -39,20 +39,25 @@ class _ContractsViewState extends State<ContractsView> {
   }
 
   void _initialLoad() async {
-    final contracts = await context.read<ContractProvider>().fetchContracts(null);
+    final contracts =
+        await context.read<ContractProvider>().fetchContracts(null);
 
     if (contracts.isNotEmpty) {
       setState(() {
         _contracts = contracts;
         _selectedYear = DateTime.now().year;
 
-        _selectedIndex = contracts.indexWhere((element) => element.contractId == widget.linkId);
+        _selectedIndex = contracts
+            .indexWhere((element) => element.contractId == widget.linkId);
         if (_selectedIndex < 0) {
           _selectedIndex = 0;
         }
         _selectedContract = contracts[_selectedIndex];
         if (_selectedContract != null) {
-          _fetchOverdueDetail = _fetchOverdueDetail ?? context.read<ContractProvider>().fetchOverdueDetail(_selectedContract!.contractId);
+          _fetchOverdueDetail = _fetchOverdueDetail ??
+              context
+                  .read<ContractProvider>()
+                  .fetchOverdueDetail(_selectedContract!.contractId);
         }
       });
     }
@@ -66,7 +71,9 @@ class _ContractsViewState extends State<ContractsView> {
   void _onContractSelected(Contract contract) {
     setState(() {
       _selectedContract = contract;
-      _fetchOverdueDetail = context.read<ContractProvider>().fetchOverdueDetail(_selectedContract!.contractId);
+      _fetchOverdueDetail = context
+          .read<ContractProvider>()
+          .fetchOverdueDetail(_selectedContract!.contractId);
     });
   }
 
@@ -80,7 +87,9 @@ class _ContractsViewState extends State<ContractsView> {
             top: 0,
             left: 0,
             right: 0,
-            child: _contracts == null ? const Center(child: CircularProgressIndicator()) : _buildContractSelector(context),
+            child: _contracts == null
+                ? const Center(child: CircularProgressIndicator())
+                : _buildContractSelector(context),
           ),
         if (_contracts != null && _contracts!.isNotEmpty)
           Align(
@@ -89,7 +98,9 @@ class _ContractsViewState extends State<ContractsView> {
                 height: (MediaQuery.of(context).size.height * 0.65) + 32,
                 decoration: BoxDecoration(
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(32)),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(24),
+                      topRight: Radius.circular(32)),
                   boxShadow: const [
                     BoxShadow(
                       color: Colors.white10,
@@ -99,14 +110,18 @@ class _ContractsViewState extends State<ContractsView> {
                     ),
                   ],
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: mScreenEdgeInsetValue),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: mScreenEdgeInsetValue),
                 child: _selectedContract == null
                     ? const SizedBox()
                     : CustomScrollView(
                         slivers: [
                           _buildOverdueSection(),
                           ..._buildPaymentHistories(context),
-                          SliverToBoxAdapter(child: SizedBox(height: MediaQuery.of(context).padding.bottom)),
+                          SliverToBoxAdapter(
+                              child: SizedBox(
+                                  height:
+                                      MediaQuery.of(context).padding.bottom)),
                         ],
                       )),
           ),
@@ -135,7 +150,8 @@ class _ContractsViewState extends State<ContractsView> {
   GestureDetector _buildContractSelector(BuildContext context) {
     return GestureDetector(
       onHorizontalDragEnd: (details) {
-        if (details.primaryVelocity! < 0 && _selectedIndex < _contracts!.length - 1) {
+        if (details.primaryVelocity! < 0 &&
+            _selectedIndex < _contracts!.length - 1) {
           setState(() {
             _selectedIndex++;
             _onContractSelected(_contracts![_selectedIndex]);
@@ -154,7 +170,8 @@ class _ContractsViewState extends State<ContractsView> {
             image: DecorationImage(
           image: NetworkImage(_contracts![_selectedIndex].imageUrl),
           fit: BoxFit.cover,
-          colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.darken),
+          colorFilter:
+              ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.darken),
         )),
         child: Row(
           children: [
@@ -180,8 +197,16 @@ class _ContractsViewState extends State<ContractsView> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(_contracts![_selectedIndex].unitNumber, style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: mDarkBodyTextColor)),
-                      Text(_contracts![_selectedIndex].projectName, style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: mDarkBodyTextColor)),
+                      Text(_contracts![_selectedIndex].unitNumber,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium!
+                              .copyWith(color: mDarkBodyTextColor)),
+                      Text(_contracts![_selectedIndex].projectName,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(color: mDarkBodyTextColor)),
                     ],
                   ),
                   Expanded(
@@ -197,11 +222,13 @@ class _ContractsViewState extends State<ContractsView> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => ContractDetailView(
-                                            contractId: _selectedContract!.contractId,
+                                            contractId:
+                                                _selectedContract!.contractId,
                                           ))),
                               icon: const Icon(Icons.dock_sharp),
                               label: Text(
-                                AppLocalizations.of(context)!.contractsViewContract,
+                                AppLocalizations.of(context)!
+                                    .contractsViewContract,
                               ),
                             ),
                           )
@@ -244,7 +271,8 @@ class _ContractsViewState extends State<ContractsView> {
         future: _fetchOverdueDetail,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SliverFillRemaining(child: Center(child: CircularProgressIndicator.adaptive()));
+            return const SliverFillRemaining(
+                child: Center(child: CircularProgressIndicator.adaptive()));
           }
           final overdueDetail = snapshot.data;
           return SliverToBoxAdapter(
@@ -252,7 +280,8 @@ class _ContractsViewState extends State<ContractsView> {
                 ? const SizedBox()
                 : Container(
                     margin: const EdgeInsets.only(top: 24),
-                    padding: const EdgeInsets.only(top: 20, left: 16, right: 16, bottom: 0),
+                    padding: const EdgeInsets.only(
+                        top: 20, left: 16, right: 16, bottom: 0),
                     decoration: buildCardDecoration(context),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -261,15 +290,27 @@ class _ContractsViewState extends State<ContractsView> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              AppLocalizations.of(context)!.overdueDetailAmountLabel,
-                              style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                                    color: CommonUtil.colorTheme(context, darkColor: mDarkUnPaidColor, lightColor: mLightUnPaidColor),
+                              AppLocalizations.of(context)!
+                                  .overdueDetailAmountLabel,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
+                                    color: CommonUtil.colorTheme(context,
+                                        darkColor: mDarkUnPaidColor,
+                                        lightColor: mLightUnPaidColor),
                                   ),
                             ),
                             Text(
-                              AppLocalizations.of(context)!.priceFormatBaht(overdueDetail.amount),
-                              style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                                    color: CommonUtil.colorTheme(context, darkColor: mDarkUnPaidColor, lightColor: mLightUnPaidColor),
+                              AppLocalizations.of(context)!
+                                  .priceFormatBaht(overdueDetail.amount),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
+                                    color: CommonUtil.colorTheme(context,
+                                        darkColor: mDarkUnPaidColor,
+                                        lightColor: mLightUnPaidColor),
                                   ),
                             ),
                           ],
@@ -278,40 +319,69 @@ class _ContractsViewState extends State<ContractsView> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(AppLocalizations.of(context)!.overdueDetailDueDateLabel, style: Theme.of(context).textTheme.bodyMedium),
-                            Text(DateFormatterUtil.formatShortDate(context, overdueDetail.dueDate), style: Theme.of(context).textTheme.bodyMedium),
+                            Text(
+                                AppLocalizations.of(context)!
+                                    .overdueDetailDueDateLabel,
+                                style: Theme.of(context).textTheme.bodyMedium),
+                            Text(
+                                DateFormatterUtil.formatShortDate(
+                                    context, overdueDetail.dueDate),
+                                style: Theme.of(context).textTheme.bodyMedium),
                           ],
                         ),
-                        if (overdueDetail.creditNumber?.isNotEmpty ?? false) ...[
+                        if (overdueDetail.creditNumber?.isNotEmpty ??
+                            false) ...[
                           const SizedBox(height: 8),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(AppLocalizations.of(context)!.overdueDetailCreditNumberLabel, style: Theme.of(context).textTheme.bodyMedium),
-                              Text(overdueDetail.creditNumber ?? '-', style: Theme.of(context).textTheme.bodyMedium),
+                              Text(
+                                  AppLocalizations.of(context)!
+                                      .overdueDetailCreditNumberLabel,
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium),
+                              Text(overdueDetail.creditNumber ?? '-',
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium),
                             ],
                           ),
                           const SizedBox(height: 8),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(AppLocalizations.of(context)!.overdueDetailDebitDateLabel, style: Theme.of(context).textTheme.bodyMedium),
-                              Text(DateFormatterUtil.formatShortDate(context, overdueDetail.debitDate, '-'), style: Theme.of(context).textTheme.bodyMedium),
+                              Text(
+                                  AppLocalizations.of(context)!
+                                      .overdueDetailDebitDateLabel,
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium),
+                              Text(
+                                  DateFormatterUtil.formatShortDate(
+                                      context, overdueDetail.debitDate, '-'),
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium),
                             ],
                           ),
                         ],
                         FilledButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, PaymentChannelsView.routeName, arguments: {
-                                'contract': _selectedContract,
-                                'overdueDetail': overdueDetail,
-                              });
+                              Navigator.pushNamed(
+                                  context, PaymentChannelsView.routeName,
+                                  arguments: {
+                                    'contract': _selectedContract,
+                                    'overdueDetail': overdueDetail,
+                                  });
                             },
-                            child: Text(AppLocalizations.of(context)!.overdueDetailPayment)),
+                            child: Text(AppLocalizations.of(context)!
+                                .overdueDetailPayment)),
                         TextButton(
-                            onPressed: () => Navigator.pushNamed(context, OverduesView.routeName, arguments: {'contract': _selectedContract!}),
-                            style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.onSurface),
-                            child: Text(AppLocalizations.of(context)!.overdueDetailViewDetail)),
+                            onPressed: () => Navigator.pushNamed(
+                                context, OverduesView.routeName,
+                                arguments: {'contract': _selectedContract!}),
+                            style: TextButton.styleFrom(
+                                foregroundColor:
+                                    Theme.of(context).colorScheme.onSurface),
+                            child: Text(AppLocalizations.of(context)!
+                                .overdueDetailViewDetail)),
                       ],
                     ),
                   ),
@@ -337,13 +407,21 @@ class _ContractsViewState extends State<ContractsView> {
         sliver: SliverToBoxAdapter(
           child: Row(
             children: [
-              Expanded(child: Text(AppLocalizations.of(context)!.paymentHistoryTitle, style: Theme.of(context).textTheme.titleMedium)),
+              Expanded(
+                  child: Text(AppLocalizations.of(context)!.paymentHistoryTitle,
+                      style: Theme.of(context).textTheme.titleMedium)),
               Container(
-                padding: const EdgeInsets.only(left: 16, right: 4, top: 4, bottom: 4),
+                padding: const EdgeInsets.only(
+                    left: 16, right: 4, top: 4, bottom: 4),
                 decoration: BoxDecoration(
-                  color: CommonUtil.colorTheme(context, darkColor: mDarkBackgroundColor, lightColor: mLightCardBackgroundColor),
+                  color: CommonUtil.colorTheme(context,
+                      darkColor: mDarkBackgroundColor,
+                      lightColor: mLightCardBackgroundColor),
                   borderRadius: const BorderRadius.all(Radius.circular(32)),
-                  border: Border.all(color: CommonUtil.colorTheme(context, darkColor: const Color(0xFF585858), lightColor: Colors.black.withOpacity(0.1))),
+                  border: Border.all(
+                      color: CommonUtil.colorTheme(context,
+                          darkColor: const Color(0xFF585858),
+                          lightColor: Colors.black.withOpacity(0.1))),
                 ),
                 child: DropdownButton<int>(
                   isDense: true,
@@ -351,10 +429,13 @@ class _ContractsViewState extends State<ContractsView> {
                   style: Theme.of(context).textTheme.labelMedium,
                   underline: const SizedBox(),
                   value: _selectedYear,
-                  items: _selectableYears().map<DropdownMenuItem<int>>((int value) {
+                  items: _selectableYears()
+                      .map<DropdownMenuItem<int>>((int value) {
                     return DropdownMenuItem<int>(
                       value: value,
-                      child: Text(_selectedLocale == SupportedLocales.th ? '${value + 543}' : '$value'),
+                      child: Text(_selectedLocale == SupportedLocales.th
+                          ? '${value + 543}'
+                          : '$value'),
                     );
                   }).toList(),
                   onChanged: (int? newValue) {
@@ -369,17 +450,21 @@ class _ContractsViewState extends State<ContractsView> {
         ),
       ),
       FutureBuilder(
-          future: context.read<ContractProvider>().fetchPaymentsByYear(_selectedContract!.contractId, _selectedYear),
+          future: context.read<ContractProvider>().fetchPaymentsByYear(
+              _selectedContract!.contractId, _selectedYear),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const SliverFillRemaining(child: Center(child: CircularProgressIndicator.adaptive()));
+              return const SliverFillRemaining(
+                  child: Center(child: CircularProgressIndicator.adaptive()));
             }
             final payments = snapshot.data;
             return SliverList(
                 delegate: SliverChildBuilderDelegate((context, index) {
               return HistoryListTile(
                 paymentDetail: payments![index],
-                onTap: payments[index].status == 'รอยืนยันเงิน' ? null : () => _viewReceipt(payments[index].receiptNumber),
+                onTap: payments[index].status == 'รอยืนยันเงิน'
+                    ? null
+                    : () => _viewReceipt(payments[index].receiptNumber),
               );
             }, childCount: payments?.length));
           })

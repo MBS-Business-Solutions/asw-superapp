@@ -56,9 +56,20 @@
 		<string>Save QR Code as image</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>Save QR Code as image</string>
-		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>We need your location to show your current position on the map.</string>
-		<key>NSCameraUsageDescription</key>
-		<string>This app needs camera access to scan QR codes</string>
-	</dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need your location to show your current position on the map.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs camera access to scan QR codes</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.assetwise.customerportal.deeplink</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>assetwise</string>
+			</array>
+		</dict>
+	</array>
+</dict>
 </plist>
