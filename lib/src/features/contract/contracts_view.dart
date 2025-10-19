@@ -39,39 +39,27 @@ class _ContractsViewState extends State<ContractsView> {
   }
 
   void _initialLoad() async {
-    try {
-      print('🔍 ContractsView: Fetching contracts...');
-      final contracts =
-          await context.read<ContractProvider>().fetchContracts(null);
-      print('✅ ContractsView: Got ${contracts.length} contracts');
+    final contracts =
+        await context.read<ContractProvider>().fetchContracts(null);
 
-      if (contracts.isNotEmpty) {
-        setState(() {
-          _contracts = contracts;
-          _selectedYear = DateTime.now().year;
+    if (contracts.isNotEmpty) {
+      setState(() {
+        _contracts = contracts;
+        _selectedYear = DateTime.now().year;
 
-          _selectedIndex = contracts
-              .indexWhere((element) => element.contractId == widget.linkId);
-          print(
-              '🔍 ContractsView: Looking for linkId: ${widget.linkId}, found at index: $_selectedIndex');
-          if (_selectedIndex < 0) {
-            _selectedIndex = 0;
-          }
-          _selectedContract = contracts[_selectedIndex];
-          print(
-              '✅ ContractsView: Selected contract: ${_selectedContract?.contractId}');
-          if (_selectedContract != null) {
-            _fetchOverdueDetail = _fetchOverdueDetail ??
-                context
-                    .read<ContractProvider>()
-                    .fetchOverdueDetail(_selectedContract!.contractId);
-          }
-        });
-      } else {
-        print('⚠️ ContractsView: No contracts found');
-      }
-    } catch (e) {
-      print('❌ ContractsView: Error loading contracts: $e');
+        _selectedIndex = contracts
+            .indexWhere((element) => element.contractId == widget.linkId);
+        if (_selectedIndex < 0) {
+          _selectedIndex = 0;
+        }
+        _selectedContract = contracts[_selectedIndex];
+        if (_selectedContract != null) {
+          _fetchOverdueDetail = _fetchOverdueDetail ??
+              context
+                  .read<ContractProvider>()
+                  .fetchOverdueDetail(_selectedContract!.contractId);
+        }
+      });
     }
   }
 
