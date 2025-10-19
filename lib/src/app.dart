@@ -5,6 +5,7 @@ import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/themes_dark_const.dart';
 import 'package:AssetWise/src/consts/themes_light_const.dart';
 import 'package:AssetWise/src/features/about_assetwise/about_asswise_view.dart';
+import 'package:AssetWise/src/features/contract/contract_detail_view.dart';
 import 'package:AssetWise/src/features/contract/contracts_view.dart';
 import 'package:AssetWise/src/features/contract/down_history_view.dart';
 import 'package:AssetWise/src/features/contract/overdues_view.dart';
@@ -204,6 +205,9 @@ class _MyAppState extends State<MyApp> {
                   case ContractsView.routeName:
                     return ContractsView(
                         linkId: routeMap?['linkId'] as String?);
+                  case ContractDetailView.routeName:
+                    return ContractDetailView(
+                        contractId: routeMap!['contractId'] as String);
                   case DownHistoryView.routeName:
                     return DownHistoryView(
                         contractId: routeMap!['contractId'] as String);

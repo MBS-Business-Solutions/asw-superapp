@@ -74,38 +74,54 @@ class DeepLinkService {
     try {
       // Handle different deep link patterns
       if (uri.path.startsWith('/app/contract')) {
+        if (kDebugMode) print('🔵 Matched: /app/contract');
         _handleContractLink(context, queryParams);
       } else if (uri.path.startsWith('/app/promotion')) {
+        if (kDebugMode) print('🔵 Matched: /app/promotion');
         _handlePromotionLink(context, queryParams);
       } else if (uri.path.startsWith('/app/project')) {
+        if (kDebugMode) print('🔵 Matched: /app/project');
         _handleProjectLink(context, queryParams);
       } else if (uri.path.startsWith('/app/external')) {
+        if (kDebugMode) print('🔵 Matched: /app/external');
         _handleExternalLink(context, queryParams);
       } else if (uri.path == '/app') {
+        if (kDebugMode) print('🔵 Matched: /app landing page');
         // Handle landing page with parameters
         _handleLandingPageLink(context, queryParams);
       } else if (uri.scheme == 'assetwise') {
+        if (kDebugMode) print('🔵 Matched: custom scheme assetwise://');
         _handleCustomScheme(context, uri);
       } else {
         if (kDebugMode) {
-          print('Unhandled deep link: $uri');
+          print('❌ Unhandled deep link: $uri');
         }
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Error handling deep link: $e');
+        print('❌ Error handling deep link: $e');
       }
     }
   }
 
   void _handleContractLink(BuildContext context, Map<String, String> params) {
     final contractId = params['id'];
+    if (kDebugMode) {
+      print('📄 _handleContractLink called with contractId: $contractId');
+    }
     if (contractId != null) {
+      if (kDebugMode) {
+        print('🚀 Navigating to ContractsView with linkId: $contractId');
+      }
       Navigator.pushNamed(
         context,
         ContractsView.routeName,
         arguments: {'linkId': contractId},
       );
+    } else {
+      if (kDebugMode) {
+        print('⚠️ Contract ID is null, cannot navigate');
+      }
     }
   }
 
@@ -153,22 +169,30 @@ class DeepLinkService {
     final host = uri.host;
     final params = uri.queryParameters;
 
+    if (kDebugMode) {
+      print('🔍 Custom scheme handler - Host: $host, Params: $params');
+    }
+
     switch (host) {
       case 'contract':
+        if (kDebugMode) print('✅ Navigating to contract with params: $params');
         _handleContractLink(context, params);
         break;
       case 'promotion':
+        if (kDebugMode) print('✅ Navigating to promotion with params: $params');
         _handlePromotionLink(context, params);
         break;
       case 'project':
+        if (kDebugMode) print('✅ Navigating to project with params: $params');
         _handleProjectLink(context, params);
         break;
       case 'external':
+        if (kDebugMode) print('✅ Navigating to external with params: $params');
         _handleExternalLink(context, params);
         break;
       default:
         if (kDebugMode) {
-          print('Unhandled custom scheme: $uri');
+          print('❌ Unhandled custom scheme host: $host in $uri');
         }
     }
   }
