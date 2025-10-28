@@ -10,7 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CampaignPop extends StatefulWidget {
-  const CampaignPop({super.key});
+  const CampaignPop({super.key, this.forceShow = false});
+
+  final bool forceShow; // Force show after PIN entry
 
   @override
   State<CampaignPop> createState() => _CampaignPopState();
@@ -24,19 +26,55 @@ class _CampaignPopState extends State<CampaignPop> {
 
   @override
   void initState() {
-    getCampaigns();
+    print('🎯 [CampaignPop] initState() called');
+    // เช็คว่าควรแสดงทันทีหรือไม่ (เฉพาะเข้าแอปครั้งแรก)
+    _checkIfShouldShowOnInit();
     super.initState();
   }
 
+  Future<void> _checkIfShouldShowOnInit() async {
+    final shared = await SharedPreferences.getInstance();
+    final lastAppStartTime = shared.getInt('LAST_APP_START_TIME') ?? 0;
+    final currentTime = DateTime.now().millisecondsSinceEpoch;
+    final timeDifference = currentTime - lastAppStartTime;
+
+    print('🎯 [CampaignPop] Last app start: $lastAppStartTime');
+    print('🎯 [CampaignPop] Current time: $currentTime');
+    print('🎯 [CampaignPop] Time difference: ${timeDifference / 1000} seconds');
+
+    // ถ้าไม่เคยเข้าแอป หรือ เข้าแอปใหม่ (เกิน 10 วินาที)
+    if (lastAppStartTime == 0 || timeDifference > 10000) {
+      print('🎯 [CampaignPop] New app session detected - showing popup');
+      // บันทึกเวลาเข้าแอปใหม่
+      await shared.setInt('LAST_APP_START_TIME', currentTime);
+      getCampaigns(forceShowOnInit: true);
+    } else {
+      print(
+          '🎯 [CampaignPop] Widget rebuild (not new app session) - checking normal timer');
+      getCampaigns(forceShowOnInit: false);
+    }
+  }
+
+  @override
+  void dispose() {
+    print('🎯 [CampaignPop] dispose() called');
+    super.dispose();
+  }
+
   void preloadImages() {
+    print('🎯 [CampaignPop] Preloading ${campaigns.length} campaign images');
     for (final campaign in campaigns) {
       precacheImage(Image.network(campaign.image).image, context);
     }
+    print('🎯 [CampaignPop] Images preloading started');
   }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
+    print(
+        '🎯 [CampaignPop] build() - _isShow: $_isShow, _markHide: $_markHide, campaigns.length: ${campaigns.length}');
+
     return IgnorePointer(
       ignoring: !_isShow,
       child: GestureDetector(
@@ -89,7 +127,9 @@ class _CampaignPopState extends State<CampaignPop> {
                         Positioned(
                           right: 8,
                           top: 8,
-                          child: IconButton(onPressed: () => close(), icon: const Icon(Icons.close)),
+                          child: IconButton(
+                              onPressed: () => close(),
+                              icon: const Icon(Icons.close)),
                         ),
                       ],
                     ),
@@ -102,43 +142,111 @@ class _CampaignPopState extends State<CampaignPop> {
     );
   }
 
-  Future<void> getCampaigns() async {
+  Future<void> getCampaigns({bool forceShowOnInit = false}) async {
+    print(
+        '🎯 [CampaignPop] getCampaigns() called - mounted: $mounted, forceShowOnInit: $forceShowOnInit');
+
     if (mounted) {
       final shared = await SharedPreferences.getInstance();
-      // await shared.setInt('CAMPAIGN_POP_NEXT_SHOW', 0);
-      if (_markHide) return;
+
+      print('🎯 [CampaignPop] _markHide: $_markHide');
+      if (_markHide) {
+        print('🎯 [CampaignPop] Campaign marked as hidden, returning early');
+        return;
+      }
+
       final nextShow = shared.getInt('CAMPAIGN_POP_NEXT_SHOW') ?? 0;
-      if (nextShow < DateTime.now().millisecondsSinceEpoch) {
-        final nextShow = DateTime.now().add(const Duration(minutes: 5)).millisecondsSinceEpoch;
-        shared.setInt('CAMPAIGN_POP_NEXT_SHOW', nextShow);
+      final currentTime = DateTime.now().millisecondsSinceEpoch;
+
+      print('🎯 [CampaignPop] Next show time: $nextShow');
+      print('🎯 [CampaignPop] Current time: $currentTime');
+      print('🎯 [CampaignPop] Should show: ${nextShow < currentTime}');
+      print(
+          '🎯 [CampaignPop] Time difference: ${(nextShow - currentTime) / 1000 / 60} minutes');
+      print('🎯 [CampaignPop] Force show (widget): ${widget.forceShow}');
+      print('🎯 [CampaignPop] Force show (init): $forceShowOnInit');
+
+      // เมื่อเข้าแอป ให้แสดงทันที หรือ เมื่อถึงเวลา 5 นาที หรือ บังคับแสดง
+      if (forceShowOnInit || nextShow < currentTime || widget.forceShow) {
+        // ไม่ตั้งเวลา 5 นาทีเมื่อเข้าแอป (เฉพาะเมื่อมี action แล้วจึงนับ)
+        if (!forceShowOnInit) {
+          final newNextShow = DateTime.now()
+              .add(const Duration(minutes: 5))
+              .millisecondsSinceEpoch;
+          shared.setInt('CAMPAIGN_POP_NEXT_SHOW', newNextShow);
+          print('🎯 [CampaignPop] Updated next show time to: $newNextShow');
+        } else {
+          print('🎯 [CampaignPop] Showing on app init - no timer set yet');
+        }
+
+        if (widget.forceShow) {
+          print('🎯 [CampaignPop] Showing popup due to forceShow flag');
+        }
+        if (forceShowOnInit) {
+          print('🎯 [CampaignPop] Showing popup on app initialization');
+        }
+
+        print('🎯 [CampaignPop] Fetching campaigns from API...');
         campaigns = await AWContentService().fetchCampaigns();
+        print('🎯 [CampaignPop] Campaigns fetched: ${campaigns.length} items');
+
         if (campaigns.isNotEmpty) {
+          print('🎯 [CampaignPop] Campaigns available, showing popup');
           preloadImages();
           setState(() {
             _isShow = true;
             _markHide = false;
           });
+          print('🎯 [CampaignPop] Popup state updated - _isShow: $_isShow');
+        } else {
+          print('🎯 [CampaignPop] No campaigns available, popup will not show');
         }
+      } else {
+        print(
+            '🎯 [CampaignPop] Too early to show popup, waiting... (${((nextShow - currentTime) / 1000 / 60).toStringAsFixed(1)} minutes left)');
       }
+    } else {
+      print('🎯 [CampaignPop] Widget not mounted, skipping');
     }
   }
 
-  void close() {
+  void close() async {
+    print('🎯 [CampaignPop] close() called - hiding popup');
+
+    // ตั้งเวลา 5 นาทีสำหรับการแสดงครั้งถัดไป (หลังจาก action)
+    final shared = await SharedPreferences.getInstance();
+    final newNextShow =
+        DateTime.now().add(const Duration(minutes: 5)).millisecondsSinceEpoch;
+    shared.setInt('CAMPAIGN_POP_NEXT_SHOW', newNextShow);
+    print(
+        '🎯 [CampaignPop] Set 5-minute timer after close action: $newNextShow');
+
     setState(() {
       _isShow = false;
       _markHide = true;
     });
+    print(
+        '🎯 [CampaignPop] Popup closed - _isShow: $_isShow, _markHide: $_markHide');
   }
 
   void closeAndLinkToContent(ImageContent content) {
+    print(
+        '🎯 [CampaignPop] closeAndLinkToContent() called - contentType: ${content.contentType}, id: ${content.id}');
+
     if (content.contentType == 'project') {
-      Navigator.pushNamed(context, ProjectDetailView.routeName, arguments: {'projectId': content.id});
+      print('🎯 [CampaignPop] Navigating to project detail: ${content.id}');
+      Navigator.pushNamed(context, ProjectDetailView.routeName,
+          arguments: {'projectId': content.id});
     } else if (content.contentType == 'promotion') {
-      Navigator.pushNamed(context, PromotionDetailView.routeName, arguments: {'promotionId': content.id});
+      print('🎯 [CampaignPop] Navigating to promotion detail: ${content.id}');
+      Navigator.pushNamed(context, PromotionDetailView.routeName,
+          arguments: {'promotionId': content.id});
     } else if (content.contentType == 'external') {
+      print('🎯 [CampaignPop] Opening external URL: ${content.url}');
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => WebViewWithCloseButton(link: content.url!)),
+        MaterialPageRoute(
+            builder: (context) => WebViewWithCloseButton(link: content.url!)),
       );
       // launchUrl(
       //   Uri.parse(content.url!),
@@ -146,5 +254,19 @@ class _CampaignPopState extends State<CampaignPop> {
       // );
     }
     close();
+  }
+
+  // DEBUG METHODS - Remove in production
+  Future<void> resetTimer() async {
+    print('🎯 [CampaignPop] DEBUG: Resetting campaign timer');
+    final shared = await SharedPreferences.getInstance();
+    await shared.setInt('CAMPAIGN_POP_NEXT_SHOW', 0);
+    print('🎯 [CampaignPop] DEBUG: Timer reset complete');
+  }
+
+  void forceShow() async {
+    print('🎯 [CampaignPop] DEBUG: Force showing campaign popup');
+    await resetTimer();
+    getCampaigns();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:AssetWise/src/features/dashboard/widgets/suggest_assets/widgets/suggest_item.dart';
 import 'package:AssetWise/src/features/projects/views/project_detail_view.dart';
 import 'package:AssetWise/src/providers/dashboard_provider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +13,23 @@ class SuggestAssets extends StatelessWidget {
     return Consumer<DashboardProvider>(
       builder: (context, provider, child) {
         final projects = provider.suggestProjects;
+
+        // 🔍 LOG: ตรวจสอบข้อมูล SuggestProjects
+        if (kDebugMode) {
+          print('=== SuggestAssets Debug Info ===');
+          print('จำนวนโปรเจคที่แนะนำ: ${projects.length}');
+          if (projects.isNotEmpty) {
+            print('ข้อมูลโปรเจคแรก:');
+            final firstProject = projects.first;
+            print('  - ID: ${firstProject.id}');
+            print('  - Name: ${firstProject.name}');
+            print('  - Status: ${firstProject.status}');
+            print('  - Image: ${firstProject.image}');
+          } else {
+            print('❌ ไม่มีข้อมูลโปรเจคเลย!');
+          }
+          print('================================\n');
+        }
         for (final project in projects) {
           precacheImage(NetworkImage(project.image), context);
         }
@@ -27,7 +45,8 @@ class SuggestAssets extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, ProjectDetailView.routeName, arguments: {'projectId': projects[index].id});
+                  Navigator.pushNamed(context, ProjectDetailView.routeName,
+                      arguments: {'projectId': projects[index].id});
                 },
                 child: SuggestItem(project: projects[index]),
               );

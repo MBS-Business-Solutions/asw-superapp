@@ -12,7 +12,8 @@ import 'package:path_provider/path_provider.dart';
 
 class AWContentService {
   AWContentService._privateConstructor();
-  static final AWContentService _instance = AWContentService._privateConstructor();
+  static final AWContentService _instance =
+      AWContentService._privateConstructor();
   factory AWContentService() => _instance;
 
   Future<String> fetchLandingBackgroundURL() async {
@@ -73,27 +74,89 @@ class AWContentService {
   }
 
   Future<List<Project>> fetchProjects() async {
+    // 🔍 LOG: เริ่มเรียก API
+    if (kDebugMode) {
+      print(
+          '🌐 AWContentService: เริ่มเรียก API $BASE_URL/mobile/home/projects');
+    }
+
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/home/projects'),
       headers: getHeader(),
     );
 
     try {
+      // 🔍 LOG: แสดง status code
+      if (kDebugMode) {
+        print('📡 API Response Status: ${response.statusCode}');
+        print('📦 Response Body Length: ${response.body.length} chars');
+      }
+
       if (response.statusCode >= 200 && response.statusCode < 300) {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         List<dynamic> data = jsonResponse['data'];
-        return data.map((json) => Project.fromJson(json)).toList();
+
+        // 🔍 LOG: แสดงข้อมูลที่ decode ได้
+        if (kDebugMode) {
+          print('✅ API Success: ได้ข้อมูล ${data.length} โปรเจค');
+          if (data.isNotEmpty) {
+            print('📄 ตัวอย่างข้อมูลโปรเจคแรก: ${data.first}');
+          }
+        }
+
+        // Parse แต่ละโปรเจคและ log หากเจอปัญหา
+        List<Project> projects = [];
+        for (int i = 0; i < data.length; i++) {
+          try {
+            final project = Project.fromJson(data[i]);
+            projects.add(project);
+
+            // 🔍 LOG: แสดงข้อมูลโปรเจคที่ parse สำเร็จ
+            if (kDebugMode && i < 3) {
+              // แสดงแค่ 3 ตัวแรก
+              print(
+                  '✅ Parsed Project ${i + 1}: ${project.name} (status: "${project.status}")');
+            }
+          } catch (e) {
+            // 🔍 LOG: แสดงโปรเจคที่ parse ไม่ได้
+            if (kDebugMode) {
+              print('❌ Parse Error Project ${i + 1}: $e');
+              print('📄 Problem Data: ${data[i]}');
+            }
+          }
+        }
+
+        if (kDebugMode) {
+          print('📊 Parse ได้สำเร็จ: ${projects.length}/${data.length} โปรเจค');
+        }
+
+        return projects;
+      } else {
+        // 🔍 LOG: แสดง error status
+        if (kDebugMode) {
+          print('❌ API Error: Status ${response.statusCode}');
+          print('📄 Error Response: ${response.body}');
+        }
       }
     } catch (e) {
-      if (kDebugMode) print(e);
+      // 🔍 LOG: แสดง parsing error
+      if (kDebugMode) {
+        print('❌ AWContentService: Parse Error - $e');
+        print('📄 Raw Response: ${response.body}');
+      }
       return [];
     }
 
-    if (kDebugMode) print(response);
+    // 🔍 LOG: กรณีที่ไม่สำเร็จ
+    if (kDebugMode) {
+      print('❌ AWContentService: fetchProjects ไม่สำเร็จ');
+      print('Status: ${response.statusCode}, Body: ${response.body}');
+    }
     return [];
   }
 
-  Future<ServiceResponseWithData<List<PromotionBanner>>> fetchPromotionBanners() async {
+  Future<ServiceResponseWithData<List<PromotionBanner>>>
+      fetchPromotionBanners() async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/promotion/banner'),
       headers: getHeader(),
@@ -116,11 +179,13 @@ class AWContentService {
       }
     } catch (e) {
       if (kDebugMode) print(e);
-      return ServiceResponseWithData<List<PromotionBanner>>(status: 'error', message: e.toString(), data: []);
+      return ServiceResponseWithData<List<PromotionBanner>>(
+          status: 'error', message: e.toString(), data: []);
     }
 
     if (kDebugMode) print(response);
-    return ServiceResponseWithData<List<PromotionBanner>>(status: 'error', message: 'Unknown error', data: []);
+    return ServiceResponseWithData<List<PromotionBanner>>(
+        status: 'error', message: 'Unknown error', data: []);
   }
 
   Future<ServiceResponseWithData<List<PromotionItem>>> fetchPromotions() async {
@@ -146,14 +211,17 @@ class AWContentService {
       }
     } catch (e) {
       if (kDebugMode) print(e);
-      return ServiceResponseWithData<List<PromotionItem>>(status: 'error', message: e.toString(), data: null);
+      return ServiceResponseWithData<List<PromotionItem>>(
+          status: 'error', message: e.toString(), data: null);
     }
 
     if (kDebugMode) print(response);
-    return ServiceResponseWithData<List<PromotionItem>>(status: 'error', message: 'Unknown error', data: null);
+    return ServiceResponseWithData<List<PromotionItem>>(
+        status: 'error', message: 'Unknown error', data: null);
   }
 
-  Future<ServiceResponseWithData<PromotionItemDetail>> fetchPromotionDetail(int id) async {
+  Future<ServiceResponseWithData<PromotionItemDetail>> fetchPromotionDetail(
+      int id) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/promotion/$id'),
       headers: getHeader(),
@@ -170,11 +238,13 @@ class AWContentService {
       }
     } catch (e) {
       if (kDebugMode) print(e);
-      return ServiceResponseWithData<PromotionItemDetail>(status: 'error', message: e.toString(), data: null);
+      return ServiceResponseWithData<PromotionItemDetail>(
+          status: 'error', message: e.toString(), data: null);
     }
 
     if (kDebugMode) print(response);
-    return ServiceResponseWithData<PromotionItemDetail>(status: 'error', message: 'Unknown error', data: null);
+    return ServiceResponseWithData<PromotionItemDetail>(
+        status: 'error', message: 'Unknown error', data: null);
   }
 
   Future<ServiceResponseWithData<List<KeyValue>>> fetchPurposes() async {
@@ -200,11 +270,13 @@ class AWContentService {
       }
     } catch (e) {
       if (kDebugMode) print(e);
-      return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: e.toString(), data: null);
+      return ServiceResponseWithData<List<KeyValue>>(
+          status: 'error', message: e.toString(), data: null);
     }
 
     if (kDebugMode) print(response);
-    return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: 'Unknown error', data: null);
+    return ServiceResponseWithData<List<KeyValue>>(
+        status: 'error', message: 'Unknown error', data: null);
   }
 
   Future<ServiceResponseWithData<List<KeyValue>>> fetchPriceRanges() async {
@@ -230,11 +302,13 @@ class AWContentService {
       }
     } catch (e) {
       if (kDebugMode) print(e);
-      return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: e.toString(), data: null);
+      return ServiceResponseWithData<List<KeyValue>>(
+          status: 'error', message: e.toString(), data: null);
     }
 
     if (kDebugMode) print(response);
-    return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: 'Unknown error', data: null);
+    return ServiceResponseWithData<List<KeyValue>>(
+        status: 'error', message: 'Unknown error', data: null);
   }
 
   Future<ServiceResponse> registerInterest({
@@ -259,7 +333,8 @@ class AWContentService {
         'email': email,
         'price_interest': priceInterest,
         'objective_interest': objectiveInterest,
-        if (participantProjectId != null) 'participant_project_id': participantProjectId,
+        if (participantProjectId != null)
+          'participant_project_id': participantProjectId,
         if (utmSource != null) 'utm_source': utmSource,
       }),
     );
@@ -278,7 +353,8 @@ class AWContentService {
     return ServiceResponse(status: 'error', message: 'Unknown error');
   }
 
-  Future<ServiceResponseWithData<List<KeyValue>>> fetchBrandsMasterData() async {
+  Future<ServiceResponseWithData<List<KeyValue>>>
+      fetchBrandsMasterData() async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/project/brands'),
       headers: getHeader(),
@@ -301,14 +377,17 @@ class AWContentService {
       }
     } catch (e) {
       if (kDebugMode) print(e);
-      return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: e.toString(), data: null);
+      return ServiceResponseWithData<List<KeyValue>>(
+          status: 'error', message: e.toString(), data: null);
     }
 
     if (kDebugMode) print(response);
-    return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: 'Unknown error', data: null);
+    return ServiceResponseWithData<List<KeyValue>>(
+        status: 'error', message: 'Unknown error', data: null);
   }
 
-  Future<ServiceResponseWithData<List<KeyValue>>> fetchLocationsMasterData() async {
+  Future<ServiceResponseWithData<List<KeyValue>>>
+      fetchLocationsMasterData() async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/project/locations'),
       headers: getHeader(),
@@ -331,14 +410,17 @@ class AWContentService {
       }
     } catch (e) {
       if (kDebugMode) print(e);
-      return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: e.toString(), data: null);
+      return ServiceResponseWithData<List<KeyValue>>(
+          status: 'error', message: e.toString(), data: null);
     }
 
     if (kDebugMode) print(response);
-    return ServiceResponseWithData<List<KeyValue>>(status: 'error', message: 'Unknown error', data: null);
+    return ServiceResponseWithData<List<KeyValue>>(
+        status: 'error', message: 'Unknown error', data: null);
   }
 
-  Future<ServiceResponseWithData<List<ProjectFilterStatus>>> fetchProjectStatusMasterData() async {
+  Future<ServiceResponseWithData<List<ProjectFilterStatus>>>
+      fetchProjectStatusMasterData() async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/project/status'),
       headers: getHeader(),
@@ -354,18 +436,22 @@ class AWContentService {
             if (data == null) {
               return <ProjectFilterStatus>[];
             }
-            return data.map((json) => ProjectFilterStatus.fromJson(json)).toList();
+            return data
+                .map((json) => ProjectFilterStatus.fromJson(json))
+                .toList();
           },
         );
         return result;
       }
     } catch (e) {
       if (kDebugMode) print(e);
-      return ServiceResponseWithData<List<ProjectFilterStatus>>(status: 'error', message: e.toString(), data: null);
+      return ServiceResponseWithData<List<ProjectFilterStatus>>(
+          status: 'error', message: e.toString(), data: null);
     }
 
     if (kDebugMode) print(response);
-    return ServiceResponseWithData<List<ProjectFilterStatus>>(status: 'error', message: 'Unknown error', data: null);
+    return ServiceResponseWithData<List<ProjectFilterStatus>>(
+        status: 'error', message: 'Unknown error', data: null);
   }
 
   Future<ServiceResponseWithData<List<ProjectSearchItem>>> searchProjects({
@@ -398,21 +484,26 @@ class AWContentService {
             if (data == null) {
               return <ProjectSearchItem>[];
             }
-            return data.map((json) => ProjectSearchItem.fromJson(json)).toList();
+            return data
+                .map((json) => ProjectSearchItem.fromJson(json))
+                .toList();
           },
         );
         return result;
       }
     } catch (e) {
       if (kDebugMode) print(e);
-      return ServiceResponseWithData<List<ProjectSearchItem>>(status: 'error', message: e.toString(), data: null);
+      return ServiceResponseWithData<List<ProjectSearchItem>>(
+          status: 'error', message: e.toString(), data: null);
     }
 
     if (kDebugMode) print(response);
-    return ServiceResponseWithData<List<ProjectSearchItem>>(status: 'error', message: 'Unknown error', data: null);
+    return ServiceResponseWithData<List<ProjectSearchItem>>(
+        status: 'error', message: 'Unknown error', data: null);
   }
 
-  Future<ServiceResponse> setFavoriteProject(int projectId, String token) async {
+  Future<ServiceResponse> setFavoriteProject(
+      int projectId, String token) async {
     final body = jsonEncode({
       'project_id': projectId,
     });
@@ -438,7 +529,8 @@ class AWContentService {
     return ServiceResponse(status: 'error', message: 'Unknown error');
   }
 
-  Future<ServiceResponse> unsetFavoriteProject(int projectId, String token) async {
+  Future<ServiceResponse> unsetFavoriteProject(
+      int projectId, String token) async {
     final body = jsonEncode({
       'project_id': projectId,
     });
@@ -464,7 +556,8 @@ class AWContentService {
     return ServiceResponse(status: 'error', message: 'Unknown error');
   }
 
-  Future<ServiceResponseWithData<ProjectDetail>> fetchProjectDetail(int id) async {
+  Future<ServiceResponseWithData<ProjectDetail>> fetchProjectDetail(
+      int id) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/project/$id'),
       headers: getHeader(),
@@ -481,14 +574,17 @@ class AWContentService {
       }
     } catch (e) {
       if (kDebugMode) print(e);
-      return ServiceResponseWithData<ProjectDetail>(status: 'error', message: e.toString(), data: null);
+      return ServiceResponseWithData<ProjectDetail>(
+          status: 'error', message: e.toString(), data: null);
     }
 
     if (kDebugMode) print(response);
-    return ServiceResponseWithData<ProjectDetail>(status: 'error', message: 'Unknown error', data: null);
+    return ServiceResponseWithData<ProjectDetail>(
+        status: 'error', message: 'Unknown error', data: null);
   }
 
-  Future<ServiceResponseWithData<List<FavouriteProjectSearchItem>>> fetchFavouriteProjects(String? token) async {
+  Future<ServiceResponseWithData<List<FavouriteProjectSearchItem>>>
+      fetchFavouriteProjects(String? token) async {
     final response = await http.get(
       Uri.parse('$BASE_URL/mobile/project/favorite'),
       headers: getHeader(token: token),
@@ -504,18 +600,22 @@ class AWContentService {
             if (data == null) {
               return <FavouriteProjectSearchItem>[];
             }
-            return data.map((json) => FavouriteProjectSearchItem.fromJson(json)).toList();
+            return data
+                .map((json) => FavouriteProjectSearchItem.fromJson(json))
+                .toList();
           },
         );
         return result;
       }
     } catch (e) {
       if (kDebugMode) print(e);
-      return ServiceResponseWithData<List<FavouriteProjectSearchItem>>(status: 'error', message: e.toString(), data: null);
+      return ServiceResponseWithData<List<FavouriteProjectSearchItem>>(
+          status: 'error', message: e.toString(), data: null);
     }
 
     if (kDebugMode) print(response);
-    return ServiceResponseWithData<List<FavouriteProjectSearchItem>>(status: 'error', message: 'Unknown error', data: null);
+    return ServiceResponseWithData<List<FavouriteProjectSearchItem>>(
+        status: 'error', message: 'Unknown error', data: null);
   }
 
   Future<Uint8List> fetchFileBinary(String url) async {
@@ -537,7 +637,8 @@ class AWContentService {
     return Uint8List(0);
   }
 
-  Future<String?> downloadFile({required String url, required String fileName}) async {
+  Future<String?> downloadFile(
+      {required String url, required String fileName}) async {
     final response = await http.get(
       Uri.parse(url),
       headers: getHeader(),

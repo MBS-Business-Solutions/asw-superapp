@@ -61,6 +61,7 @@ class FavHotMenues extends StatelessWidget {
                         isFavMenu: true,
                         titleText: currentLocale.locale == 'th' ? e.titleTextTh : e.titleTextEn,
                         iconAsset: e.iconAsset,
+                        isDisabled: e.id == 'news', // Disable news menu
                         onTap: () {
                           if (e.link.isEmpty) {
                             return;

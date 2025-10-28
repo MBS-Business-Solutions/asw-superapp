@@ -52,25 +52,33 @@ class DashboardNotificationSection extends StatelessWidget {
               iconAsset: 'assets/icons/PriceCheckSharp.svg',
               titleText: AppLocalizations.of(context)!.notificationPayment,
               badgeCount: provider.unreadPaymentCount,
-              onTap: () => Navigator.pushNamed(context, NotificationsView.routeName, arguments: {'selectedIndex': 1}),
+              onTap: () => Navigator.pushNamed(
+                  context, NotificationsView.routeName,
+                  arguments: {'selectedIndex': 1}),
             ),
             HotMenuWidget(
               iconAsset: 'assets/icons/Campaign.svg',
               titleText: AppLocalizations.of(context)!.notificationPromotion,
               badgeCount: provider.unreadPromotionCount,
-              onTap: () => Navigator.pushNamed(context, NotificationsView.routeName, arguments: {'selectedIndex': 2}),
+              onTap: () => Navigator.pushNamed(
+                  context, NotificationsView.routeName,
+                  arguments: {'selectedIndex': 2}),
             ),
             HotMenuWidget(
               iconAsset: 'assets/icons/hot_deal.svg',
               titleText: AppLocalizations.of(context)!.notificationHotDeal,
               badgeCount: provider.unreadHotDealCount,
-              onTap: () => Navigator.pushNamed(context, NotificationsView.routeName, arguments: {'selectedIndex': 3}),
+              onTap: () => Navigator.pushNamed(
+                  context, NotificationsView.routeName,
+                  arguments: {'selectedIndex': 3}),
             ),
             HotMenuWidget(
               iconAsset: 'assets/icons/news.svg',
               titleText: AppLocalizations.of(context)!.notificationNews,
               badgeCount: provider.unreadNewsCount,
-              onTap: () => Navigator.pushNamed(context, NotificationsView.routeName, arguments: {'selectedIndex': 4}),
+              onTap: () => Navigator.pushNamed(
+                  context, NotificationsView.routeName,
+                  arguments: {'selectedIndex': 4}),
             ),
           ],
         ),
@@ -80,7 +88,11 @@ class DashboardNotificationSection extends StatelessWidget {
   }
 
   List<Widget> _buildUnpaidItems(BuildContext context) {
-    final unpaidList = context.watch<NotificationItemProvider>().paymentNotification.where((element) => !element.isRead).toList();
+    final unpaidList = context
+        .watch<NotificationItemProvider>()
+        .paymentNotification
+        .where((element) => !element.isRead)
+        .toList();
     final preferedLanguage = Localizations.localeOf(context).languageCode;
     final timeFormatter = DateFormat('HH:mm');
     // Cap only 3 items
@@ -88,7 +100,8 @@ class DashboardNotificationSection extends StatelessWidget {
       final item = unpaidList[index];
       return Container(
         margin: const EdgeInsets.only(top: mDefaultPadding),
-        padding: const EdgeInsets.only(left: mDefaultPadding, right: mDefaultPadding),
+        padding: const EdgeInsets.only(
+            left: mDefaultPadding, right: mDefaultPadding),
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
           boxShadow: [
@@ -102,16 +115,22 @@ class DashboardNotificationSection extends StatelessWidget {
         ),
         child: ListTile(
           onTap: () async {
-            await context.read<NotificationItemProvider>().markAsRead(id: item.id);
+            await context
+                .read<NotificationItemProvider>()
+                .markAsRead(id: item.id);
             if (item.data == null) return;
             final data = jsonDecode(item.data!);
             if (data['contract_id'] != null) {
               final contractId = data['contract_id'];
               // find contract
-              final contracts = await context.read<ContractProvider>().fetchContracts(context);
-              final contract = contracts.firstWhere((element) => element.contractId == contractId);
+              final contracts = await context
+                  .read<ContractProvider>()
+                  .fetchContracts(context);
+              final contract = contracts
+                  .firstWhere((element) => element.contractId == contractId);
               // final overdueDetail = await context.read<ContractProvider>().fetchOverdueDetail(contractId);
-              Navigator.pushNamed(context, OverduesView.routeName, arguments: {'contract': contract});
+              Navigator.pushNamed(context, OverduesView.routeName,
+                  arguments: {'contract': contract});
               //   Navigator.push(
               //     context,
               //     MaterialPageRoute(
@@ -131,13 +150,17 @@ class DashboardNotificationSection extends StatelessWidget {
               Expanded(
                 child: Text(
                   preferedLanguage == 'en' ? item.titleEn : item.titleTh,
-                  style: Theme.of(context).textTheme.labelLarge!.copyWith(color: mRedColor),
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelLarge!
+                      .copyWith(color: mRedColor),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               const SizedBox(width: mMediumPadding),
-              Text(timeFormatter.format(item.createAt), style: Theme.of(context).textTheme.bodySmall),
+              Text(timeFormatter.format(item.createAt),
+                  style: Theme.of(context).textTheme.bodySmall),
             ],
           ),
           subtitle: Padding(

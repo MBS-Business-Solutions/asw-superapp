@@ -8,10 +8,18 @@ class Project {
   final String status;
   final String image;
 
-  Project({required this.id, required this.name, required this.status, required this.image});
+  Project(
+      {required this.id,
+      required this.name,
+      required this.status,
+      required this.image});
 
   factory Project.fromJson(Map<String, dynamic> json) {
-    return Project(id: json['id'], name: json['name'], status: json['status'], image: json['image']);
+    return Project(
+        id: json['id'],
+        name: json['name'] ?? '',
+        status: json['status'] ?? 'ไม่ระบุสถานะ',
+        image: json['image'] ?? '');
   }
 }
 
@@ -21,7 +29,8 @@ class ImageContent {
   final String? contentType;
   final String? url;
 
-  ImageContent({required this.image, required this.id, this.contentType, this.url});
+  ImageContent(
+      {required this.image, required this.id, this.contentType, this.url});
 
   factory ImageContent.fromJson(Map<String, dynamic> json) {
     return ImageContent(
@@ -78,7 +87,8 @@ class RegisterOTPVerifyResponse {
 
   factory RegisterOTPVerifyResponse.fromJson(List<dynamic> json) {
     var itemsList = json;
-    List<RegisterOTPVerifyItem> items = itemsList.map((i) => RegisterOTPVerifyItem.fromJson(i)).toList();
+    List<RegisterOTPVerifyItem> items =
+        itemsList.map((i) => RegisterOTPVerifyItem.fromJson(i)).toList();
 
     return RegisterOTPVerifyResponse(
       items: items,
@@ -96,7 +106,15 @@ class RegisterOTPVerifyItem {
   final bool? isResident;
   final String? remCode;
 
-  RegisterOTPVerifyItem({this.id, this.phone, this.firstName, this.lastName, this.email, this.idCard, this.isResident, this.remCode});
+  RegisterOTPVerifyItem(
+      {this.id,
+      this.phone,
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.idCard,
+      this.isResident,
+      this.remCode});
 
   factory RegisterOTPVerifyItem.fromJson(Map<String, dynamic> json) {
     return RegisterOTPVerifyItem(
@@ -118,11 +136,16 @@ class Consent {
   final String content;
   final List<ConsentItem> items;
 
-  Consent({required this.id, required this.version, required this.content, required this.items});
+  Consent(
+      {required this.id,
+      required this.version,
+      required this.content,
+      required this.items});
 
   factory Consent.fromJson(Map<String, dynamic> json) {
     var itemsList = json['items'] as List;
-    List<ConsentItem> items = itemsList.map((i) => ConsentItem.fromJson(i)).toList();
+    List<ConsentItem> items =
+        itemsList.map((i) => ConsentItem.fromJson(i)).toList();
 
     return Consent(
       id: json['id'],
@@ -139,7 +162,11 @@ class ConsentItem {
   final String content;
   final bool isRequired;
 
-  ConsentItem({required this.id, required this.title, required this.content, required this.isRequired});
+  ConsentItem(
+      {required this.id,
+      required this.title,
+      required this.content,
+      required this.isRequired});
 
   factory ConsentItem.fromJson(Map<String, dynamic> json) {
     return ConsentItem(
@@ -158,7 +185,9 @@ class UserToken {
   UserToken({required this.token, required this.userInformation});
 
   factory UserToken.fromJson(Map<String, dynamic> json) {
-    return UserToken(token: json['token'], userInformation: UserInformation.fromJson(json['data']));
+    return UserToken(
+        token: json['token'],
+        userInformation: UserInformation.fromJson(json['data']));
   }
 }
 
@@ -374,12 +403,15 @@ class PromotionItemDetail {
     return PromotionItemDetail(
       id: json['id'],
       name: json['name'],
-      date: json['date'] != null ? DateTime.parse(json['date']) : DateTime.now(),
+      date:
+          json['date'] != null ? DateTime.parse(json['date']) : DateTime.now(),
       image: json['image'],
       content: json['content'],
       url: json['url'],
       utmSource: '${json['utm_source']}_${json['name'] ?? ''}',
-      participantProjects: (json['participant_projects'] as List?)?.map((item) => ParticipanProject.fromJson(item)).toList(),
+      participantProjects: (json['participant_projects'] as List?)
+          ?.map((item) => ParticipanProject.fromJson(item))
+          .toList(),
     );
   }
 }
@@ -503,13 +535,28 @@ class ProjectDetail {
       profileImage: json['profileImage'],
       name: json['name'],
       description: json['description'],
-      progress: json['progress'] != null ? ProjectProgress.fromJson(json['progress']) : null,
-      location: json['location'] != null ? ProjectLocation.fromJson(json['location']) : null,
-      nearbyLocations: (json['nearbyLocations'] as List?)?.map((item) => ProjectNearbyLocation.fromJson(item)).toList(),
-      plans: json['plans'] != null && (json['plans'] as List).isNotEmpty ? (json['plans'] as List).map((item) => ProjectPlan.fromJson(item)).toList() : null,
-      gallery: json['gallery'] != null ? List<String>.from(json['gallery']) : null,
-      brochures: (json['brochures'] as List?)?.map((item) => ProjectBrochure.fromJson(item)).toList(),
-      videos: (json['videos'] as List?)?.map((item) => ProjectVideo.fromJson(item)).toList(),
+      progress: json['progress'] != null
+          ? ProjectProgress.fromJson(json['progress'])
+          : null,
+      location: json['location'] != null
+          ? ProjectLocation.fromJson(json['location'])
+          : null,
+      nearbyLocations: (json['nearbyLocations'] as List?)
+          ?.map((item) => ProjectNearbyLocation.fromJson(item))
+          .toList(),
+      plans: json['plans'] != null && (json['plans'] as List).isNotEmpty
+          ? (json['plans'] as List)
+              .map((item) => ProjectPlan.fromJson(item))
+              .toList()
+          : null,
+      gallery:
+          json['gallery'] != null ? List<String>.from(json['gallery']) : null,
+      brochures: (json['brochures'] as List?)
+          ?.map((item) => ProjectBrochure.fromJson(item))
+          .toList(),
+      videos: (json['videos'] as List?)
+          ?.map((item) => ProjectVideo.fromJson(item))
+          .toList(),
       weblink: json['weblink'],
     );
   }

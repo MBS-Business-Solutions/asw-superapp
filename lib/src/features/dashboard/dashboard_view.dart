@@ -50,7 +50,8 @@ class _DashboardViewState extends State<DashboardView> {
                 children: [
                   SvgPicture.asset('assets/images/ComingSoon.svg'),
                   const SizedBox(height: 20),
-                  Text(AppLocalizations.of(context)!.errorComingSoon, style: Theme.of(context).textTheme.titleLarge),
+                  Text(AppLocalizations.of(context)!.errorComingSoon,
+                      style: Theme.of(context).textTheme.titleLarge),
                 ],
               ),
             ),
@@ -98,7 +99,9 @@ class _DashboardViewState extends State<DashboardView> {
               );
             },
           ),
-          const CampaignPop(),
+          CampaignPop(
+              key: ValueKey(
+                  'campaign_${DateTime.now().millisecondsSinceEpoch}')),
           if (_isLoading)
             Positioned.fill(
               child: Container(
@@ -126,7 +129,8 @@ class _DashboardViewState extends State<DashboardView> {
     }
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => WebViewWithCloseButton(link: link)),
+      MaterialPageRoute(
+          builder: (context) => WebViewWithCloseButton(link: link)),
     );
     setState(() {
       _isLoading = false;
