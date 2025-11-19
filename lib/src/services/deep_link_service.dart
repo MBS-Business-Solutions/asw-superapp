@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../features/contract/contracts_view.dart';
+import '../features/contract/contract_detail_view.dart';
 import '../features/promotions/views/promotion_detail_view.dart';
 import '../features/projects/views/project_detail_view.dart';
 import '../widgets/webview_with_close.dart';
@@ -103,8 +103,8 @@ class DeepLinkService {
     if (contractId != null) {
       Navigator.pushNamed(
         context,
-        ContractsView.routeName,
-        arguments: {'linkId': contractId},
+        ContractDetailView.routeName,
+        arguments: {'contractId': contractId},
       );
     }
   }

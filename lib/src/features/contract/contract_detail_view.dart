@@ -47,7 +47,89 @@ class _ContractDetailViewState extends State<ContractDetailView> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             }
-            final contractDetail = snapshot.data!;
+
+            if (snapshot.hasError) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(mScreenEdgeInsetValue),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.error_outline,
+                        size: 64,
+                        color: Colors.red,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'เกิดข้อผิดพลาดในการโหลดข้อมูล',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        snapshot.error.toString(),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                      ),
+                      const SizedBox(height: 24),
+                      FilledButton(
+                        onPressed: () {
+                          setState(() {
+                            _contractDetailFuture = context.read<ContractProvider>().fetchContractDetail(widget.contractId);
+                          });
+                        },
+                        child: const Text('ลองอีกครั้ง'),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+
+            final contractDetail = snapshot.data;
+            if (contractDetail == null) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(mScreenEdgeInsetValue),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.inbox_outlined,
+                        size: 64,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'ไม่พบข้อมูลสัญญา',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Contract ID: ${widget.contractId}',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                      ),
+                      const SizedBox(height: 24),
+                      FilledButton(
+                        onPressed: () {
+                          setState(() {
+                            _contractDetailFuture = context.read<ContractProvider>().fetchContractDetail(widget.contractId);
+                          });
+                        },
+                        child: const Text('ลองอีกครั้ง'),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+
             return Stack(
               children: [
                 Positioned(
