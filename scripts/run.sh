@@ -4,11 +4,13 @@
 # วิธีใช้: ./scripts/run.sh [environment] [mode]
 # environment: dev|prod|uat
 # mode: debug|release|profile
+# DEV_TOKEN: กำหนดผ่าน environment variable (ใช้เฉพาะ dev)
 
 set -e
 
 ENV=${1:-dev}
 MODE=${2:-debug}
+DEV_TOKEN=${DEV_TOKEN:-}
 
 echo "🏃‍♂️ กำลัง Run AssetWise..."
 echo "🌐 Environment: $ENV"
@@ -29,26 +31,41 @@ esac
 case $ENV in
     "dev")
         echo "📡 BASE_URL: https://dev-superapp-api.assetwise.co.th"
+        if [ -n "$DEV_TOKEN" ]; then
+            echo "🔑 Using DEV_TOKEN for development"
+        fi
         ;;
     "prod")
         echo "📡 BASE_URL: https://superapp-api.assetwise.co.th"
+        if [ -n "$DEV_TOKEN" ]; then
+            echo "🔑 Using DEV_TOKEN with production API"
+        fi
         ;;
     "uat")
         echo "📡 BASE_URL: https://uat-superapp-api.assetwise.co.th"
+        if [ -n "$DEV_TOKEN" ]; then
+            echo "🔑 Using DEV_TOKEN with UAT API"
+        fi
         ;;
 
 esac
 
 # Run แอป
+# สร้าง dart-define arguments
+DART_DEFINES="--dart-define=ENVIRONMENT=$ENV"
+if [ -n "$DEV_TOKEN" ]; then
+    DART_DEFINES="$DART_DEFINES --dart-define=DEV_TOKEN=$DEV_TOKEN"
+fi
+
 case $MODE in
     "debug")
-        flutter run --dart-define=ENVIRONMENT=$ENV
+        flutter run $DART_DEFINES
         ;;
     "profile")
-        flutter run --profile --dart-define=ENVIRONMENT=$ENV
+        flutter run --profile $DART_DEFINES
         ;;
     "release")
-        flutter run --release --dart-define=ENVIRONMENT=$ENV
+        flutter run --release $DART_DEFINES
         ;;
     *)
         echo "❌ Mode ไม่ถูกต้อง: $MODE"

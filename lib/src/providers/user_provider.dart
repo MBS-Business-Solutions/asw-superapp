@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:AssetWise/main.dart';
+import 'package:AssetWise/src/consts/url_const.dart';
 import 'package:AssetWise/src/models/aw_common_model.dart';
 import 'package:AssetWise/src/models/aw_content_model.dart';
 import 'package:AssetWise/src/services/aw_user_service.dart';
@@ -38,8 +39,10 @@ class UserProvider with ChangeNotifier {
     _token = token;
   }
 
-  AndroidOptions _getAndroidOptions() => const AndroidOptions(encryptedSharedPreferences: true);
-  IOSOptions _getIosOptions() => const IOSOptions(accessibility: KeychainAccessibility.unlocked_this_device);
+  AndroidOptions _getAndroidOptions() =>
+      const AndroidOptions(encryptedSharedPreferences: true);
+  IOSOptions _getIosOptions() => const IOSOptions(
+      accessibility: KeychainAccessibility.unlocked_this_device);
 
   Future<bool> login(String userId) async {
     final tokenResponse = await AwUserService().login(userId);
@@ -59,15 +62,26 @@ class UserProvider with ChangeNotifier {
     return false;
   }
 
-  Future<bool> loginNewUser({required String type, required String phone, required String email, required String firstName, required String lastName}) async {
-    final tokenResponse = await AwUserService().loginNewUser(type: type, phone: phone, email: email, firstName: firstName, lastName: lastName);
+  Future<bool> loginNewUser(
+      {required String type,
+      required String phone,
+      required String email,
+      required String firstName,
+      required String lastName}) async {
+    final tokenResponse = await AwUserService().loginNewUser(
+        type: type,
+        phone: phone,
+        email: email,
+        firstName: firstName,
+        lastName: lastName);
     if (tokenResponse != null) {
       _token = tokenResponse.token;
       // _userInformation = tokenResponse.userInformation;
       await fetchUserInformation();
 
       await secureStorage.delete(key: 'LOGOUT');
-      await secureStorage.write(key: 'USER_INFO', value: _userInformation!.toJson());
+      await secureStorage.write(
+          key: 'USER_INFO', value: _userInformation!.toJson());
       await secureStorage.write(key: 'SESSION_TOKEN', value: _token);
 
       await reloadIsar(_userInformation?.code);
@@ -114,7 +128,8 @@ class UserProvider with ChangeNotifier {
     if (isFirstLoad) {
       final secureStorageUnlock = FlutterSecureStorage(
         aOptions: _getAndroidOptions(),
-        iOptions: const IOSOptions(accessibility: KeychainAccessibility.unlocked_this_device),
+        iOptions: const IOSOptions(
+            accessibility: KeychainAccessibility.unlocked_this_device),
       );
       await secureStorageUnlock.deleteAll();
       await secureStorage.deleteAll();
@@ -124,6 +139,13 @@ class UserProvider with ChangeNotifier {
     _token = await secureStorage.read(key: 'SESSION_TOKEN');
     if (testToken != null) {
       _token = testToken;
+    }
+    // ใช้ static dev token ถ้าเป็น dev environment และยังไม่มี token
+    if (_token == null && DEV_TOKEN.isNotEmpty) {
+      _token = DEV_TOKEN;
+      if (kDebugMode) {
+        print('🔧 Using static DEV_TOKEN for development');
+      }
     }
     if (kDebugMode) {
       print('Token: $_token');
@@ -142,8 +164,10 @@ class UserProvider with ChangeNotifier {
     await reloadIsar(_userInformation?.code);
   }
 
-  Future<bool> submitConsents(String consentId, Map<String, bool> consents) async {
-    final response = await AwUserService().submitConsents(_token!, consentId, consents);
+  Future<bool> submitConsents(
+      String consentId, Map<String, bool> consents) async {
+    final response =
+        await AwUserService().submitConsents(_token!, consentId, consents);
     return response;
   }
 
@@ -180,40 +204,52 @@ class UserProvider with ChangeNotifier {
     final userInformation = await AwUserService().getUserInformation(_token!);
     if (userInformation != null) {
       _userInformation = userInformation;
-      await secureStorage.write(key: 'USER_INFO', value: _userInformation!.toJson());
+      await secureStorage.write(
+          key: 'USER_INFO', value: _userInformation!.toJson());
     }
     return _userInformation;
   }
 
   Future<List<PersonalConsent>> fetchPersonalConsents() async {
     if (token == null) return [];
-    return await AwUserService().fetchPersonalConsents(_token!, language: userInformation?.language);
+    return await AwUserService()
+        .fetchPersonalConsents(_token!, language: userInformation?.language);
   }
 
-  Future<PersonalConsentDetail?> fetchPersonalConsentDetail(String consentId) async {
+  Future<PersonalConsentDetail?> fetchPersonalConsentDetail(
+      String consentId) async {
     if (token == null) return null;
-    return await AwUserService().fetchPersonalConsentDetail(_token!, consentId, language: userInformation?.language);
+    return await AwUserService().fetchPersonalConsentDetail(_token!, consentId,
+        language: userInformation?.language);
   }
 
   Future<bool> submitConsent(String consentId, bool value) async {
     if (token == null) return false;
-    return await AwUserService().submitPersonalConsent(_token!, consentId, value);
+    return await AwUserService()
+        .submitPersonalConsent(_token!, consentId, value);
   }
 
   Future<List<AboutItem>> fetchAboutItems() async {
     if (token == null) return [];
-    return await AwUserService().fetchAboutItems(_token!, language: userInformation?.language);
+    return await AwUserService()
+        .fetchAboutItems(_token!, language: userInformation?.language);
   }
 
   Future<AboutItemDetail?> fetchAboutItemDetail(String consentId) async {
     if (token == null) return null;
-    return await AwUserService().fetchAboutItemDetail(_token!, consentId, language: userInformation?.language);
+    return await AwUserService().fetchAboutItemDetail(_token!, consentId,
+        language: userInformation?.language);
   }
 
   Future<MyQRResponse?> fetchMyQR() async {
     //if (token == null) return null;
-    final String qr = '${_userInformation?.userCode ?? ''}|${_userInformation?.code ?? ''}|${_userInformation?.phone ?? ''}';
-    return MyQRResponse(code: 200, status: 'success', ref: qr, qrCode: qr); //await AwUserService().fetchMyQR(_token!);
+    final String qr =
+        '${_userInformation?.userCode ?? ''}|${_userInformation?.code ?? ''}|${_userInformation?.phone ?? ''}';
+    return MyQRResponse(
+        code: 200,
+        status: 'success',
+        ref: qr,
+        qrCode: qr); //await AwUserService().fetchMyQR(_token!);
   }
 
   Future<void> cleanUpKeyChain() async {
