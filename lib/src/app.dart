@@ -116,6 +116,10 @@ class _MyAppState extends State<MyApp> {
         }
       }
     }
+
+    // Mark app as ready for deep link navigation after PIN and consent checks
+    // This should be called after all authentication/authorization flows are complete
+    DeepLinkService().setAppReady();
   }
 
   // เมื่อแอปถูก resume ให้ดึงข้อมูล notification และ จะเปิด Dashboard เฉพาะเข้ามาครั้งแรก (isResumed = false สั่งต่อ appInit)
@@ -123,7 +127,12 @@ class _MyAppState extends State<MyApp> {
   Future<void> _afterResumed({bool isResumed = false}) async {
     final navContext = navigatorKey.currentContext ?? context;
     await navContext.read<NotificationItemProvider>().fetchNotificationItems();
-    if (navContext.mounted && !isResumed) {
+
+    // Don't navigate to Dashboard if there's a pending deep link
+    // The deep link handler will handle navigation
+    if (navContext.mounted &&
+        !isResumed &&
+        !DeepLinkService().hasPendingDeepLink) {
       await Future.wait([
         Future.delayed(const Duration(seconds: 3)),
         navContext.read<DashboardProvider>().reload()

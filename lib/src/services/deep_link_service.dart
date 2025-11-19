@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import '../features/contract/contract_detail_view.dart';
 import '../features/promotions/views/promotion_detail_view.dart';
 import '../features/projects/views/project_detail_view.dart';
+import '../features/dashboard/dashboard_view.dart';
+import '../splash/splash_view.dart';
 import '../widgets/webview_with_close.dart';
 import '../consts/url_const.dart';
 import '../../main.dart';
@@ -16,6 +18,39 @@ class DeepLinkService {
 
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
+  Uri? _pendingDeepLink;
+  int _retryCount = 0;
+  static const int _maxRetries = 10;
+  static const Duration _retryDelay = Duration(milliseconds: 500);
+
+  // Flag to track if app is ready (PIN and consent passed)
+  bool _isAppReady = false;
+
+  /// Check if there's a pending deep link waiting to be processed
+  bool get hasPendingDeepLink => _pendingDeepLink != null;
+
+  /// Mark app as ready (PIN and consent passed)
+  /// Call this after PIN validation and consent check are complete
+  void setAppReady() {
+    _isAppReady = true;
+    if (kDebugMode) {
+      print('✅ App is ready for deep link navigation');
+    }
+
+    // Process pending deep link if exists
+    if (_pendingDeepLink != null) {
+      if (kDebugMode) {
+        print('🔄 Processing pending deep link: $_pendingDeepLink');
+      }
+      final uri = _pendingDeepLink!;
+      _pendingDeepLink = null;
+      _retryCount = 0;
+      _handleDeepLink(uri);
+    }
+  }
+
+  /// Check if app is ready for navigation
+  bool get isAppReady => _isAppReady;
 
   Future<void> initialize() async {
     _appLinks = AppLinks();
@@ -46,16 +81,69 @@ class DeepLinkService {
   }
 
   void _handleDeepLink(Uri uri) {
+    // Check if app is ready (PIN and consent passed)
+    if (!_isAppReady) {
+      if (kDebugMode) {
+        print(
+            '⏳ App not ready yet (PIN/consent pending), storing deep link: $uri');
+      }
+      _pendingDeepLink = uri;
+      _retryCount = 0;
+      return;
+    }
+
     final context = navigatorKey.currentContext;
     if (context == null) {
       if (kDebugMode) {
-        print('No context available for deep link navigation');
+        print(
+            'No context available for deep link navigation, storing for retry');
+      }
+      _pendingDeepLink = uri;
+      _retryCount = 0;
+      _retryDeepLink();
+      return;
+    }
+
+    // Clear pending link if exists
+    _pendingDeepLink = null;
+    _retryCount = 0;
+
+    // Parse the deep link and navigate accordingly
+    _navigateFromDeepLink(context, uri);
+  }
+
+  void _retryDeepLink() {
+    if (_pendingDeepLink == null || _retryCount >= _maxRetries) {
+      if (kDebugMode && _retryCount >= _maxRetries) {
+        print('Max retries reached for deep link: $_pendingDeepLink');
       }
       return;
     }
 
-    // Parse the deep link and navigate accordingly
-    _navigateFromDeepLink(context, uri);
+    // Don't retry if app is not ready yet
+    if (!_isAppReady) {
+      if (kDebugMode) {
+        print('⏳ Waiting for app to be ready before retrying deep link');
+      }
+      return;
+    }
+
+    Future.delayed(_retryDelay, () {
+      _retryCount++;
+      final context = navigatorKey.currentContext;
+      if (context != null && _pendingDeepLink != null && _isAppReady) {
+        if (kDebugMode) {
+          print(
+              'Retrying deep link navigation (attempt $_retryCount): $_pendingDeepLink');
+        }
+        final uri = _pendingDeepLink!;
+        _pendingDeepLink = null;
+        _retryCount = 0;
+        _navigateFromDeepLink(context, uri);
+      } else {
+        _retryDeepLink();
+      }
+    });
   }
 
   void _navigateFromDeepLink(BuildContext context, Uri uri) {
@@ -72,7 +160,7 @@ class DeepLinkService {
     }
 
     try {
-      // Handle different deep link patterns
+      // Handle /app/contract deep link
       if (uri.path.startsWith('/app/contract')) {
         _handleContractLink(context, queryParams);
       } else if (uri.path.startsWith('/app/promotion')) {
@@ -91,21 +179,120 @@ class DeepLinkService {
           print('Unhandled deep link: $uri');
         }
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       if (kDebugMode) {
         print('Error handling deep link: $e');
+        print('Stack trace: $stackTrace');
       }
     }
   }
 
   void _handleContractLink(BuildContext context, Map<String, String> params) {
     final contractId = params['id'];
-    if (contractId != null) {
-      Navigator.pushNamed(
-        context,
-        ContractDetailView.routeName,
-        arguments: {'contractId': contractId},
-      );
+
+    if (contractId == null || contractId.isEmpty) {
+      if (kDebugMode) {
+        print('⚠️ Contract ID is missing in deep link parameters');
+      }
+      return;
+    }
+
+    if (kDebugMode) {
+      print('📋 Navigating to ContractDetailView with contractId: $contractId');
+    }
+
+    try {
+      // Check if we're currently on SplashView or need to navigate to Dashboard first
+      final currentRoute = ModalRoute.of(context);
+      final routeName = currentRoute?.settings.name;
+      final isOnSplash = routeName == null ||
+          routeName == '/' ||
+          routeName == SplashView.routeName;
+
+      if (isOnSplash) {
+        // First navigate to Dashboard, then to ContractDetailView
+        if (kDebugMode) {
+          print(
+              '📍 Currently on splash ($routeName), navigating to Dashboard first');
+        }
+
+        // Navigate to Dashboard first
+        if (navigatorKey.currentContext != null &&
+            navigatorKey.currentContext!.mounted) {
+          Navigator.pushReplacementNamed(
+            navigatorKey.currentContext!,
+            DashboardView.routeName,
+          );
+
+          // Wait for Dashboard to be fully rendered before navigating to ContractDetailView
+          // Use addPostFrameCallback to ensure Dashboard is ready
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            // Add another post frame callback to ensure navigation stack is ready
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Future.delayed(const Duration(milliseconds: 500), () {
+                if (navigatorKey.currentContext != null &&
+                    navigatorKey.currentContext!.mounted) {
+                  final currentRoute =
+                      ModalRoute.of(navigatorKey.currentContext!);
+                  final currentRouteName = currentRoute?.settings.name;
+
+                  if (kDebugMode) {
+                    print(
+                        '🔍 Current route after Dashboard: $currentRouteName');
+                  }
+
+                  // Verify we're on Dashboard before navigating
+                  if (currentRouteName == DashboardView.routeName) {
+                    Navigator.pushNamed(
+                      navigatorKey.currentContext!,
+                      ContractDetailView.routeName,
+                      arguments: {'contractId': contractId},
+                    );
+                    if (kDebugMode) {
+                      print(
+                          '✅ Successfully navigated to ContractDetailView after Dashboard');
+                    }
+                  } else {
+                    if (kDebugMode) {
+                      print('⚠️ Not on Dashboard yet, retrying...');
+                    }
+                    // Retry after a bit more delay
+                    Future.delayed(const Duration(milliseconds: 500), () {
+                      if (navigatorKey.currentContext != null &&
+                          navigatorKey.currentContext!.mounted) {
+                        Navigator.pushNamed(
+                          navigatorKey.currentContext!,
+                          ContractDetailView.routeName,
+                          arguments: {'contractId': contractId},
+                        );
+                        if (kDebugMode) {
+                          print(
+                              '✅ Successfully navigated to ContractDetailView (retry)');
+                        }
+                      }
+                    });
+                  }
+                }
+              });
+            });
+          });
+        }
+      } else {
+        // Already have a route, just push ContractDetailView
+        Navigator.pushNamed(
+          context,
+          ContractDetailView.routeName,
+          arguments: {'contractId': contractId},
+        );
+        if (kDebugMode) {
+          print('✅ Successfully navigated to ContractDetailView');
+        }
+      }
+    } catch (e, stackTrace) {
+      if (kDebugMode) {
+        print('❌ Error navigating to ContractDetailView: $e');
+        print('Stack trace: $stackTrace');
+      }
     }
   }
 
@@ -219,6 +406,9 @@ class DeepLinkService {
 
   void dispose() {
     _linkSubscription?.cancel();
+    _pendingDeepLink = null;
+    _retryCount = 0;
+    _isAppReady = false;
   }
 
   // Static helper methods for generating deep links
