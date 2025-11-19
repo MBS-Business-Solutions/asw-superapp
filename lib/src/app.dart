@@ -128,11 +128,12 @@ class _MyAppState extends State<MyApp> {
     final navContext = navigatorKey.currentContext ?? context;
     await navContext.read<NotificationItemProvider>().fetchNotificationItems();
 
-    // Don't navigate to Dashboard if there's a pending deep link
+    // Don't navigate to Dashboard if there's a pending deep link or deep link navigation is in progress
     // The deep link handler will handle navigation
     if (navContext.mounted &&
         !isResumed &&
-        !DeepLinkService().hasPendingDeepLink) {
+        !DeepLinkService().hasPendingDeepLink &&
+        !DeepLinkService().isNavigatingFromDeepLink) {
       await Future.wait([
         Future.delayed(const Duration(seconds: 3)),
         navContext.read<DashboardProvider>().reload()

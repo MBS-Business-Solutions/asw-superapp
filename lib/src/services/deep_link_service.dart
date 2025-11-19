@@ -26,8 +26,14 @@ class DeepLinkService {
   // Flag to track if app is ready (PIN and consent passed)
   bool _isAppReady = false;
 
+  // Flag to track if deep link navigation is in progress
+  bool _isNavigatingFromDeepLink = false;
+
   /// Check if there's a pending deep link waiting to be processed
   bool get hasPendingDeepLink => _pendingDeepLink != null;
+
+  /// Check if deep link navigation is in progress
+  bool get isNavigatingFromDeepLink => _isNavigatingFromDeepLink;
 
   /// Mark app as ready (PIN and consent passed)
   /// Call this after PIN validation and consent check are complete
@@ -187,6 +193,23 @@ class DeepLinkService {
     }
   }
 
+  void _navigateToContractDetail(String contractId) {
+    if (navigatorKey.currentContext != null &&
+        navigatorKey.currentContext!.mounted) {
+      Navigator.pushNamed(
+        navigatorKey.currentContext!,
+        ContractDetailView.routeName,
+        arguments: {'contractId': contractId},
+      );
+      if (kDebugMode) {
+        print('✅ Successfully navigated to ContractDetailView after Dashboard');
+      }
+
+      // Reset flag after navigation is complete
+      _isNavigatingFromDeepLink = false;
+    }
+  }
+
   void _handleContractLink(BuildContext context, Map<String, String> params) {
     final contractId = params['id'];
 
@@ -216,63 +239,76 @@ class DeepLinkService {
               '📍 Currently on splash ($routeName), navigating to Dashboard first');
         }
 
-        // Navigate to Dashboard first
+        // Set flag to indicate deep link navigation is in progress
+        _isNavigatingFromDeepLink = true;
+
+        // Navigate to Dashboard first using pushNamedAndRemoveUntil
+        // This ensures proper navigation stack: Dashboard -> ContractDetailView
+        // When back is pressed from ContractDetailView, it will go back to Dashboard
         if (navigatorKey.currentContext != null &&
             navigatorKey.currentContext!.mounted) {
-          Navigator.pushReplacementNamed(
+          // First, pop all routes until we reach the first route
+          Navigator.popUntil(
+              navigatorKey.currentContext!, (route) => route.isFirst);
+
+          // Then push Dashboard and remove all previous routes
+          Navigator.pushNamedAndRemoveUntil(
             navigatorKey.currentContext!,
             DashboardView.routeName,
+            (route) => false, // Remove all previous routes
           );
 
+          if (kDebugMode) {
+            print('📍 Pushed Dashboard with pushNamedAndRemoveUntil');
+          }
+
           // Wait for Dashboard to be fully rendered before navigating to ContractDetailView
-          // Use addPostFrameCallback to ensure Dashboard is ready
+          // Use multiple post frame callbacks and delay to ensure Dashboard is ready
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            // Add another post frame callback to ensure navigation stack is ready
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              Future.delayed(const Duration(milliseconds: 500), () {
-                if (navigatorKey.currentContext != null &&
-                    navigatorKey.currentContext!.mounted) {
-                  final currentRoute =
-                      ModalRoute.of(navigatorKey.currentContext!);
-                  final currentRouteName = currentRoute?.settings.name;
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                // Wait a bit longer to ensure route is properly set
+                Future.delayed(const Duration(milliseconds: 800), () {
+                  if (navigatorKey.currentContext != null &&
+                      navigatorKey.currentContext!.mounted) {
+                    // Check navigation stack directly
+                    final navigator =
+                        Navigator.of(navigatorKey.currentContext!);
+                    final canPop = navigator.canPop();
+                    final currentRoute =
+                        ModalRoute.of(navigatorKey.currentContext!);
+                    final currentRouteName = currentRoute?.settings.name;
 
-                  if (kDebugMode) {
-                    print(
-                        '🔍 Current route after Dashboard: $currentRouteName');
-                  }
+                    if (kDebugMode) {
+                      print('🔍 Navigator canPop: $canPop');
+                      print('🔍 Current route name: $currentRouteName');
+                    }
 
-                  // Verify we're on Dashboard before navigating
-                  if (currentRouteName == DashboardView.routeName) {
-                    Navigator.pushNamed(
-                      navigatorKey.currentContext!,
-                      ContractDetailView.routeName,
-                      arguments: {'contractId': contractId},
-                    );
-                    if (kDebugMode) {
-                      print(
-                          '✅ Successfully navigated to ContractDetailView after Dashboard');
-                    }
-                  } else {
-                    if (kDebugMode) {
-                      print('⚠️ Not on Dashboard yet, retrying...');
-                    }
-                    // Retry after a bit more delay
-                    Future.delayed(const Duration(milliseconds: 500), () {
-                      if (navigatorKey.currentContext != null &&
-                          navigatorKey.currentContext!.mounted) {
-                        Navigator.pushNamed(
-                          navigatorKey.currentContext!,
-                          ContractDetailView.routeName,
-                          arguments: {'contractId': contractId},
-                        );
-                        if (kDebugMode) {
-                          print(
-                              '✅ Successfully navigated to ContractDetailView (retry)');
-                        }
+                    // If canPop is true, it means there's a route before Dashboard
+                    // This shouldn't happen with pushNamedAndRemoveUntil, but if it does, pop it
+                    if (canPop && currentRouteName != DashboardView.routeName) {
+                      if (kDebugMode) {
+                        print(
+                            '⚠️ Unexpected route before Dashboard, popping...');
                       }
-                    });
+                      Navigator.popUntil(navigatorKey.currentContext!, (route) {
+                        return route.settings.name == DashboardView.routeName ||
+                            route.isFirst;
+                      });
+
+                      // Wait a bit more after popping
+                      Future.delayed(const Duration(milliseconds: 300), () {
+                        if (navigatorKey.currentContext != null &&
+                            navigatorKey.currentContext!.mounted) {
+                          _navigateToContractDetail(contractId);
+                        }
+                      });
+                    } else {
+                      // Navigate to ContractDetailView normally
+                      _navigateToContractDetail(contractId);
+                    }
                   }
-                }
+                });
               });
             });
           });
