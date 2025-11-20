@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../features/contract/contract_detail_view.dart';
+import '../features/contract/contracts_view.dart';
 import '../features/promotions/views/promotion_detail_view.dart';
 import '../features/projects/views/project_detail_view.dart';
 import '../features/dashboard/dashboard_view.dart';
@@ -193,16 +193,16 @@ class DeepLinkService {
     }
   }
 
-  void _navigateToContractDetail(String contractId) {
+  void _navigateToContracts(String linkId) {
     if (navigatorKey.currentContext != null &&
         navigatorKey.currentContext!.mounted) {
       Navigator.pushNamed(
         navigatorKey.currentContext!,
-        ContractDetailView.routeName,
-        arguments: {'contractId': contractId},
+        ContractsView.routeName,
+        arguments: {'linkId': linkId},
       );
       if (kDebugMode) {
-        print('✅ Successfully navigated to ContractDetailView after Dashboard');
+        print('✅ Successfully navigated to ContractsView with linkId: $linkId');
       }
 
       // Reset flag after navigation is complete
@@ -211,9 +211,9 @@ class DeepLinkService {
   }
 
   void _handleContractLink(BuildContext context, Map<String, String> params) {
-    final contractId = params['id'];
+    final linkId = params['id'];
 
-    if (contractId == null || contractId.isEmpty) {
+    if (linkId == null || linkId.isEmpty) {
       if (kDebugMode) {
         print('⚠️ Contract ID is missing in deep link parameters');
       }
@@ -221,7 +221,7 @@ class DeepLinkService {
     }
 
     if (kDebugMode) {
-      print('📋 Navigating to ContractDetailView with contractId: $contractId');
+      print('📋 Navigating to ContractsView with linkId: $linkId');
     }
 
     try {
@@ -233,7 +233,7 @@ class DeepLinkService {
           routeName == SplashView.routeName;
 
       if (isOnSplash) {
-        // First navigate to Dashboard, then to ContractDetailView
+        // First navigate to Dashboard, then to ContractsView
         if (kDebugMode) {
           print(
               '📍 Currently on splash ($routeName), navigating to Dashboard first');
@@ -243,8 +243,8 @@ class DeepLinkService {
         _isNavigatingFromDeepLink = true;
 
         // Navigate to Dashboard first using pushNamedAndRemoveUntil
-        // This ensures proper navigation stack: Dashboard -> ContractDetailView
-        // When back is pressed from ContractDetailView, it will go back to Dashboard
+        // This ensures proper navigation stack: Dashboard -> ContractsView
+        // When back is pressed from ContractsView, it will go back to Dashboard
         if (navigatorKey.currentContext != null &&
             navigatorKey.currentContext!.mounted) {
           // First, pop all routes until we reach the first route
@@ -262,7 +262,7 @@ class DeepLinkService {
             print('📍 Pushed Dashboard with pushNamedAndRemoveUntil');
           }
 
-          // Wait for Dashboard to be fully rendered before navigating to ContractDetailView
+          // Wait for Dashboard to be fully rendered before navigating to ContractsView
           // Use multiple post frame callbacks and delay to ensure Dashboard is ready
           WidgetsBinding.instance.addPostFrameCallback((_) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -300,12 +300,12 @@ class DeepLinkService {
                       Future.delayed(const Duration(milliseconds: 300), () {
                         if (navigatorKey.currentContext != null &&
                             navigatorKey.currentContext!.mounted) {
-                          _navigateToContractDetail(contractId);
+                          _navigateToContracts(linkId);
                         }
                       });
                     } else {
-                      // Navigate to ContractDetailView normally
-                      _navigateToContractDetail(contractId);
+                      // Navigate to ContractsView normally
+                      _navigateToContracts(linkId);
                     }
                   }
                 });
@@ -314,19 +314,19 @@ class DeepLinkService {
           });
         }
       } else {
-        // Already have a route, just push ContractDetailView
+        // Already have a route, just push ContractsView
         Navigator.pushNamed(
           context,
-          ContractDetailView.routeName,
-          arguments: {'contractId': contractId},
+          ContractsView.routeName,
+          arguments: {'linkId': linkId},
         );
         if (kDebugMode) {
-          print('✅ Successfully navigated to ContractDetailView');
+          print('✅ Successfully navigated to ContractsView');
         }
       }
     } catch (e, stackTrace) {
       if (kDebugMode) {
-        print('❌ Error navigating to ContractDetailView: $e');
+        print('❌ Error navigating to ContractsView: $e');
         print('Stack trace: $stackTrace');
       }
     }
