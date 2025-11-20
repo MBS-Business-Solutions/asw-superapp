@@ -4,13 +4,14 @@
 # วิธีใช้: ./scripts/run.sh [environment] [mode]
 # environment: dev|prod|uat
 # mode: debug|release|profile
-# DEV_TOKEN: กำหนดผ่าน environment variable (ใช้เฉพาะ dev)
+# DEV_TOKEN: ส่งผ่าน environment variable (optional, ไม่มีค่า default)
+# ตัวอย่าง: DEV_TOKEN=your_token ./scripts/run.sh dev debug
 
 set -e
 
 ENV=${1:-dev}
 MODE=${2:-debug}
-DEV_TOKEN=${DEV_TOKEN:-}
+# DEV_TOKEN ต้องส่งผ่าน environment variable เท่านั้น ไม่มีค่า default
 
 echo "🏃‍♂️ กำลัง Run AssetWise..."
 echo "🌐 Environment: $ENV"

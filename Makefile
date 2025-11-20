@@ -3,8 +3,8 @@
 ENV ?= dev
 PLATFORM ?= android
 MODE ?= debug
-# Static token สำหรับ development (ใช้เฉพาะเมื่อ run-dev)
-DEV_TOKEN ?= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzODBkMDFlNC05ZGMyLTQ0MWYtOWZhNi03ZWIzMWEwZGUxOWEiLCJlbWFpbCI6InlhbmluLmtAYXNzZXR3aXNlLmNvLnRoIiwiaWF0IjoxNzYzNTQyMzgxLCJleHAiOjE3NjYxMzQzODF9.UudKzJo6Qj2bBmLF7RrVpA2VqaMQWKIm-iO5QAeH4Ls
+# DEV_TOKEN: ส่งผ่าน environment variable (optional, ไม่มีค่า default)
+# วิธีใช้: make run-dev DEV_TOKEN=your_token_here
 
 .PHONY: help dev prod uat run-dev run-prod run-uat build-android build-ios clean version version-show version-increment version-bump-build version-update version-strategy
 
@@ -50,10 +50,10 @@ uat: ## ตั้งค่า UAT environment
 
 
 # Run Commands
-run-dev: ## Run แอปใน Development mode (พร้อม DEV_TOKEN)
+run-dev: ## Run แอปใน Development mode (DEV_TOKEN เป็น optional)
 	@DEV_TOKEN=$(DEV_TOKEN) ./scripts/run.sh dev $(MODE)
 
-run-prod: ## Run แอปใน Production mode (พร้อม DEV_TOKEN)
+run-prod: ## Run แอปใน Production mode (DEV_TOKEN เป็น optional)
 	@DEV_TOKEN=$(DEV_TOKEN) ./scripts/run.sh prod $(MODE)
 
 run-uat: ## Run แอปใน UAT mode

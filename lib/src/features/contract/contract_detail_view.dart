@@ -1,6 +1,7 @@
 import 'package:AssetWise/src/consts/colors_const.dart';
 import 'package:AssetWise/src/consts/foundation_const.dart';
 import 'package:AssetWise/src/features/contract/down_history_view.dart';
+import 'package:AssetWise/src/features/dashboard/dashboard_view.dart';
 import 'package:AssetWise/src/models/aw_contract_model.dart';
 import 'package:AssetWise/src/providers/contract_provider.dart';
 import 'package:AssetWise/src/utils/common_util.dart';
@@ -73,15 +74,45 @@ class _ContractDetailViewState extends State<ContractDetailView> {
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: Theme.of(context).colorScheme.error,
                             ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 24),
-                      FilledButton(
-                        onPressed: () {
-                          setState(() {
-                            _contractDetailFuture = context.read<ContractProvider>().fetchContractDetail(widget.contractId);
-                          });
-                        },
-                        child: const Text('ลองอีกครั้ง'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          OutlinedButton(
+                            onPressed: () {
+                              // Navigate back to Dashboard
+                              // First, try to pop until Dashboard
+                              final navigator = Navigator.of(context);
+                              if (navigator.canPop()) {
+                                // Pop until we reach Dashboard or first route
+                                navigator.popUntil((route) {
+                                  return route.settings.name == DashboardView.routeName || route.isFirst;
+                                });
+                                // If we're not on Dashboard after popping, navigate to it
+                                final currentRoute = ModalRoute.of(context);
+                                if (currentRoute?.settings.name != DashboardView.routeName) {
+                                  Navigator.pushReplacementNamed(context, DashboardView.routeName);
+                                }
+                              } else {
+                                // Can't pop, navigate to Dashboard directly
+                                Navigator.pushReplacementNamed(context, DashboardView.routeName);
+                              }
+                            },
+                            child: const Text('กลับไป Dashboard'),
+                          ),
+                          const SizedBox(width: 16),
+                          FilledButton(
+                            onPressed: () {
+                              setState(() {
+                                _contractDetailFuture = context.read<ContractProvider>().fetchContractDetail(widget.contractId);
+                              });
+                            },
+                            child: const Text('ลองอีกครั้ง'),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -116,13 +147,41 @@ class _ContractDetailViewState extends State<ContractDetailView> {
                             ),
                       ),
                       const SizedBox(height: 24),
-                      FilledButton(
-                        onPressed: () {
-                          setState(() {
-                            _contractDetailFuture = context.read<ContractProvider>().fetchContractDetail(widget.contractId);
-                          });
-                        },
-                        child: const Text('ลองอีกครั้ง'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          OutlinedButton(
+                            onPressed: () {
+                              // Navigate back to Dashboard
+                              // First, try to pop until Dashboard
+                              final navigator = Navigator.of(context);
+                              if (navigator.canPop()) {
+                                // Pop until we reach Dashboard or first route
+                                navigator.popUntil((route) {
+                                  return route.settings.name == DashboardView.routeName || route.isFirst;
+                                });
+                                // If we're not on Dashboard after popping, navigate to it
+                                final currentRoute = ModalRoute.of(context);
+                                if (currentRoute?.settings.name != DashboardView.routeName) {
+                                  Navigator.pushReplacementNamed(context, DashboardView.routeName);
+                                }
+                              } else {
+                                // Can't pop, navigate to Dashboard directly
+                                Navigator.pushReplacementNamed(context, DashboardView.routeName);
+                              }
+                            },
+                            child: const Text('กลับไป Dashboard'),
+                          ),
+                          const SizedBox(width: 16),
+                          FilledButton(
+                            onPressed: () {
+                              setState(() {
+                                _contractDetailFuture = context.read<ContractProvider>().fetchContractDetail(widget.contractId);
+                              });
+                            },
+                            child: const Text('ลองอีกครั้ง'),
+                          ),
+                        ],
                       ),
                     ],
                   ),
